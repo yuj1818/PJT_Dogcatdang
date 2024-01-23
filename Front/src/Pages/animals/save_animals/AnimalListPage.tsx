@@ -1,11 +1,7 @@
 import React from "react";
-import NavBar from "../../../components/common/NavBar";
 
-function AnimalListPage(): void {
-  return;
-  <>
-    <NavBar />
-  </>;
+function AnimalListPage() {
+  return <div>AnimalListPage</div>;
 }
 
 export default AnimalListPage;
