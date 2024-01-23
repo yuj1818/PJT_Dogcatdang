@@ -9,6 +9,7 @@ import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage"
 import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetail from "./pages/articles/ArticleDetail";
 import NavBar from "./components/common/NavBar.tsx";
+import SignUp from "./components/users/auth/SignUp.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             element: <ArticleDetail />,
           },
         ],
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
       },
     ],
   },
