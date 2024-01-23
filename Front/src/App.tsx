@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <AnimalListPage />,
       },
       {
-        path: "/lost-animals",
+        path: "lost-animals",
         element: <LostAnimalListPage />,
       },
       {

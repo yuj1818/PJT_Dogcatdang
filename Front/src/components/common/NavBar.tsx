@@ -90,7 +90,7 @@ function NavBar() {
         <nav>
           <ul>
             <li>
-              <NavLink to="/savedAnimals">보호 동물 보기</NavLink>
+              <NavLink to="/save-animals">보호 동물 보기</NavLink>
             </li>
             <li>
               <NavLink to="/profile">관심 동물 보기</NavLink>
@@ -114,10 +114,10 @@ function NavBar() {
           </ul>
           <ul>
             <li>
-              <NavLink to="/lostanimal">실종 동물 전체 보기</NavLink>
+              <NavLink to="/lost-animals">실종 동물 전체 보기</NavLink>
             </li>
             <li>
-              <NavLink to="/lostanimal/aisearch">AI 검색</NavLink>
+              <NavLink to="/lost-animals/aisearch">AI 검색</NavLink>
             </li>
           </ul>
           <ul>
