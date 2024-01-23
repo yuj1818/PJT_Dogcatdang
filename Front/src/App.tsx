@@ -10,6 +10,7 @@ import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetail from "./pages/articles/ArticleDetail";
 import NavBar from "./components/common/NavBar.tsx";
 import SignUp from "./components/users/auth/SignUp.tsx";
+import SignIn from "./components/users/auth/SignIn.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+      },
+      {
+        path: "signin",
+        element: <SignIn />,
       },
     ],
   },
