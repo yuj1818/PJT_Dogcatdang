@@ -3,12 +3,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./util/HTTPArticles.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-
-import MainPage from "./Pages/main/MainPage";
+import MainPage from "./pages/main/MainPage";
 import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
-import ArticleListPage from "./Pages/articles/ArticleListPage";
-import ArticleDetail from "./Pages/articles/ArticleDetail";
+import ArticleListPage from "./pages/articles/ArticleListPage";
+import ArticleDetail from "./pages/articles/ArticleDetail";
 import NavBar from "./components/common/NavBar.tsx";
 
 const router = createBrowserRouter([
@@ -29,7 +28,7 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: "/save-animals",
+        path: "save-animals",
         element: <AnimalListPage />,
       },
       {
