@@ -1,36 +1,65 @@
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import MainPage from "./pages/main/MainPage";
+import { queryClient } from "./util/HTTPArticles.ts";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+
+import MainPage from "./Pages/main/MainPage";
 import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
+import ArticleListPage from "./Pages/articles/ArticleListPage";
+import ArticleDetail from "./Pages/articles/ArticleDetail";
+import NavBar from "./components/common/NavBar.tsx";
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
-  //   element: <Navigate to={}></Navigate>,
+  //   element: <Page />,
   // },
   {
     path: "/",
-    element: <MainPage />,
-  },
-  {
-    path: "/save-animals",
-    element: <AnimalListPage />,
-  },
-  {
-    path: "/lost-animals",
-    element: <LostAnimalListPage />,
+    element: (
+      <>
+        <NavBar />
+      </>
+    ),
+    children: [
+      {
+        path: "",
+        element: <MainPage />,
+      },
+      {
+        path: "/save-animals",
+        element: <AnimalListPage />,
+      },
+      {
+        path: "/lost-animals",
+        element: <LostAnimalListPage />,
+      },
+      {
+        path: "articles",
+        element: <></>,
+        children: [
+          {
+            index: true,
+            element: <ArticleListPage />,
+          },
+          {
+            path: "write",
+            element: <ArticleDetail />,
+          },
+        ],
+      },
+    ],
   },
 ]);
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </>
   );
 }
