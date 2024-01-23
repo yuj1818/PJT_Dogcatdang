@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 function NavBar() {
   const [isOrg, setIsOrg] = useState(true);
@@ -7,6 +7,9 @@ function NavBar() {
 
   const navTitles = isOrg ? (
     <>
+      <NavLink to="/">
+        <img src="/src/assets/main-logo.png" alt="홈으로" />
+      </NavLink>
       <ul>
         <li>동물 관리</li>
         <li>방문 일정 관리</li>
@@ -17,6 +20,9 @@ function NavBar() {
     </>
   ) : (
     <>
+      <NavLink to="/">
+        <img src="/src/assets/main-logo.png" alt="홈으로" />
+      </NavLink>
       <ul>
         <li>입양하기</li>
         <li>후기 게시판</li>
@@ -133,21 +139,23 @@ function NavBar() {
   };
 
   return (
-    <header>
-      <div onMouseEnter={hoverHandler}>
-        {navTitles}
+    <>
+      <header>
         <div
+          onMouseEnter={hoverHandler}
           onMouseLeave={() => {
             setNavContent(<></>);
           }}
         >
+          {navTitles}
           {navContent}
         </div>
-      </div>
-      <button onClick={() => [setIsOrg((prev) => !prev)]}>
-        {isOrg ? "개인으로 변경" : "기관으로 변경"}
-      </button>
-    </header>
+        <button onClick={() => [setIsOrg((prev) => !prev)]}>
+          {isOrg ? "개인으로 변경" : "기관으로 변경"}
+        </button>
+      </header>
+      <Outlet />
+    </>
   );
 }
 
