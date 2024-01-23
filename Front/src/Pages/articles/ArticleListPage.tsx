@@ -1,9 +1,9 @@
-function ArticleListPage() {
+const ArticleListPage: React.FC = () => {
   return (
     <>
-      <h2>Ar</h2>
+      <h2>ArticleList</h2>
     </>
   );
-}
+};
 
 export default ArticleListPage;
