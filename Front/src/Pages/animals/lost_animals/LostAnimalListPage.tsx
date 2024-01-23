@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 
 function LostAnimalListPage() {
   type CountryInput = {
@@ -345,15 +345,15 @@ function LostAnimalListPage() {
     setAnimalType(type);
   };
 
-  const handleRegionChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(event.target.value);
   };
 
-  const handleCountryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
   };
 
-  const handleGenderChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setGender(event.target.value);
   };
 
