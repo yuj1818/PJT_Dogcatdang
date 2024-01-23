@@ -4,7 +4,9 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import MainPage from "./Pages/main/MainPage";
+import MainPage from "./pages/main/MainPage";
+import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
+import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 
 const router = createBrowserRouter([
   // {
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainPage />,
+  },
+  {
+    path: "/save-animals",
+    element: <AnimalListPage />,
+  },
+  {
+    path: "/lost-animals",
+    element: <LostAnimalListPage />,
   },
 ]);
 
