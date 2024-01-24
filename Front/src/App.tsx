@@ -9,8 +9,8 @@ import LostAnimalListPage from "./Pages/animals/lost_animals/LostAnimalListPage"
 import ArticleListPage from "./Pages/articles/ArticleListPage";
 import ArticleDetailPage from "./Pages/articles/ArticleDetailPage.tsx";
 import NavBar from "./components/common/NavBar.tsx";
-import SignUp from "./components/users/auth/SignUp.tsx";
-import SignIn from "./components/users/auth/SignIn.tsx";
+import SignUpPage from "./pages/users/SignUpPage.tsx";
+import SignInPage from "./pages/users/SignInPage.tsx";
 import styles from "./App.module.css";
 
 const router = createBrowserRouter([
@@ -49,11 +49,11 @@ const router = createBrowserRouter([
       },
       {
         path: "signup",
-        element: <SignUp />,
+        element: <SignUpPage />,
       },
       {
         path: "signin",
-        element: <SignIn />,
+        element: <SignInPage />,
       },
     ],
   },

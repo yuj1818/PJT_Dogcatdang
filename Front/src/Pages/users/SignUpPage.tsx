@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function SignUp() {
+function SignUpPage() {
   const [isOrg, setIsOrg] = useState(false);
 
   const selectType = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,4 +54,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignUpPage;
