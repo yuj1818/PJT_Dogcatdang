@@ -18,6 +18,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void save(WriteBoardDto writeBoardDto) {
+		System.out.println("writeBoardDto = " + writeBoardDto.toEntity());
 		boardRepository.save(writeBoardDto.toEntity());
+
 	}
 }

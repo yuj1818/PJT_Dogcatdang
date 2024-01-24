@@ -23,7 +23,6 @@ public class BoardController {
 
 	@PostMapping("")
 	public ResponseEntity write(@RequestBody WriteBoardDto writeBoardDto) {
-		System.out.println("writeBoardDto = " + writeBoardDto);
 		boardService.save(writeBoardDto);
 		return new ResponseEntity(HttpStatus.OK);
 	}
