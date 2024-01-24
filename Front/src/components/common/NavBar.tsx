@@ -205,7 +205,7 @@ function NavBar() {
         </StyledNavLink>
         <div>
           <ul style={{ gap: "20px", marginRight: "20px" }}>
-            {isOrg && <p>기관 회원</p>}
+            {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
             <StyledNavLink to="profile/">{nickName}님</StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />

@@ -16,6 +16,10 @@ const FormLayout = styled.form`
     overflow: hidden;
     white-space: nowrap;
   }
+
+  label {
+    align-self: center;
+  }
 `;
 
 const FormMolecule = styled.div`
@@ -44,7 +48,8 @@ const TextSearch: React.FC<{
     <FormLayout onSubmit={onSubmit}>
       <p>{text}</p>
       <FormMolecule>
-        <input type="text" ref={searchRef} />
+        <label htmlFor="search">검색:</label>
+        <input id="search" type="text" ref={searchRef} />
         <ReadingGlasses />
       </FormMolecule>
     </FormLayout>
