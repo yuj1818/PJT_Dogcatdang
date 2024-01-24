@@ -18,7 +18,7 @@ function AnimalCard(props: AnimalCardProps) {
       {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
       <h4>품종 : {props.animals.breed}</h4>
       <p>{props.animals.content}</p>
-      <p>지역 {props.animals.region}</p>
+      <p>지역 : {props.animals.region}</p>
     </div>
   );
 }
