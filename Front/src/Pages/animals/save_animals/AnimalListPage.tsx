@@ -1,14 +1,36 @@
 import React, { useState } from "react";
+import AnimalCard from "../../../components/animalinfo/AnimalCard";
 
 function AnimalListPage() {
   type CountryInput = {
     [key: number]: string[];
   };
+  const animalData = [
+    {
+      shelter: "동물 보호소 A",
+      animalType: "강아지",
+      breed: "불독",
+      content: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
+      region: "서울",
+      country: "강서구",
+      gender: "수컷",
+    },
+    {
+      shelter: "동물 보호소 B",
+      animalType: "고양이",
+      breed: "먼치킨",
+      content: "온순하고 사람 친화적인 고양이입니다.",
+      region: "부산",
+      country: "강서구",
+      gender: "수컷",
+    },
+  ];
   const [animalType, setAnimalType] = useState("강아지");
   const [region, setRegion] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
+  const [filteredAnimalData, setFilteredAnimalData] = useState(animalData);
 
   const dogInput = [
     "전체",
@@ -364,84 +386,109 @@ function AnimalListPage() {
     setShelterName(event.target.value);
   };
 
+  const handleSearch = () => {
+    // 필터링을 위한 로직을 추가
+    const filteredData = animalData.filter((animal) => {
+      return (
+        (animalType === "" || animal.animalType === animalType) &&
+        (region === "" || animal.region === region) &&
+        (country === "" || animal.country === country) &&
+        (gender === "" || animal.gender === gender) &&
+        (shelterName === "" || animal.shelter.includes(shelterName))
+      );
+    });
+
+    setFilteredAnimalData(filteredData);
+  };
+
   return (
     <div>
       <button onClick={() => handleAnimalType("강아지")}>강아지</button>
       <button onClick={() => handleAnimalType("고양이")}>고양이</button>
-      <div>
-        <label htmlFor="품종">품종</label>
-        <select name="품종" id="품종">
-          {animalType === "강아지"
-            ? dogInput.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))
-            : catInput.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))}
-        </select>
-        <label htmlFor="지역">지역</label>
-        <select
-          name="region"
-          id="region"
-          value={region}
-          onChange={handleRegionChange}
-        >
-          <option value="" disabled hidden>
-            시/도 선택
-          </option>
-          {regionInput.map((pr) => (
-            <option key={pr} value={pr}>
-              {pr}
+      <form>
+        <div>
+          <label htmlFor="품종">품종</label>
+          <select name="품종" id="품종">
+            {animalType === "강아지"
+              ? dogInput.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))
+              : catInput.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))}
+          </select>
+          <label htmlFor="지역">지역</label>
+          <select
+            name="region"
+            id="region"
+            value={region}
+            onChange={handleRegionChange}
+          >
+            <option value="" disabled hidden>
+              시/도 선택
             </option>
-          ))}
-        </select>
-        <select
-          name="country"
-          id="country"
-          value={country}
-          onChange={handleCountryChange}
-        >
-          <option value="" disabled hidden>
-            시/구/군 선택
-          </option>
-          {countryInput[regionInput.indexOf(region)] &&
-            countryInput[regionInput.indexOf(region)].map((ct) => (
-              <option key={ct} value={ct}>
-                {ct}
+            {regionInput.map((pr) => (
+              <option key={pr} value={pr}>
+                {pr}
               </option>
             ))}
-        </select>
-        <label htmlFor="성별">성별</label>
-        <select
-          name="gender"
-          id="gender"
-          value={gender}
-          onChange={handleGenderChange}
-        >
-          <option value="" disabled hidden>
-            성별
-          </option>
-          {genderInput.map((ge) => (
-            <option key={ge} value={ge}>
-              {ge}
+          </select>
+          <select
+            name="country"
+            id="country"
+            value={country}
+            onChange={handleCountryChange}
+          >
+            <option value="" disabled hidden>
+              시/구/군 선택
             </option>
-          ))}
-        </select>
-        <label htmlFor="보호기관명">보호기관명</label>
-        <input
-          type="text"
-          id="shelterName"
-          name="shelterName"
-          value={shelterName}
-          onChange={handleShelterNameChange}
-        />
-      </div>
+            {countryInput[regionInput.indexOf(region)] &&
+              countryInput[regionInput.indexOf(region)].map((ct) => (
+                <option key={ct} value={ct}>
+                  {ct}
+                </option>
+              ))}
+          </select>
+          <label htmlFor="성별">성별</label>
+          <select
+            name="gender"
+            id="gender"
+            value={gender}
+            onChange={handleGenderChange}
+          >
+            <option value="" disabled hidden>
+              성별
+            </option>
+            {genderInput.map((ge) => (
+              <option key={ge} value={ge}>
+                {ge}
+              </option>
+            ))}
+          </select>
+          <label htmlFor="보호기관명">보호기관명</label>
+          <input
+            type="text"
+            id="shelterName"
+            name="shelterName"
+            value={shelterName}
+            onChange={handleShelterNameChange}
+          />
+        </div>
+        <div>
+          <button type="button" onClick={handleSearch}>
+            검색
+          </button>
+        </div>
+      </form>
+
       <div>
-        <button>검색</button>
+        {filteredAnimalData.map((animal, index) => (
+          <AnimalCard key={index} animals={animal} />
+        ))}
       </div>
     </div>
   );
