@@ -3,11 +3,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./util/HTTPArticles.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import MainPage from "./Pages/home/HomePage.tsx";
-import AnimalListPage from "./Pages/animals/save_animals/AnimalListPage";
-import LostAnimalListPage from "./Pages/animals/lost_animals/LostAnimalListPage";
-import ArticleListPage from "./Pages/articles/ArticleListPage";
-import ArticleDetailPage from "./Pages/articles/ArticleDetailPage.tsx";
+import MainPage from "./pages/home/HomePage.tsx";
+import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
+import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
+import ArticleListPage from "./pages/articles/ArticleListPage";
+import ArticleDetailPage from "./pages/articles/ArticleDetailPage.tsx";
 import NavBar from "./components/common/NavBar.tsx";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";

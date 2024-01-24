@@ -227,7 +227,7 @@ function NavBar() {
         {isOrg ? "개인으로 변경" : "기관으로 변경"}
       </button>
       <button onClick={() => [setIsNoti((prev) => !prev)]}>
-        {isNoti ? "알람 없애기" : "알람 없애기"}
+        {isNoti ? "알람 없애기" : "알람 생성하기"}
       </button>
       <Outlet />
     </>
