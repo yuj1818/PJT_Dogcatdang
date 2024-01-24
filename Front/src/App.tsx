@@ -3,14 +3,15 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./util/HTTPArticles.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import MainPage from "./pages/main/MainPage";
-import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
-import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
-import ArticleListPage from "./pages/articles/ArticleListPage";
-import ArticleDetail from "./pages/articles/ArticleDetail";
+import MainPage from "./Pages/home/HomePage.tsx";
+import AnimalListPage from "./Pages/animals/save_animals/AnimalListPage";
+import LostAnimalListPage from "./Pages/animals/lost_animals/LostAnimalListPage";
+import ArticleListPage from "./Pages/articles/ArticleListPage";
+import ArticleDetailPage from "./Pages/articles/ArticleDetailPage.tsx";
 import NavBar from "./components/common/NavBar.tsx";
 import SignUp from "./components/users/auth/SignUp.tsx";
 import SignIn from "./components/users/auth/SignIn.tsx";
+import styles from "./App.module.css";
 
 const router = createBrowserRouter([
   // {
@@ -19,14 +20,10 @@ const router = createBrowserRouter([
   // },
   {
     path: "/",
-    element: (
-      <>
-        <NavBar />
-      </>
-    ),
+    element: <NavBar />,
     children: [
       {
-        path: "",
+        index: true,
         element: <MainPage />,
       },
       {
@@ -39,15 +36,14 @@ const router = createBrowserRouter([
       },
       {
         path: "articles",
-        element: <></>,
         children: [
           {
             index: true,
             element: <ArticleListPage />,
           },
           {
-            path: "write",
-            element: <ArticleDetail />,
+            path: ":id",
+            element: <ArticleDetailPage />,
           },
         ],
       },
@@ -65,11 +61,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <div className={styles.container}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </>
+    </div>
   );
 }
 
