@@ -1,0 +1,7 @@
+.container {
+  max-width: 1200px; /* Adjust the max-width according to your design */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px; /* Adjust the left padding */
+  padding-right: 16px; /* Adjust the right padding */
+}
