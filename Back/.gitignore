@@ -1,5 +1,5 @@
-.idea
-.gradle
+.idea/
+.gradle/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java
