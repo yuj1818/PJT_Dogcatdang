@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e202.dogcatdang.db.entity.Board;
-import com.e202.dogcatdang.db.entity.BoardImage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class WriteBoardDto {
+public class RequestBoardDto {
 	private String title;
 	private String content;
 	private boolean isSaved;
@@ -28,7 +27,7 @@ public class WriteBoardDto {
 	private List<String> imgNames;
 
 	@Builder
-	public WriteBoardDto(Board board){
+	public RequestBoardDto(Board board){
 
 
 		this.title = board.getTitle();

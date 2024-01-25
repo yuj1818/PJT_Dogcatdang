@@ -29,6 +29,7 @@ public class BoardImage {
 	private String imgUrl;
 
 	@ManyToOne
+	@JoinColumn(name = "board_id")
 	private Board board;
 
 }

@@ -14,7 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ImageRequestDto {
+public class RequestImageDto {
 	private boolean isThumbnail;
 	private int sequence;
 	private String imgName;
