@@ -11,6 +11,7 @@ const Landing = styled.div`
 
   p {
     margin: 0;
+    white-space: nowrap;
   }
 
   .paw-prints {
@@ -50,6 +51,7 @@ const Landing = styled.div`
     margin-left: 12rem;
 
     button {
+      white-space: nowrap;
       background-color: #FE9172;
       border-radius: 30px;
       font-size: 24px;
@@ -69,6 +71,7 @@ const Landing = styled.div`
     line-height: 120px;
 
     .point {
+      white-space: nowrap;
       color: #FF8331;
     }
   }
