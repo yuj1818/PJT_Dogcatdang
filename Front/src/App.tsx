@@ -13,12 +13,18 @@ import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";
 import styles from "./App.module.css";
 import StreamingViewPage from "./pages/streaming/StreamingViewPage.tsx";
+import LandingPage from "./pages/home/LandingPage.tsx";
+
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
+  {
+    path: "/landing",
+    element: <LandingPage />
+  },
   {
     path: "/signup",
     element: <SignUpPage />,
