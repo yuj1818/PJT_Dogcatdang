@@ -12,6 +12,7 @@ import NavBar from "./components/common/NavBar.tsx";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";
 import styles from "./App.module.css";
+import StreamingViewPage from "./pages/streaming/StreamingViewPage.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
             element: <ArticleDetailPage />,
           },
         ],
+      },
+      {
+        path: "broadcast",
+        element: <StreamingViewPage />,
       },
     ],
   },
