@@ -7,4 +7,5 @@ import com.e202.dogcatdang.db.entity.Board;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
+
 }

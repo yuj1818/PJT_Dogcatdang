@@ -4,16 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class ImageRequestDto {
+public class ResponseImageDto {
 	private boolean isThumbnail;
 	private int sequence;
 	private String imgName;
-	private Long boardId;
+	private String imgUrl;
 }
