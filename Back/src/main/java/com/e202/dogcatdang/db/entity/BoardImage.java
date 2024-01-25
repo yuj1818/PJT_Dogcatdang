@@ -25,6 +25,7 @@ public class BoardImage {
 	private boolean isThumbnail;
 	private int sequence;
 	private String imgName;
+	private String originImgName;
 	private String imgUrl;
 
 	@ManyToOne
