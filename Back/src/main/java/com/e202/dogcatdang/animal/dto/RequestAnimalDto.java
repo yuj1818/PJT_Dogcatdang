@@ -17,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AnimalRequestDto {
+public class RequestAnimalDto {
 
 	private AnimalType animalType;
 	private String breed;

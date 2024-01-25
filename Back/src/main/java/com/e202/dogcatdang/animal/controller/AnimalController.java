@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.e202.dogcatdang.animal.dto.AnimalRequestDto;
+import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.db.entity.Animal;
 
@@ -21,8 +21,8 @@ public class AnimalController {
 	private final AnimalService animalService;
 
 	@PostMapping("")
-	public ResponseEntity<Animal> registerAnimal(@RequestBody AnimalRequestDto animalRequestDto) {
-		animalService.save(animalRequestDto);
+	public ResponseEntity<Animal> registerAnimal(@RequestBody RequestAnimalDto requestAnimalDto) {
+		animalService.save(requestAnimalDto);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 }
