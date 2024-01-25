@@ -14,7 +14,6 @@ import SignInPage from "./pages/users/SignInPage.tsx";
 import StreamingViewPage from "./pages/streaming/StreamingViewPage.tsx";
 import LandingPage from "./pages/home/LandingPage.tsx";
 
-
 const router = createBrowserRouter([
   // {
   //   path: "/",
@@ -22,7 +21,7 @@ const router = createBrowserRouter([
   // },
   {
     path: "/landing",
-    element: <LandingPage />
+    element: <LandingPage />,
   },
   {
     path: "/signup",
@@ -71,7 +70,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className={styles.container}>
+    <div>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
