@@ -7,22 +7,28 @@ function AnimalListPage() {
   };
   const animalData = [
     {
-      shelter: "동물 보호소 A",
+      shelterName: "동물 보호소 A",
       animalType: "강아지",
       breed: "불독",
-      content: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
-      region: "서울",
-      country: "강서구",
-      gender: "수컷",
+      age: 2,
+      weight: 900,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "서울특별시 강서구",
+      gender: "남",
     },
     {
-      shelter: "동물 보호소 B",
+      shelterName: "동물 보호소 A",
       animalType: "고양이",
       breed: "먼치킨",
-      content: "온순하고 사람 친화적인 고양이입니다.",
-      region: "부산",
-      country: "강서구",
-      gender: "수컷",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
     },
   ];
   const [animalType, setAnimalType] = useState("강아지");
@@ -391,10 +397,9 @@ function AnimalListPage() {
     const filteredData = animalData.filter((animal) => {
       return (
         (animalType === "" || animal.animalType === animalType) &&
-        (region === "" || animal.region === region) &&
-        (country === "" || animal.country === country) &&
+        (region === "" || animal.rescueLocation === region) &&
         (gender === "" || animal.gender === gender) &&
-        (shelterName === "" || animal.shelter.includes(shelterName))
+        (shelterName === "" || animal.shelterName.includes(shelterName))
       );
     });
 
