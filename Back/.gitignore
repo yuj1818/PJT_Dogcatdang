@@ -1,6 +1,7 @@
 .idea/
 .gradle/
 img/
+build/
 
 Back/src/main/java/com/e202/dogcatdang/img
 
