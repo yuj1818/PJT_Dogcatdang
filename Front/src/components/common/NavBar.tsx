@@ -205,7 +205,7 @@ function NavBar() {
         </StyledNavLink>
         <div>
           <ul style={{ gap: "20px", marginRight: "20px" }}>
-            {isOrg && <p>기관 회원</p>}
+            {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
             <StyledNavLink to="profile/">{nickName}님</StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
@@ -227,7 +227,7 @@ function NavBar() {
         {isOrg ? "개인으로 변경" : "기관으로 변경"}
       </button>
       <button onClick={() => [setIsNoti((prev) => !prev)]}>
-        {isNoti ? "알람 없애기" : "알람 없애기"}
+        {isNoti ? "알람 없애기" : "알람 생성하기"}
       </button>
       <Outlet />
     </>
