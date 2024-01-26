@@ -2,11 +2,11 @@ package com.e202.dogcatdang.animal.controller;
 
 import java.io.IOException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +35,13 @@ public class AnimalController {
 	@GetMapping("/{animalId}")
 	public ResponseEntity<ResponseAnimalDto> findAnimal(@PathVariable long animalId) {
 		ResponseAnimalDto animalDto = animalService.findById(animalId);
-		return ResponseEntity.ok().body(animalDto);
+		return ResponseEntity.ok(animalDto);
 	}
+
+	@PutMapping("/{animalId}")
+	public ResponseEntity<Long> update(@PathVariable long animalId, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
+		Animal animal = animalService.update(animalId, requestAnimalDto);
+		return ResponseEntity.ok(animal.getAnimalId());
+	}
+
 }
