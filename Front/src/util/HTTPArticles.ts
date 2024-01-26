@@ -1,14 +1,29 @@
 import { QueryClient } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+import { ArticleInterface } from "../components/articles/ArticleInterface";
+import { API } from "./index";
 
 export const queryClient = new QueryClient();
 interface FetchEventsOptions {
   signal: AbortSignal;
-  searchTerm?: string;
-  max?: number;
+  boardId?: number;
 }
 
-export async function requestArticles({ signal }: FetchEventsOptions) {
-  const url = "/api/boards";
+export async function requestArticleList({
+  signal,
+  boardId,
+}: FetchEventsOptions) {
+  const response: AxiosResponse<ArticleInterface[]> = await API().get(
+    boardId ? `boards/${boardId}` : "boards",
+    { signal }
+  );
 
-  return signal;
+  if (response.status !== 200) {
+    const { status, data } = response;
+    console.error(status);
+    console.error(data);
+    return;
+  }
+
+  return response.data;
 }

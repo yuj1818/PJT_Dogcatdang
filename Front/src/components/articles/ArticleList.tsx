@@ -1,20 +1,16 @@
 import { NavLink } from "react-router-dom";
+import { ArticleInterface } from "./ArticleInterface";
 
 const ArticleList: React.FC<{
-  article: {
-    boardId: number;
-    title: string;
-    thumbnailImgName: string;
-    userName: string;
-  };
+  article: ArticleInterface;
 }> = (props) => {
-  const { boardId, title, thumbnailImgName, userName } = props.article;
+  const { boardId, title, thumbNailImgUrl, userName } = props.article;
   return (
     <div>
       <NavLink to={`/articles/${boardId}`}>
         <h5>{title}</h5>
+        <img src={thumbNailImgUrl} alt="" />
       </NavLink>
-      <p>{thumbnailImgName}</p>
       <p>{userName}</p>
     </div>
   );
