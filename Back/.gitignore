@@ -1,6 +1,7 @@
 .idea/
 .gradle/
 img/
+build/
 
 src/main/resources/img/
 
