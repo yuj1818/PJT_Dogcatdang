@@ -25,6 +25,7 @@ function AnimalCard(props: AnimalCardProps) {
       <h4>품종 : {props.animals.breed}</h4>
       <p>{props.animals.feature}</p>
       <p>지역 : {props.animals.rescueLocation}</p>
+      <p>성별 : {props.animals.gender}</p>
     </div>
   );
 }
