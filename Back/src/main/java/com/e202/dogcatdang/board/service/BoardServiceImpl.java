@@ -41,7 +41,7 @@ public class BoardServiceImpl implements BoardService {
 
 				//S3 사용하면 주소 다른걸로 매핑해줘야됨. 파일도 저장하면 안됩니다.
 				String imgUrl =
-					System.getProperty("user.dir") + "\\src\\main\resources\\img\\" + imgName;
+					System.getProperty("user.dir") + "\\src\\main\\resources\\img\\" + imgName;
 				System.out.println("imgUrl = " + imgUrl);
 
 				//파일 저장부분 -> S3 사용하면 s3에 저장해야 함.
