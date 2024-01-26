@@ -2,18 +2,23 @@ package com.e202.dogcatdang.board.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
+import com.e202.dogcatdang.board.dto.ResponseBoardDto;
+import com.e202.dogcatdang.board.dto.ResponseImageDto;
 import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.BoardImage;
 import com.e202.dogcatdang.db.repository.BoardImageRepository;
 import com.e202.dogcatdang.db.repository.BoardRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -51,5 +56,36 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		return new ResponseSavedIdDto(savedId);
+	}
+
+	@Override
+	@Transactional
+	public List<ResponseBoardDto> findAll() {
+
+		List<Board> boardList = boardRepository.findAll();
+		List<ResponseBoardDto> boardDtoList = new ArrayList<>();
+
+		for (Board board : boardList) {
+			System.out.println("board = " + board);
+			ResponseBoardDto boardDto = ResponseBoardDto.builder()
+				.board(board)
+				.build();
+
+			boardDtoList.add(boardDto);
+		}
+
+
+		return boardDtoList;
+	}
+
+	@Override
+	@Transactional
+	public ResponseBoardDto findById(Long boardId) {
+
+		Board board = boardRepository.findById(boardId).get();
+
+		return ResponseBoardDto.builder()
+			.board(board)
+			.build();
 	}
 }
