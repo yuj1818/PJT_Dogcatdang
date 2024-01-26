@@ -40,7 +40,7 @@ public class Board {
 	@Builder.Default
 	private List<BoardImage> imageList = new ArrayList<>();
 
-	//일단 id 저장하고 나중에 userEntity로 바꿔줘야 함.
+	//일단 id 저장하고 나중에 user로 바꿔줘야 함.
 	private Long userId;
 
 	public void updateTitle(String newTitle) {
