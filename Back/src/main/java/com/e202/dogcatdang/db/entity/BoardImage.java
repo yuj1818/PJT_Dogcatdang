@@ -1,5 +1,8 @@
 package com.e202.dogcatdang.db.entity;
 
+import org.hibernate.annotations.ColumnDefault;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,13 +18,25 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class BoardImage {
+
+	@Override
+	public String toString() {
+		return "BoardImage{" +
+			"boardImageId=" + boardImageId +
+			", isThumbnail=" + isThumbnail +
+			", sequence=" + sequence +
+			", imgName='" + imgName + '\'' +
+			", originImgName='" + originImgName + '\'' +
+			", imgUrl='" + imgUrl + '\'' +
+			'}';
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long boardImageId;
 
+	@Column(columnDefinition = "TINYINT(1)")
 	private boolean isThumbnail;
 	private int sequence;
 	private String imgName;
