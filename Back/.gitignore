@@ -3,7 +3,7 @@
 img/
 build/
 
-Back/src/main/java/com/e202/dogcatdang/img
+src/main/resources/img/
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,java
