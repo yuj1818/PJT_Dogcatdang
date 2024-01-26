@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,10 +36,23 @@ public class Board {
 	@Column(columnDefinition = "TINYINT(1)")
 	private boolean isSaved;
 
-	@OneToMany(mappedBy = "board")
-	private List<BoardImage> imageEntityList = new ArrayList<>();
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@Builder.Default
+	private List<BoardImage> imageList = new ArrayList<>();
 
 	//일단 id 저장하고 나중에 userEntity로 바꿔줘야 함.
 	private Long userId;
+
+	public void updateTitle(String newTitle) {
+		this.title = newTitle;
+	}
+
+	public void updateContent(String newContent) {
+		this.content = newContent;
+	}
+
+	public void updateImageList(List<BoardImage> newImageList){
+		this.imageList = newImageList;
+	}
 
 }
