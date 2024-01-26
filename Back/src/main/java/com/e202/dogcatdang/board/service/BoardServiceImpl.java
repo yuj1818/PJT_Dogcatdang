@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
-import com.e202.dogcatdang.board.dto.ResponseImageDto;
+import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.BoardImage;
@@ -60,20 +60,18 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public List<ResponseBoardDto> findAll() {
+	public List<ResponseBoardSummaryDto> findAll() {
 
 		List<Board> boardList = boardRepository.findAll();
-		List<ResponseBoardDto> boardDtoList = new ArrayList<>();
+		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
 
 		for (Board board : boardList) {
-			System.out.println("board = " + board);
-			ResponseBoardDto boardDto = ResponseBoardDto.builder()
+			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
 				.board(board)
 				.build();
 
-			boardDtoList.add(boardDto);
+			boardDtoList.add(boardSummary);
 		}
-
 
 		return boardDtoList;
 	}
@@ -87,5 +85,53 @@ public class BoardServiceImpl implements BoardService {
 		return ResponseBoardDto.builder()
 			.board(board)
 			.build();
+	}
+
+	@Override
+	@Transactional
+	public ResponseSavedIdDto update(Long boardId, RequestBoardDto requestBoardDto) throws IOException {
+
+		Board board = boardRepository.findById(boardId).get();
+		if(requestBoardDto.getTitle()!=null){
+			board.updateTitle(requestBoardDto.getTitle());
+		}
+		if(requestBoardDto.getContent()!=null){
+			board.updateContent(requestBoardDto.getContent());
+		}
+		if(requestBoardDto.getTitle()!=null){
+			board.updateTitle(requestBoardDto.getTitle());
+		}
+		if (!requestBoardDto.getBoardImages().isEmpty()) {
+			List<BoardImage> imageList = new ArrayList<>();
+			for (MultipartFile boardImage : requestBoardDto.getBoardImages()) {
+				String originImgName = boardImage.getOriginalFilename();
+				String imgName = System.currentTimeMillis() + "_" + originImgName;
+
+				//S3 사용하면 주소 다른걸로 매핑해줘야됨. 파일도 저장하면 안됩니다.
+				String imgUrl =
+					System.getProperty("user.dir") + "\\src\\main\\resources\\img\\" + imgName;
+				System.out.println("imgUrl = " + imgUrl);
+
+				//파일 저장부분 -> S3 사용하면 s3에 저장해야 함.
+				boardImage.transferTo(new File(imgUrl));
+				RequestImageDto imageDto = RequestImageDto.builder()
+					.isThumbnail(false)
+					.imgName(imgName)
+					.originImgName(originImgName)
+					.build();
+				BoardImage boardImageEntity = imageDto.toEntity(board);
+				boardImageRepository.save(boardImageEntity);
+				imageList.add(boardImageEntity);
+			}
+			board.updateImageList(imageList);
+		}
+		Long savedId = boardRepository.save(board).getBoardId();
+
+		return new ResponseSavedIdDto(savedId);
+	}
+
+	@Override
+	public void delete(Long boardId) {
+		boardRepository.deleteById(boardId);
 	}
 }
