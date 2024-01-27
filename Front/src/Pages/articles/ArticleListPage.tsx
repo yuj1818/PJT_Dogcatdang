@@ -1,10 +1,11 @@
 import React, { FormEvent, useRef, useState } from "react";
+import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
+
 import TextSearch from "../../components/common/TextSearch";
 import ArticleList from "../../components/articles/ArticleList";
 import Pagination from "../../components/articles/Pagination";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle } from "../../util/HTTPArticles";
-import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
+import { requestArticle } from "../../util/HTTP";
 import { LoadingOrError } from "./LoadingOrError";
 
 const ArticleListPage: React.FC = () => {

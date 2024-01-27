@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import logo from "../../assets/main-logo-big.png";
 
 const Wrapper = styled.div`

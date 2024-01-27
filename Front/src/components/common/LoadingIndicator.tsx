@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-const LoadingSpinner = styled.div`
+const LoadingSpinner = styled.div<{ size: number }>`
   z-index: 9000;
   width: 100%;
   display: flex;
@@ -12,10 +12,10 @@ const LoadingSpinner = styled.div`
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border: 8px solid transparent;
+    width: ${(props) => `${props.size}px`};
+    height: ${(props) => `${props.size}px`};
+    margin: ${(props) => `${Math.sqrt(props.size)}px`};
+    border: ${(props) => `${Math.sqrt(props.size)}px`} solid transparent;
     border-radius: 50%;
     animation: ${keyframes`
       0% {
@@ -46,12 +46,13 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-export default function LoadingIndicator() {
+const LoadingIndicator: React.FC<{ size: number }> = ({ size }) => {
   return (
-    <LoadingSpinner>
+    <LoadingSpinner size={size}>
       <div></div>
       <div></div>
       <div></div>
     </LoadingSpinner>
   );
-}
+};
+export default LoadingIndicator;

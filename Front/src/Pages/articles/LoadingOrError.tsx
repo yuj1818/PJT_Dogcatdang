@@ -5,13 +5,14 @@ export const LoadingOrError: React.FC<{
   isLoading: boolean;
   isError: boolean;
   error: { name: string; message: string } | null;
-}> = ({ isLoading, isError, error }) => {
+  size?: number;
+}> = ({ isLoading, isError, error, size }) => {
   let content;
 
   if (isLoading) {
     content = (
       <>
-        <LoadingIndicator></LoadingIndicator>
+        <LoadingIndicator size={size ?? 64}></LoadingIndicator>
       </>
     );
   }

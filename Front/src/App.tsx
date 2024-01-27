@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import { queryClient } from "./util/HTTPArticles.ts";
+import { queryClient } from "./util/HTTP.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 import MainPage from "./pages/home/HomePage.tsx";
@@ -65,7 +65,16 @@ const router = createBrowserRouter([
           },
           {
             path: "new",
-            element: <ArticleWritePage />,
+            children: [
+              {
+                index: true,
+                element: <ArticleWritePage />,
+              },
+              {
+                path: ":boardId",
+                element: <ArticleWritePage />,
+              },
+            ],
           },
         ],
       },

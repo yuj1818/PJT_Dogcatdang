@@ -28,7 +28,7 @@ const Line = styled.span`
   background-color: #121212;
 `;
 
-export const ReadingGlasses = () => (
+export const SearchGlasses = () => (
   <StyledReadingGlasses type="submit">
     <Circle />
     <Line />

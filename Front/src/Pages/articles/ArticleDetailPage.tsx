@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
-import ArticleList from "../../components/articles/ArticleList";
-import { requestArticle } from "../../util/HTTPArticles";
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
+
+import ArticleList from "../../components/articles/ArticleList";
+import { requestArticle } from "../../util/HTTP";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { LoadingOrError } from "./LoadingOrError";
 import { ARTICLESCONST } from "./ARTICLECONST";

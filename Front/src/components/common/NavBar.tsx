@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
+
 import { Bell } from "./Icons";
 
 // -----------Styled Component-----------------------------------------------
@@ -64,7 +65,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 // -----------NavBar-----------------------------------------------
-function NavBar() {
+const NavBar = () => {
   const [isOrg, setIsOrg] = useState(true);
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
@@ -234,6 +235,6 @@ function NavBar() {
       <Outlet />
     </>
   );
-}
+};
 
 export default NavBar;
