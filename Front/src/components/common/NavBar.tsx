@@ -9,7 +9,6 @@ const Header = styled.header`
   justify-content: space-around;
   align-items: center;
   white-space: nowrap;
-  z-index: 999;
 
   div {
     position: relative;
@@ -41,6 +40,7 @@ const Header = styled.header`
       top: 100%;
       background-color: white;
       padding: 0px 10px 3px 10px;
+      z-index: 99999;
 
       ul {
         list-style: none;
@@ -223,12 +223,14 @@ function NavBar() {
           </div>
         </div>
       </Header>
-      <button onClick={() => [setIsOrg((prev) => !prev)]}>
-        {isOrg ? "개인으로 변경" : "기관으로 변경"}
-      </button>
-      <button onClick={() => [setIsNoti((prev) => !prev)]}>
-        {isNoti ? "알람 없애기" : "알람 생성하기"}
-      </button>
+      <div>
+        <button onClick={() => [setIsOrg((prev) => !prev)]}>
+          {isOrg ? "개인으로 변경" : "기관으로 변경"}
+        </button>
+        <button onClick={() => [setIsNoti((prev) => !prev)]}>
+          {isNoti ? "알람 없애기" : "알람 생성하기"}
+        </button>
+      </div>
       <Outlet />
     </>
   );

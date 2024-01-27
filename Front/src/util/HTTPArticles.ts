@@ -6,17 +6,12 @@ import { API } from "./index";
 export const queryClient = new QueryClient();
 interface FetchEventsOptions {
   signal: AbortSignal;
-  boardId?: number;
+  boardId?: string;
 }
 
-export async function requestArticleList({
-  signal,
-  boardId,
-}: FetchEventsOptions) {
-  const response: AxiosResponse<ArticleInterface[]> = await API().get(
-    boardId ? `boards/${boardId}` : "boards",
-    { signal }
-  );
+export async function requestArticle({ signal, boardId }: FetchEventsOptions) {
+  const response: AxiosResponse<ArticleInterface[] | ArticleInterface> =
+    await API().get(boardId ? `boards/${boardId}` : "boards", { signal });
 
   if (response.status !== 200) {
     const { status, data } = response;

@@ -12,12 +12,18 @@ import NavBar from "./components/common/NavBar.tsx";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";
 import LandingPage from "./pages/home/LandingPage.tsx";
+import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
+import ErrorBlock from "./components/common/Error.tsx";
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
+  {
+    path: "/error",
+    element: <ErrorBlock />,
+  },
   {
     path: "/landing",
     element: <LandingPage />,
@@ -54,8 +60,12 @@ const router = createBrowserRouter([
             element: <ArticleListPage />,
           },
           {
-            path: ":id",
+            path: ":boardId",
             element: <ArticleDetailPage />,
+          },
+          {
+            path: "new",
+            element: <ArticleWritePage />,
           },
         ],
       },
