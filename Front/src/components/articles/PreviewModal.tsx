@@ -3,15 +3,15 @@ import ReactModal from "react-modal";
 
 const modalStyle = {
   content: {
-    width: "50%", // Customize the width
-    height: "auto", // Customize the height
-    margin: "auto", // Center the modal
-    borderRadius: "8px", // Add border radius
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)", // Add box shadow
-    overflow: "auto", // Allow for scrolling if content is too long
+    width: "50%",
+    height: "auto",
+    margin: "auto",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    overflow: "auto",
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Customize the overlay color
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 };
 

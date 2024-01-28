@@ -6,10 +6,10 @@ import { requestArticle } from "../../util/HTTP";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { LoadingOrError } from "./LoadingOrError";
 import { ARTICLESCONST } from "./ARTICLECONST";
+import { retryFn } from "../../util/tanstackQuery";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
-
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface,
     Error,
@@ -20,6 +20,8 @@ const ArticleDetail: React.FC = () => {
       const result = await requestArticle({ signal, boardId });
       return result as ArticleInterface;
     },
+    staleTime: 15 * 1000,
+    retry: retryFn,
   });
 
   let content;
@@ -36,9 +38,6 @@ const ArticleDetail: React.FC = () => {
         <h2>{data.boardId}번 게시글입니다.</h2>
         <h3>{data.title}</h3>
         <p>{data.content}</p>
-        {data.imageList.map((element) => (
-          <img src={element.imgUrl} key={element.sequence} />
-        ))}
       </>
     );
   }

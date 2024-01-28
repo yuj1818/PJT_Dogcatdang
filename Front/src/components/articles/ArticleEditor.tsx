@@ -1,12 +1,13 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import DOMPurify from "dompurify";
 
 import { queryClient, requestArticle } from "../../util/HTTP";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import PreviewModal from "./PreviewModal";
+import AlertModal from "../common/AlertModal";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const MODULES = {
@@ -42,6 +43,25 @@ const FORMATS = [
   "background",
 ];
 
+interface BlockImageValue {
+  alt: string;
+  url: string;
+}
+
+const CustomImage = Quill.import("formats/image");
+class BlockImage extends CustomImage {
+  static create(value: BlockImageValue) {
+    const node = super.create(value);
+    node.setAttribute(
+      "style",
+      "display: block; max-width: 100%; height: auto;"
+    );
+    return node;
+  }
+}
+
+Quill.register(BlockImage, true);
+
 const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
   prevTitle,
   content,
@@ -49,7 +69,8 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
   const navigate = useNavigate();
   const [title, setTitle] = useState(prevTitle ?? "");
   const [dirtyContent, setDirtyContent] = useState(content ?? "");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [preViewModalIsOpen, setPreViewModalIsOpen] = useState(false);
+  const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: requestArticle,
@@ -64,19 +85,24 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
   };
 
   const openModal = () => {
-    setModalIsOpen(true);
+    setPreViewModalIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const closePreviewModal = () => {
+    setPreViewModalIsOpen(false);
   };
 
-  const handleSubmit = () => {
+  const closeArletModal = () => {
+    setAlertModalIsOpen(false);
+  };
+
+  const handleCreateArticle = (isSaved: boolean) => {
     const cleanContent = DOMPurify.sanitize(dirtyContent);
     mutate({
-      data: { title: title as string, content: cleanContent },
+      data: { title: title as string, content: cleanContent, isSaved },
       method: "POST",
     });
+    setAlertModalIsOpen(() => isError);
   };
 
   return (
@@ -84,37 +110,49 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
       <PreviewModal
         title={title}
         content={dirtyContent}
-        closeModal={closeModal}
-        modalIsOpen={modalIsOpen}
+        closeModal={closePreviewModal}
+        modalIsOpen={preViewModalIsOpen}
       />
-      {isError ? (
-        <LoadingOrError isLoading={isPending} isError={isError} error={error} />
-      ) : (
-        <div>
-          <label htmlFor="title">제목</label>
-          <input id="title" type="text" onChange={handleTitleChange} />
-          <ReactQuill
-            style={{ width: "70%", height: "50vh" }}
-            theme="snow"
-            modules={MODULES}
-            formats={FORMATS}
-            onChange={setDirtyContent}
-          />
-        </div>
-      )}
-      {isPending ? (
-        <LoadingOrError
-          isLoading={isPending}
-          isError={isError}
-          error={error}
-          size={32}
+      {isError && (
+        <AlertModal
+          title={error.name}
+          content={error.message}
+          isOpen={alertModalIsOpen}
+          closeModal={closeArletModal}
         />
+      )}
+      <div>
+        <label htmlFor="title">제목</label>
+        <input id="title" type="text" onChange={handleTitleChange} />
+        <ReactQuill
+          style={{ width: "70%", height: "50vh" }}
+          theme="snow"
+          modules={MODULES}
+          formats={FORMATS}
+          onChange={setDirtyContent}
+        />
+      </div>
+      {isPending ? (
+        <LoadingOrError isLoading={isPending} size={32} />
       ) : (
         <>
-          <button style={{ marginTop: "50px" }} onClick={handleSubmit}>
-            제출
+          <button
+            style={{ marginTop: "50px" }}
+            onClick={() => {
+              handleCreateArticle(false);
+            }}
+          >
+            임시 저장
           </button>
           <button onClick={openModal}>미리보기</button>
+          <button
+            style={{ marginTop: "50px" }}
+            onClick={() => {
+              handleCreateArticle(true);
+            }}
+          >
+            제출
+          </button>
         </>
       )}
     </>

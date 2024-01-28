@@ -82,7 +82,9 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 ReactModal.setAppElement("#root");
+
 function App() {
   return (
     <div>

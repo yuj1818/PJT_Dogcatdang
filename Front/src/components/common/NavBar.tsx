@@ -7,7 +7,7 @@ import { Bell } from "./Icons";
 // -----------Styled Component-----------------------------------------------
 const Header = styled.header`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   white-space: nowrap;
 

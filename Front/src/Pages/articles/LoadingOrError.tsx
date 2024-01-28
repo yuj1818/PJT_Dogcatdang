@@ -1,10 +1,10 @@
 import Error from "../../components/common/Error";
-import LoadingIndicator from "../../components/common/LoadingIndicator";
+import { LoadingIndicator } from "../../components/common/Icons";
 
 export const LoadingOrError: React.FC<{
   isLoading: boolean;
-  isError: boolean;
-  error: { name: string; message: string } | null;
+  isError?: boolean;
+  error?: { name: string; message: string } | null;
   size?: number;
 }> = ({ isLoading, isError, error, size }) => {
   let content;

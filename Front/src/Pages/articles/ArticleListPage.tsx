@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
@@ -7,6 +7,7 @@ import Pagination from "../../components/articles/Pagination";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/HTTP";
 import { LoadingOrError } from "./LoadingOrError";
+import { retryFn } from "../../util/tanstackQuery";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -24,6 +25,9 @@ const ArticleListPage: React.FC = () => {
       const result = await requestArticle({ signal });
       return result as ArticleInterface[];
     },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 100,
   });
 
   const handlePageChange = (newPage: number) => {
