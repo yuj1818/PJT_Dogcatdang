@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResponseImageDto {
 	private boolean isThumbnail;
-	private int sequence;
 	private String imgName;
 	private String originImaName;
 	private String imgUrl;
@@ -20,7 +19,6 @@ public class ResponseImageDto {
 	@Builder
 	public ResponseImageDto(BoardImage boardImage) {
 		this.isThumbnail = boardImage.isThumbnail();
-		this.sequence = boardImage.getSequence();
 		this.imgName = boardImage.getImgName();
 		this.originImaName = boardImage.getOriginImgName();
 		this.imgUrl = boardImage.getImgUrl();

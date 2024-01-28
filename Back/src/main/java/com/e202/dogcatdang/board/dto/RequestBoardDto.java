@@ -23,24 +23,18 @@ public class RequestBoardDto {
 	private String content;
 	private boolean isSaved;
 
-	private List<MultipartFile> boardImages = new ArrayList<>();
-	private List<String> originImgNames = new ArrayList<>();
-	private List<String> imgNames = new ArrayList<>();
+
+	private List<RequestImageDto> imageList = new ArrayList<>();
 
 	@Builder
-	public RequestBoardDto(Board board){
-
+	public RequestBoardDto(Board board) {
 		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 		this.isSaved = board.isSaved();
 	}
 
-	public void setImageList(List<MultipartFile> images){
-		this.boardImages = images;
-	}
-
-	public Board toEntity(){
+	public Board toEntity() {
 
 		return Board.builder()
 			.userId(1L)

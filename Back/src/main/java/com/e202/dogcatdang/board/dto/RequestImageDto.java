@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class RequestImageDto {
 	private boolean isThumbnail;
-	private int sequence;
+	private String base64Image;
 	private String imgName;
 	private String originImgName;
 
@@ -24,7 +24,6 @@ public class RequestImageDto {
 
 		return BoardImage.builder()
 			.isThumbnail(this.isThumbnail)
-			.sequence(sequence)
 			.imgName(imgName)
 			.board(board)
 			.build();
