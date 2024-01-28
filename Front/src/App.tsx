@@ -14,6 +14,7 @@ import SignInPage from "./pages/users/SignInPage.tsx";
 import LandingPage from "./pages/home/LandingPage.tsx";
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
+import ReactModal from "react-modal";
 
 const router = createBrowserRouter([
   // {
@@ -81,7 +82,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
+ReactModal.setAppElement("#root");
 function App() {
   return (
     <div>

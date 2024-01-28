@@ -2,12 +2,13 @@ import { ChangeEvent, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 
 import { queryClient, requestArticle } from "../../util/HTTP";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
+import PreviewModal from "./PreviewModal";
 
+// -----------------------reat-quill--------------------------------------------------------------
 const MODULES = {
   toolbar: [
     [{ header: [1, 2, 3, 4, false] }],
@@ -48,6 +49,7 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
   const navigate = useNavigate();
   const [title, setTitle] = useState(prevTitle ?? "");
   const [dirtyContent, setDirtyContent] = useState(content ?? "");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: requestArticle,
@@ -61,6 +63,14 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
     setTitle(e.currentTarget.value);
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   const handleSubmit = () => {
     const cleanContent = DOMPurify.sanitize(dirtyContent);
     mutate({
@@ -68,8 +78,15 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
       method: "POST",
     });
   };
+
   return (
     <>
+      <PreviewModal
+        title={title}
+        content={dirtyContent}
+        closeModal={closeModal}
+        modalIsOpen={modalIsOpen}
+      />
       {isError ? (
         <LoadingOrError isLoading={isPending} isError={isError} error={error} />
       ) : (
@@ -93,9 +110,12 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
           size={32}
         />
       ) : (
-        <button style={{ marginTop: "50px" }} onClick={handleSubmit}>
-          제출
-        </button>
+        <>
+          <button style={{ marginTop: "50px" }} onClick={handleSubmit}>
+            제출
+          </button>
+          <button onClick={openModal}>미리보기</button>
+        </>
       )}
     </>
   );
