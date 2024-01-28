@@ -25,7 +25,6 @@ public class BoardImage {
 		return "BoardImage{" +
 			"boardImageId=" + boardImageId +
 			", isThumbnail=" + isThumbnail +
-			", sequence=" + sequence +
 			", imgName='" + imgName + '\'' +
 			", originImgName='" + originImgName + '\'' +
 			", imgUrl='" + imgUrl + '\'' +
@@ -38,7 +37,6 @@ public class BoardImage {
 
 	@Column(columnDefinition = "TINYINT(1)")
 	private boolean isThumbnail;
-	private int sequence;
 	private String imgName;
 	private String originImgName;
 	private String imgUrl;
