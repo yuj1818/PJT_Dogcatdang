@@ -1,4 +1,4 @@
-import { API } from "./axios";
+import API from "./axios";
 import { Cookies } from 'react-cookie';
 
 const URL = '/user';
@@ -24,7 +24,7 @@ export interface signUpData {
 }
 
 export const signIn = ( data: signInData ) => {
-  return API().post(URL + '/login', data)
+  return API.post(URL + '/login', data)
     .then(res => {
       console.log(res)
 
@@ -38,7 +38,7 @@ export const signIn = ( data: signInData ) => {
 };
 
 export const signUp = ( data: signUpData ) => {
-  return API().post(URL + '/join', data)
+  return API.post(URL + '/join', data)
     .then(res => {
       return res;
     })
