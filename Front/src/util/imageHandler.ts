@@ -5,32 +5,29 @@ export const imageHandler = async (data: string) => {
   tempDiv.innerHTML = data;
 
   const imageTags = tempDiv.getElementsByTagName("img");
+  const firstImgTag = tempDiv.querySelector("img");
 
-  const imagePromises = Array.from(imageTags).map(async (imgTag, idx) => {
+  if (!firstImgTag) {
+    const error = new Error();
+    error.message = "최소 한 장 이상의 사진이 필요합니다.";
+    error.name = "게시글 작성 오류";
+    throw error;
+  }
+
+  const images = Array.from(imageTags).map(async (imgTag) => {
     const img = imgTag.getAttribute("src");
-    return API()
-      .post("boards/img", { src: img })
-      .then((response) => {
-        imgTag.setAttribute("src", `${response.data.src}`);
-        return { status: "fulfilled", value: response };
-      })
-      .catch((error: unknown) => {
-        imgTag.setAttribute("src", `${idx}`);
-        return error;
-      });
+    return img;
   });
 
-  await Promise.allSettled(imagePromises);
+  const response = await API().post("immgURL", { src: images });
+  const imageURLs = response.data.src;
+
+  for (let i = 0; i < images.length; i++) {
+    imageTags[i].setAttribute("src", imageURLs[i]);
+  }
+
+  const thumnailImgURL = firstImgTag?.getAttribute("src") ?? null;
 
   const tempDivAsString = tempDiv.innerHTML;
-  const firstImgTag = tempDiv.querySelector("img");
-  const thumnailImg = firstImgTag?.getAttribute("src") ?? null;
-
-  if (thumnailImg) {
-    return [tempDivAsString, firstImgTag];
-  }
-  const error = new Error();
-  error.message = "최소 한 장 이상의 사진이 필요합니다.";
-  error.name = "게시글 작성 오류";
-  throw error;
+  return [tempDivAsString, thumnailImgURL];
 };

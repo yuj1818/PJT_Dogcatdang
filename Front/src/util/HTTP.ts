@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import { API } from "./axios";
 import { imageHandler } from "./imageHandler";
+import { error } from "console";
 
 export const queryClient = new QueryClient();
 
@@ -27,6 +28,12 @@ export const requestArticle = async ({
   let response;
   let proccesedData;
   if (data) {
+    if (!data.title.trim() || !data.content.trim()) {
+      const error = new Error();
+      error.name = "빈 내용";
+      error.message = "빈 내용은 저장할 수 없습니다.";
+      throw error;
+    }
     const [content, thumnailImg] = await imageHandler(data.content);
     proccesedData = { ...data, content, thumnailImg };
   }

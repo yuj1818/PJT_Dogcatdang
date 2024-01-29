@@ -8,6 +8,7 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/HTTP";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
+import { Link } from "react-router-dom";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -71,6 +72,7 @@ const ArticleListPage: React.FC = () => {
 
   return (
     <>
+      <Link to="new">글쓰기</Link>
       <div>
         <TextSearch
           searchRef={searchRef}
