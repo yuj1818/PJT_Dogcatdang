@@ -17,10 +17,6 @@ const FormLayout = styled.form`
     overflow: hidden;
     white-space: nowrap;
   }
-
-  label {
-    align-self: center;
-  }
 `;
 
 const FormMolecule = styled.div`
@@ -28,11 +24,8 @@ const FormMolecule = styled.div`
   flex: 3 0 auto;
   justify-content: flex-end;
 
-  input {
-    background-color: #dddddd;
-    border: 0;
-    border-radius: 10px;
-    width: 80%;
+  label {
+    white-space: nowrap;
   }
 
   button {
@@ -49,8 +42,19 @@ const TextSearch: React.FC<{
     <FormLayout onSubmit={onSubmit}>
       <p>{text}</p>
       <FormMolecule>
-        <label htmlFor="search">검색:</label>
-        <input id="search" type="text" ref={searchRef} />
+        <label
+          htmlFor="search"
+          className="text-sm font-medium text-gray-600 pr-2"
+        >
+          검색
+        </label>
+        <input
+          id="search"
+          type="text"
+          ref={searchRef}
+          className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+          placeholder="검색할 키워드를 입력하세요..."
+        />
         <SearchGlasses />
       </FormMolecule>
     </FormLayout>
