@@ -1,7 +1,17 @@
 pipeline {
     agent any
+    tools{
+        gradle 'gradle'
+    }
 
     stages {
+        stage('BE-Build'){
+            steps{
+                dir("./Back){
+                    sh "./gradlew clean build"
+                }
+            }
+        }
         stage('Build and Push Docker Image...') {
             steps {
                 script {
