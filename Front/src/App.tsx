@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import { queryClient } from "./util/HTTPArticles.ts";
+import { queryClient } from "./util/HTTP.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 import MainPage from "./pages/home/HomePage.tsx";
@@ -18,12 +18,19 @@ import AnimalFormPage from "./pages/animals/save_animals/AnimalFormPage.tsx";
 import AnimalUpdatePage from "./pages/animals/save_animals/AnimalUpdatePage.tsx";
 import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdatePage.tsx";
 import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
+import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
+import ErrorBlock from "./components/common/Error.tsx";
+import ReactModal from "react-modal";
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
+  {
+    path: "/error",
+    element: <ErrorBlock />,
+  },
   {
     path: "/landing",
     element: <LandingPage />,
@@ -85,14 +92,29 @@ const router = createBrowserRouter([
             element: <ArticleListPage />,
           },
           {
-            path: ":id",
+            path: ":boardId",
             element: <ArticleDetailPage />,
+          },
+          {
+            path: "new",
+            children: [
+              {
+                index: true,
+                element: <ArticleWritePage />,
+              },
+              {
+                path: ":boardId",
+                element: <ArticleWritePage />,
+              },
+            ],
           },
         ],
       },
     ],
   },
 ]);
+
+ReactModal.setAppElement("#root");
 
 function App() {
   return (

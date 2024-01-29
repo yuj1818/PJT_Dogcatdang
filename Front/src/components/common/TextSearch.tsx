@@ -1,6 +1,7 @@
 import { FormEvent } from "react";
 import styled from "styled-components";
-import { ReadingGlasses } from "./Icons";
+
+import { SearchGlasses } from "./Icons";
 
 const FormLayout = styled.form`
   display: flex;
@@ -50,7 +51,7 @@ const TextSearch: React.FC<{
       <FormMolecule>
         <label htmlFor="search">검색:</label>
         <input id="search" type="text" ref={searchRef} />
-        <ReadingGlasses />
+        <SearchGlasses />
       </FormMolecule>
     </FormLayout>
   );

@@ -1,18 +1,20 @@
-import React, { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
+import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
+
 import TextSearch from "../../components/common/TextSearch";
-import ArticleListStyle from "../../components/articles/ArticleListStyle";
+import ArticleList from "../../components/articles/ArticleList";
 import Pagination from "../../components/articles/Pagination";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { requestArticleList } from "../../util/HTTPArticles";
-import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
-import ArticleList from "../../components/articles/ArticleList";
+import { requestArticle } from "../../util/HTTP";
+import { LoadingOrError } from "./LoadingOrError";
+import { retryFn } from "../../util/tanstackQuery";
+import { Link } from "react-router-dom";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
-
-  const { data: articles, isLoading } = useQuery<
+  const { data, isLoading, isError, error } = useQuery<
     ArticleInterface[],
     Error,
     ArticleInterface[]
@@ -21,9 +23,12 @@ const ArticleListPage: React.FC = () => {
     queryFn: async ({
       signal,
     }: QueryFunctionContext): Promise<ArticleInterface[]> => {
-      const result = await requestArticleList({ signal });
-      return result || [];
+      const result = await requestArticle({ signal });
+      return result as ArticleInterface[];
     },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 100,
   });
 
   const handlePageChange = (newPage: number) => {
@@ -35,40 +40,47 @@ const ArticleListPage: React.FC = () => {
     console.log(searchRef.current!.value);
   };
 
+  let content;
+
+  if (isError || isLoading) {
+    content = (
+      <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
+    );
+  }
+
+  if (data) {
+    content = (
+      <>
+        {/* <h2>인기글</h2>
+    <ArticleListStyle $itemsPerRow={5}>
+      <PopularArticles articles={articles?.slice(0, 5)} />
+    </ArticleListStyle> */}
+        <ArticleList
+          data={data}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          itemPerRow={4}
+        />
+        <Pagination
+          totalItems={data!.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+        />
+      </>
+    );
+  }
+
   return (
     <>
-      {!isLoading ? (
-        <>
-          {/* <h2>인기글</h2>
-          <ArticleListStyle $itemsPerRow={5}>
-            <PopularArticles articles={articles?.slice(0, 5)} />
-          </ArticleListStyle> */}
-          <div>
-            <TextSearch
-              searchRef={searchRef}
-              onSubmit={submitHandler}
-              text="입양 후 이야기"
-            />
-          </div>
-          <ArticleListStyle $itemsPerRow={4}>
-            {articles!
-              .slice(
-                (currentPage - 1) * itemsPerPage,
-                Math.min(currentPage * itemsPerPage + 1, articles!.length)
-              )
-              .map((element) => (
-                <ArticleList article={element} key={element.boardId} />
-              ))}
-          </ArticleListStyle>
-          <Pagination
-            totalItems={articles!.length}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-          />
-        </>
-      ) : (
-        "Loading..."
-      )}
+      <Link to="new">글쓰기</Link>
+      <div>
+        <TextSearch
+          searchRef={searchRef}
+          onSubmit={submitHandler}
+          text="입양 후 이야기"
+        />
+      </div>
+      {content}
     </>
   );
 };
