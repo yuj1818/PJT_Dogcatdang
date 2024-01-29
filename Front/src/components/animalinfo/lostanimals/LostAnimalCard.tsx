@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
 interface Animal {
+  id: number;
   name: string;
   animalType: string;
   breed: string;
@@ -44,9 +46,15 @@ function LostAnimalCard(props: AnimalCardProps) {
   //     fetchData();
   //   }, []);
 
+  const navigate = useNavigate();
+
+  const gotoDetailPage = () => {
+    navigate(`/lost-animals/${props.animals.id}`);
+  };
+
   return (
     <Card>
-      <div>
+      <div onClick={gotoDetailPage}>
         <h4>이름 : {props.animals.name}</h4>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <p>품종 : {props.animals.breed}</p>

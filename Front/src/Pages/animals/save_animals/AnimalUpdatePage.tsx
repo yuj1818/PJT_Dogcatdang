@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-function AnimalFormPage() {
+function AnimalUpdatePage() {
   const navigate = useNavigate();
+  const { animalID } = useParams();
 
   const [animalType, setAnimalType] = useState("강아지");
-  const [breed, setBreed] = useState("");
-
-  const [gender, setGender] = useState("");
-  const [estimatedAge, setEstimatedAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
-  const [isNeutered, setIsNeutered] = useState(false);
-  const [features, setFeatures] = useState("");
 
   const dogInput = [
     "불독",
@@ -59,13 +51,23 @@ function AnimalFormPage() {
     "스노우슈",
     "맹크스",
   ];
+
+  const [breed, setBreed] = useState("");
+  const [protectionStatus, setProtectionStatus] = useState("");
+  const [gender, setGender] = useState("");
+  const [estimatedAge, setEstimatedAge] = useState("");
+  const [weight, setWeight] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [isNeutered, setIsNeutered] = useState(false);
+  const [features, setFeatures] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsNeutered(e.target.checked);
   };
-  const handleRegistration = () => {
-    // 등록 API 넣을 자리.
 
-    navigate("/save-animals");
+  const handleUpdate = () => {
+    navigate(`/save-animals/${animalID}`);
   };
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
@@ -174,6 +176,23 @@ function AnimalFormPage() {
       </div>
 
       <div>
+        <div>
+          <label>
+            보호현황:
+            <select
+              value={protectionStatus}
+              onChange={(e) => setProtectionStatus(e.target.value)}
+            >
+              <option value="보호중">보호중</option>
+              <option value="입양완료">입양완료</option>
+              <option value="안락사">안락사</option>
+              <option value="자연사">자연사</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div>
         <label>
           특징:
           <input
@@ -185,10 +204,10 @@ function AnimalFormPage() {
       </div>
 
       <div>
-        <button onClick={handleRegistration}>등록</button>
+        <button onClick={handleUpdate}>수정</button>
       </div>
     </div>
   );
 }
 
-export default AnimalFormPage;
+export default AnimalUpdatePage;

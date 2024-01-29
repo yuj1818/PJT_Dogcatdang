@@ -12,6 +12,12 @@ import NavBar from "./components/common/NavBar.tsx";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";
 import LandingPage from "./pages/home/LandingPage.tsx";
+import AnimalDetailPage from "./pages/animals/save_animals/AnimalDetailPage.tsx";
+import LostAnimalDetailPage from "./pages/animals/lost_animals/LostAnimalDetailPage.tsx";
+import AnimalFormPage from "./pages/animals/save_animals/AnimalFormPage.tsx";
+import AnimalUpdatePage from "./pages/animals/save_animals/AnimalUpdatePage.tsx";
+import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdatePage.tsx";
+import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import ReactModal from "react-modal";
@@ -50,9 +56,34 @@ const router = createBrowserRouter([
         element: <AnimalListPage />,
       },
       {
+        path: "save-animals/:animalID",
+        element: <AnimalDetailPage />,
+      },
+      {
+        path: "registration",
+        element: <AnimalFormPage />,
+      },
+      {
+        path: "save-update",
+        element: <AnimalUpdatePage />,
+      },
+      {
         path: "lost-animals",
         element: <LostAnimalListPage />,
       },
+      {
+        path: "lost-animals/:animalID",
+        element: <LostAnimalDetailPage />,
+      },
+      {
+        path: "lost-registration",
+        element: <LostAnimalFormPage />,
+      },
+      {
+        path: "lost-update",
+        element: <LostAnimalUpdatePage />,
+      },
+
       {
         path: "articles",
         children: [
