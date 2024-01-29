@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { signUp } from "../../util/UserAPI";
 import { useNavigate } from "react-router-dom";
@@ -68,12 +68,12 @@ function SignUpPage() {
   const handlePassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword2(() => e.target.value);
     // 비밀번호 같은지 체크
-    if (password1 !== password2) {
-      setIsValidEmail(false);
-    } else {
-      setIsValidEmail(true);
-    }
+    // setIsValidEmail(() => password1 === password2 ? true : false);
   }
+
+  useEffect(() => {
+    setIsValidEmail(() => password1 === password2)
+  }, [password1, password2])
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(() => e.target.value);
@@ -116,7 +116,7 @@ function SignUpPage() {
       <SignUpForm onSubmit={onSubmit}>
         <div className="box">
           <label className="item" htmlFor="isOrg">회원 구분</label>
-          <div>ROLE_SHELTER
+          <div>
             <input type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
             <label htmlFor="개인">개인 회원</label>
           </div>

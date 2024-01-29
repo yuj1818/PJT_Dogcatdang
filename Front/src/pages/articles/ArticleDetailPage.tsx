@@ -1,21 +1,22 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
-import ArticleList from "../../components/articles/ArticleList";
-import { requestArticle } from "../../util/HTTP";
+import { queryClient, requestArticle } from "../../util/HTTP";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { LoadingOrError } from "./LoadingOrError";
-import { ARTICLESCONST } from "./ARTICLECONST";
 import { retryFn } from "../../util/tanstackQuery";
+import ArticleContent from "../../components/articles/ArticleContent";
+import { Button } from "../../components/common/CommonComponents";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
+  const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface,
     Error,
     ArticleInterface
   >({
-    queryKey: ["articleList"],
+    queryKey: ["articleList", boardId],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const result = await requestArticle({ signal, boardId });
       return result as ArticleInterface;
@@ -23,6 +24,12 @@ const ArticleDetail: React.FC = () => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
+
+  const handleDelte = () => {
+    requestArticle({ method: "DELETE", boardId });
+    queryClient.invalidateQueries({ queryKey: ["articleList"] });
+    navigate("/articles");
+  };
 
   let content;
 
@@ -35,19 +42,13 @@ const ArticleDetail: React.FC = () => {
   if (data) {
     content = (
       <>
-        <h2>{data.boardId}번 게시글입니다.</h2>
-        <h3>{data.title}</h3>
-        <p>{data.content}</p>
+        <ArticleContent title={data.title} content={data.content} />
+        <Button onClick={handleDelte}>삭제하기</Button>
       </>
     );
   }
 
-  return (
-    <>
-      {content}
-      <ArticleList data={ARTICLESCONST.slice(0, 5)} />
-    </>
-  );
+  return <>{content}</>;
 };
 
 export default ArticleDetail;

@@ -54,7 +54,7 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         //프론트엔드 서버 허용
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
 
 
                         configuration.setAllowedMethods(Collections.singletonList("*"));
@@ -64,7 +64,7 @@ public class SecurityConfig {
                         //jwt Header Key값
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
-                        return null;
+                        return configuration;
                     }
                 }));
 
