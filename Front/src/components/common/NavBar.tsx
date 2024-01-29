@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+// import { logout } from "../../util/UserAPI";
+import { Cookies } from "react-cookie";
 
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
@@ -204,6 +206,20 @@ const NavBar = () => {
     );
   };
 
+  const navigate = useNavigate();
+
+  const cookie = new Cookies();
+
+  // api 구현 후 수정 필요
+  const onClickLogout = () => {
+    // const response = await logout();
+    // console.log(response);
+    cookie.remove('U_ID');
+    localStorage.removeItem('userInfo');
+
+    navigate("/landing");
+  }
+
   return (
     <>
       <Header>
@@ -221,7 +237,7 @@ const NavBar = () => {
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
             </StyledNavLink>
-            <button>로그아웃</button>
+            <button onClick={onClickLogout}>로그아웃</button>
           </ul>
           <div
             onMouseEnter={hoverHandler}
