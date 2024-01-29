@@ -1,8 +1,13 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+// import { logout } from "../../util/UserAPI";
+import { Cookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { onLogout } from "../../stores/auth";
 
 import { Bell } from "./Icons";
+import tw from "tailwind-styled-components";
 
 // -----------Styled Component-----------------------------------------------
 const Header = styled.header`
@@ -10,6 +15,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
+  background-color: #fafafa;
 
   div {
     position: relative;
@@ -39,7 +45,7 @@ const Header = styled.header`
       width: 100%;
       left: 0;
       top: 100%;
-      background-color: white;
+      background-color: #fafafa;
       padding: 0px 10px 3px 10px;
       z-index: 99999;
 
@@ -62,6 +68,10 @@ const Header = styled.header`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit; /* Inherit color from parent */
+`;
+
+const OutLet = tw.div`
+mx-4 lg:mx-60
 `;
 
 // -----------NavBar-----------------------------------------------
@@ -198,11 +208,32 @@ const NavBar = () => {
     );
   };
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const cookie = new Cookies();
+
+  // api 구현 후 수정 필요
+  const onClickLogout = () => {
+    // const response = await logout();
+    // console.log(response);
+    cookie.remove('U_ID');
+    localStorage.removeItem('userInfo');
+
+    dispatch(onLogout());
+
+    navigate("/landing");
+  }
+
   return (
     <>
       <Header>
         <StyledNavLink to="/">
-          <img src="/src/assets/main-logo.png" alt="홈으로" height="100px" />
+          <img
+            src="/src/assets/main-logo.png"
+            alt="메인화면으로"
+            className="w-60 min-w-60"
+          />
         </StyledNavLink>
         <div>
           <ul style={{ gap: "20px", marginRight: "20px" }}>
@@ -211,7 +242,7 @@ const NavBar = () => {
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
             </StyledNavLink>
-            <button>로그아웃</button>
+            <button onClick={onClickLogout}>로그아웃</button>
           </ul>
           <div
             onMouseEnter={hoverHandler}
@@ -232,7 +263,9 @@ const NavBar = () => {
           {isNoti ? "알람 없애기" : "알람 생성하기"}
         </button>
       </div>
-      <Outlet />
+      <OutLet style={{ minWidth: "400px" }}>
+        <Outlet />
+      </OutLet>
     </>
   );
 };

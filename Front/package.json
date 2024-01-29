@@ -10,18 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.1.0",
     "@tanstack/react-query": "^5.17.19",
     "@types/react-modal": "^3.16.3",
     "axios": "^1.6.5",
     "dompurify": "^3.0.8",
+    "jwt-decode": "^4.0.0",
     "openvidu-browser": "^2.29.1",
     "openvidu-react": "^2.27.0",
     "react": "^18.2.0",
+    "react-cookie": "^7.0.2",
     "react-data-grid": "^7.0.0-beta.41",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
+    "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.3",
     "react-use-pip": "^1.5.0",
     "styled-components": "^6.1.8",
@@ -43,5 +47,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
-  }
+  },
+  "proxy": "http://localhost:8084"
 }

@@ -19,7 +19,7 @@ public class ResponseAnimalListDto {
 	private String breed;
 	private int age;
 	private Gender gender;
-	private boolean isNeuter;
+	private Boolean isNeuter;
 	private Animal.State state;
 	private String rescueLocation;
 
@@ -34,6 +34,7 @@ public class ResponseAnimalListDto {
 		this.breed = animal.getBreed();
 		this.age = animal.getAge();
 		this.gender = animal.getGender();
+		//
 		this.isNeuter = animal.getIsNeuter();
 		this.state = animal.getState();
 		this.rescueLocation = animal.getRescueLocation();
