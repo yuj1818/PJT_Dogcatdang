@@ -20,7 +20,7 @@ public class ResponseAnimalDto {
 	private String breed;
 	private int age;
 	private Gender gender;
-	private boolean isNeuter;
+	private Boolean isNeuter;
 	private int weight;
 	private String rescueLocation;
 	private LocalDateTime rescueDate;

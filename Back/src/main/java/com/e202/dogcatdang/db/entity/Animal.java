@@ -3,6 +3,7 @@ package com.e202.dogcatdang.db.entity;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.ColumnTransformer;
 
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.Gender;
