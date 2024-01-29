@@ -3,8 +3,8 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
-import { useDispatch } from "react-redux";
-import { onLogout } from "../../stores/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { UserState, onLogout } from "../../stores/auth";
 
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
@@ -76,9 +76,9 @@ mx-4 lg:mx-60
 
 // -----------NavBar-----------------------------------------------
 const NavBar = () => {
-  const [isOrg, setIsOrg] = useState(true);
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
+  const isOrg = useSelector((state: UserState) => state.isOrg);
   const nickName = "독캣당";
 
   const navTitles = isOrg ? (
@@ -217,13 +217,13 @@ const NavBar = () => {
   const onClickLogout = () => {
     // const response = await logout();
     // console.log(response);
-    cookie.remove('U_ID');
-    localStorage.removeItem('userInfo');
+    cookie.remove("U_ID");
+    localStorage.removeItem("userInfo");
 
     dispatch(onLogout());
 
     navigate("/landing");
-  }
+  };
 
   return (
     <>
@@ -256,9 +256,6 @@ const NavBar = () => {
         </div>
       </Header>
       <div>
-        <button onClick={() => [setIsOrg((prev) => !prev)]}>
-          {isOrg ? "개인으로 변경" : "기관으로 변경"}
-        </button>
         <button onClick={() => [setIsNoti((prev) => !prev)]}>
           {isNoti ? "알람 없애기" : "알람 생성하기"}
         </button>
