@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { queryClient } from "./util/HTTP.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
+import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
 import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
