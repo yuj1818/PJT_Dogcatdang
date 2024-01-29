@@ -40,7 +40,6 @@ public class Animal {
 	@Column(name = "animal_type", nullable = false)
 	private AnimalType animalType; // AnimalType은 Enum 클래스로 정의되어야 합니다.
 
-	// 품종 데이터 셋 둘 거면 추후 수정 필요
 	@Column(name = "breed", length = 200, nullable = false)
 	private String breed;
 
@@ -49,7 +48,6 @@ public class Animal {
 
 	@Column(name = "weight")
 	private Integer weight;
-
 
 	@Column(name = "rescue_date", nullable = false)
 	private LocalDate rescueDate;
@@ -91,24 +89,10 @@ public class Animal {
 	}
 
 
-	// public Animal(String animalType, String breed) {
-	// 	if (animalType.equals("강아지")) {
-	// 		if (!Arrays.asList(DogBreed.values()).contains(breed)) {
-	// 			throw new IllegalArgumentException("올바른 강아지 품종을 입력해주세요.");
-	// 		}
-	// 	} else if (animalType.equals("고양이")) {
-	// 		if (!Arrays.asList(CatBreed.values()).contains(breed)) {
-	// 			throw new IllegalArgumentException("올바른 고양이 품종을 입력해주세요.");
-	// 		}
-	// 	}
-	//
-	// 	this.animalType = AnimalType.valueOf(animalType);
-	// 	this.breed = breed;
-	// }
-
 	// Builder 클래스 추가
+	// DTO -> Entity 만드는데 사용 
 	@Builder
-	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight, String color,
+	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
 		State state, String imgName, String imgUrl, Integer userId) {
 		this.animalId = animalId;

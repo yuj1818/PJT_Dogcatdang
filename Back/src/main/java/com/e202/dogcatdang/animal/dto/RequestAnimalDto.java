@@ -57,7 +57,6 @@ public class RequestAnimalDto {
 			.breed(breed)
 			.age(age)
 			.weight(weight)
-			.color(color)
 			.rescueDate(rescueDate)
 			.rescueLocation(rescueLocation)
 			.isNeuter(isNeuter)
