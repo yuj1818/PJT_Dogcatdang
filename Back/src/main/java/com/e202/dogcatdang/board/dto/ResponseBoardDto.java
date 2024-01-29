@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-
 /* 게시글 불러올 때 */
 @Getter
 @NoArgsConstructor
@@ -22,7 +21,6 @@ public class ResponseBoardDto {
 	private Long boardId;
 	private String title;
 	private String content;
-	private String thumbNailImgUrl;
 	private List<ResponseImageDto> imageList = new ArrayList<>();
 	private Long userId;
 	private String userName;
@@ -33,15 +31,10 @@ public class ResponseBoardDto {
 		this.title = board.getTitle();
 		this.content = board.getContent();
 
-
-
-		for(BoardImage image: board.getImageEntityList()){
+		for (BoardImage image : board.getImageList()) {
 			ResponseImageDto responseImageDto = ResponseImageDto.builder()
 				.boardImage(image)
 				.build();
-			if(image.isThumbnail()){
-				this.thumbNailImgUrl = image.getImgUrl();
-			}
 			imageList.add(responseImageDto);
 		}
 
@@ -50,8 +43,7 @@ public class ResponseBoardDto {
 		this.userName = "닉네임";
 	}
 
-
-	public Board toEntity(){
+	public Board toEntity() {
 
 		return Board.builder()
 			.boardId(boardId)

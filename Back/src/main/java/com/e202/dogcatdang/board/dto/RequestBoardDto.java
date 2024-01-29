@@ -18,32 +18,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class RequestBoardDto {
+	private Long boardId;
 	private String title;
 	private String content;
 	private boolean isSaved;
 
-	private List<MultipartFile> boardImages;
-	private List<String> originImgNames;
-	private List<String> imgNames;
+
+	private List<RequestImageDto> imageList = new ArrayList<>();
 
 	@Builder
-	public RequestBoardDto(Board board){
-
-
+	public RequestBoardDto(Board board) {
+		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 		this.isSaved = board.isSaved();
-
-		boardImages = new ArrayList<>();
-		originImgNames = new ArrayList<>();
-		imgNames = new ArrayList<>();
 	}
 
-	public void setImageList(List<MultipartFile> images){
-		this.boardImages = images;
-	}
-
-	public Board toEntity(){
+	public Board toEntity() {
 
 		return Board.builder()
 			.userId(1L)

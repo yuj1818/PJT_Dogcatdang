@@ -2,6 +2,9 @@ package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.ColumnTransformer;
+
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.Gender;
 
@@ -35,16 +38,16 @@ public class Animal {
 	private AnimalType animalType; // AnimalType은 Enum 클래스로 정의되어야 합니다.
 
 	// 품종 데이터 셋 둘 거면 추후 수정 필요
-	@Column(length = 200, nullable = false)
+	@Column(name = "breed", length = 200, nullable = false)
 	private String breed;
 
-	@Column(nullable = false)
+	@Column(name = "age", nullable = false)
 	private Integer age;
 
-	@Column(nullable = true)
+	@Column(name = "weight")
 	private Integer weight;
 
-	@Column(length = 200, nullable = false)
+	@Column(name = "color", length = 200, nullable = false)
 	private String color;
 
 	@Column(name = "rescue_date", nullable = false)
@@ -53,20 +56,19 @@ public class Animal {
 	@Column(name = "rescue_location", length = 200, nullable = false)
 	private String rescueLocation;
 
-	@Column(name = "is_neuter")
+	@ColumnDefault("NULL")
+	@Column(name = "is_neuter" , nullable = true, columnDefinition = "TINYINT(1)")
 	private Boolean isNeuter;
 
-	// gender 필드는 int로 선언되어 있지만, Enum을 사용하는 것이 더 좋을 수 있습니다.
-	// GenderType이라는 Enum을 만들어서 관리할 수 있습니다.
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "gender", nullable = false)
 	private Gender gender;
 
-	@Column
+	@Column(name = "feature")
 	private String feature;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "state", nullable = false)
 	private State state;
 
 	@Column(name = "img_name", length = 200, nullable = false)
@@ -75,7 +77,6 @@ public class Animal {
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
-	// user_id 필드는 User 엔티티와 연결되는 외래키가 됩니다. ManyToOne 관계를 설정할 수 있습니다.
 	// @ManyToOne(fetch = FetchType.LAZY)
 	// @JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	// private User user;
@@ -108,6 +109,24 @@ public class Animal {
 		this.imgName = imgName;
 		this.imgUrl = imgUrl;
 		this.userId = userId;
+	}
+
+	public void update(AnimalType animalType, String breed, Integer age, Integer weight, String color,
+		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
+		State state, String imgName, String imgUrl) {
+		this.animalType = animalType;
+		this.breed = breed;
+		this.age = age;
+		this.weight = weight;
+		this.color = color;
+		this.rescueDate = rescueDate;
+		this.rescueLocation = rescueLocation;
+		this.isNeuter = isNeuter;
+		this.gender = gender;
+		this.feature = feature;
+		this.state = state;
+		this.imgName = imgName;
+		this.imgUrl = imgUrl;
 	}
 
 }
