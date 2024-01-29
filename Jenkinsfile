@@ -13,8 +13,9 @@ pipeline {
 
                         /* Push the container to the custom Registry */
                         dockerImage.push()
-
+			
                     }
+		sh "docker rmi -f main:${env.BUILD_ID}
                }
             }
         }
