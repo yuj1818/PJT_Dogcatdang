@@ -49,7 +49,7 @@ public class Animal {
 
 	@Column(name = "weight")
 	private Integer weight;
-	
+
 
 	@Column(name = "rescue_date", nullable = false)
 	private LocalDate rescueDate;
@@ -116,7 +116,6 @@ public class Animal {
 		this.breed = breed;
 		this.age = age;
 		this.weight = weight;
-		this.color = color;
 		this.rescueDate = rescueDate;
 		this.rescueLocation = rescueLocation;
 		this.isNeuter = isNeuter;
@@ -128,14 +127,13 @@ public class Animal {
 		this.userId = userId;
 	}
 
-	public void update(AnimalType animalType, String breed, Integer age, Integer weight, String color,
+	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
 		State state, String imgName, String imgUrl) {
 		this.animalType = animalType;
 		this.breed = breed;
 		this.age = age;
 		this.weight = weight;
-		this.color = color;
 		this.rescueDate = rescueDate;
 		this.rescueLocation = rescueLocation;
 		this.isNeuter = isNeuter;

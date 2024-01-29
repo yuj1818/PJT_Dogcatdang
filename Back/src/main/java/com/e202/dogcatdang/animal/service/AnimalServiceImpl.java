@@ -78,7 +78,6 @@ public class AnimalServiceImpl implements AnimalService{
 			.orElseThrow(() -> new IllegalArgumentException("해당 Id의 동물을 찾을 수 없습니다."));
 
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
-			request.getColor(),
 			request.getRescueDate(), request.getRescueLocation(), request.getIsNeuter(), request.getGender(),
 			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
 
