@@ -15,7 +15,8 @@ pipeline {
                         dockerImage.push()
 			
                     }
-		sh "docker rmi -f main:${env.BUILD_ID}
+                    
+		            sh "docker rmi -f main:${env.BUILD_ID}"
                }
             }
         }
