@@ -1,11 +1,14 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
 
 import com.e202.dogcatdang.enums.AnimalType;
+import com.e202.dogcatdang.enums.CatBreed;
+import com.e202.dogcatdang.enums.DogBreed;
 import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
@@ -88,6 +91,22 @@ public class Animal {
 	public enum State {
 		보호중, 입양완료, 안락사, 자연사
 	}
+
+
+	// public Animal(String animalType, String breed) {
+	// 	if (animalType.equals("강아지")) {
+	// 		if (!Arrays.asList(DogBreed.values()).contains(breed)) {
+	// 			throw new IllegalArgumentException("올바른 강아지 품종을 입력해주세요.");
+	// 		}
+	// 	} else if (animalType.equals("고양이")) {
+	// 		if (!Arrays.asList(CatBreed.values()).contains(breed)) {
+	// 			throw new IllegalArgumentException("올바른 고양이 품종을 입력해주세요.");
+	// 		}
+	// 	}
+	//
+	// 	this.animalType = AnimalType.valueOf(animalType);
+	// 	this.breed = breed;
+	// }
 
 	// Builder 클래스 추가
 	@Builder

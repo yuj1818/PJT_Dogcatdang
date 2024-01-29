@@ -31,6 +31,11 @@ public class AnimalController {
 	// 동물 정보 등록
 	@PostMapping("")
 	public ResponseEntity<ResponseSavedIdDto> registerAnimal(@RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
+		// animalType에 맞는 breed를 입력했는지 확인하는 기능
+		if (!requestAnimalDto.isValid()) {
+			throw new IllegalArgumentException("품종이 동물 타입과 맞지 않습니다.");
+		}
+
 		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto);
 		return ResponseEntity.ok(responseSavedIdDto);
 	}
