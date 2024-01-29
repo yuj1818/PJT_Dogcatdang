@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 
 @RestController
@@ -54,4 +55,34 @@ public class UserController {
         return "Admin  in user Controller";
     }
 
+//    //중복 확인
+//    @PostMapping("/username-check")
+//    public ResponseEntity<?> checkIdDuplicate(@RequestParam("username") String username) {
+//        boolean isUsernameDuplicate = joinService.isUsernameDuplicate(username);
+//        System.out.println("Username 중복검사:" + isUsernameDuplicate);
+//        return ResponseEntity.ok(!isUsernameDuplicate);
+//    }
+
+    @PostMapping("/username-check")
+    public ResponseEntity<?> checkIdDuplicate(@RequestBody Map<String, Object> reqeustBody) {
+        String username = (String) reqeustBody.get("username");
+        boolean isUsernameDuplicate = joinService.isUsernameDuplicate(username);
+        System.out.println("Username 중복검사:" + isUsernameDuplicate);
+        return ResponseEntity.ok(!isUsernameDuplicate);
+    }
+    @PostMapping("/email-check")
+    public ResponseEntity<?> checkEmailDuplicate(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        boolean isEmailDuplicate = joinService.isEmailDuplicate(email);
+        System.out.println("Email 중복검사:" + isEmailDuplicate);
+        return ResponseEntity.ok(!isEmailDuplicate);
+    }
+
+    @PostMapping("/nickname-check")
+    public ResponseEntity<?> checkNicknameDuplicate(@RequestBody Map<String, String> requestBody) {
+        String nickname = requestBody.get("nickname");
+        boolean isNicknameDuplicate = joinService.isNicknameDuplicate(nickname);
+        System.out.println("Nickname 중복검사: " + isNicknameDuplicate);
+        return ResponseEntity.ok(!isNicknameDuplicate);
+    }
 }
