@@ -1,36 +1,70 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
-// const Card = ({ title, content }) => {
-//   return (
-//     <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', borderRadius: '5px' }}>
-//       <h3>{title}</h3>
-//       <p>{content}</p>
-//     </div>
-//   );
-// };
+interface Animal {
+  id: number;
+  shelterName: string;
+  animalType: string;
+  breed: string;
+  age: number;
+  weight: number;
+  color: string;
+  feature: string;
+  rescueDate: string;
+  rescueLocation: string;
+  gender: string;
+  isNeuter: boolean;
+}
 
-// export const CardList = () => {
-//   const [data, setData] = useState([]);
+interface AnimalCardProps {
+  animals: Animal;
+}
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.get('https://api.example.com/data');
-//         setData(response.data);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       }
-//     };
+const Card = styled.div`
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+`;
 
-//     fetchData();
-//   }, []);
+function SaveAnimalCard(props: AnimalCardProps) {
+  // const [data, setData] = useState([]);
 
-//   return (
-//     <div>
-//       {data.map(item => (
-//         <Card key={item.id} title={item.title} content={item.content} />
-//       ))}
-//     </div>
-//   );
-// };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get('https://api.example.com/data');
+  //       setData(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //     fetchData();
+  //   }, []);
+
+  const navigate = useNavigate();
+
+  const gotoDetailPage = () => {
+    navigate(`/save-animals/${props.animals.id}`);
+  };
+
+  return (
+    <Card>
+      <div onClick={gotoDetailPage}>
+        <h4>보호 기관 : {props.animals.shelterName}</h4>
+        {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
+        <h4>품종 : {props.animals.breed}</h4>
+        <p>{props.animals.feature}</p>
+        <p>지역 : {props.animals.rescueLocation}</p>
+        <p>성별 : {props.animals.gender}</p>
+        <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
+      </div>
+    </Card>
+  );
+}
+
+export default SaveAnimalCard;

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-function SignIn() {
+function SignInPage() {
   return (
     <>
       <form>
@@ -23,4 +23,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignInPage;
