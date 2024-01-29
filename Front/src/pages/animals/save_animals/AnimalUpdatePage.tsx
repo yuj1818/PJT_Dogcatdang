@@ -64,22 +64,60 @@ function AnimalUpdatePage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsNeutered(e.target.checked);
   };
+  // const handleUpdate = async (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-  const handleUpdate = () => {
+  //   try {
+  //     const response = await axios.put(`/api/update-animal/${animalID}`, {
+  //       animalType,
+  //       breed,
+  //       gender,
+  //       estimatedAge,
+  //       weight,
+  //       location,
+  //       date,
+  //       isNeutered,
+  //       protectionStatus,
+  //       features,
+  //     });
+
+  //     console.log("서버 응답:", response.data);
+
+  //     navigate("/save-animals");
+  //   } catch (error) {
+  //     console.error("에러 발생:", error);
+  //   }
+  // };
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
     navigate(`/save-animals/${animalID}`);
   };
-  const handleAnimalType = (type: string) => {
-    setAnimalType(type);
-  };
+
   const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setBreed(event.target.value);
   };
 
   return (
     <div>
+      <label>
+        <input
+          type="radio"
+          value="강아지"
+          checked={animalType === "강아지"}
+          onChange={() => setAnimalType("강아지")}
+        />
+        강아지
+      </label>
+      <label>
+        <input
+          type="radio"
+          value="고양이"
+          checked={animalType === "고양이"}
+          onChange={() => setAnimalType("고양이")}
+        />
+        고양이
+      </label>
       <form onSubmit={handleUpdate}>
-        <button onClick={() => handleAnimalType("강아지")}>강아지</button>
-        <button onClick={() => handleAnimalType("고양이")}>고양이</button>
         <div>
           <label htmlFor="breed">품종</label>
           <select
@@ -202,13 +240,8 @@ function AnimalUpdatePage() {
             />
           </label>
         </div>
+        <button type="submit">수정</button>
       </form>
-
-      <div>
-        <button type="submit" onClick={handleUpdate}>
-          수정
-        </button>
-      </div>
     </div>
   );
 }

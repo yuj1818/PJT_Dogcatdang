@@ -63,141 +63,182 @@ function LostAnimalFormPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsNeutered(e.target.checked);
   };
-  const handleRegistration = () => {
-    // 등록 API 넣을 자리.
 
+  // const handleRegistration = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   // 만약 서버로 데이터를 보내야 하는 경우
+  //   try {
+  //     const response = await axios.post("/api/lost-animals", {
+  //       animalType,
+  //       name,
+  //       breed,
+  //       gender,
+  //       estimatedAge,
+  //       weight,
+  //       location,
+  //       date,
+  //       isNeutered,
+  //       features,
+  //     });
+
+  //     console.log("서버 응답:", response.data);
+
+  //     navigate("/lost-animals");
+  //   } catch (error) {
+  //     console.error("에러 발생:", error);
+  //   }
+  // };
+  const handlelostRegistration = (e: React.FormEvent) => {
+    e.preventDefault();
     navigate("/lost-animals");
-  };
-  const handleAnimalType = (type: string) => {
-    setAnimalType(type);
   };
   const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setBreed(event.target.value);
   };
 
   return (
-    <div>
-      <button onClick={() => handleAnimalType("강아지")}>강아지</button>
-      <button onClick={() => handleAnimalType("고양이")}>고양이</button>
-      <div>
-        <label htmlFor="breed">품종</label>
-        <select
-          name="breed"
-          id="breed"
-          value={breed}
-          onChange={handleBreedChange}
-        >
-          {animalType === "강아지"
-            ? dogInput.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))
-            : catInput.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))}
-        </select>
-      </div>
+    <>
+      <label>
+        <input
+          type="radio"
+          value="강아지"
+          checked={animalType === "강아지"}
+          onChange={() => setAnimalType("강아지")}
+        />
+        강아지
+      </label>
+      <label>
+        <input
+          type="radio"
+          value="고양이"
+          checked={animalType === "고양이"}
+          onChange={() => setAnimalType("고양이")}
+        />
+        고양이
+      </label>
 
-      <div>
-        <label>
-          이미지:
-          <input type="file" accept="image/*" />{" "}
-        </label>
-      </div>
-      <div>
-        <label>
-          이름:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          성별:
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="남">남</option>
-            <option value="여">여</option>
+      <form onSubmit={handlelostRegistration}>
+        <div>
+          <label htmlFor="breed">품종</label>
+          <select
+            name="breed"
+            id="breed"
+            value={breed}
+            onChange={handleBreedChange}
+          >
+            {animalType === "강아지"
+              ? dogInput.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))
+              : catInput.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))}
           </select>
-        </label>
-      </div>
+        </div>
 
-      <div>
-        <label>
-          추정나이:
-          <input
-            type="text"
-            value={estimatedAge}
-            onChange={(e) => setEstimatedAge(e.target.value)}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            이미지:
+            <input type="file" accept="image/*" />{" "}
+          </label>
+        </div>
+        <div>
+          <label>
+            이름:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            성별:
+            <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="남">남</option>
+              <option value="여">여</option>
+            </select>
+          </label>
+        </div>
 
-      <div>
-        <label>
-          체중:
-          <input
-            type="text"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            추정나이:
+            <input
+              type="text"
+              value={estimatedAge}
+              onChange={(e) => setEstimatedAge(e.target.value)}
+            />
+          </label>
+        </div>
 
-      <div>
-        <label>
-          실종장소:
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            체중:
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+            />
+          </label>
+        </div>
 
-      <div>
-        <label>
-          실종일자:
-          <input
-            type="text"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            실종장소:
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </label>
+        </div>
 
-      <div>
-        <label>
-          중성화 여부:
-          <input
-            type="checkbox"
-            name="isNeutered"
-            checked={isNeutered}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            실종일자:
+            <input
+              type="text"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </label>
+        </div>
 
-      <div>
-        <label>
-          특징:
-          <input
-            type="text"
-            value={features}
-            onChange={(e) => setFeatures(e.target.value)}
-          />
-        </label>
-      </div>
+        <div>
+          <label>
+            중성화 여부:
+            <input
+              type="checkbox"
+              name="isNeutered"
+              checked={isNeutered}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
 
-      <div>
-        <button onClick={handleRegistration}>등록</button>
-      </div>
-    </div>
+        <div>
+          <label>
+            특징:
+            <input
+              type="text"
+              value={features}
+              onChange={(e) => setFeatures(e.target.value)}
+            />
+          </label>
+        </div>
+
+        <div>
+          <button type="submit">등록</button>
+        </div>
+      </form>
+    </>
   );
 }
 

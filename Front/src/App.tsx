@@ -81,7 +81,7 @@ const router = createBrowserRouter([
         element: <LostAnimalFormPage />,
       },
       {
-        path: "lost-update",
+        path: "lost-update/:animalID",
         element: <LostAnimalUpdatePage />,
       },
 
