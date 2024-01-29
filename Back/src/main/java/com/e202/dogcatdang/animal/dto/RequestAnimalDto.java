@@ -34,11 +34,6 @@ public class RequestAnimalDto {
 	private String imgUrl;
 	private Integer userId;
 
-	// enum 맨 아래에 위치
-	public enum State {
-		보호중, 입양완료, 안락사, 자연사
-	}
-
 	// DTO -> Entity
 	public Animal toEntity() {
 		return Animal.builder()
