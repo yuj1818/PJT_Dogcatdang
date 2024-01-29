@@ -2,6 +2,7 @@ package com.e202.dogcatdang.user.controller;
 
 import com.e202.dogcatdang.user.Service.JoinService;
 import com.e202.dogcatdang.user.dto.JoinDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -68,14 +69,22 @@ public class UserController {
         String username = (String) reqeustBody.get("username");
         boolean isUsernameDuplicate = joinService.isUsernameDuplicate(username);
         System.out.println("Username 중복검사:" + isUsernameDuplicate);
-        return ResponseEntity.ok(!isUsernameDuplicate);
+        if (isUsernameDuplicate) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already in use");
+        } else {
+            return ResponseEntity.ok("username is available");
+        }
     }
     @PostMapping("/email-check")
     public ResponseEntity<?> checkEmailDuplicate(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         boolean isEmailDuplicate = joinService.isEmailDuplicate(email);
         System.out.println("Email 중복검사:" + isEmailDuplicate);
-        return ResponseEntity.ok(!isEmailDuplicate);
+        if (isEmailDuplicate) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already in use");
+        } else {
+            return ResponseEntity.ok("Email is available");
+        }
     }
 
     @PostMapping("/nickname-check")
@@ -83,6 +92,10 @@ public class UserController {
         String nickname = requestBody.get("nickname");
         boolean isNicknameDuplicate = joinService.isNicknameDuplicate(nickname);
         System.out.println("Nickname 중복검사: " + isNicknameDuplicate);
-        return ResponseEntity.ok(!isNicknameDuplicate);
+        if (isNicknameDuplicate) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Nickname is already in use");
+        } else {
+            return ResponseEntity.ok("Nickname is available");
+        }
     }
 }
