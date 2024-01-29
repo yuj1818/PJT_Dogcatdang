@@ -19,7 +19,7 @@ export const imageHandler = async (data: string) => {
     return img;
   });
 
-  const response = await API.post("immgURL", { src: images });
+  const response = await API.post("imgURL", { src: images });
   const imageURLs = response.data.src;
 
   for (let i = 0; i < images.length; i++) {

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { logout } from "../../util/UserAPI";
 
 import { Bell } from "./Icons";
 
@@ -198,6 +199,15 @@ const NavBar = () => {
     );
   };
 
+  const navigate = useNavigate();
+
+  const onClickLogout = async () => {
+    const response = await logout();
+    console.log(response);
+
+    navigate("/landing");
+  }
+
   return (
     <>
       <Header>
@@ -211,7 +221,7 @@ const NavBar = () => {
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
             </StyledNavLink>
-            <button>로그아웃</button>
+            <button onClick={onClickLogout}>로그아웃</button>
           </ul>
           <div
             onMouseEnter={hoverHandler}

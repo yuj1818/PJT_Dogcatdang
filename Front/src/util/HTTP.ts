@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import API from "./axios";
-import { imageHandler } from "./imageHandler";
+// import { imageHandler } from "./imageHandler";
 import { AxiosError } from "axios";
 
 export const queryClient = new QueryClient();
@@ -58,8 +58,9 @@ export const requestArticle = async ({
       error.message = "내용을 입력하세요";
       throw error;
     }
-    const [content, thumnailImg] = await imageHandler(data.content);
-    proccesedData = { ...data, content, thumnailImg };
+    // const [content, thumnailImg] = await imageHandler(data.content);
+    // proccesedData = { ...data, content, thumnailImg };
+    proccesedData = data;
   }
 
   try {
