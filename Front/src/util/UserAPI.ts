@@ -32,7 +32,7 @@ export const signIn = ( data: signInData ) => {
       if (res.status === 200) {
         console.log(res.data);
         const token = res.headers["authorization"];
-        cookie.set("U_ID", token);
+        cookie.set('U_ID', token);
         
         const decodedData = jwtDecode(token);
         localStorage.setItem('userInfo', JSON.stringify(decodedData));
@@ -52,7 +52,8 @@ export const signUp = ( data: signUpData ) => {
 // export const logout = () => {
 //   return API.get('http://localhost:8084/logout')
 //     .then(res => {
-//       cookie.remove("U_ID");
+//       cookie.remove('U_ID');
+//       localStorage.removeItem('userInfo');
 //       return res;
 //     })
 // }
