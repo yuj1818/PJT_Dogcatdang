@@ -2,9 +2,12 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { signIn } from "../../util/UserAPI";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { onLogin } from "../../stores/auth";
 
 function SignInPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +30,8 @@ function SignInPage() {
 
     const response = await signIn(data);
     console.log(response);
+
+    dispatch(onLogin(JSON.parse(localStorage.getItem('userInfo') || "")));
 
     navigate('/');
   }
