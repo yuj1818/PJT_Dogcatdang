@@ -35,7 +35,7 @@ const SignUpForm = styled.form`
 `
 
 function SignUpPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isOrg, setIsOrg] = useState(false);
   const [role, setRole] = useState('ROLE_USER')
@@ -87,7 +87,7 @@ function SignUpPage() {
     setPhone(() => e.target.value);
   }
 
-  const onSubmit = async(e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const data = {
