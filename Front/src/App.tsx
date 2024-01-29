@@ -1,16 +1,27 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import { queryClient } from "./util/HTTPArticles.ts";
+import { queryClient } from "./util/HTTP.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
-import MainPage from "./pages/main/MainPage";
+import "./App.css";
+import MainPage from "./pages/home/HomePage.tsx";
 import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
-import ArticleDetail from "./pages/articles/ArticleDetail";
+import ArticleDetailPage from "./pages/articles/ArticleDetailPage.tsx";
 import NavBar from "./components/common/NavBar.tsx";
-import SignUp from "./components/users/auth/SignUp.tsx";
-import SignIn from "./components/users/auth/SignIn.tsx";
+import SignUpPage from "./pages/users/SignUpPage.tsx";
+import SignInPage from "./pages/users/SignInPage.tsx";
+import LandingPage from "./pages/home/LandingPage.tsx";
+import AnimalDetailPage from "./pages/animals/save_animals/AnimalDetailPage.tsx";
+import LostAnimalDetailPage from "./pages/animals/lost_animals/LostAnimalDetailPage.tsx";
+import AnimalFormPage from "./pages/animals/save_animals/AnimalFormPage.tsx";
+import AnimalUpdatePage from "./pages/animals/save_animals/AnimalUpdatePage.tsx";
+import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdatePage.tsx";
+import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
+import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
+import ErrorBlock from "./components/common/Error.tsx";
+import ReactModal from "react-modal";
 
 const router = createBrowserRouter([
   // {
@@ -18,15 +29,27 @@ const router = createBrowserRouter([
   //   element: <Page />,
   // },
   {
+    path: "/error",
+    element: <ErrorBlock />,
+  },
+  {
+    path: "/landing",
+    element: <LandingPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage />,
+  },
+  {
+    path: "/signin",
+    element: <SignInPage />,
+  },
+  {
     path: "/",
-    element: (
-      <>
-        <NavBar />
-      </>
-    ),
+    element: <NavBar />,
     children: [
       {
-        path: "",
+        index: true,
         element: <MainPage />,
       },
       {
@@ -34,42 +57,73 @@ const router = createBrowserRouter([
         element: <AnimalListPage />,
       },
       {
+        path: "save-animals/:animalID",
+        element: <AnimalDetailPage />,
+      },
+      {
+        path: "registration",
+        element: <AnimalFormPage />,
+      },
+      {
+        path: "save-update",
+        element: <AnimalUpdatePage />,
+      },
+      {
         path: "lost-animals",
         element: <LostAnimalListPage />,
       },
       {
+        path: "lost-animals/:animalID",
+        element: <LostAnimalDetailPage />,
+      },
+      {
+        path: "lost-registration",
+        element: <LostAnimalFormPage />,
+      },
+      {
+        path: "lost-update",
+        element: <LostAnimalUpdatePage />,
+      },
+
+      {
         path: "articles",
-        element: <></>,
         children: [
           {
             index: true,
             element: <ArticleListPage />,
           },
           {
-            path: "write",
-            element: <ArticleDetail />,
+            path: ":boardId",
+            element: <ArticleDetailPage />,
+          },
+          {
+            path: "new",
+            children: [
+              {
+                index: true,
+                element: <ArticleWritePage />,
+              },
+              {
+                path: ":boardId",
+                element: <ArticleWritePage />,
+              },
+            ],
           },
         ],
-      },
-      {
-        path: "signup",
-        element: <SignUp />,
-      },
-      {
-        path: "signin",
-        element: <SignIn />,
       },
     ],
   },
 ]);
 
+ReactModal.setAppElement("#root");
+
 function App() {
   return (
-    <>
+    <div>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
-    </>
+    </div>
   );
 }
 

@@ -1,10 +1,16 @@
 import React from "react";
 
 interface Animal {
-  shelter: string;
+  shelterName: string;
+  animalType: string;
   breed: string;
-  content: string;
-  region: string;
+  age: number;
+  weight: number;
+  color: string;
+  feature: string;
+  rescueDate: string;
+  rescueLocation: string;
+  gender: string;
 }
 
 interface AnimalCardProps {
@@ -14,11 +20,12 @@ interface AnimalCardProps {
 function AnimalCard(props: AnimalCardProps) {
   return (
     <div>
-      <h4>보호 기관 : {props.animals.shelter}</h4>
+      <h4>보호 기관 : {props.animals.shelterName}</h4>
       {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
       <h4>품종 : {props.animals.breed}</h4>
-      <p>{props.animals.content}</p>
-      <p>지역 {props.animals.region}</p>
+      <p>{props.animals.feature}</p>
+      <p>지역 : {props.animals.rescueLocation}</p>
+      <p>성별 : {props.animals.gender}</p>
     </div>
   );
 }
