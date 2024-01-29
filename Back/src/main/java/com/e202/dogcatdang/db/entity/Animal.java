@@ -2,6 +2,8 @@ package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.Gender;
 
@@ -35,16 +37,16 @@ public class Animal {
 	private AnimalType animalType; // AnimalType은 Enum 클래스로 정의되어야 합니다.
 
 	// 품종 데이터 셋 둘 거면 추후 수정 필요
-	@Column(length = 200, nullable = false)
+	@Column(name = "breed", length = 200, nullable = false)
 	private String breed;
 
-	@Column(nullable = false)
+	@Column(name = "age", nullable = false)
 	private Integer age;
 
-	@Column
+	@Column(name = "weight")
 	private Integer weight;
 
-	@Column(length = 200, nullable = false)
+	@Column(name = "color", length = 200, nullable = false)
 	private String color;
 
 	@Column(name = "rescue_date", nullable = false)
@@ -53,18 +55,19 @@ public class Animal {
 	@Column(name = "rescue_location", length = 200, nullable = false)
 	private String rescueLocation;
 
-	@Column(name = "is_neuter")
+	@ColumnDefault("NULL")
+	@Column(name = "is_neuter" , nullable = true, columnDefinition = "TINYINT(1)")
 	private Boolean isNeuter;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "gender", nullable = false)
 	private Gender gender;
 
-	@Column
+	@Column(name = "feature")
 	private String feature;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
+	@Column(name = "state", nullable = false)
 	private State state;
 
 	@Column(name = "img_name", length = 200, nullable = false)

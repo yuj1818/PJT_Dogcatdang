@@ -34,6 +34,7 @@ public class ResponseAnimalListDto {
 		this.breed = animal.getBreed();
 		this.age = animal.getAge();
 		this.gender = animal.getGender();
+		//
 		this.isNeuter = animal.getIsNeuter();
 		this.state = animal.getState();
 		this.rescueLocation = animal.getRescueLocation();
