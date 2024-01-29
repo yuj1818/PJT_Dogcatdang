@@ -53,7 +53,7 @@ export const signUp = ( data: signUpData ) => {
 //   return API.get('http://localhost:8084/logout')
 //     .then(res => {
 //       cookie.remove('U_ID');
-//       localStorage.removeItem('userInfo');
+//       localStorage.removeItem('userInfo')
 //       return res;
 //     })
 // }
