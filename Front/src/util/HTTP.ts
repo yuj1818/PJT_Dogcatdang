@@ -1,17 +1,34 @@
 import { QueryClient } from "@tanstack/react-query";
 import { API } from "./axios";
 import { imageHandler } from "./imageHandler";
-import { error } from "console";
+import { AxiosError } from "axios";
 
 export const queryClient = new QueryClient();
 
-interface ArticlePostData {
+function handleAxiosError(error: AxiosError): void {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log("axios error status:", error.response.status);
+    console.log("axios error data:", error.response.data);
+    console.log("axios error headers:", error.response.headers);
+  } else if (error.request) {
+    // The request was made but no response was received
+    console.log("axios error request:", error.request);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log("axios error message:", error.message);
+  }
+
+  console.log("axios error:", error);
+}
+export interface ArticlePostData {
   title: string;
   content: string;
   isSaved: boolean;
 }
 
-interface FetchEventsOptions {
+export interface FetchEventsOptions {
   signal?: AbortSignal;
   boardId?: string;
   data?: ArticlePostData;
@@ -28,15 +45,23 @@ export const requestArticle = async ({
   let response;
   let proccesedData;
   if (data) {
-    if (!data.title.trim() || !data.content.trim()) {
+    if (!data.title.trim()) {
       const error = new Error();
-      error.name = "빈 내용";
-      error.message = "빈 내용은 저장할 수 없습니다.";
+      error.name = "제목이 없습니다.";
+      error.message = "제목을 입력하세요";
+      throw error;
+    }
+
+    if (!data.content.trim()) {
+      const error = new Error();
+      error.name = "내용이 없습니다.";
+      error.message = "내용을 입력하세요";
       throw error;
     }
     const [content, thumnailImg] = await imageHandler(data.content);
     proccesedData = { ...data, content, thumnailImg };
   }
+
   try {
     if (!method || method === "GET") {
       // 리스트 조회 + 상세 조회
@@ -64,9 +89,10 @@ export const requestArticle = async ({
     } else {
       throw Error("잘못된 접근입니다.");
     }
+
     return response.data;
   } catch (error) {
-    console.log("axios error:", response);
+    handleAxiosError(error as AxiosError);
     throw error;
   }
 };
