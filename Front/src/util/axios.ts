@@ -3,7 +3,7 @@ import axios from "axios";
 const env = process.env.NODE_ENV || "development";
 export const isProduction = env === "production";
 
-export const HOST = "http://192.168.30.213";
+export const HOST = "localhost";
 
 export const PORT = ":8084";
 
