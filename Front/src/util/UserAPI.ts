@@ -1,7 +1,7 @@
-import API from "./axios";
-import { Cookies } from 'react-cookie';
+import API  from "./axios";
+import { Cookies } from "react-cookie";
 
-const URL = '/user';
+const URL = "/user";
 
 const cookie = new Cookies();
 
@@ -29,8 +29,8 @@ export const signIn = ( data: signInData ) => {
       console.log(res)
 
       if (res.status === 200) {
-        console.log(res.data)
-        cookie.set('U_ID', res.headers['authorization']);
+        console.log(res.data);
+        cookie.set("U_ID", res.headers["authorization"]);
       }
 
       return res;
@@ -41,5 +41,5 @@ export const signUp = ( data: signUpData ) => {
   return API.post(URL + '/join', data)
     .then(res => {
       return res;
-    })
+    });
 };

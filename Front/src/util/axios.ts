@@ -9,11 +9,9 @@ export const PORT = ":8084";
 
 export const URL = HOST + PORT + "/api";
 
-const client = axios.create({
+const API = axios.create({
   baseURL: URL,
   withCredentials: true,
 });
 
-export const API = () => {
-  return client;
-};
+export default API;
