@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { API } from "./axios";
+import API from "./axios";
 import { imageHandler } from "./imageHandler";
 import { AxiosError } from "axios";
 
@@ -65,27 +65,27 @@ export const requestArticle = async ({
   try {
     if (!method || method === "GET") {
       // 리스트 조회 + 상세 조회
-      response = await API().get(boardId ? `${URL}/${boardId}` : URL, {
+      response = await API.get(boardId ? `${URL}/${boardId}` : URL, {
         signal,
       });
     } else if (method === "POST") {
       if (data?.isSaved) {
         // 등록
-        response = await API().post(URL, proccesedData, { signal });
+        response = await API.post(URL, proccesedData, { signal });
       } else {
-        response = await API().post(`${URL}/temporary`, proccesedData, {
+        response = await API.post(`${URL}/temporary`, proccesedData, {
           signal,
         });
       }
     } else if (method === "PUT") {
       // 수정
-      response = await API().put(URL, proccesedData, { signal });
+      response = await API.put(URL, proccesedData, { signal });
     } else if (method === "DELETE") {
       // 삭제
-      response = await API().delete(`${URL}/${boardId}`, { signal });
+      response = await API.delete(`${URL}/${boardId}`, { signal });
     } else if (method === "temporaryDelete") {
       // 임시저장 삭제
-      response = await API().delete(`${URL}/${boardId}/temporary`, { signal });
+      response = await API.delete(`${URL}/${boardId}/temporary`, { signal });
     } else {
       throw Error("잘못된 접근입니다.");
     }

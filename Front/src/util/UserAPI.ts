@@ -1,7 +1,7 @@
-import { API } from "./axios";
-import { Cookies } from 'react-cookie';
+import API  from "./axios";
+import { Cookies } from "react-cookie";
 
-const URL = '/api/users';
+const URL = "/user";
 
 const cookie = new Cookies();
 
@@ -24,13 +24,13 @@ export interface signUpData {
 }
 
 export const signIn = ( data: signInData ) => {
-  return API().post(URL + '/login', data)
+  return API.post(URL + '/login', data)
     .then(res => {
       console.log(res)
 
       if (res.status === 200) {
-        console.log(res.data)
-        cookie.set('U_ID', res.headers['authorization']);
+        console.log(res.data);
+        cookie.set("U_ID", res.headers["authorization"]);
       }
 
       return res;
@@ -38,8 +38,8 @@ export const signIn = ( data: signInData ) => {
 };
 
 export const signUp = ( data: signUpData ) => {
-  return API().post(URL + '/join', data)
+  return API.post(URL + '/join', data)
     .then(res => {
       return res;
-    })
+    });
 };

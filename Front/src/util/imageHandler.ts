@@ -1,4 +1,4 @@
-import { API } from "./axios";
+import API from "./axios";
 
 export const imageHandler = async (data: string) => {
   const tempDiv = document.createElement("div");
@@ -19,7 +19,7 @@ export const imageHandler = async (data: string) => {
     return img;
   });
 
-  const response = await API().post("immgURL", { src: images });
+  const response = await API.post("immgURL", { src: images });
   const imageURLs = response.data.src;
 
   for (let i = 0; i < images.length; i++) {
