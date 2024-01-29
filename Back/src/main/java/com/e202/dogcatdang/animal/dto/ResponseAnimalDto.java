@@ -19,11 +19,11 @@ import lombok.ToString;
 public class ResponseAnimalDto {
 	private String breed;
 	private int age;
-	private Gender gender;  // Gender는 열거형(enum) 클래스입니다.
+	private Gender gender;
 	private boolean isNeuter;
 	private int weight;
 	private String rescueLocation;
-	private LocalDateTime rescueDate;  // LocalDateTime은 날짜와 시간을 표현하는 클래스입니다.
+	private LocalDateTime rescueDate;
 	private String feature;
 	private String imgName;
 	private int userId;

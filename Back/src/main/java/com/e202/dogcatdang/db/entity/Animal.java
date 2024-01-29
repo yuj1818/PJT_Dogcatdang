@@ -41,7 +41,7 @@ public class Animal {
 	@Column(nullable = false)
 	private Integer age;
 
-	@Column(nullable = true)
+	@Column
 	private Integer weight;
 
 	@Column(length = 200, nullable = false)
@@ -56,8 +56,6 @@ public class Animal {
 	@Column(name = "is_neuter")
 	private Boolean isNeuter;
 
-	// gender 필드는 int로 선언되어 있지만, Enum을 사용하는 것이 더 좋을 수 있습니다.
-	// GenderType이라는 Enum을 만들어서 관리할 수 있습니다.
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Gender gender;
@@ -75,7 +73,6 @@ public class Animal {
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
-	// user_id 필드는 User 엔티티와 연결되는 외래키가 됩니다. ManyToOne 관계를 설정할 수 있습니다.
 	// @ManyToOne(fetch = FetchType.LAZY)
 	// @JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	// private User user;

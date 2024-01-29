@@ -18,7 +18,7 @@ public class ResponseAnimalListDto {
 	private AnimalType animalType;
 	private String breed;
 	private int age;
-	private Gender gender;  // Gender는 열거형(enum) 클래스입니다.
+	private Gender gender;
 	private boolean isNeuter;
 	private Animal.State state;
 	private String rescueLocation;

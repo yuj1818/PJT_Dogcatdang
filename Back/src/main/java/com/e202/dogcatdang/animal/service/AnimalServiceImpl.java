@@ -22,6 +22,11 @@ import lombok.AllArgsConstructor;
 public class AnimalServiceImpl implements AnimalService{
 
 	private final AnimalRepository animalRepository;
+
+	/*	동물 데이터 등록(작성)
+		1. Client에게 받은 RequestDto를 Entity로 변환하여 DB에 저장한다.
+		2. animalId 값을 반환한다
+	*/
 	@Override
 	public ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto) throws IOException {
 		Animal animal = requestAnimalDto.toEntity();
@@ -29,6 +34,11 @@ public class AnimalServiceImpl implements AnimalService{
 		return new ResponseSavedIdDto(savedId);
 	}
 
+
+	/*	전체 동물 데이터(리스트) 조회
+		1. DB에 저장된 전체 동물 리스트(entity 저장)를 가져온다.
+		2. DtoList에 가져온 전체 동물 리스트의 값들을 Dto로 변환해 저장한다.
+	*/
 	@Override
 	@Transactional
 	public List<ResponseAnimalListDto> findAll() {
@@ -47,6 +57,10 @@ public class AnimalServiceImpl implements AnimalService{
 		return animalDtoList;
 	}
 
+	/*	특정한 동물 데이터 상세 조회
+		1. animalId를 이용하여 DB에서 해당하는 동물 정보(Entity)를 가져온다.
+		2. Entity -> DTO로 바꿔서 반환한다.
+	*/
 	@Override
 	@Transactional
 	public ResponseAnimalDto findById(Long animalId) {
@@ -55,6 +69,7 @@ public class AnimalServiceImpl implements AnimalService{
 		return new ResponseAnimalDto(animal);
 	}
 
+	/*특정한 동물 데이터 수정*/
 	@Override
 	@Transactional
 	public Animal update(Long animalId, RequestAnimalDto request) throws IOException {
