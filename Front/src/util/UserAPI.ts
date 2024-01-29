@@ -1,7 +1,7 @@
 import { API } from "./axios";
 import { Cookies } from 'react-cookie';
 
-const URL = '/api/users';
+const URL = '/user';
 
 const cookie = new Cookies();
 
