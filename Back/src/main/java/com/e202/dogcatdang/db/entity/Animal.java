@@ -49,9 +49,7 @@ public class Animal {
 
 	@Column(name = "weight")
 	private Integer weight;
-
-	@Column(name = "color", length = 200, nullable = false)
-	private String color;
+	
 
 	@Column(name = "rescue_date", nullable = false)
 	private LocalDate rescueDate;
