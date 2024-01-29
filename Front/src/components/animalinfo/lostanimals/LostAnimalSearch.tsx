@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import LostAnimalCard from "./LostAnimalCard";
+import { useNavigate } from "react-router-dom";
 
 function LostAnimalSearch() {
   type CountryInput = {
@@ -8,6 +9,7 @@ function LostAnimalSearch() {
 
   const animalData = [
     {
+      id: 1,
       name: "소금이",
       animalType: "강아지",
       breed: "불독",
@@ -21,6 +23,7 @@ function LostAnimalSearch() {
       isNeuter: false,
     },
     {
+      id: 2,
       name: "하양이",
       animalType: "고양이",
       breed: "먼치킨",
@@ -35,6 +38,7 @@ function LostAnimalSearch() {
     },
   ];
 
+  const navigate = useNavigate();
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
   const [region, setRegion] = useState("");
@@ -409,6 +413,10 @@ function LostAnimalSearch() {
 
     setFilteredAnimalData(filteredData);
   };
+  const handleRegistration = () => {
+    // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
+    navigate("/lost-registration");
+  };
 
   return (
     <div>
@@ -488,6 +496,7 @@ function LostAnimalSearch() {
           <button type="button" onClick={handleSearch}>
             검색
           </button>
+          <button onClick={handleRegistration}>동물 등록</button>
         </div>
       </form>
       <div>

@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
 interface Animal {
+  id: number;
   shelterName: string;
   animalType: string;
   breed: string;
@@ -44,9 +46,15 @@ function SaveAnimalCard(props: AnimalCardProps) {
   //     fetchData();
   //   }, []);
 
+  const navigate = useNavigate();
+
+  const gotoDetailPage = () => {
+    navigate(`/save-animals/${props.animals.id}`);
+  };
+
   return (
     <Card>
-      <div>
+      <div onClick={gotoDetailPage}>
         <h4>보호 기관 : {props.animals.shelterName}</h4>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <h4>품종 : {props.animals.breed}</h4>
