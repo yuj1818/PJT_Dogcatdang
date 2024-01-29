@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
+import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
@@ -37,10 +38,8 @@ public class BoardController {
 	private final BoardService boardService;
 
 	@PostMapping("")
-	public ResponseEntity<ResponseSavedIdDto> write(@RequestPart RequestBoardDto requestBoardDto,
-		@RequestPart("file") List<MultipartFile> files) throws IOException {
-
-		requestBoardDto.setImageList(files);
+	public ResponseEntity<ResponseSavedIdDto> write(@RequestBody RequestBoardDto requestBoardDto) throws IOException {
+		System.out.println("requestBoardDto = " + requestBoardDto);
 
 		ResponseSavedIdDto responseSavedIdDto = boardService.save(requestBoardDto);
 		return ResponseEntity.ok(responseSavedIdDto);
@@ -73,10 +72,8 @@ public class BoardController {
 	*
 	* */
 	@PutMapping("/{boardId}")
-	public ResponseEntity<ResponseSavedIdDto> update(@PathVariable Long boardId, @RequestPart RequestBoardDto requestBoardDto,
-		@RequestPart("file") List<MultipartFile> files) throws
+	public ResponseEntity<ResponseSavedIdDto> update(@PathVariable Long boardId, @RequestBody RequestBoardDto requestBoardDto) throws
 		IOException {
-		requestBoardDto.setImageList(files);
 
 		ResponseSavedIdDto responseSavedIdDto = boardService.update(boardId, requestBoardDto);
 
