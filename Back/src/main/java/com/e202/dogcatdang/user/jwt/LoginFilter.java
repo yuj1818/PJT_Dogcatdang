@@ -67,13 +67,16 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        String uid= customUserDetails.getUsername();
+        String username= customUserDetails.getUsername();
+        String nickname = customUserDetails.getNickname();
+        Long id = customUserDetails.getId();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-        String token= jwtUtil.createJwt(uid,role,60 * 60 * 10L);
+
+        String token= jwtUtil.createJwt(id,username,role,nickname,60 * 60 * 10L);
 
         //key , 암호화 방식(끝에 꼭 한칸 띄우기) ,
         response.addHeader("Authorization","Bearer " + token);

@@ -1,7 +1,10 @@
 package com.e202.dogcatdang.user.controller;
 
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.user.Service.JoinService;
+import com.e202.dogcatdang.user.Service.UserProfileService;
 import com.e202.dogcatdang.user.dto.JoinDTO;
+import com.e202.dogcatdang.user.dto.UserProfileDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 
 @RestController
@@ -22,10 +26,13 @@ public class UserController {
 
 
     private final JoinService joinService;
+    private final UserProfileService userProfileService;
+
 
     // 생성자 주입 방식으로 JoinService 주입
-    public UserController(JoinService joinService) {
+    public UserController(JoinService joinService, UserProfileService userProfileService) {
         this.joinService = joinService;
+        this.userProfileService = userProfileService;
     }
 
 
@@ -56,13 +63,6 @@ public class UserController {
         return "Admin  in user Controller";
     }
 
-//    //중복 확인
-//    @PostMapping("/username-check")
-//    public ResponseEntity<?> checkIdDuplicate(@RequestParam("username") String username) {
-//        boolean isUsernameDuplicate = joinService.isUsernameDuplicate(username);
-//        System.out.println("Username 중복검사:" + isUsernameDuplicate);
-//        return ResponseEntity.ok(!isUsernameDuplicate);
-//    }
 
     @PostMapping("/username-check")
     public ResponseEntity<?> checkIdDuplicate(@RequestBody Map<String, Object> reqeustBody) {
@@ -96,6 +96,56 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Nickname is already in use");
         } else {
             return ResponseEntity.ok("Nickname is available");
+        }
+    }
+
+//
+//    //유저 조회
+//    @GetMapping("/profiles/{userId}")
+//    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("userId") Long userId) {
+//        try {
+//            // 현재 로그인한 사용자의 정보를 가져오는 예시 코드
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            String currentUsername = authentication.getName();
+//
+//            UserProfileDTO userProfileDTO;
+//            if (userId.equals(currentUserId)) { // 자신의 프로필을 조회하는 경우
+//                userProfileDTO = userProfileService.getUserProfile(userId);
+//            } else { // 다른 사람의 프로필을 조회하는 경우
+//                // 여기에 필요한 로직을 구현하세요
+//                // 예를 들어, 다른 사람의 프로필은 일부 정보만 보여주거나 접근을 제한할 수 있습니다.
+//                userProfileDTO = userProfileService.getLimitedUserProfile(userId);
+//            }
+//
+//            return ResponseEntity.ok(userProfileDTO);
+//        } catch (NoSuchElementException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
+    //유저 조회
+    @GetMapping("/profiles/{userId}")
+    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("userId") Long userId) {
+        try {
+            UserProfileDTO userProfileDTO;
+            userProfileDTO = userProfileService.getUserProfile(userId);
+            return ResponseEntity.ok(userProfileDTO);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 유저 정보 수정
+    @PutMapping("/profiles/{userId}")
+    public ResponseEntity<?> updateUserProfile(@PathVariable("userId") Long userId, @RequestBody UserProfileDTO userProfileDTO) {
+        try {
+            // 업데이트된 유저 정보를 받아서 반환
+            User updatedUser = userProfileService.updateUserProfile(userId, userProfileDTO);
+            return ResponseEntity.ok(updatedUser); // 업데이트된 유저 정보 반환
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user profile");
         }
     }
 }
