@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,9 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.AnimalRepository;
+import com.e202.dogcatdang.db.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.AllArgsConstructor;
 public class AnimalServiceImpl implements AnimalService{
 
 	private final AnimalRepository animalRepository;
+	private final UserRepository userRepository;
 
 	/*	동물 데이터 등록(작성)
 		1. Client에게 받은 RequestDto를 Entity로 변환하여 DB에 저장한다.
@@ -29,7 +33,10 @@ public class AnimalServiceImpl implements AnimalService{
 	*/
 	@Override
 	public ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto) throws IOException {
-		Animal animal = requestAnimalDto.toEntity();
+		User user = userRepository.findById(requestAnimalDto.getUserId())
+			.orElseThrow(() -> new NoSuchElementException("해당 Id의 회원이 없습니다"));
+
+		Animal animal = requestAnimalDto.toEntity(user);
 		Long savedId = animalRepository.save(animal).getAnimalId();
 		return new ResponseSavedIdDto(savedId);
 	}
@@ -78,7 +85,6 @@ public class AnimalServiceImpl implements AnimalService{
 			.orElseThrow(() -> new IllegalArgumentException("해당 Id의 동물을 찾을 수 없습니다."));
 
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
-			request.getColor(),
 			request.getRescueDate(), request.getRescueLocation(), request.getIsNeuter(), request.getGender(),
 			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
 

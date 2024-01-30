@@ -40,7 +40,6 @@ public class ResponseAnimalListDto {
 		this.rescueLocation = animal.getRescueLocation();
 
 		this.imgName = animal.getImgName();
-		this.userId = animal.getUserId();
 	}
 
 }
