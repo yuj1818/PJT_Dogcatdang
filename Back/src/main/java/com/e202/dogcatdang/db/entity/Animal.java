@@ -85,6 +85,9 @@ public class Animal {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public void setRescueLocation(String rescueLocation) {
+	}
+
 	// enum 정의는 클래스의 맨 아래에 위치
 	public enum State {
 		보호중, 입양완료, 안락사, 자연사
