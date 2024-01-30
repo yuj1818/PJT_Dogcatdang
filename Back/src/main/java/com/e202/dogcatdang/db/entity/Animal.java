@@ -85,7 +85,11 @@ public class Animal {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
+	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
+	// @Setter 대신 set method 만들어서 사용
 	public void setRescueLocation(String rescueLocation) {
+		this.rescueLocation = rescueLocation;
 	}
 
 	// enum 정의는 클래스의 맨 아래에 위치
