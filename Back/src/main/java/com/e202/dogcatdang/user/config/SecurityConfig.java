@@ -80,12 +80,10 @@ public class SecurityConfig {
         //http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
-        http.logout((logout) ->
-//                logout.deleteCookies("remove")
-                        logout.invalidateHttpSession(false)
-                                .logoutUrl("/logout")
-                                //.logoutSuccessUrl("/")
-        );
+//        http.logout((logout) ->
+//                logout.invalidateHttpSession(false)
+//                        .logoutUrl("/api/logout")
+//        );
 
 //         http
 //                 .logout((logoutConfig) ->
