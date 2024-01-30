@@ -57,7 +57,7 @@ function SignUpPage() {
   const [signUpErrMsg, setSignUpErrMsg] = useState('');
 
   const selectType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsOrg(() => e.target.value === 'ROLE_SHLETER'  ? true : false);
+    setIsOrg(() => e.target.value === 'ROLE_SHELTER');
     setRole(() => e.target.value);
   }
 
