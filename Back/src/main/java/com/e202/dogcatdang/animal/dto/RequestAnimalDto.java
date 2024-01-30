@@ -38,6 +38,11 @@ public class RequestAnimalDto {
 	private String imgUrl;
 	private Long userId;
 
+	// rescuelocation을 위해 입력받는 위치 정보들
+	private String selectedCity;
+	private String selectedDistrict;
+	private String detailInfo;
+
 	// 입력한 animalType에 맞는 breed인지 확인하는 기능
 	public boolean isValid() {
 		if (animalType == AnimalType.강아지) {
@@ -59,7 +64,7 @@ public class RequestAnimalDto {
 			.age(age)
 			.weight(weight)
 			.rescueDate(rescueDate)
-			.rescueLocation(rescueLocation)
+			.rescueLocation(selectedCity + " " + selectedDistrict + " " + (detailInfo != null ? detailInfo : ""))
 			.isNeuter(isNeuter)
 			.gender(gender)
 			.feature(feature)
