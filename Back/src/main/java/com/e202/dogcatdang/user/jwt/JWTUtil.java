@@ -52,4 +52,17 @@ public class JWTUtil {
                 .compact();
     }
 
+    public String createJwt(Long id, String username, String role, String nickname, Long expiredMs) {
+        return Jwts.builder()
+                .claim("id" , id)
+                .claim("username", username)
+                .claim("role", role)
+                .claim("nickname", nickname)
+                //발행시간
+                .issuedAt(new Date(System.currentTimeMillis()))
+                //소멸시간
+                .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                .signWith(secretKey)
+                .compact();
+    }
 }

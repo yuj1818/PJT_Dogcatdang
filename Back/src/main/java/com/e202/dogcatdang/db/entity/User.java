@@ -37,13 +37,15 @@ public class User {
     @Column(name = "bio" )
     private String bio;
 
+    @Getter
+    @Setter
     @Column(name = "img_name" )
     private String img_name;
 
+    @Getter
+    @Setter
     @Column(name = "img_url")
     private String img_url;
-
-
 
 
 }
