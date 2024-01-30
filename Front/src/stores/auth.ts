@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface UserState {
+export interface UserState {
   username: string | null;
   isUser: boolean;
   isOrg: boolean | null;
@@ -8,7 +8,7 @@ interface UserState {
 }
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
     username: null,
     isUser: false,
@@ -20,14 +20,14 @@ export const userSlice = createSlice({
       state.isUser = true;
       state.username = action.payload.username;
       state.role = action.payload.role;
-      state.isOrg = state.role === 'ROLE_SHELTER';
+      state.isOrg = state.role === "ROLE_SHELTER";
     },
     onLogout: (state) => {
       state.isUser = false;
       state.username = null;
       state.isOrg = null;
     },
-  }
+  },
 });
 
 export const { onLogin, onLogout } = userSlice.actions;
