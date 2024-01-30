@@ -3,17 +3,14 @@ import styled from "styled-components";
 import ArticleCard from "./ArticleCard";
 import { ArticleInterface } from "./ArticleInterface";
 
-const ArticleListStyle = styled.div<{ $itemsPerRow: number }>`
+const ArticleListStyle = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
+`;
 
-  div {
-    flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
+const Space = styled.div`
+  flex-grow: 1;
 `;
 
 const ArticleList: React.FC<{
@@ -25,7 +22,7 @@ const ArticleList: React.FC<{
   return (
     <>
       {itemPerRow && currentPage && itemsPerPage ? (
-        <ArticleListStyle $itemsPerRow={itemPerRow}>
+        <ArticleListStyle>
           {data
             .slice(
               (currentPage - 1) * itemsPerPage,
@@ -34,12 +31,14 @@ const ArticleList: React.FC<{
             .map((element) => (
               <ArticleCard article={element} key={element.boardId} />
             ))}
+          <Space></Space>
         </ArticleListStyle>
       ) : (
-        <ArticleListStyle $itemsPerRow={5}>
+        <ArticleListStyle>
           {data.map((element) => (
             <ArticleCard article={element} key={element.boardId}></ArticleCard>
           ))}
+          <Space></Space>
         </ArticleListStyle>
       )}
     </>
