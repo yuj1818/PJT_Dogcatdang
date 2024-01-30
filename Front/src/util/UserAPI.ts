@@ -79,11 +79,18 @@ export const checkNickname = ( data: { nickname: string } ) => {
     });
 };
 
-// export const logout = () => {
-//   return API.get('http://localhost:8084/logout')
-//     .then(res => {
-//       cookie.remove('U_ID');
-//       localStorage.removeItem('userInfo')
-//       return res;
-//     })
-// }
+export const logout = () => {
+  return API.post(URL + '/logout')
+    .then(res => {
+      cookie.remove('U_ID');
+      localStorage.removeItem('userInfo')
+      return res;
+    })
+};
+
+export const getUserInfo = (userId: string) => {
+  return API.get(URL + '/profiles/' + userId)
+    .then(res => {
+      return res;
+    })
+};
