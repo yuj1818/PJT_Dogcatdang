@@ -80,6 +80,23 @@ public class SecurityConfig {
         //http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
+        http.logout((logout) ->
+//                logout.deleteCookies("remove")
+                        logout.invalidateHttpSession(false)
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/")
+        );
+
+//         http
+//                 .logout((logoutConfig) ->
+//
+//                         logoutConfig.logoutSuccessUrl("/")
+//                         .logoutUrl("/logout") // 로그아웃 URL 설정
+//
+//                 );
+//
+//                .invalidateHttpSession(true) // HTTP 세션 무효화
+//                .deleteCookies("JSESSIONID"); // 로그아웃 시 쿠키 삭제
 
         //경로별 인가 작업
         http
@@ -102,6 +119,7 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
 
         return http.build();
     }

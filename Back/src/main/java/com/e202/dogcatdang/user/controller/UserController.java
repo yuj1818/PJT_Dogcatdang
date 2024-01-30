@@ -41,7 +41,12 @@ public class UserController {
         joinService.joinUser(joinDTO);
         return ResponseEntity.ok("User joined successfully");
     }
-
+//
+//    @PostMapping("/logout") // 로그아웃
+//    public ResponseEntity<String> logout() {
+//        SecurityContextHolder.clearContext(); // 현재 사용자의 보안 컨텍스트를 지움
+//        return ResponseEntity.ok("Logged out successfully");
+//    }
 
     @GetMapping("") //테스트 메인페이지
     public String mainP() {
