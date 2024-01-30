@@ -4,10 +4,11 @@ import styled from "styled-components";
 // import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { UserState, onLogout } from "../../stores/auth";
+import { onLogout } from "../../stores/auth";
 
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
+import { StoreInterface } from "../../stores/store";
 
 // -----------Styled Component-----------------------------------------------
 const Header = styled.header`
@@ -78,26 +79,85 @@ mx-4 lg:mx-60
 const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
-  const isOrg = useSelector((state: UserState) => state.isOrg);
+  const isOrg = useSelector((state: StoreInterface) => state.user.isOrg);
   const nickName = "독캣당";
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const cookie = new Cookies();
+
+  // api 구현 후 수정 필요
+  const onClickLogout = () => {
+    // const response = await logout();
+    // console.log(response);
+    cookie.remove("U_ID");
+    localStorage.removeItem("userInfo");
+
+    dispatch(onLogout());
+
+    navigate("/landing");
+  };
+
+  const commontNavTitles = (
+    <>
+      {" "}
+      <li>
+        <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/notice">공지사항</StyledNavLink>
+      </li>
+    </>
+  );
 
   const navTitles = isOrg ? (
     <ul>
-      <li>동물 관리</li>
-      <li>방문 일정 관리</li>
-      <li>방송</li>
-      <li>독캣당 소개</li>
-      <li>공지사항</li>
+      <li>
+        <StyledNavLink to="/save-animals">동물 관리</StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/visit-application-mangement">
+          방문 일정 관리
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/watch">방송</StyledNavLink>
+      </li>
+      {commontNavTitles}
     </ul>
   ) : (
     <ul>
-      <li>입양하기</li>
-      <li>후기 게시판</li>
-      <li>방송 시청</li>
-      <li>동물 찾기</li>
-      <li>독캣당 소개</li>
-      <li>공지사항</li>
+      <li>
+        <StyledNavLink to="/save-animals">입양하기</StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/articles">후기 게시판</StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/watch">방송 시청</StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/lost-animals">동물 찾기</StyledNavLink>
+      </li>
+      {commontNavTitles}
     </ul>
+  );
+
+  const commonNavContent = (
+    <>
+      {" "}
+      <ul>
+        <li>
+          <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <StyledNavLink to="/notice">공지사항</StyledNavLink>
+        </li>
+      </ul>
+    </>
   );
 
   const hoverHandler = () => {
@@ -138,18 +198,7 @@ const NavBar = () => {
               </StyledNavLink>
             </li>
           </ul>
-          <ul>
-            <li>
-              <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <StyledNavLink to="/notice">공지사항</StyledNavLink>
-            </li>
-          </ul>
-          <ul></ul>
-          <ul></ul>
+          {commonNavContent}
           <ul></ul>
         </nav>
       ) : (
@@ -167,7 +216,7 @@ const NavBar = () => {
               <StyledNavLink to="/articles">전체 글 보기</StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/articles/write">글 작성하기</StyledNavLink>
+              <StyledNavLink to="/articles/new">글 작성하기</StyledNavLink>
             </li>
           </ul>
           <ul>
@@ -200,31 +249,12 @@ const NavBar = () => {
               <StyledNavLink to="/notice">공지사항</StyledNavLink>
             </li>
           </ul>
-          <ul></ul>
-          <ul></ul>
+          {commonNavContent}
           <ul></ul>
         </nav>
       )
     );
   };
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const cookie = new Cookies();
-
-  // api 구현 후 수정 필요
-  const onClickLogout = () => {
-    // const response = await logout();
-    // console.log(response);
-    cookie.remove("U_ID");
-    localStorage.removeItem("userInfo");
-
-    dispatch(onLogout());
-
-    navigate("/landing");
-  };
-
   return (
     <>
       <Header>
@@ -238,7 +268,9 @@ const NavBar = () => {
         <div>
           <ul style={{ gap: "20px", marginRight: "20px" }}>
             {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-            <StyledNavLink to="profile/">{nickName}님</StyledNavLink>
+            <StyledNavLink to={`profile/${nickName}`}>
+              {nickName}님
+            </StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
             </StyledNavLink>
