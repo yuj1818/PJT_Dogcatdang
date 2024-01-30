@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SaveAnimalCard from "./SaveAnimalCard";
 import { useNavigate } from "react-router-dom";
-import Pagination from "../../articles/Pagination";
+import styled from "styled-components";
 
 type AnimalType = {
   id: number;
@@ -394,7 +394,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
 
   const handleSearch = () => {
     const combinedLocation = region + " " + country;
-    console.log(combinedLocation);
+
     // 필터링을 위한 로직을 추가
     const filteredData = animals.filter((animal) => {
       return (
@@ -405,8 +405,8 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
         (shelterName === "" || animal.shelterName.includes(shelterName))
       );
     });
-
     setFilteredAnimalData(filteredData);
+    // console.log(filteredData);
   };
 
   const navigate = useNavigate();
@@ -415,6 +415,19 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
     navigate("/registration");
   };
+
+  const ListStyle = styled.div<{ $itemsPerRow: number }>`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* 
+    div {
+      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    } */
+  `;
 
   return (
     <div>
@@ -467,8 +480,8 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               시/구/군 선택
             </option>
             {countryInput[regionInput.indexOf(region)] &&
-              countryInput[regionInput.indexOf(region)].map((ct) => (
-                <option key={ct} value={ct}>
+              countryInput[regionInput.indexOf(region)].map((ct, index) => (
+                <option key={index} value={ct}>
                   {ct}
                 </option>
               ))}
@@ -507,11 +520,11 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
 
       <button onClick={handleRegistration}>동물 등록</button>
 
-      <div>
-        {filteredAnimalData.map((animal, index) => (
-          <SaveAnimalCard key={index} animals={animal} />
+      <ListStyle $itemsPerRow={4}>
+        {filteredAnimalData.map((animal) => (
+          <SaveAnimalCard key={animal.id} animals={animal} />
         ))}
-      </div>
+      </ListStyle>
     </div>
   );
 }

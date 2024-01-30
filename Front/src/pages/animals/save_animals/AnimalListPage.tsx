@@ -158,20 +158,6 @@ function AnimalListPage() {
       gender: "여",
       isNeuter: true,
     },
-    {
-      id: 12,
-      shelterName: "동물 보호소 A",
-      animalType: "강아지",
-      breed: "골든리트리버",
-      age: 3,
-      weight: 600,
-      color: "흰색",
-      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
-      rescueDate: "2024-01-12",
-      rescueLocation: "부산광역시 강서구",
-      gender: "여",
-      isNeuter: true,
-    },
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
