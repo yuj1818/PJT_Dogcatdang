@@ -25,6 +25,7 @@ import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import { LoadingIndicator } from "./components/common/Icons.tsx";
+import ProfilePage from "./pages/users/ProfilePage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -93,7 +94,10 @@ const router = createBrowserRouter([
         path: "lost-update",
         element: <LostAnimalUpdatePage />,
       },
-
+      {
+        path: "profile/:userId",
+        element: <ProfilePage />
+      },
       {
         path: "articles",
         children: [

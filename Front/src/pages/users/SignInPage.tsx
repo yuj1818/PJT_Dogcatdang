@@ -31,8 +31,6 @@ function SignInPage() {
     const response = await signIn(data);
     console.log(response);
 
-    dispatch(onLogin(JSON.parse(localStorage.getItem('userInfo') || "")));
-
     navigate('/');
   }
 
