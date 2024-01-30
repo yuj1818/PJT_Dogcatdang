@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import {
   OpenVidu,
@@ -9,15 +10,14 @@ import axios, { AxiosError } from "axios";
 import Form from "../../components/Broadcast/Form";
 import Session from "../../components/Broadcast/Session";
 
-const BroadCastPage = () => {
+function BookclubMeeting() {
   const [session, setSession] = useState<OVSession | "">("");
   const [sessionId, setSessionId] = useState<string>("");
   const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [OV, setOV] = useState<OpenVidu | null>(null);
 
-  const OPENVIDU_SERVER_URL = `http://localhost:4443`;
-  const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+  const OPENVIDU_SERVER_URL = "http://localhost:5000/";
 
   const leaveSession = useCallback(() => {
     if (session) session.disconnect();
@@ -69,18 +69,10 @@ const BroadCastPage = () => {
 
     const createSession = async (sessionIds: string): Promise<string> => {
       try {
-        const data = JSON.stringify({ customSessionId: sessionIds });
         const response = await axios.post(
-          `${OPENVIDU_SERVER_URL}/api/sessions`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              "Content-Type": "application/json",
-            },
-          }
+          `${OPENVIDU_SERVER_URL}api/sessions`,
+          { customSessionId: sessionIds },
+          { headers: { "Content-Type": "application/json" } }
         );
 
         return (response.data as { id: string }).id;
@@ -97,21 +89,10 @@ const BroadCastPage = () => {
 
     const createToken = (sessionIds: string): Promise<string> => {
       return new Promise((resolve, reject) => {
-        const data = {};
         axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-            data,
-            {
-              headers: {
-                Authorization: `Basic ${btoa(
-                  `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-                )}`,
-
-                "Content-Type": "application/json",
-              },
-            }
-          )
+          .post(`${OPENVIDU_SERVER_URL}api/sessions/${sessionIds}/connection`, {
+            headers: { "Content-Type": "application/json" },
+          })
           .then((response) => {
             resolve((response.data as { token: string }).token);
           })
@@ -175,6 +156,6 @@ const BroadCastPage = () => {
       </>
     </div>
   );
-};
+}
 
-export default BroadCastPage;
+export default BookclubMeeting;
