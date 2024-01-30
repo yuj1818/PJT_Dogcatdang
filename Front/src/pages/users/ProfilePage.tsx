@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { isOrg as org } from "./SignInPage";
 
 function ProfilePage() {
   const params = useParams();
 
-  const isOrg = JSON.parse(localStorage.getItem('userInfo') || "").role === 'ROLE_SHELTER';
+  const isOrg = org();
 
   const [isMine, setIsMine] = useState(false);
 

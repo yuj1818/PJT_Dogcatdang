@@ -3,12 +3,10 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
-import { useDispatch, useSelector } from "react-redux";
-import { onLogout } from "../../stores/auth";
+import { isOrg as org } from "../../pages/users/SignInPage";
 
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
-import { StoreInterface } from "../../stores/store";
 
 // -----------Styled Component-----------------------------------------------
 const Header = styled.header`
@@ -79,11 +77,10 @@ mx-4 lg:mx-60
 const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
-  const isOrg = useSelector((state: StoreInterface) => state.user.isOrg);
+  const isOrg = org();
   const nickName = "독캣당";
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const cookie = new Cookies();
 
@@ -93,8 +90,6 @@ const NavBar = () => {
     // console.log(response);
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
-
-    dispatch(onLogout());
 
     navigate("/landing");
   };
