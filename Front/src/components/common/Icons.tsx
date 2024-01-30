@@ -125,7 +125,9 @@ const LoadingSpinner = styled.div<{ size: number }>`
   }
 `;
 
-export const LoadingIndicator: React.FC<{ size: number }> = ({ size }) => {
+export const LoadingIndicator: React.FC<{ size?: number }> = ({
+  size = 64,
+}) => {
   return (
     <LoadingSpinner size={size}>
       <div></div>
