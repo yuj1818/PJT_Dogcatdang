@@ -15,9 +15,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 // import jakarta.validation.constraints.NotNull;
 // 	ㄴ build.gradle에 의존성 추가 필요: implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -76,12 +79,11 @@ public class Animal {
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-	// private User user;
-
-	@Column(name = "user_id", nullable = false)
-	private Integer userId;
+	// 단방향 1:N 관계
+	// user : animal
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	// enum 정의는 클래스의 맨 아래에 위치
 	public enum State {
@@ -90,11 +92,11 @@ public class Animal {
 
 
 	// Builder 클래스 추가
-	// DTO -> Entity 만드는데 사용 
+	// DTO -> Entity 만드는데 사용
 	@Builder
 	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, Integer userId) {
+		State state, String imgName, String imgUrl, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
 		this.breed = breed;
@@ -108,7 +110,7 @@ public class Animal {
 		this.state = state;
 		this.imgName = imgName;
 		this.imgUrl = imgUrl;
-		this.userId = userId;
+		this.user = user;
 	}
 
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,

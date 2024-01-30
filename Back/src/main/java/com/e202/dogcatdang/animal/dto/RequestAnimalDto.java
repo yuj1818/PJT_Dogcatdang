@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.CatBreed;
 import com.e202.dogcatdang.enums.DogBreed;
@@ -35,7 +36,7 @@ public class RequestAnimalDto {
 	private Animal.State state;
 	private String imgName;
 	private String imgUrl;
-	private Integer userId;
+	private Long userId;
 
 	// 입력한 animalType에 맞는 breed인지 확인하는 기능
 	public boolean isValid() {
@@ -51,7 +52,7 @@ public class RequestAnimalDto {
 	}
 
 	// DTO -> Entity
-	public Animal toEntity() {
+	public Animal toEntity(User user) {
 		return Animal.builder()
 			.animalType(animalType)
 			.breed(breed)
@@ -65,7 +66,7 @@ public class RequestAnimalDto {
 			.state(state)
 			.imgName(imgName)
 			.imgUrl(imgUrl)
-			.userId(userId)
+			.user(user)
 			.build();
 	}
 }

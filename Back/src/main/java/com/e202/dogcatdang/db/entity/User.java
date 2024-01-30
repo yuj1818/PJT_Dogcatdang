@@ -1,5 +1,8 @@
 package com.e202.dogcatdang.db.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,7 +46,8 @@ public class User {
     @Column(name = "img_url")
     private String img_url;
 
-
-
+    // Animal과 연결
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Animal> animalList = new ArrayList<>();
 
 }
