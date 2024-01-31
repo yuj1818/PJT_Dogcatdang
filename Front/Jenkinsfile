@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    environment{
+        dockerImage = ''
+    }
+
+    stages {
+         stage('Build'){
+            steps{
+                nodejs(nodeJSInstallationName: 'nodejs') {
+                    dir("./Front"){
+                        sh "npm install"
+                        sh "npm run build"
+                    }
+                }
+            }
+        }
+        stage("Build Image"){
+            steps{
+                dir("./Front"){
+                    script{
+                        dockerImage = docker.build("dogcatdang/frontend")
+                      }
+                }
+            }
+        }
+        
+
+        stage('Run Container') {
+            steps {
+                script {
+                    // 이미지를 기반으로 컨테이너 실행
+                    dockerImage.run("-p 9010:80 --name dogcatdang-frontend -d")
+                }
+            }
+        }
+
+      
+    }
+}
