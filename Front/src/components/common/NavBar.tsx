@@ -4,12 +4,11 @@ import styled from "styled-components";
 // import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
-
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
 
 // -----------Styled Component-----------------------------------------------
-const Header = styled.header`
+const NavBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -79,10 +78,6 @@ const OutLet = tw.div`
 mx-4 sm:mx-60
 `;
 
-const ResponsiveButton = tw.button`
-  lg:hidden
-`;
-
 // -----------NavBar-----------------------------------------------
 const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
@@ -100,6 +95,7 @@ const NavBar = () => {
     // console.log(response);
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
+    setIsNoti(false);
 
     navigate("/landing");
   };
@@ -260,7 +256,7 @@ const NavBar = () => {
   };
   return (
     <>
-      <Header>
+      <NavBarContainer>
         <StyledNavLink to="/">
           <img
             src="/src/assets/main-logo.png"
@@ -268,9 +264,6 @@ const NavBar = () => {
             className="w-60 min-w-60"
           />
         </StyledNavLink>
-        <ResponsiveButton onClick={() => setIsNoti((prev) => !prev)}>
-          {isNoti ? "알람 없애기" : "알람 생성하기"}
-        </ResponsiveButton>
         <FlexColumnContainer>
           <StyledUl style={{ gap: "20px", marginRight: "20px" }}>
             {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
@@ -292,7 +285,7 @@ const NavBar = () => {
             {navContent}
           </div>
         </FlexColumnContainer>
-      </Header>
+      </NavBarContainer>
       <OutLet style={{ minWidth: "400px" }}>
         <Outlet />
       </OutLet>
