@@ -28,7 +28,7 @@ function LostAnimalDetailPage() {
     // Example:
     // api.updateAnimalDetails(animalID, { breed, image, gender, ... });
     // After updating, navigate back to AnimalDetailPage
-    navigate(`/lost-update/${animalID}`);
+    navigate(`/lost-update`);
   };
   return (
     <div>

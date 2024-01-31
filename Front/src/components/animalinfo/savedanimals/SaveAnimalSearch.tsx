@@ -1,38 +1,189 @@
 import React, { useState } from "react";
 import SaveAnimalCard from "./SaveAnimalCard";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import Pagination from "../../articles/Pagination";
 
-type AnimalType = {
-  id: number;
-  shelterName: string;
-  animalType: string;
-  breed: string;
-  age: number; // 수정: age는 숫자형으로 지정
-  weight: number; // 수정: weight는 숫자형으로 지정
-  color: string;
-  feature: string;
-  rescueDate: string;
-  rescueLocation: string;
-  gender: string;
-  isNeuter: boolean; // 수정: isNeuter는 부울 타입으로 지정
-};
-
-type SaveAnimalSearchProps = {
-  animals: AnimalType[];
-};
-type CountryInput = {
-  [key: number]: string[];
-};
-
-function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
+function SaveAnimalSearch() {
+  type CountryInput = {
+    [key: number]: string[];
+  };
+  const animalData = [
+    {
+      id: 1,
+      shelterName: "동물 보호소 A",
+      animalType: "강아지",
+      breed: "불독",
+      age: 2,
+      weight: 900,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "서울특별시 강서구",
+      gender: "남",
+      isNeuter: false,
+    },
+    {
+      id: 2,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 3,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 4,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 4,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 5,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 6,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 7,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 8,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 9,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 10,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 11,
+      shelterName: "동물 보호소 A",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+    {
+      id: 12,
+      shelterName: "동물 보호소 A",
+      animalType: "강아지",
+      breed: "골든리트리버",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      rescueDate: "2024-01-12",
+      rescueLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+  ];
   const [animalType, setAnimalType] = useState("강아지");
   const [region, setRegion] = useState("");
   const [breed, setBreed] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  const [filteredAnimalData, setFilteredAnimalData] = useState(animalData);
 
   const dogInput = [
     "전체",
@@ -393,9 +544,9 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
 
   const handleSearch = () => {
     const combinedLocation = region + " " + country;
-
+    console.log(combinedLocation);
     // 필터링을 위한 로직을 추가
-    const filteredData = animals.filter((animal) => {
+    const filteredData = animalData.filter((animal) => {
       return (
         (animalType === "" || animal.animalType === animalType) &&
         (breed === "" || animal.breed === breed) &&
@@ -404,8 +555,8 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
         (shelterName === "" || animal.shelterName.includes(shelterName))
       );
     });
+
     setFilteredAnimalData(filteredData);
-    // console.log(filteredData);
   };
 
   const navigate = useNavigate();
@@ -414,20 +565,14 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
     navigate("/registration");
   };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8; // Example: Set your desired items per page
 
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    /* 
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    } */
-  `;
-
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    console.log(`Page changed to: ${newPage}`);
+    console.log(`현재 페이지: ${currentPage}`);
+  };
   return (
     <div>
       <button onClick={() => handleAnimalType("강아지")}>강아지</button>
@@ -479,8 +624,8 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               시/구/군 선택
             </option>
             {countryInput[regionInput.indexOf(region)] &&
-              countryInput[regionInput.indexOf(region)].map((ct, index) => (
-                <option key={index} value={ct}>
+              countryInput[regionInput.indexOf(region)].map((ct) => (
+                <option key={ct} value={ct}>
                   {ct}
                 </option>
               ))}
@@ -519,11 +664,16 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
 
       <button onClick={handleRegistration}>동물 등록</button>
 
-      <ListStyle $itemsPerRow={4}>
-        {filteredAnimalData.map((animal) => (
-          <SaveAnimalCard key={animal.id} animals={animal} />
+      <div>
+        {filteredAnimalData.map((animal, index) => (
+          <SaveAnimalCard key={index} animals={animal} />
         ))}
-      </ListStyle>
+      </div>
+      <Pagination
+        totalItems={animalData.length}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
