@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    tools{
+        gradle 'gradle'
+    }
+    environment{
+        dockerImage = ''
+    }
+
+    stages {
+        stage('Build'){
+            steps{
+                dir("./Back"){
+                    sh "chmod +x gradlew"
+                    sh "gradle wrapper"
+                    sh "./gradlew clean build"
+                }
+            }
+        }
+        stage("Build Image"){
+            steps{
+                dir("./Back"){
+                    script{
+                        dockerImage = docker.build("dogcatdang/backend")
+                      }
+                }
+            }
+        } 
+       stage('Run Container') {
+            steps {
+                script {
+                    // 이미지를 기반으로 컨테이너 실행
+                    dockerImage.run("-p 9000:9000 --name dogcatdang-backend -d")
+                }
+            }
+        }
+      
+    }
+}
