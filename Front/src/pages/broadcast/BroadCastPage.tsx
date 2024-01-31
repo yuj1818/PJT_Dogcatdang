@@ -9,6 +9,9 @@ import axios, { AxiosError } from "axios";
 import Form from "../../components/Broadcast/Form";
 import Session from "../../components/Broadcast/Session";
 
+const OPENVIDU_SERVER_URL = `http://localhost:4443`;
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
 const BroadCastPage = () => {
   const [session, setSession] = useState<OVSession | "">("");
   const [sessionId, setSessionId] = useState<string>("");
@@ -16,11 +19,10 @@ const BroadCastPage = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [OV, setOV] = useState<OpenVidu | null>(null);
 
-  const OPENVIDU_SERVER_URL = `http://localhost:4443`;
-  const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-
   const leaveSession = useCallback(() => {
-    if (session) session.disconnect();
+    if (session) {
+      session.disconnect();
+    }
 
     setOV(null);
     setSession("");
@@ -30,18 +32,73 @@ const BroadCastPage = () => {
   }, [session]);
 
   const joinSession = () => {
-    const OVs = new OpenVidu();
-    setOV(OVs);
-    setSession(OVs.initSession());
+    const newOV = new OpenVidu();
+    setOV(newOV);
+    setSession(newOV.initSession());
   };
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", leaveSession);
-
-    return () => {
-      window.removeEventListener("beforeunload", leaveSession);
+  const getToken = useCallback(async (): Promise<string> => {
+    const createToken = (sessionIds: string): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const data = {};
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
+            data,
+            {
+              headers: {
+                Authorization: `Basic ${btoa(
+                  `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+                )}`,
+                "Content-Type": "application/json",
+                withCredentials: true,
+              },
+            }
+          )
+          .then((response) => {
+            resolve((response.data as { token: string }).token);
+          })
+          .catch((error) => reject(error));
+      });
     };
-  }, [leaveSession]);
+
+    const createSession = async (sessionIds: string): Promise<string> => {
+      try {
+        const data = JSON.stringify({ customSessionId: sessionIds });
+        const response = await axios.post(
+          `${OPENVIDU_SERVER_URL}/api/sessions`,
+          data,
+          {
+            headers: {
+              Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+              )}`,
+              "Content-Type": "application/json",
+              withCredentials: true,
+            },
+          }
+        );
+
+        return (response.data as { id: string }).id;
+      } catch (error) {
+        const errorResponse = (error as AxiosError)?.response;
+
+        if (errorResponse?.status === 409) {
+          return sessionIds;
+        }
+
+        return "";
+      }
+    };
+
+    try {
+      const newSessionId = await createSession(sessionId);
+      const token = await createToken(newSessionId);
+      return token;
+    } catch (error) {
+      throw new Error("Failed to get token.");
+    }
+  }, [sessionId]);
 
   const sessionIdChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -67,68 +124,6 @@ const BroadCastPage = () => {
       setSubscriber(subscribers);
     });
 
-    const createSession = async (sessionIds: string): Promise<string> => {
-      try {
-        const data = JSON.stringify({ customSessionId: sessionIds });
-        const response = await axios.post(
-          `${OPENVIDU_SERVER_URL}/api/sessions`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        return (response.data as { id: string }).id;
-      } catch (error) {
-        const errorResponse = (error as AxiosError)?.response;
-
-        if (errorResponse?.status === 409) {
-          return sessionIds;
-        }
-
-        return "";
-      }
-    };
-
-    const createToken = (sessionIds: string): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const data = {};
-        axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-            data,
-            {
-              headers: {
-                Authorization: `Basic ${btoa(
-                  `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-                )}`,
-
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((response) => {
-            resolve((response.data as { token: string }).token);
-          })
-          .catch((error) => reject(error));
-      });
-    };
-
-    const getToken = async (): Promise<string> => {
-      try {
-        const sessionIds = await createSession(sessionId);
-        const token = await createToken(sessionIds);
-        return token;
-      } catch (error) {
-        throw new Error("Failed to get token.");
-      }
-    };
-
     getToken()
       .then((token) => {
         session
@@ -140,7 +135,6 @@ const BroadCastPage = () => {
                 videoSource: undefined,
                 publishAudio: true,
                 publishVideo: true,
-                mirror: true,
               });
 
               setPublisher(publishers);
@@ -153,23 +147,26 @@ const BroadCastPage = () => {
           .catch(() => {});
       })
       .catch(() => {});
-  }, [session, OV, sessionId, OPENVIDU_SERVER_URL]);
+  }, [session, OV, sessionId, getToken]);
+
+  useEffect(() => {
+    return () => leaveSession();
+  }, []);
 
   return (
     <div>
       <h1>진행화면</h1>
       <>
-        {!session && (
+        {session ? (
+          <Session
+            publisher={publisher as Publisher}
+            subscriber={subscriber as Subscriber}
+          />
+        ) : (
           <Form
             joinSession={joinSession}
             sessionId={sessionId}
             sessionIdChangeHandler={sessionIdChangeHandler}
-          />
-        )}
-        {session && (
-          <Session
-            publisher={publisher as Publisher}
-            subscriber={subscriber as Subscriber}
           />
         )}
       </>

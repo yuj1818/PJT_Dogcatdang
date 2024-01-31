@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
+import tw from "tailwind-styled-components";
+import { logout } from "../../util/UserAPI";
 import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
-import tw from "tailwind-styled-components";
+import logo from "../../assets/main-logo-big.png";
 
 // -----------Styled Component-----------------------------------------------
 const Header = styled.header`
@@ -260,11 +261,7 @@ const NavBar = () => {
     <>
       <Header>
         <StyledNavLink to="/">
-          <img
-            src="/src/assets/main-logo.png"
-            alt="메인화면으로"
-            className="w-60 min-w-60"
-          />
+          <img src={logo} alt="메인화면으로" className="w-60 min-w-60" />
         </StyledNavLink>
         <ResponsiveButton onClick={() => setIsNoti((prev) => !prev)}>
           {isNoti ? "알람 없애기" : "알람 생성하기"}
