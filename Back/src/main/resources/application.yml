@@ -23,3 +23,15 @@ spring:
     hibernate:
       ddl-auto: update
 
+# s3 서버 설정
+cloud:
+  aws:
+    s3:
+      bucket: dogcatdang
+    credentials:
+      access-key: AKIATCKAM24E3GBXXP4N
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
