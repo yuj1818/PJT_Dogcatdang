@@ -41,6 +41,7 @@ public class UserProfileService {
 
         // 유저 프로필 정보 업데이트
         user.setUsername(userProfileDTO.getUsername());
+        user.setPassword(userProfileDTO.getPassword());
         user.setEmail(userProfileDTO.getEmail());
         user.setNickname(userProfileDTO.getNickname());
         user.setAddress(userProfileDTO.getAddress());
