@@ -106,8 +106,12 @@ public class AnimalServiceImpl implements AnimalService{
 		Animal animal = animalRepository.findById(animalId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 Id의 동물을 찾을 수 없습니다."));
 
+		// rescueLocation 조합
+		String rescueLocation = request.getSelectedCity() + " " + request.getSelectedDistrict() + " " +
+								(request.getDetailInfo() != null ? request.getDetailInfo() : "");
+
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
-			request.getRescueDate(), request.getRescueLocation(), request.getIsNeuter(), request.getGender(),
+			request.getRescueDate(), rescueLocation, request.getIsNeuter(), request.getGender(),
 			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
 
 		return animal;
