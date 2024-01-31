@@ -1,11 +1,14 @@
+import { Suspense, lazy } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import ReactModal from "react-modal";
 
 import { queryClient } from "./util/HTTP.ts";
-import { QueryClientProvider } from "@tanstack/react-query";
-
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
-import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
+const AnimalListPage = lazy(
+  () => import("./pages/animals/save_animals/AnimalListPage")
+);
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetailPage from "./pages/articles/ArticleDetailPage.tsx";
@@ -21,7 +24,10 @@ import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdateP
 import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
-import ReactModal from "react-modal";
+import { LoadingIndicator } from "./components/common/Icons.tsx";
+import BroadCastPage from "./pages/broadcast/BroadCastPage.tsx";
+import ProfilePage from "./pages/users/ProfilePage.tsx";
+// import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
   // {
@@ -47,6 +53,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <NavBar />,
+    // loader: loginOnly,
     children: [
       {
         index: true,
@@ -54,7 +61,11 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals",
-        element: <AnimalListPage />,
+        element: (
+          <Suspense fallback={<LoadingIndicator />}>
+            <AnimalListPage />
+          </Suspense>
+        ),
       },
       {
         path: "save-animals/:animalID",
@@ -84,13 +95,20 @@ const router = createBrowserRouter([
         path: "lost-update/:animalID",
         element: <LostAnimalUpdatePage />,
       },
-
+      {
+        path: "profile/:userId",
+        element: <ProfilePage />
+      },
       {
         path: "articles",
         children: [
           {
             index: true,
-            element: <ArticleListPage />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <ArticleListPage />
+              </Suspense>
+            ),
           },
           {
             path: ":boardId",
@@ -108,6 +126,15 @@ const router = createBrowserRouter([
                 element: <ArticleWritePage />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "broadcast",
+        children: [
+          {
+            path: "trans",
+            element: <BroadCastPage />,
           },
         ],
       },

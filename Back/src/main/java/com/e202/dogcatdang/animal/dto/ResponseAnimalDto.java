@@ -39,6 +39,5 @@ public class ResponseAnimalDto {
 		this.rescueDate = animal.getRescueDate().atStartOfDay();
 		this.feature = animal.getFeature();
 		this.imgName = animal.getImgName();
-		this.userId = animal.getUserId();
 	}
 }

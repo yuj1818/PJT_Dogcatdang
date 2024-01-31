@@ -47,11 +47,48 @@ export const signUp = (data: signUpData) => {
   });
 };
 
-// export const logout = () => {
-//   return API.get('http://localhost:8084/logout')
-//     .then(res => {
-//       cookie.remove('U_ID');
-//       localStorage.removeItem('userInfo');
-//       return res;
-//     })
-// }
+export const checkUsername = ( data: { username: string } ) => {
+  return API.post(URL + '/username-check', data)
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return err.response;
+    });
+};
+
+export const checkEmail = ( data: { email: string } ) => {
+  return API.post(URL + '/email-check', data)
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return err.response;
+    });
+};
+
+export const checkNickname = ( data: { nickname: string } ) => {
+  return API.post(URL + '/nickname-check', data)
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return err.response;
+    });
+};
+
+export const logout = () => {
+  return API.post(URL + '/logout')
+    .then(res => {
+      cookie.remove('U_ID');
+      localStorage.removeItem('userInfo')
+      return res;
+    })
+};
+
+export const getUserInfo = (userId: string) => {
+  return API.get(URL + '/profiles/' + userId)
+    .then(res => {
+      return res;
+    })
+};

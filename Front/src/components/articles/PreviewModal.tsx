@@ -1,6 +1,12 @@
 import DOMPurify from "dompurify";
 import ReactModal from "react-modal";
+import { Button } from "../common/CommonComponents";
+import tw from "tailwind-styled-components";
+import ArticleContent from "./ArticleContent";
 
+const ButtonLayout = tw.div`
+absolute bottom-1 left-1/2 transform -translate-x-1/2
+`;
 const modalStyle = {
   content: {
     width: "50%",
@@ -34,14 +40,16 @@ const Preview: React.FC<articlePreviewModal> = ({
       onRequestClose={closeModal}
       style={modalStyle}
     >
-      <h2>{title}</h2>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(String(content)),
-        }}
-      ></div>
+      <ArticleContent
+        title={title}
+        content={DOMPurify.sanitize(String(content))}
+      />
+      <ButtonLayout>
+        <Button className="object-cover" onClick={closeModal}>
+          닫기
+        </Button>
+      </ButtonLayout>
     </ReactModal>
   );
 };
-
 export default Preview;

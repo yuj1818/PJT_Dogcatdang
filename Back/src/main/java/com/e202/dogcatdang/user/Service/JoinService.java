@@ -57,4 +57,16 @@ public class JoinService {
         userRepository.save(data);
 
     }
+
+    public boolean isUsernameDuplicate(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean isEmailDuplicate(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean isNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }

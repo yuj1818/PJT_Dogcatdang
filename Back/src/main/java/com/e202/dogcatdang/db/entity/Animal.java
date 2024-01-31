@@ -1,20 +1,26 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
 
 import com.e202.dogcatdang.enums.AnimalType;
+import com.e202.dogcatdang.enums.CatBreed;
+import com.e202.dogcatdang.enums.DogBreed;
 import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 // import jakarta.validation.constraints.NotNull;
 // 	ㄴ build.gradle에 의존성 추가 필요: implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -37,7 +43,6 @@ public class Animal {
 	@Column(name = "animal_type", nullable = false)
 	private AnimalType animalType; // AnimalType은 Enum 클래스로 정의되어야 합니다.
 
-	// 품종 데이터 셋 둘 거면 추후 수정 필요
 	@Column(name = "breed", length = 200, nullable = false)
 	private String breed;
 
@@ -46,9 +51,6 @@ public class Animal {
 
 	@Column(name = "weight")
 	private Integer weight;
-
-	@Column(name = "color", length = 200, nullable = false)
-	private String color;
 
 	@Column(name = "rescue_date", nullable = false)
 	private LocalDate rescueDate;
@@ -77,29 +79,36 @@ public class Animal {
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-	// private User user;
+	// 단방향 1:N 관계
+	// user : animal
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-	@Column(name = "user_id", nullable = false)
-	private Integer userId;
+	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
+	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
+	// @Setter 대신 set method 만들어서 사용
+	public void setRescueLocation(String rescueLocation) {
+		this.rescueLocation = rescueLocation;
+	}
 
 	// enum 정의는 클래스의 맨 아래에 위치
 	public enum State {
 		보호중, 입양완료, 안락사, 자연사
 	}
 
+
 	// Builder 클래스 추가
+	// DTO -> Entity 만드는데 사용
 	@Builder
-	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight, String color,
+	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, Integer userId) {
+		State state, String imgName, String imgUrl, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
 		this.breed = breed;
 		this.age = age;
 		this.weight = weight;
-		this.color = color;
 		this.rescueDate = rescueDate;
 		this.rescueLocation = rescueLocation;
 		this.isNeuter = isNeuter;
@@ -108,17 +117,16 @@ public class Animal {
 		this.state = state;
 		this.imgName = imgName;
 		this.imgUrl = imgUrl;
-		this.userId = userId;
+		this.user = user;
 	}
 
-	public void update(AnimalType animalType, String breed, Integer age, Integer weight, String color,
+	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
 		State state, String imgName, String imgUrl) {
 		this.animalType = animalType;
 		this.breed = breed;
 		this.age = age;
 		this.weight = weight;
-		this.color = color;
 		this.rescueDate = rescueDate;
 		this.rescueLocation = rescueLocation;
 		this.isNeuter = isNeuter;
