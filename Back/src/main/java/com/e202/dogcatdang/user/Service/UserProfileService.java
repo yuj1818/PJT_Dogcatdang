@@ -30,6 +30,7 @@ public class UserProfileService {
         userProfileDTO.setBio(user.getBio());
         userProfileDTO.setImgName(user.getImg_name());
         userProfileDTO.setImgUrl(user.getImg_url());
+        userProfileDTO.setRole((user.getRole()));
 
         return userProfileDTO;
     }
@@ -47,6 +48,7 @@ public class UserProfileService {
         user.setBio(userProfileDTO.getBio());
         user.setImg_name(userProfileDTO.getImgName());
         user.setImg_url(userProfileDTO.getImgUrl());
+        user.setRole(userProfileDTO.getRole());
 
         // 업데이트된 유저 정보 저장
         userRepository.save(user);

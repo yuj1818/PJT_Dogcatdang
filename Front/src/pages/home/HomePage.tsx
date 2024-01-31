@@ -1,19 +1,3 @@
-import tw from "tailwind-styled-components";
-
-const Button = tw.button`
-    w-60
-    p-2
-    bg-indigo-600
-    rounded-xl
-    text-white
-    font-bold
-    text-lg
-
-    hover:bg-indigo-800
-    hover:scale-105
-    hover:transition
-`;
-
 const MainPage: React.FC = () => {
   // HTTP 요청
   return (
