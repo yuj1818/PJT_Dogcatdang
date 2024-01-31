@@ -24,7 +24,7 @@ function AnimalDetailPage() {
 
   const navigate = useNavigate();
   const handleUpdate = () => {
-    navigate(`/save-update/${animalID}`);
+    navigate(`/save-update`);
   };
   return (
     <div>
