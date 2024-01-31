@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { StreamManager } from "openvidu-browser";
 
 interface Props {

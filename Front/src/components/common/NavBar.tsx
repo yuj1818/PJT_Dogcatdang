@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import { logout } from "../../util/UserAPI";
+import { logout } from "../../util/UserAPI";
 import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
-
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
 
@@ -94,14 +93,13 @@ const NavBar = () => {
 
   const cookie = new Cookies();
 
-  // api 구현 후 수정 필요
-  const onClickLogout = () => {
-    // const response = await logout();
-    // console.log(response);
-    cookie.remove("U_ID");
-    localStorage.removeItem("userInfo");
-
-    navigate("/landing");
+  const onClickLogout = async () => {
+    const response = await logout();
+    if (response.status === 200) {
+      cookie.remove("U_ID");
+      localStorage.removeItem("userInfo");
+      navigate("/landing");
+    }
   };
 
   const commontNavTitles = (
