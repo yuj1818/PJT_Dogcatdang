@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
@@ -42,18 +43,18 @@ public class AnimalController {
 	// 동물 정보 등록
 	@PostMapping("")
 	public ResponseEntity<ResponseSavedIdDto> registerAnimal(@RequestHeader("Authorization") String token, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
-		// 토큰에서 사용자 이름 추출
-		String username = jwtUtil.getUsername(token.substring(7));
-
-		// 사용자 이름으로 사용자 정보 가져오기
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+		// // 토큰에서 사용자 이름 추출
+		// String username = jwtUtil.getUsername(token.substring(7));
+		//
+		// // 사용자 이름으로 사용자 정보 가져오기
+		// UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 		// animalType에 맞는 breed를 입력했는지 확인하는 기능
 		if (!requestAnimalDto.isValid()) {
 			throw new IllegalArgumentException("품종이 동물 타입과 맞지 않습니다.");
 		}
 
-		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto);
+		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto, token);
 		return ResponseEntity.ok(responseSavedIdDto);
 	}
 
@@ -80,7 +81,21 @@ public class AnimalController {
 
 	/* 동물 정보 수정 */
 	@PutMapping("/{animalId}")
-	public ResponseEntity<Long> update(@PathVariable long animalId, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
+	public ResponseEntity<Long> update(@PathVariable Long animalId, @RequestHeader("Authorization") String token, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		// 수정할 동물 정보 가져오기
+		ResponseAnimalDto existingAnimal = animalService.findById(animalId);
+		// 수정할 동물의 작성자 아이디(pk) 가져오기
+		Long authorId = existingAnimal.getUserId();
+
+		// 현재 로그인한 사용자와 동물의 작성자 아이디 비교
+		// 만약 일치하지 않으면 권한 없음 반환
+		if (!loginUserId.equals(authorId)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+		}
+
 		Animal animal = animalService.update(animalId, requestAnimalDto);
 		return ResponseEntity.ok(animal.getAnimalId());
 	}

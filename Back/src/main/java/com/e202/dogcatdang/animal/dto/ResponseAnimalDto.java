@@ -26,7 +26,7 @@ public class ResponseAnimalDto {
 	private LocalDateTime rescueDate;
 	private String feature;
 	private String imgName;
-	private int userId;
+	private Long userId;
 
 	// Entity -> DTO
 	public ResponseAnimalDto(Animal animal) {
@@ -39,5 +39,6 @@ public class ResponseAnimalDto {
 		this.rescueDate = animal.getRescueDate().atStartOfDay();
 		this.feature = animal.getFeature();
 		this.imgName = animal.getImgName();
+		this.userId = animal.getUser().getId();
 	}
 }

@@ -21,12 +21,15 @@ import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
+import com.e202.dogcatdang.user.jwt.JWTUtil;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class AnimalServiceImpl implements AnimalService{
+
+	private JWTUtil jwtUtil;
 
 	private final AnimalRepository animalRepository;
 	private final UserRepository userRepository;
@@ -36,8 +39,11 @@ public class AnimalServiceImpl implements AnimalService{
 		2. animalId 값을 반환한다
 	*/
 	@Override
-	public ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto) throws IOException {
-		User user = userRepository.findById(requestAnimalDto.getUserId())
+	public ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto, String token) throws IOException {
+		// JWT 토큰에서 userId 추출
+		Long userId = jwtUtil.getUserId(token.substring(7));
+
+		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 회원이 없습니다"));
 
 		Animal animal = requestAnimalDto.toEntity(user);
@@ -100,8 +106,12 @@ public class AnimalServiceImpl implements AnimalService{
 		Animal animal = animalRepository.findById(animalId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 Id의 동물을 찾을 수 없습니다."));
 
+		// rescueLocation 조합
+		String rescueLocation = request.getSelectedCity() + " " + request.getSelectedDistrict() + " " +
+								(request.getDetailInfo() != null ? request.getDetailInfo() : "");
+
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
-			request.getRescueDate(), request.getRescueLocation(), request.getIsNeuter(), request.getGender(),
+			request.getRescueDate(), rescueLocation, request.getIsNeuter(), request.getGender(),
 			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
 
 		return animal;
