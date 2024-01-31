@@ -18,6 +18,19 @@ export interface RegistrationData {
   imgUrl: string;
 }
 
+export const search = (data: RegistrationData) => {
+  console.log(data);
+  return API.get("/animals")
+    .then((res) => {
+      console.log("Response:", res);
+      return res;
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+      return err.response;
+    });
+};
+
 export const regist = (data: RegistrationData, token: string) => {
   console.log(token);
   console.log(data);
