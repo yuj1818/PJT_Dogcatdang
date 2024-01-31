@@ -1,31 +1,42 @@
 import React, { useState } from "react";
 import LostAnimalCard from "./LostAnimalCard";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 
-interface AnimalType {
-  id: number;
-  name: string;
-  animalType: string;
-  breed: string;
-  age: number;
-  weight: number;
-  color: string;
-  feature: string;
-  lostDate: string;
-  lostLocation: string;
-  gender: string;
-  isNeuter: boolean;
-}
-
-type LostAnimalSearchProps = {
-  animals: AnimalType[];
-};
-
-function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
+function LostAnimalSearch() {
   type CountryInput = {
     [key: number]: string[];
   };
+
+  const animalData = [
+    {
+      id: 1,
+      name: "소금이",
+      animalType: "강아지",
+      breed: "불독",
+      age: 2,
+      weight: 900,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
+      lostDate: "2024-01-12",
+      lostLocation: "서울특별시 강서구",
+      gender: "남",
+      isNeuter: false,
+    },
+    {
+      id: 2,
+      name: "하양이",
+      animalType: "고양이",
+      breed: "먼치킨",
+      age: 3,
+      weight: 600,
+      color: "흰색",
+      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
+      lostDate: "2024-01-12",
+      lostLocation: "부산광역시 강서구",
+      gender: "여",
+      isNeuter: true,
+    },
+  ];
 
   const navigate = useNavigate();
   const [animalType, setAnimalType] = useState("강아지");
@@ -33,7 +44,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
   const [region, setRegion] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  const [filteredAnimalData, setFilteredAnimalData] = useState(animalData);
 
   const dogInput = [
     "전체",
@@ -391,7 +402,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     const combinedLocation = region + " " + country;
     console.log(combinedLocation);
     // 필터링을 위한 로직을 추가
-    const filteredData = animals.filter((animal) => {
+    const filteredData = animalData.filter((animal) => {
       return (
         (animalType === "" || animal.animalType === animalType) &&
         (breed === "" || animal.breed === breed) &&
@@ -406,19 +417,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
     navigate("/lost-registration");
   };
-
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
-  `;
 
   return (
     <div>
@@ -501,14 +499,11 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
           <button onClick={handleRegistration}>동물 등록</button>
         </div>
       </form>
-
-      <ListStyle $itemsPerRow={4}>
+      <div>
         {filteredAnimalData.map((animal, index) => (
-          <div>
-            <LostAnimalCard key={index} animals={animal} />
-          </div>
+          <LostAnimalCard key={index} animals={animal} />
         ))}
-      </ListStyle>
+      </div>
     </div>
   );
 }
