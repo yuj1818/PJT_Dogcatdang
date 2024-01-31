@@ -24,14 +24,21 @@ export interface RegistrationData {
 //   data: RegistrationData;
 // }
 
-export const regist = (data: RegistrationData) => {
-  return API.post("http://localhost:8084/api/animals/", data).then((res) => {
-    console.log(res);
-
-    if (res.status === 200) {
-      console.log(res.data);
-    }
-
-    return res;
-  });
+export const regist = (data: RegistrationData, token: string) => {
+  console.log(token);
+  console.log(data);
+  return API.post("/animals", data, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      console.log("Response:", res);
+      return res;
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+      return err.response;
+    });
 };
