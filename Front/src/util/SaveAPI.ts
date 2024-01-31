@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import API from "./axios";
 // const URL = "/animals";
 
