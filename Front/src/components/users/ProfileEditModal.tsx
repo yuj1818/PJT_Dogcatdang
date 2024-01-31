@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { infoData } from "../../util/UserAPI";
 import ReactModal from "react-modal";
 import styled from "styled-components";
-import { checkEmail, checkNickname, editUserInfo } from "../../util/UserAPI";
+import { checkEmail, checkNickname, editUserInfo, infoData, getUserInfo } from "../../util/UserAPI";
 import { useParams } from "react-router-dom";
 
 const EditForm = styled.form`
@@ -64,8 +63,10 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(() => e.target.value);
-    if (isEmailChanged) {
+    if (!isEmailChanged) {
       setIsEmailChanged(true);
+      setEmailErrMsg('중복 검사 필요');
+      setIsValidEmail(false);
     }
   }
 
@@ -79,8 +80,10 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(() => e.target.value);
-    if (isNicknameChanged) {
+    if (!isNicknameChanged) {
       setIsNicknameChanged(true);
+      setNicknameErrMsg('중복 검사 필요');
+      setIsValidNickname(false);
     }
   }
 
@@ -113,6 +116,7 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     
     if (response.status === 200) {
       setIsValidEmail(true);
+      setIsEmailChanged(false);
       setEmailErrMsg('사용 가능한 이메일입니다');
     } else if (response.status === 409) {
       setIsValidEmail(false);
@@ -129,6 +133,7 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     
     if (response.status === 200) {
       setIsValidNickname(true);
+      setIsNicknameChanged(false);
       setNicknameErrMsg(`사용 가능한 ${props.isOrg ? '기관명' : '닉네임'}입니다`);
     } else if (response.status === 409) {
       setIsValidNickname(false);
@@ -140,7 +145,7 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     props.closeModal((prev) => !prev);
   }
 
-  const onSave = async(e: React.FormEvent) => {
+  const onSave = async(e: React.MouseEvent) => {
     e.preventDefault();
 
     if (isNicknameChanged) {
@@ -156,21 +161,25 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     }
 
     const data = {
-      id: parseInt(params.userId || ''),
-      username: props.userInfo?.username || '',
-      role: props.userInfo?.role || '',
       email: email,
       nickname: nickname,
       address: address,
       phone: phone,
       bio: bio,
       imgName: props.userInfo?.imgName || '',
-      imgUrl: props.userInfo?.imgUrl || ''
+      imgUrl: props.userInfo?.imgUrl || '',
+      password: password1,
+      passwordConfirm: password2
     };
 
     const response = await editUserInfo(params.userId || '', data);
-    
-    props.saveUserInfo(response.data);
+    console.log(response);
+    //props.saveUserInfo(response.data);
+
+    const userInfoRes = await getUserInfo(params.userId || '');
+    props.saveUserInfo(userInfoRes.data);
+
+    props.closeModal((prev) => !prev);
   }
 
   const preventSubmit = (e: React.FormEvent) => {

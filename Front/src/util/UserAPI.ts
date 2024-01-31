@@ -37,6 +37,18 @@ export interface infoData {
   bio: string;
 }
 
+export interface editedInfoData {
+  email: string;
+  nickname: string;
+  address: string;
+  phone: string;
+  imgName: string;
+  imgUrl: string;
+  bio: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 export const signIn = ( data: signInData ) => {
   return API.post('http://localhost:8084/login', data)
     .then(res => {
@@ -105,7 +117,7 @@ export const getUserInfo = (userId: string) => {
   });
 };
 
-export const editUserInfo = (userId: string, data: infoData) => {
+export const editUserInfo = (userId: string, data: editedInfoData) => {
   return API.put(URL + '/profiles/' + userId, data, {
     method: "PUT",
     headers: {
