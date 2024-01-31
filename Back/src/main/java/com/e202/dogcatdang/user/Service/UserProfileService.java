@@ -3,6 +3,8 @@ package com.e202.dogcatdang.user.Service;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.user.dto.UserProfileDTO;
+import io.jsonwebtoken.security.Password;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -10,10 +12,11 @@ import java.util.NoSuchElementException;
 @Service
 public class UserProfileService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    public UserProfileService(UserRepository userRepository) {
+    public UserProfileService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public UserProfileDTO getUserProfile(Long userId) {
@@ -41,7 +44,8 @@ public class UserProfileService {
 
         // 유저 프로필 정보 업데이트
         user.setUsername(userProfileDTO.getUsername());
-        user.setPassword(userProfileDTO.getPassword());
+        String password = userProfileDTO.getPassword();
+        user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setEmail(userProfileDTO.getEmail());
         user.setNickname(userProfileDTO.getNickname());
         user.setAddress(userProfileDTO.getAddress());
