@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { regist } from "../../../util/SaveAPI";
 
-type CountryInput = {
-  [key: number]: string[];
-};
-
 function AnimalFormPage() {
+  type CountryInput = {
+    [key: number]: string[];
+  };
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
-  // const [imgName, setImgName] = useState("");
-  // const [imgUrl, setImgUrl] = useState("");
+  const [imgName, setImgName] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
 
@@ -363,13 +362,6 @@ function AnimalFormPage() {
   const handleDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetailInfo(e.target.value);
   };
-  // const handleImgName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setImgName(e.target.value);
-  // };
-
-  // const handleImgUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setImgUrl(e.target.value);
-  // };
 
   const handleBreed = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBreed(e.target.value);
@@ -385,51 +377,67 @@ function AnimalFormPage() {
 
   const handleRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData();
+    const data = {
+      animalType: animalType,
+      breed: breed,
+      age: age,
+      weight: weight,
+      rescueDate: rescueDate,
+      selectedCity: selectedCity,
+      selectedDistrict: selectedDistrict,
+      detailInfo: detailInfo,
+      isNeuter: isNeuter,
+      gender: gender,
+      feature: feature,
+      state: state,
+      imgName: imgName,
+      imgUrl: imgUrl,
+    };
+    // const formData = new FormData();
 
     // formData.append("image", e.target.files[0]);
     // formData.append("imgUrl", imgUrl);
     // formData.append("imgName", imgName);
 
-    formData.append("animalType", animalType);
-    formData.append("breed", breed);
-    formData.append("age", age);
-    formData.append("weight", weight);
-    formData.append("rescueDate", rescueDate);
-    formData.append("selectedCity", selectedCity);
-    formData.append("selectedDistrict", selectedDistrict);
-    formData.append("detailInfo", detailInfo);
-    formData.append("isNeuter", String(isNeuter));
-    formData.append("gender", gender);
-    formData.append("feature", feature);
-    formData.append("state", state);
+    // formData.append("animalType", animalType);
+    // formData.append("breed", breed);
+    // formData.append("age", age);
+    // formData.append("weight", weight);
+    // formData.append("rescueDate", rescueDate);
+    // formData.append("selectedCity", selectedCity);
+    // formData.append("selectedDistrict", selectedDistrict);
+    // formData.append("detailInfo", detailInfo);
+    // formData.append("isNeuter", String(isNeuter));
+    // formData.append("gender", gender);
+    // formData.append("feature", feature);
+    // formData.append("state", state);
 
-    const response = await regist(formData);
+    const response = await regist(data);
     console.log(response);
     navigate("/save-animals");
   };
 
   return (
     <>
-      <label>
-        <input
-          type="radio"
-          value="강아지"
-          checked={animalType === "강아지"}
-          onChange={() => setAnimalType("강아지")}
-        />
-        강아지
-      </label>
-      <label>
-        <input
-          type="radio"
-          value="고양이"
-          checked={animalType === "고양이"}
-          onChange={() => setAnimalType("고양이")}
-        />
-        고양이
-      </label>
       <form onSubmit={handleRegistration}>
+        <label>
+          <input
+            type="radio"
+            value="강아지"
+            checked={animalType === "강아지"}
+            onChange={() => setAnimalType("강아지")}
+          />
+          강아지
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="고양이"
+            checked={animalType === "고양이"}
+            onChange={() => setAnimalType("고양이")}
+          />
+          고양이
+        </label>
         <div>
           <label htmlFor="breed">품종</label>
           <select name="breed" id="breed" value={breed} onChange={handleBreed}>
@@ -453,6 +461,26 @@ function AnimalFormPage() {
             <input type="file" accept="image/*" />{" "}
           </label>
         </div> */}
+        <div>
+          <label>
+            이미지이름:
+            <input
+              type="text"
+              value={imgName}
+              onChange={(e) => setImgName(e.target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            이미지URL:
+            <input
+              type="text"
+              value={imgUrl}
+              onChange={(e) => setImgUrl(e.target.value)}
+            />
+          </label>
+        </div>
 
         <div>
           <label>
@@ -506,14 +534,14 @@ function AnimalFormPage() {
           <select
             name="country"
             id="country"
-            value={selectedCity}
+            value={selectedDistrict}
             onChange={handleDistrict}
           >
             <option value="" disabled hidden>
               시/구/군 선택
             </option>
-            {countryInput[regionInput.indexOf(selectedDistrict)] &&
-              countryInput[regionInput.indexOf(selectedDistrict)].map(
+            {countryInput[regionInput.indexOf(selectedCity)] &&
+              countryInput[regionInput.indexOf(selectedCity)].map(
                 (ct, index) => (
                   <option key={index} value={ct}>
                     {ct}

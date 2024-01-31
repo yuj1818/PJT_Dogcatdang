@@ -5,9 +5,9 @@ import API from "./axios";
 export interface RegistrationData {
   animalType: string;
   breed: string;
-  age: number;
-  weight: number;
-  rescueDate: Date;
+  age: string;
+  weight: string;
+  rescueDate: string;
   selectedCity: string;
   selectedDistrict: string;
   detailInfo: string;
@@ -15,23 +15,23 @@ export interface RegistrationData {
   gender: string;
   feature: string;
   state: string;
-  // imgName: string;
-  // imgUrl: string;
+  imgName: string;
+  imgUrl: string;
 }
 
-export interface RegistrationResponse {
-  status: number;
-  data: RegistrationData;
-}
+// export interface RegistrationResponse {
+//   status: number;
+//   data: RegistrationData;
+// }
 
-export const regist = (data: FormData): Promise<RegistrationResponse> => {
-  return API.post("http://localhost:8084/animals", data).then((res) => {
+export const regist = (data: RegistrationData) => {
+  return API.post("http://localhost:8084/api/animals/", data).then((res) => {
     console.log(res);
 
     if (res.status === 200) {
       console.log(res.data);
     }
 
-    return res as RegistrationResponse;
+    return res;
   });
 };
