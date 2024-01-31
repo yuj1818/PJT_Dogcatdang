@@ -24,6 +24,19 @@ export interface signUpData {
   imgUrl: string;
 }
 
+export interface infoData {
+  id: number;
+  username: string;
+  role: string;
+  email: string;
+  nickname: string;
+  address: string;
+  phone: string;
+  imgName: string;
+  imgUrl: string;
+  bio: string;
+}
+
 export const signIn = ( data: signInData ) => {
   return API.post('http://localhost:8084/login', data)
     .then(res => {
@@ -94,3 +107,15 @@ export const getUserInfo = (userId: string) => {
       return res;
     })
 };
+
+export const editUserInfo = (userId: string, data: infoData) => {
+  return API.put(URL + '/profiles/' + userId, data, {
+    method: "PUT",
+    headers: {
+      Authorization: cookie.get('U_ID')
+    }
+  })
+    .then(res => {
+      return res;
+    })
+}
