@@ -53,7 +53,7 @@ public class AnimalController {
 			throw new IllegalArgumentException("품종이 동물 타입과 맞지 않습니다.");
 		}
 
-		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto);
+		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto, token);
 		return ResponseEntity.ok(responseSavedIdDto);
 	}
 
