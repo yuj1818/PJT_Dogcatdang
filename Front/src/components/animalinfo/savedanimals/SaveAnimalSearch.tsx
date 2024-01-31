@@ -21,12 +21,11 @@ type AnimalType = {
 type SaveAnimalSearchProps = {
   animals: AnimalType[];
 };
+type CountryInput = {
+  [key: number]: string[];
+};
 
 function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
-  type CountryInput = {
-    [key: number]: string[];
-  };
-
   const [animalType, setAnimalType] = useState("강아지");
   const [region, setRegion] = useState("");
   const [breed, setBreed] = useState("");

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
 import Pagination from "../../../components/articles/Pagination";
 
