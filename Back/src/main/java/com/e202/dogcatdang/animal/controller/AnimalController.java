@@ -3,8 +3,10 @@ package com.e202.dogcatdang.animal.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
@@ -55,12 +58,16 @@ public class AnimalController {
 	}
 
 	/* 동물 목록 조회
-	*  모든 동물을 리스트로 불러옴
+	*  모든 동물을 페이지로 불러옴
+	   1페이지에 최대 8개의 데이터
 	*/
 	@GetMapping("")
-	public ResponseEntity<List<ResponseAnimalListDto>> findAll() {
-		List<ResponseAnimalListDto> animalList = animalService.findAll();
-		return ResponseEntity.ok(animalList);
+	public List<ResponseAnimalListDto> findAll(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "8") int recordSize) {
+		Page<ResponseAnimalListDto> animalPage = animalService.findAll(page, recordSize);
+
+		// model.addAttribute 대신 ResponseEntity에 데이터를 담아 반환
+		return animalPage.getContent();
 	}
 
 	/* 동물 정보 상세 조회

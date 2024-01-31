@@ -24,7 +24,7 @@ public class ResponseAnimalListDto {
 	private String rescueLocation;
 
 	private String imgName;
-	private int userId;
+	private Long userId;
 
 	// Entity -> DTO
 	@Builder
@@ -34,10 +34,11 @@ public class ResponseAnimalListDto {
 		this.breed = animal.getBreed();
 		this.age = animal.getAge();
 		this.gender = animal.getGender();
-		//
 		this.isNeuter = animal.getIsNeuter();
 		this.state = animal.getState();
 		this.rescueLocation = animal.getRescueLocation();
+		// Animal entity와 User entity의 관계에서 userId 가져오기
+		this.userId = animal.getUser().getId();
 
 		this.imgName = animal.getImgName();
 	}
