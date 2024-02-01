@@ -7,7 +7,7 @@ export const HOST = "http://localhost";
 
 export const PORT = ":8084";
 
-export const URL = HOST + PORT + "/api";
+export const URL = HOST + PORT;
 
 const API = axios.create({
   baseURL: URL,

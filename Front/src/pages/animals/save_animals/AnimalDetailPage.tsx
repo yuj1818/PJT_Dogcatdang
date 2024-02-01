@@ -26,7 +26,7 @@ function AnimalDetailPage() {
         console.log(res.data);
         setAnimalDetail(res.data);
       })
-      .catch((error) => console.error("Error fetching animal data:", error));
+      .catch((error) => console.error("Error:", error));
   }, [animalID]);
 
   const navigate = useNavigate();

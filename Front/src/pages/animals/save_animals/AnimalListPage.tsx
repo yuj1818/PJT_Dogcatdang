@@ -28,7 +28,7 @@ function AnimalListPage() {
   useEffect(() => {
     const searchData = async () => {
       try {
-        const res = await API.get("/animals");
+        const res = await API.get("/api/animals");
         console.log("실행:", res.data);
         setAnimalData(res.data);
       } catch (err) {

@@ -41,7 +41,7 @@ export const requestArticle = async ({
   data,
   method,
 }: FetchEventsOptions) => {
-  const URL = "boards";
+  const URL = "api/boards";
   let response;
   let proccesedData;
   if (data) {
