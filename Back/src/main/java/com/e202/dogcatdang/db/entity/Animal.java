@@ -41,7 +41,7 @@ public class Animal {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "animal_type", nullable = false)
-	private AnimalType animalType; // AnimalType은 Enum 클래스로 정의되어야 합니다.
+	private AnimalType animalType;
 
 	@Column(name = "breed", length = 200, nullable = false)
 	private String breed;
