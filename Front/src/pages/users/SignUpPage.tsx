@@ -3,10 +3,22 @@ import styled from "styled-components";
 import { signUp, checkUsername, checkNickname, checkEmail } from "../../util/UserAPI";
 import { useNavigate } from "react-router-dom";
 
+const FormBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5rem;
+
+  .img-box {
+    width: 40%;
+  }
+`
+
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  text-align: center;
 
   .box {
     display: flex;
@@ -16,21 +28,27 @@ const SignUpForm = styled.form`
       text-align: right;
       width: 11rem;
       white-space: nowrap;
-      font-size: 25px;
+      font-size: 20px;
     }
     .input {
       font-size: 22px;
       border: none;
       box-shadow: 0 3.5px 3.5px lightgrey;
       border-radius: 5px;
+      width: 15rem;
     }
   }
 
   button {
     border: none;
-    font-size: 20px;
+    font-size: 16px;
     border-radius: 5px;
     background-color: #F7EDE1;
+    padding: .2rem .4rem;
+  }
+
+  .button-box {
+    width: 15rem;
   }
 `
 
@@ -75,8 +93,6 @@ function SignUpPage() {
 
   const handlePassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword2(() => e.target.value);
-    // 비밀번호 같은지 체크
-    // setIsValidEmail(() => password1 === password2 ? true : false);
   }
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,10 +108,12 @@ function SignUpPage() {
   }
 
   useEffect(() => {
-    if (password1 === password2) {
-      setPasswordErrMsg('비밀번호 일치');
-    } else {
-      setPasswordErrMsg('비밀번호 불일치');
+    if (password1) {
+      if (password1 === password2) {
+        setPasswordErrMsg('비밀번호 일치');
+      } else {
+        setPasswordErrMsg('비밀번호 불일치');
+      }
     }
   }, [password1, password2])
 
@@ -179,10 +197,12 @@ function SignUpPage() {
   }
 
   return (
-    <div>
-      <img src="/src/assets/auth-image.png" alt="" />
-      <h3>회원가입</h3>
+    <FormBox>
+      <div className="img-box">
+        <img src="/src/assets/auth-image.png" alt="" />
+      </div>
       <SignUpForm onSubmit={onSubmit}>
+        <h3>회원가입</h3>
         <div className="box">
           <label className="item" htmlFor="isOrg">회원 구분</label>
           <div>
@@ -199,13 +219,13 @@ function SignUpPage() {
           <input className="input" type="text" id="username" name="username" onChange={handleUsername} />
           <button onClick={onClickCheckUsername}>중복확인</button>
         </div>
-        <p>{usernameErrMsg}</p>
+        <p className="err-msg">{usernameErrMsg}</p>
         <div className="box">
           <label className="item" htmlFor="nickname">{ isOrg ? '기관명' : '닉네임' }</label>
           <input className="input" type="text" id="nickname" name="nickname" onChange={handleNickname} />
           <button onClick={onClickCheckNickname}>중복확인</button>
         </div>
-        <p>{nicknameErrMsg}</p>
+        <p className="err-msg">{nicknameErrMsg}</p>
         <div className="box">
           <label className="item" htmlFor="password1">비밀번호</label>
           <input className="input" type="password" id="password1" name="password1" onChange={handlePassword1} />
@@ -214,7 +234,7 @@ function SignUpPage() {
           <label className="item" htmlFor="password2">비밀번호 확인</label>
           <input className="input" type="password" id="password2" name="password2" onChange={handlePassword2} />
         </div>
-        <p>{passwordErrMsg}</p>
+        <p className="err-msg">{passwordErrMsg}</p>
         <div className="box">
           <label className="item" htmlFor="email">이메일</label>
           <input className="input" type="email" id="email" name="email" onChange={handleEmail} />
@@ -229,10 +249,15 @@ function SignUpPage() {
           <label className="item" htmlFor="address">주소</label>
           <input className="input" type="text" id="address" name="address" onChange={handleAddress} />
         </div>
-        <p>{signUpErrMsg}</p>
-        <button>회원가입</button>
+        <p className="err-msg">{signUpErrMsg}</p>
+        <div className="box">
+          <div className="item"></div>
+          <div className="button-box">
+            <button>회원가입</button>
+          </div>
+        </div>
       </SignUpForm>
-    </div>
+    </FormBox>
   );
 }
 

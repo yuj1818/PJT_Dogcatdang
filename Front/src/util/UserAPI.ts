@@ -2,7 +2,7 @@ import API from "./axios";
 import { Cookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const URL = "/user";
+const URL = "/api/user";
 
 const cookie = new Cookies();
 
@@ -24,8 +24,36 @@ export interface signUpData {
   imgUrl: string;
 }
 
+export interface infoData {
+  id: number;
+  username: string;
+  role: string;
+  email: string;
+  nickname: string;
+  address: string;
+  phone: string;
+  imgName: string;
+  imgUrl: string;
+  bio: string;
+}
+
+export interface editedInfoData {
+  email: string;
+  nickname: string;
+  address: string;
+  phone: string;
+  imgName: string;
+  imgUrl: string;
+  bio: string;
+}
+
+export interface editedInfoDataWithPassword extends editedInfoData {
+  password: string;
+  passwordConfirm: string;
+}
+
 export const signIn = (data: signInData) => {
-  return API.post("http://localhost:8084/login", data).then((res) => {
+  return API.post("/login", data).then((res) => {
     console.log(res);
 
     if (res.status === 200) {
@@ -78,17 +106,30 @@ export const checkNickname = (data: { nickname: string }) => {
 };
 
 export const logout = () => {
-  return API.post(URL + '/logout')
-    .then(res => {
-      cookie.remove('U_ID');
-      localStorage.removeItem('userInfo')
-      return res;
-    })
+  return API.post(URL + "/logout").then((res) => {
+    cookie.remove("U_ID");
+    localStorage.removeItem("userInfo");
+    return res;
+  });
 };
 
 export const getUserInfo = (userId: string) => {
-  return API.get(URL + '/profiles/' + userId)
-    .then(res => {
+  return API.get(URL + "/profiles/" + userId)
+    .then((res) => {
       return res;
-    })
+    });
+};
+
+export const editUserInfo = (
+  userId: string,
+  data: editedInfoData | editedInfoDataWithPassword
+) => {
+  return API.put(URL + "/profiles/" + userId, data, {
+    method: "PUT",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    },
+  }).then((res) => {
+    return res;
+  });
 };

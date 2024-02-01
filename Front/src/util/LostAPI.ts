@@ -1,16 +1,15 @@
 import API from "./axios";
-// const URL = "/animals";
 
 export interface RegistrationData {
   animalType: string;
+  name: string;
   breed: string;
   age: string;
   weight: string;
-  rescueDate: string;
+  lostDate: string;
   selectedCity: string;
   selectedDistrict: string;
   detailInfo: string;
-  isNeuter: boolean;
   gender: string;
   feature: string;
   state: string;
@@ -18,11 +17,11 @@ export interface RegistrationData {
   imgUrl: string;
 }
 
-export const search = (data: RegistrationData) => {
+export const lost_search = (data: RegistrationData) => {
   console.log(data);
-  return API.get("/api/animals")
+  return API.get("/api/lost-animals")
     .then((res) => {
-      // console.log("Response:", res);
+      console.log("Response:", res);
       return res;
     })
     .catch((err) => {
@@ -31,10 +30,10 @@ export const search = (data: RegistrationData) => {
     });
 };
 
-export const regist = (data: RegistrationData, token: string) => {
+export const lost_regist = (data: RegistrationData, token: string) => {
   console.log(token);
   console.log(data);
-  return API.post("/api/animals", data, {
+  return API.post("/api/lost-animals", data, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -50,14 +49,14 @@ export const regist = (data: RegistrationData, token: string) => {
     });
 };
 
-export const saveUpdate = (
+export const lostUpdate = (
   data: RegistrationData,
   token: string,
   animalID: string
 ) => {
   console.log(token);
   console.log(data);
-  return API.put(`/api/animals/${animalID}`, data, {
+  return API.put(`/api/lost-animals/${animalID}`, data, {
     method: "PUT",
     headers: {
       Authorization: token,

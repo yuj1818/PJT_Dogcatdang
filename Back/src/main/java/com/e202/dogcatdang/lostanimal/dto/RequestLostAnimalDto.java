@@ -1,9 +1,9 @@
-package com.e202.dogcatdang.animal.dto;
+package com.e202.dogcatdang.lostanimal.dto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.CatBreed;
@@ -21,23 +21,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class RequestAnimalDto {
+public class RequestLostAnimalDto {
 
 	private AnimalType animalType;
+	private String name;
 	private String breed;
 	private Integer age;
 	private Integer weight;
-	private LocalDate rescueDate;
-	private String rescueLocation;
-	private Boolean isNeuter;
+	private LocalDate lostDate;
+	private String lostLocation;
 	private Gender gender;
 	private String feature;
-	private Animal.State state;
+	private LostAnimal.State state;
 	private String imgName;
 	private String imgUrl;
 	private Long userId;
 
-	// rescuelocation을 위해 입력받는 위치 정보들
+	// lostlocation을 위해 입력받는 위치 정보들
 	private String selectedCity;
 	private String selectedDistrict;
 	private String detailInfo;
@@ -55,22 +55,22 @@ public class RequestAnimalDto {
 		}
 	}
 
-	// DTO -> Entity (DB 저장용)
-	public Animal toEntity(User user) {
-		return Animal.builder()
+	// DTO -> Entity
+	public LostAnimal toEntity(User user) {
+		return LostAnimal.builder()
 			.animalType(animalType)
+			.name(name)
 			.breed(breed)
 			.age(age)
 			.weight(weight)
-			.rescueDate(rescueDate)
-			.rescueLocation(selectedCity + " " + selectedDistrict + " " + (detailInfo != null ? detailInfo : ""))
-			.isNeuter(isNeuter)
+			.lostDate(lostDate)
+			.lostLocation(selectedCity + " " + selectedDistrict + " " + (detailInfo != null ? detailInfo : ""))
 			.gender(gender)
 			.feature(feature)
 			.state(state)
 			.imgName(imgName)
 			.imgUrl(imgUrl)
-			.user(user)       // user의 식별자(id)가 animal entity user_id에 들어간다.
+			.user(user)       // user의 식별자(id)가 lost-animal entity user_id에 들어간다.
 			.build();
 	}
 }

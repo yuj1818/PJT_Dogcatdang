@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -85,7 +85,8 @@ const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
-  const nickName = "독캣당";
+  const [nickname, setNickname] = useState('');
+  const [userId, setUserId] = useState('');
 
   const handleNoti = () => {
     setIsNoti((prev) => !prev);
@@ -258,6 +259,13 @@ const NavBar = () => {
       )
     );
   };
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '');
+    setNickname(() => userInfo.nickname);
+    setUserId(() => userInfo.id)
+  }, [])
+
   return (
     <>
       <NavBarContainer>
@@ -267,8 +275,8 @@ const NavBar = () => {
         <FlexColumnContainer>
           <StyledUl style={{ gap: "20px", marginRight: "20px" }}>
             {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-            <StyledNavLink to={`profile/${nickName}`}>
-              {nickName}님
+            <StyledNavLink to={`profile/${userId}`}>
+              {nickname}님
             </StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
