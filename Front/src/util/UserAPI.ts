@@ -2,7 +2,7 @@ import API from "./axios";
 import { Cookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const URL = "/user";
+const URL = "/api/user";
 
 const cookie = new Cookies();
 
@@ -70,13 +70,13 @@ export const signIn = (data: signInData) => {
 };
 
 export const signUp = (data: signUpData) => {
-  return API.post(URL + "/api/join", data).then((res) => {
+  return API.post(URL + "/join", data).then((res) => {
     return res;
   });
 };
 
 export const checkUsername = (data: { username: string }) => {
-  return API.post(URL + "/api/username-check", data)
+  return API.post(URL + "/username-check", data)
     .then((res) => {
       return res;
     })
@@ -86,7 +86,7 @@ export const checkUsername = (data: { username: string }) => {
 };
 
 export const checkEmail = (data: { email: string }) => {
-  return API.post(URL + "/api/email-check", data)
+  return API.post(URL + "/email-check", data)
     .then((res) => {
       return res;
     })
@@ -96,7 +96,7 @@ export const checkEmail = (data: { email: string }) => {
 };
 
 export const checkNickname = (data: { nickname: string }) => {
-  return API.post(URL + "/api/nickname-check", data)
+  return API.post(URL + "/nickname-check", data)
     .then((res) => {
       return res;
     })
@@ -106,7 +106,7 @@ export const checkNickname = (data: { nickname: string }) => {
 };
 
 export const logout = () => {
-  return API.post(URL + "/api/logout").then((res) => {
+  return API.post(URL + "/logout").then((res) => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     return res;
@@ -124,7 +124,7 @@ export const editUserInfo = (
   userId: string,
   data: editedInfoData | editedInfoDataWithPassword
 ) => {
-  return API.put(URL + "/api/profiles/" + userId, data, {
+  return API.put(URL + "/profiles/" + userId, data, {
     method: "PUT",
     headers: {
       Authorization: cookie.get("U_ID"),
