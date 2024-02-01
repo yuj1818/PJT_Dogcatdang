@@ -76,7 +76,7 @@ const router = createBrowserRouter([
         element: <AnimalFormPage />,
       },
       {
-        path: "save-update",
+        path: "save-update/:animalID",
         element: <AnimalUpdatePage />,
       },
       {
@@ -97,7 +97,7 @@ const router = createBrowserRouter([
       },
       {
         path: "profile/:userId",
-        element: <ProfilePage />
+        element: <ProfilePage />,
       },
       {
         path: "articles",

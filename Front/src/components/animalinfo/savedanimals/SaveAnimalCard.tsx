@@ -3,18 +3,21 @@ import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
 interface Animal {
-  id: number;
-  shelterName: string;
+  animalId: number;
   animalType: string;
   breed: string;
-  age: number;
-  weight: number;
-  color: string;
-  feature: string;
+  age: string;
+  weight: string;
   rescueDate: string;
-  rescueLocation: string;
-  gender: string;
+  selectedCity: string;
+  selectedDistrict: string;
+  detailInfo: string;
   isNeuter: boolean;
+  gender: string;
+  feature: string;
+  state: string;
+  imgName: string;
+  imgUrl: string;
 }
 
 interface AnimalCardProps {
@@ -48,17 +51,15 @@ function SaveAnimalCard(props: AnimalCardProps) {
   const navigate = useNavigate();
 
   const gotoDetailPage = () => {
-    navigate(`/save-animals/${props.animals.id}`);
+    navigate(`/save-animals/${props.animals.animalId}`);
   };
 
   return (
     <Card>
       <div onClick={gotoDetailPage}>
-        <h4>보호 기관 : {props.animals.shelterName}</h4>
+        {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
-        <h4>품종 : {props.animals.breed}</h4>
-        <p>{props.animals.feature}</p>
-        <p>지역 : {props.animals.rescueLocation}</p>
+        <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
         <p>성별 : {props.animals.gender}</p>
         <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
       </div>

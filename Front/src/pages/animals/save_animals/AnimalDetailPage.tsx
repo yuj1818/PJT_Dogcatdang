@@ -1,36 +1,51 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import API from "../../../util/axios";
+
+interface AnimalDetail {
+  animalType: string;
+  breed: string;
+  age: string;
+  feature: string;
+  gender: string;
+  isNeuter: string;
+  rescueDate: string;
+  rescueLocation: string;
+  weight: string;
+}
 
 function AnimalDetailPage() {
   const { animalID } = useParams();
-  // const [animalData, setAnimalData] = useState([]);
-  console.log("animalID", animalID);
+  const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
 
-  // useEffect(() => {
-  //   // animalID를 사용하여 데이터를 가져오기 위한 API 엔드포인트를 적절히 수정하세요.
-  //   const apiUrl = `https://api.example.com/save-animals/${animalID}`;
+  useEffect(() => {
+    const apiUrl = `animals/${animalID}`;
 
-  //   // Axios를 사용하여 데이터 가져오기
-  //   axios
-  //     .get(apiUrl)
-  //     .then((response) => {
-  //       setAnimalData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching animal data:", error);
-  //     });
-  // }, [animalID]);
+    API.get(apiUrl)
+      .then((res) => {
+        console.log(res.data);
+        setAnimalDetail(res.data);
+      })
+      .catch((error) => console.error("Error fetching animal data:", error));
+  }, [animalID]);
 
   const navigate = useNavigate();
+
   const handleUpdate = () => {
-    navigate(`/save-update`);
+    navigate(`/save-update/${animalID}`);
   };
+
   return (
     <div>
       <h1>AnimalDetailPage</h1>
-      <p>Animal ID: {animalID}</p>
-      {/* <p>{animalData}</p> */}
+      <p>품종 : {animalDetail?.breed.replace(/_/g, " ")}</p>
+      <p>몸무게 : {animalDetail?.weight}</p>
+      <p>나이 : {animalDetail?.age}</p>
+      <p>특징 : {animalDetail?.feature}</p>
+      <p>성별 : {animalDetail?.gender}</p>
+      <p>중성화 여부 : {animalDetail?.isNeuter}</p>
+      <p>보호일자 : {animalDetail?.rescueDate ? "Y" : "N"}</p>
+      <p>보호위치 : {animalDetail?.rescueLocation}</p>
       <button onClick={handleUpdate}>수정</button>
     </div>
   );
