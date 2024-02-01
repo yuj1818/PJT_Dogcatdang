@@ -127,7 +127,7 @@ const NavBar = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/watch">방송</StyledNavLink>
+        <StyledNavLink to="/broadcast/list">방송</StyledNavLink>
       </li>
       {commontNavTitles}
     </StyledUl>
@@ -140,7 +140,7 @@ const NavBar = () => {
         <StyledNavLink to="/articles">후기 게시판</StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/watch">방송 시청</StyledNavLink>
+        <StyledNavLink to="/broadcast/list">방송 시청</StyledNavLink>
       </li>
       <li>
         <StyledNavLink to="/lost-animals">동물 찾기</StyledNavLink>

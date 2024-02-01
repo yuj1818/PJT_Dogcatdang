@@ -25,7 +25,7 @@ import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import { LoadingIndicator } from "./components/common/Icons.tsx";
-import BroadCastPage from "./pages/broadcast/BroadCastPage.tsx";
+const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage.tsx"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
@@ -104,11 +104,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: (
-              <Suspense fallback={<LoadingIndicator />}>
-                <ArticleListPage />
-              </Suspense>
-            ),
+            element: <ArticleListPage />,
           },
           {
             path: ":boardId",
@@ -134,11 +130,19 @@ const router = createBrowserRouter([
         children: [
           {
             path: "trans",
-            element: <BroadCastPage />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <BroadCastPage />
+              </Suspense>
+            ),
           },
           {
             path: ":broadcastId",
-            element: <BroadCastPage />,
+            element: (
+              <Suspense fallback={<LoadingIndicator />}>
+                <BroadCastPage />
+              </Suspense>
+            ),
           },
         ],
       },

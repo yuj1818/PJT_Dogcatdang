@@ -21,7 +21,6 @@ const BroadCastPage = () => {
   );
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
   const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
-  console.log(sessionId);
 
   const leaveSession = useCallback(() => {
     if (session) {
@@ -43,8 +42,11 @@ const BroadCastPage = () => {
   }, [session]);
 
   useEffect(() => {
+    window.addEventListener("beforeunload", leaveSession);
+
     return () => {
       leaveSession();
+      window.removeEventListener("beforeunload", leaveSession);
     };
   }, [leaveSession]);
 
