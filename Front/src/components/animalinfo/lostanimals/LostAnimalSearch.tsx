@@ -574,10 +574,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
 
     setFilteredAnimalData(filteredData);
   };
-  const handleRegistration = () => {
-    // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
-    navigate("/lost-registration");
-  };
 
   const ListStyle = styled.div<{ $itemsPerRow: number }>`
     display: flex;
@@ -670,7 +666,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
           <button type="button" onClick={handleSearch}>
             검색
           </button>
-          <button onClick={handleRegistration}>동물 등록</button>
         </div>
       </form>
 
