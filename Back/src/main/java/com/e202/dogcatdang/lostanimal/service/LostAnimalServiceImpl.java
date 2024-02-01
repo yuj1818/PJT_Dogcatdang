@@ -5,13 +5,13 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
-
-
+import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.LostAnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
+import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -41,5 +41,12 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		LostAnimal lostAnimal = requestLostAnimalDto.toEntity(user);
 		Long savedId = lostAnimalRepository.save(lostAnimal).getLostAnimalId();
 		return new ResponseSavedIdDto(savedId);
+	}
+
+	@Override
+	public ResponseLostAnimalDto findById(Long lostAnimalId) {
+		LostAnimal lostAnimal = lostAnimalRepository.findById(lostAnimalId)
+			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
+		return new ResponseLostAnimalDto(lostAnimal);
 	}
 }
