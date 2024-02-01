@@ -82,6 +82,23 @@ public class LostAnimal {
 		this.lostLocation = lostLocation;
 	}
 
+	public void update(AnimalType animalType, String name, String breed, Integer age, Integer weight,
+		LocalDate lostDate, String lostLocation, Gender gender, String feature, State state, String imgName,
+		String imgUrl) {
+		this.animalType = animalType;
+		this.name = name;
+		this.breed = breed;
+		this.age = age;
+		this.weight = weight;
+		this.lostDate = lostDate;
+		this.lostLocation = lostLocation;
+		this.gender = gender;
+		this.feature = feature;
+		this.state = state;
+		this.imgName = imgName;
+		this.imgUrl = imgUrl;
+	}
+
 	// enum 정의는 클래스의 맨 아래에 위치
 	public enum State {
 		실종, 완료

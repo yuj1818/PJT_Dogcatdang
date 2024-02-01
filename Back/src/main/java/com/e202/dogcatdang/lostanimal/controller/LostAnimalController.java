@@ -2,16 +2,18 @@ package com.e202.dogcatdang.lostanimal.controller;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
@@ -47,5 +49,26 @@ public class LostAnimalController {
 	public ResponseEntity<ResponseLostAnimalDto> findLostAnimal(@PathVariable long lostAnimalId) {
 		ResponseLostAnimalDto lostAnimalDto = lostAnimalService.findById(lostAnimalId);
 		return ResponseEntity.ok(lostAnimalDto);
+	}
+
+	/* 실종 동물 정보 수정 */
+	@PutMapping("/{lostAnimalId}")
+	public ResponseEntity<Long> update(@PathVariable Long lostAnimalId, @RequestHeader("Authorization") String token, @RequestBody RequestLostAnimalDto requestLostAnimalDto) throws IOException {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		// 수정할 동물 정보 가져오기
+		ResponseLostAnimalDto existingAnimal = lostAnimalService.findById(lostAnimalId);
+		// 수정할 동물의 작성자 아이디(pk) 가져오기
+		Long authorId = existingAnimal.getUserId();
+
+		// 현재 로그인한 사용자와 동물의 작성자 아이디 비교
+		// 만약 일치하지 않으면 권한 없음 반환
+		if (!loginUserId.equals(authorId)) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+		}
+
+		LostAnimal animal = lostAnimalService.update(lostAnimalId, requestLostAnimalDto);
+		return ResponseEntity.ok(animal.getLostAnimalId());
 	}
 }
