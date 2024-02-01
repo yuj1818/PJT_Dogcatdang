@@ -22,7 +22,7 @@ export const search = (data: RegistrationData) => {
   console.log(data);
   return API.get("/animals")
     .then((res) => {
-      console.log("Response:", res);
+      // console.log("Response:", res);
       return res;
     })
     .catch((err) => {
@@ -50,7 +50,11 @@ export const regist = (data: RegistrationData, token: string) => {
     });
 };
 
-export const saveUpdate = (data: RegistrationData, token: string, animalID: string) => {
+export const saveUpdate = (
+  data: RegistrationData,
+  token: string,
+  animalID: string
+) => {
   console.log(token);
   console.log(data);
   return API.put(`/animals/${animalID}`, data, {

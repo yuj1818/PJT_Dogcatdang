@@ -76,7 +76,7 @@ const router = createBrowserRouter([
         element: <AnimalFormPage />,
       },
       {
-        path: "save-update",
+        path: "save-update/:animalID",
         element: <AnimalUpdatePage />,
       },
       {
