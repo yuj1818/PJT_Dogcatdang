@@ -45,6 +45,9 @@ export interface editedInfoData {
   imgName: string;
   imgUrl: string;
   bio: string;
+}
+
+export interface editedInfoDataWithPassword extends editedInfoData {
   password: string;
   passwordConfirm: string;
 }
@@ -117,7 +120,7 @@ export const getUserInfo = (userId: string) => {
   });
 };
 
-export const editUserInfo = (userId: string, data: editedInfoData) => {
+export const editUserInfo = (userId: string, data: editedInfoData | editedInfoDataWithPassword) => {
   return API.put(URL + '/profiles/' + userId, data, {
     method: "PUT",
     headers: {
