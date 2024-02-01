@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
-import { queryClient, requestArticle } from "../../util/HTTP";
+import { queryClient, requestArticle } from "../../util/articleAPI";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";

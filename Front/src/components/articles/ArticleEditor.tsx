@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
 import DOMPurify from "dompurify";
 
-import { queryClient, requestArticle } from "../../util/HTTP";
+import { queryClient, requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";

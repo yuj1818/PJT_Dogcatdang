@@ -7,29 +7,38 @@ import {
 } from "openvidu-browser";
 import axios, { AxiosError } from "axios";
 import Form from "../../components/Broadcast/Form";
-import Session from "../../components/Broadcast/Session";
+import SessionComponent from "../../components/Broadcast/SessionComponent";
 
 const OPENVIDU_SERVER_URL = `http://localhost:4443`;
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 const BroadCastPage = () => {
-  const [session, setSession] = useState<OVSession | "">("");
-  const [sessionId, setSessionId] = useState<string>("");
-  const [subscriber, setSubscriber] = useState<Subscriber | null>(null);
-  const [publisher, setPublisher] = useState<Publisher | null>(null);
-  const [OV, setOV] = useState<OpenVidu | null>(null);
+  const [session, setSession] = useState<OVSession | undefined>(undefined);
+  const [sessionId, setSessionId] = useState("");
+  const [subscriber, setSubscriber] = useState<Subscriber | undefined>(
+    undefined
+  );
+  const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
+  const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
+  const nickname = `${Math.random()}`;
+  const userId = Math.random() * 100;
 
   const leaveSession = useCallback(() => {
     if (session) {
       session.disconnect();
+      setOV(undefined);
+      setSession(undefined);
+      setSessionId("");
+      setSubscriber(undefined);
+      setPublisher(undefined);
     }
-
-    setOV(null);
-    setSession("");
-    setSessionId("");
-    setSubscriber(null);
-    setPublisher(null);
   }, [session]);
+
+  useEffect(() => {
+    return () => {
+      leaveSession();
+    };
+  }, [leaveSession]);
 
   const joinSession = () => {
     const newOV = new OpenVidu();
@@ -38,28 +47,21 @@ const BroadCastPage = () => {
   };
 
   const getToken = useCallback(async (): Promise<string> => {
-    const createToken = (sessionIds: string): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const data = {};
-        axios
-          .post(
-            `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-            data,
-            {
-              headers: {
-                Authorization: `Basic ${btoa(
-                  `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-                )}`,
-                "Content-Type": "application/json",
-                withCredentials: true,
-              },
-            }
-          )
-          .then((response) => {
-            resolve((response.data as { token: string }).token);
-          })
-          .catch((error) => reject(error));
-      });
+    const createToken = async (sessionIds: string): Promise<string> => {
+      const response = await axios.post(
+        `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${btoa(
+              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+            )}`,
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+      return response.data.token;
     };
 
     const createSession = async (sessionIds: string): Promise<string> => {
@@ -82,7 +84,6 @@ const BroadCastPage = () => {
         return (response.data as { id: string }).id;
       } catch (error) {
         const errorResponse = (error as AxiosError)?.response;
-
         if (errorResponse?.status === 409) {
           return sessionIds;
         }
@@ -107,60 +108,40 @@ const BroadCastPage = () => {
   };
 
   useEffect(() => {
-    if (session === "") return;
-
-    session.on("streamDestroyed", (event) => {
-      if (subscriber && event.stream.streamId === subscriber.stream.streamId) {
-        setSubscriber(null);
-      }
-    });
-  }, [subscriber, session]);
-
-  useEffect(() => {
-    if (session === "") return;
+    if (!session) return;
 
     session.on("streamCreated", (event) => {
-      const subscribers = session.subscribe(event.stream, "");
+      const subscribers = session.subscribe(event.stream, "#streamingVideo");
       setSubscriber(subscribers);
     });
 
-    getToken()
-      .then((token) => {
-        session
-          .connect(token)
-          .then(() => {
-            if (OV) {
-              const publishers = OV.initPublisher(undefined, {
-                audioSource: undefined,
-                videoSource: undefined,
-                publishAudio: true,
-                publishVideo: true,
-              });
+    getToken().then((token) => {
+      session.connect(token, { nickname, userId }).then(() => {
+        if (OV) {
+          const publishers = OV.initPublisher(undefined, {
+            audioSource: undefined,
+            videoSource: undefined,
+            publishAudio: true,
+            publishVideo: true,
+            frameRate: 10,
+          });
 
-              setPublisher(publishers);
-              session
-                .publish(publishers)
-                .then(() => {})
-                .catch(() => {});
-            }
-          })
-          .catch(() => {});
-      })
-      .catch(() => {});
-  }, [session, OV, sessionId, getToken]);
-
-  useEffect(() => {
-    return () => leaveSession();
-  }, []);
+          setPublisher(publishers);
+          session.publish(publishers);
+        }
+      });
+    });
+  }, [session, OV, sessionId, getToken, nickname, userId]);
 
   return (
     <div>
       <h1>진행화면</h1>
       <>
         {session ? (
-          <Session
+          <SessionComponent
             publisher={publisher as Publisher}
             subscriber={subscriber as Subscriber}
+            session={session}
           />
         ) : (
           <Form

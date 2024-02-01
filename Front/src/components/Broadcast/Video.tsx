@@ -1,11 +1,11 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { StreamManager } from "openvidu-browser";
 
-interface Props {
+interface VideoProps {
   streamManager: StreamManager;
 }
 
-const Video = ({ streamManager }: Props) => {
+const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const autoplay = true;
 
@@ -16,7 +16,12 @@ const Video = ({ streamManager }: Props) => {
   }, [streamManager]);
 
   return (
-    <video autoPlay={autoplay} ref={videoRef} style={{ width: "100%" }}>
+    <video
+      id="streamingVideo"
+      autoPlay={autoplay}
+      ref={videoRef}
+      style={{ width: "100%" }}
+    >
       <track kind="captions" />
     </video>
   );

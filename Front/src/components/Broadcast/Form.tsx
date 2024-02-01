@@ -4,11 +4,11 @@ interface FormProps {
   sessionIdChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Form = ({
+const Form: React.FC<FormProps> = ({
   joinSession,
   sessionId,
   sessionIdChangeHandler,
-}: FormProps) => {
+}) => {
   const onSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     joinSession();

@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
-import { queryClient } from "./util/HTTP.ts";
+import { queryClient } from "./util/articleAPI.ts";
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
 const AnimalListPage = lazy(
