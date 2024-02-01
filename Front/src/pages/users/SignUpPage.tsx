@@ -93,8 +93,6 @@ function SignUpPage() {
 
   const handlePassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword2(() => e.target.value);
-    // 비밀번호 같은지 체크
-    // setIsValidEmail(() => password1 === password2 ? true : false);
   }
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,10 +108,12 @@ function SignUpPage() {
   }
 
   useEffect(() => {
-    if (password1 === password2) {
-      setPasswordErrMsg('비밀번호 일치');
-    } else {
-      setPasswordErrMsg('비밀번호 불일치');
+    if (password1) {
+      if (password1 === password2) {
+        setPasswordErrMsg('비밀번호 일치');
+      } else {
+        setPasswordErrMsg('비밀번호 불일치');
+      }
     }
   }, [password1, password2])
 

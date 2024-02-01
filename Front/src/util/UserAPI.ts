@@ -114,9 +114,10 @@ export const logout = () => {
 };
 
 export const getUserInfo = (userId: string) => {
-  return API.get(URL + "/profiles/" + userId).then((res) => {
-    return res;
-  });
+  return API.get(URL + "/profiles/" + userId)
+    .then((res) => {
+      return res;
+    });
 };
 
 export const editUserInfo = (
