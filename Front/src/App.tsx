@@ -97,7 +97,7 @@ const router = createBrowserRouter([
       },
       {
         path: "profile/:userId",
-        element: <ProfilePage />
+        element: <ProfilePage />,
       },
       {
         path: "articles",
