@@ -35,7 +35,6 @@ import lombok.AllArgsConstructor;
 public class AnimalController {
 
 	private JWTUtil jwtUtil;
-	private CustomUserDetailsService userDetailsService;
 	private final AnimalService animalService;
 
 
