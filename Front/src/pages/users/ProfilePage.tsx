@@ -17,25 +17,33 @@ function ProfilePage() {
   const [isOrg, setIsOrg] = useState(false);
   const [userInfo, setUserInfo] = useState<infoData>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [done, setDone] = useState(false);
 
   const getInfo = async () => {
-    const response = await getUserInfo(params.userId || "");
-    //console.log(response.data);
-    setUserInfo(() => response.data);
-    setIsOrg(response.data.role === 'ROLE_SHELTER');
+    if (params.userId) {
+      const response = await getUserInfo(params.userId);
+      //console.log(response.data);
+      setUserInfo(() => response.data);
+      setIsOrg(response.data.role === 'ROLE_SHELTER');
+      setDone(true);
+    }
   };
   
   useEffect(() => {
     getInfo();
     setIsMine(() => JSON.parse(localStorage.getItem('userInfo') || "")?.id == params.userId);
-  }, [params.userId]);
+  },[params.userId]);
 
   return (
     <div>
       <Title>{ isMine ? '마이 페이지' : '프로필'}</Title>
       <p>{ isOrg ? '이것은 기관의 프로필' : '이것은 개인의 프로필'}</p>
       <ProfileBox userInfo={userInfo} isOrg={isOrg} isMine={isMine} openModal={setIsModalOpen} />
-      <ProfileEditModal userInfo={userInfo} isOrg={isOrg} closeModal={setIsModalOpen} isModalOpen={isModalOpen} saveUserInfo={setUserInfo} />
+      { done ? 
+        <ProfileEditModal userInfo={userInfo} isOrg={isOrg} closeModal={setIsModalOpen} isModalOpen={isModalOpen} saveUserInfo={setUserInfo} />
+        :
+        <></>
+      }
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactModal from "react-modal";
 import styled from "styled-components";
-import { checkEmail, checkNickname, editUserInfo, infoData, getUserInfo } from "../../util/UserAPI";
+import { checkEmail, checkNickname, editUserInfo, infoData, getUserInfo, editedInfoData, editedInfoDataWithPassword } from "../../util/UserAPI";
 import { useParams } from "react-router-dom";
 
 const EditForm = styled.form`
@@ -43,12 +43,14 @@ interface EditInfo {
   saveUserInfo: React.Dispatch<React.SetStateAction<infoData | undefined>>;
 }
 
+
+
 const ProfileEditModal: React.FC<EditInfo> = (props) => {
   const params = useParams();
   
   const [email, setEmail] = useState(props.userInfo?.email || '');
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [password1, setPassword1] = useState<string | undefined>();
+  const [password2, setPassword2] = useState<string | undefined>();
   const [nickname, setNickname] = useState(props.userInfo?.nickname || '');
   const [address, setAddress] = useState(props.userInfo?.address || '');
   const [phone, setPhone] = useState(props.userInfo?.phone || '');
@@ -60,6 +62,7 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
   const [isEmailChanged, setIsEmailChanged] = useState(false);
   const [isNicknameChanged, setIsNicknameChanged] = useState(false);
+  
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(() => e.target.value);
@@ -100,10 +103,12 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
   }
 
   useEffect(() => {
-    if (password1 === password2) {
-      setPasswordErrMsg('비밀번호 일치');
-    } else {
-      setPasswordErrMsg('비밀번호 불일치');
+    if (password1) {
+      if (password1 === password2) {
+        setPasswordErrMsg('비밀번호 일치');
+      } else {
+        setPasswordErrMsg('비밀번호 불일치');
+      }
     }
   }, [password1, password2])
 
@@ -145,6 +150,8 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     props.closeModal((prev) => !prev);
   }
 
+  
+  
   const onSave = async(e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -160,7 +167,7 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
       }
     }
 
-    const data = {
+    const data: editedInfoData | editedInfoDataWithPassword = {
       email: email,
       nickname: nickname,
       address: address,
@@ -168,10 +175,9 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
       bio: bio,
       imgName: props.userInfo?.imgName || '',
       imgUrl: props.userInfo?.imgUrl || '',
-      password: password1,
-      passwordConfirm: password2
+      ...(password1 && { password: password1, passwordConfirm: password2})
     };
-
+    
     const response = await editUserInfo(params.userId || '', data);
     console.log(response);
     //props.saveUserInfo(response.data);
