@@ -7,6 +7,7 @@ function AnimalFormPage() {
   type CountryInput = {
     [key: number]: string[];
   };
+  const cookie = new Cookies();
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
@@ -546,8 +547,6 @@ function AnimalFormPage() {
   const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsNeuter(e.target.checked);
   };
-
-  const cookie = new Cookies();
 
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

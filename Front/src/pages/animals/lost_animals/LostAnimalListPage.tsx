@@ -1,37 +1,50 @@
+import { useEffect, useState } from "react";
 import LostAnimalSearch from "../../../components/animalinfo/lostanimals/LostAnimalSearch";
+import API from "../../../util/axios";
+import LostAnimalCard from "../../../components/animalinfo/lostanimals/LostAnimalCard";
 
 function LostAnimalListPage() {
-  const animalData = [
-    {
-      id: 1,
-      name: "소금이",
-      animalType: "강아지",
-      breed: "불독",
-      age: 2,
-      weight: 900,
-      color: "흰색",
-      feature: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
-      lostDate: "2024-01-12",
-      lostLocation: "서울특별시 강서구",
-      gender: "남",
-      isNeuter: false,
-    },
-    {
-      id: 2,
-      name: "하양이",
-      animalType: "고양이",
-      breed: "먼치킨",
-      age: 3,
-      weight: 600,
-      color: "흰색",
-      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
-      lostDate: "2024-01-12",
-      lostLocation: "부산광역시 강서구",
-      gender: "여",
-      isNeuter: true,
-    },
-  ];
-  return <LostAnimalSearch animals={animalData} />;
+  const [lostAnimalData, setLostAnimalData] = useState([]);
+  interface LostRegistrationData {
+    animalId: number;
+    animalType: string;
+    name: string;
+    breed: string;
+    age: string;
+    weight: string;
+    lostDate: string;
+    selectedCity: string;
+    selectedDistrict: string;
+    detailInfo: string;
+    gender: string;
+    feature: string;
+    state: string;
+    imgName: string;
+    imgUrl: string;
+  }
+  useEffect(() => {
+    const searchData = async () => {
+      try {
+        const res = await API.get("/lost-animals");
+        console.log("실행:", res.data);
+        setLostAnimalData(res.data);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    };
+    searchData();
+  }, []);
+
+  return (
+    <>
+      <LostAnimalSearch animals={lostAnimalData} />
+      <div>
+        {lostAnimalData.map((animal: LostRegistrationData) => (
+          <LostAnimalCard key={animal.animalId} animals={animal} />
+        ))}
+      </div>
+    </>
+  );
 }
 
 export default LostAnimalListPage;
