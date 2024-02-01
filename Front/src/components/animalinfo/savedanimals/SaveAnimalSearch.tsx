@@ -8,14 +8,14 @@ type AnimalType = {
   shelterName: string;
   animalType: string;
   breed: string;
-  age: number; // 수정: age는 숫자형으로 지정
-  weight: number; // 수정: weight는 숫자형으로 지정
+  age: number; 
+  weight: number;
   color: string;
   feature: string;
   rescueDate: string;
   rescueLocation: string;
   gender: string;
-  isNeuter: boolean; // 수정: isNeuter는 부울 타입으로 지정
+  isNeuter: boolean;
 };
 
 type SaveAnimalSearchProps = {
@@ -405,13 +405,11 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
       );
     });
     setFilteredAnimalData(filteredData);
-    // console.log(filteredData);
   };
 
   const navigate = useNavigate();
 
   const handleRegistration = () => {
-    // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
     navigate("/registration");
   };
 
