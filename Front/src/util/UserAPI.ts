@@ -52,10 +52,9 @@ export interface editedInfoDataWithPassword extends editedInfoData {
   passwordConfirm: string;
 }
 
-export const signIn = ( data: signInData ) => {
-  return API.post('http://localhost:8084/login', data)
-    .then(res => {
-      console.log(res)
+export const signIn = (data: signInData) => {
+  return API.post("/login", data).then((res) => {
+    console.log(res);
 
     if (res.status === 200) {
       console.log(res.data);
@@ -71,13 +70,13 @@ export const signIn = ( data: signInData ) => {
 };
 
 export const signUp = (data: signUpData) => {
-  return API.post(URL + "/join", data).then((res) => {
+  return API.post(URL + "/api/join", data).then((res) => {
     return res;
   });
 };
 
 export const checkUsername = (data: { username: string }) => {
-  return API.post(URL + "/username-check", data)
+  return API.post(URL + "/api/username-check", data)
     .then((res) => {
       return res;
     })
@@ -87,7 +86,7 @@ export const checkUsername = (data: { username: string }) => {
 };
 
 export const checkEmail = (data: { email: string }) => {
-  return API.post(URL + "/email-check", data)
+  return API.post(URL + "/api/email-check", data)
     .then((res) => {
       return res;
     })
@@ -97,7 +96,7 @@ export const checkEmail = (data: { email: string }) => {
 };
 
 export const checkNickname = (data: { nickname: string }) => {
-  return API.post(URL + "/nickname-check", data)
+  return API.post(URL + "/api/nickname-check", data)
     .then((res) => {
       return res;
     })
@@ -107,7 +106,7 @@ export const checkNickname = (data: { nickname: string }) => {
 };
 
 export const logout = () => {
-  return API.post(URL + "/logout").then((res) => {
+  return API.post(URL + "/api/logout").then((res) => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     return res;
@@ -120,14 +119,16 @@ export const getUserInfo = (userId: string) => {
   });
 };
 
-export const editUserInfo = (userId: string, data: editedInfoData | editedInfoDataWithPassword) => {
-  return API.put(URL + '/profiles/' + userId, data, {
+export const editUserInfo = (
+  userId: string,
+  data: editedInfoData | editedInfoDataWithPassword
+) => {
+  return API.put(URL + "/api/profiles/" + userId, data, {
     method: "PUT",
     headers: {
-      Authorization: cookie.get('U_ID')
-    }
-  })
-    .then(res => {
-      return res;
-    })
-}
+      Authorization: cookie.get("U_ID"),
+    },
+  }).then((res) => {
+    return res;
+  });
+};

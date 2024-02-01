@@ -20,7 +20,7 @@ export interface RegistrationData {
 
 export const search = (data: RegistrationData) => {
   console.log(data);
-  return API.get("/animals")
+  return API.get("/api/animals")
     .then((res) => {
       // console.log("Response:", res);
       return res;
@@ -34,7 +34,7 @@ export const search = (data: RegistrationData) => {
 export const regist = (data: RegistrationData, token: string) => {
   console.log(token);
   console.log(data);
-  return API.post("/animals", data, {
+  return API.post("/api/animals", data, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -57,7 +57,7 @@ export const saveUpdate = (
 ) => {
   console.log(token);
   console.log(data);
-  return API.put(`/animals/${animalID}`, data, {
+  return API.put(`/api/animals/${animalID}`, data, {
     method: "PUT",
     headers: {
       Authorization: token,

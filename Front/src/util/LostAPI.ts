@@ -19,7 +19,7 @@ export interface RegistrationData {
 
 export const lost_search = (data: RegistrationData) => {
   console.log(data);
-  return API.get("/lost-animals")
+  return API.get("/api/lost-animals")
     .then((res) => {
       console.log("Response:", res);
       return res;
@@ -33,7 +33,7 @@ export const lost_search = (data: RegistrationData) => {
 export const lost_regist = (data: RegistrationData, token: string) => {
   console.log(token);
   console.log(data);
-  return API.post("/lost-animals", data, {
+  return API.post("/api/lost-animals", data, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -56,7 +56,7 @@ export const lostUpdate = (
 ) => {
   console.log(token);
   console.log(data);
-  return API.put(`/lost-animals/${animalID}`, data, {
+  return API.put(`/api/lost-animals/${animalID}`, data, {
     method: "PUT",
     headers: {
       Authorization: token,

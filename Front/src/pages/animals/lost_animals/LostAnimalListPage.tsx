@@ -25,7 +25,7 @@ function LostAnimalListPage() {
   useEffect(() => {
     const searchData = async () => {
       try {
-        const res = await API.get("/lost-animals");
+        const res = await API.get("/api/lost-animals");
         console.log("실행:", res.data);
         setLostAnimalData(res.data);
       } catch (err) {
