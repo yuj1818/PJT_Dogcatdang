@@ -1,7 +1,12 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 interface FormProps {
   joinSession: () => void;
   sessionId: string;
-  sessionIdChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  sessionIdChangeHandler: (
+    event: React.ChangeEvent<HTMLInputElement> | string
+  ) => void;
 }
 
 const Form: React.FC<FormProps> = ({
@@ -9,6 +14,15 @@ const Form: React.FC<FormProps> = ({
   sessionId,
   sessionIdChangeHandler,
 }) => {
+  const { broadcastId } = useParams();
+  useEffect(() => {
+    if (broadcastId) {
+      console.log(broadcastId);
+      sessionIdChangeHandler(broadcastId);
+      joinSession();
+    }
+  }, [broadcastId, joinSession, sessionIdChangeHandler]);
+
   const onSubmitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     joinSession();

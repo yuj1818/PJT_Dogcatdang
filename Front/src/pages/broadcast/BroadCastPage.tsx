@@ -8,6 +8,7 @@ import {
 import axios, { AxiosError } from "axios";
 import Form from "../../components/Broadcast/Form";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
+import { isOrg as org } from "../users/SignInPage";
 
 const OPENVIDU_SERVER_URL = `http://localhost:4443`;
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -20,6 +21,7 @@ const BroadCastPage = () => {
   );
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
   const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
+  console.log(sessionId);
 
   const leaveSession = useCallback(() => {
     if (session) {
@@ -46,12 +48,12 @@ const BroadCastPage = () => {
     };
   }, [leaveSession]);
 
-  const joinSession = () => {
+  const joinSession = useCallback(() => {
     const newOV = new OpenVidu();
     newOV.enableProdMode();
     setOV(newOV);
     setSession(newOV.initSession());
-  };
+  }, []);
 
   const getToken = useCallback(async (): Promise<string> => {
     const createToken = async (sessionIds: string): Promise<string> => {
@@ -108,11 +110,16 @@ const BroadCastPage = () => {
     }
   }, [sessionId]);
 
-  const sessionIdChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSessionId(event.target.value);
-  };
+  const sessionIdChangeHandler = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement> | string) => {
+      if (typeof event === "string") {
+        setSessionId(event);
+      } else {
+        setSessionId(event.target.value);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     if (!session) {
@@ -127,7 +134,7 @@ const BroadCastPage = () => {
       console.log(newSubscriber);
     });
 
-    const isOrg = true;
+    const isOrg = org();
 
     if (isOrg) {
       getToken().then((token) => {
@@ -171,9 +178,9 @@ const BroadCastPage = () => {
           />
         ) : (
           <Form
-            joinSession={joinSession}
             sessionId={sessionId}
             sessionIdChangeHandler={sessionIdChangeHandler}
+            joinSession={joinSession}
           />
         )}
       </>

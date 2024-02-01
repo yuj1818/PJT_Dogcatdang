@@ -136,6 +136,10 @@ const router = createBrowserRouter([
             path: "trans",
             element: <BroadCastPage />,
           },
+          {
+            path: ":broadcastId",
+            element: <BroadCastPage />,
+          },
         ],
       },
     ],
