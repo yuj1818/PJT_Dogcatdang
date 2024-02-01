@@ -1,7 +1,5 @@
 const MainPage: React.FC = () => {
   // HTTP 요청
-
-  const device = navigator.mediaDevices;
   return (
     <>
       <h2>실시간 방송중</h2>

@@ -87,6 +87,10 @@ const NavBar = () => {
   const isOrg = org();
   const nickName = "독캣당";
 
+  const handleNoti = () => {
+    setIsNoti((prev) => !prev);
+  };
+
   const navigate = useNavigate();
 
   const cookie = new Cookies();
@@ -282,6 +286,7 @@ const NavBar = () => {
           </div>
         </FlexColumnContainer>
       </NavBarContainer>
+      <button onClick={handleNoti}>알람 상태 변경</button>
       <OutLet style={{ minWidth: "400px" }}>
         <Outlet />
       </OutLet>

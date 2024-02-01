@@ -25,7 +25,7 @@ import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import { LoadingIndicator } from "./components/common/Icons.tsx";
-import BroadCastPage from "./pages/broadcast/BroadcastPage.tsx";
+import BroadCastPage from "./pages/broadcast/BroadCastPage.tsx";
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
