@@ -13,15 +13,11 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
     if (streamManager && videoRef.current) {
       streamManager.addVideoElement(videoRef.current);
     }
+    console.log(streamManager);
   }, [streamManager]);
 
   return (
-    <video
-      id="streamingVideo"
-      autoPlay={autoplay}
-      ref={videoRef}
-      style={{ width: "100%" }}
-    >
+    <video autoPlay={autoplay} ref={videoRef} style={{ width: "100%" }}>
       <track kind="captions" />
     </video>
   );

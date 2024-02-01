@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Publisher, Session, Subscriber } from "openvidu-browser";
-import Video from "./Video";
+import MyVideo from "./MyVideo";
 import SendChat from "./SendChat";
 import UserList from "./UserList";
 
@@ -26,17 +26,28 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   const handleForcedLeave = useCallback(
     (subscriber: Subscriber) => {
       session.unsubscribe(subscriber);
-      setSubscribers((prev) => prev.filter((sub) => sub.id !== subscriber.id));
+      setSubscribers(
+        subscribers.filter((element) => element.id !== subscriber.id)
+      );
     },
-    [setSubscribers, session]
+    [setSubscribers, session, subscribers]
   );
+
+  useEffect(() => {
+    console.log(subscribers);
+  }, [subscribers]);
 
   return (
     <>
-      <Video streamManager={publisher} />
+      {publisher && <MyVideo streamManager={publisher}></MyVideo>}
+      {subscribers.map((subscriberItem) => (
+        <div key={subscriberItem.id}>
+          <MyVideo streamManager={subscriberItem} />
+        </div>
+      ))}
       <SendChat
         onForeceLeave={handleForcedLeave}
-        subscriber={subscriber}
+        subscribers={subscribers}
         session={session}
       />
       <UserList subscribers={subscribers}></UserList>

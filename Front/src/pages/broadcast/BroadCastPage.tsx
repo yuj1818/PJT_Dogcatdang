@@ -20,11 +20,17 @@ const BroadCastPage = () => {
   );
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
   const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
-  const nickname = `${Math.random()}`;
-  const userId = Math.random() * 100;
 
   const leaveSession = useCallback(() => {
     if (session) {
+      session
+        .signal({
+          data: "닉네임님이 퇴장하였습니다.",
+          to: [],
+          type: "signal:my-chat",
+        })
+        .then(() => {});
+
       session.disconnect();
       setOV(undefined);
       setSession(undefined);
@@ -42,6 +48,7 @@ const BroadCastPage = () => {
 
   const joinSession = () => {
     const newOV = new OpenVidu();
+    newOV.enableProdMode();
     setOV(newOV);
     setSession(newOV.initSession());
   };
@@ -108,30 +115,49 @@ const BroadCastPage = () => {
   };
 
   useEffect(() => {
-    if (!session) return;
+    if (!session) {
+      return;
+    }
+    const nickname = `${Math.random()}`;
+    const userId = Math.random() * 100;
 
     session.on("streamCreated", (event) => {
-      const subscribers = session.subscribe(event.stream, "#streamingVideo");
-      setSubscriber(subscribers);
+      const newSubscriber = session.subscribe(event.stream, undefined);
+      setSubscriber(newSubscriber);
+      console.log(newSubscriber);
     });
 
-    getToken().then((token) => {
-      session.connect(token, { nickname, userId }).then(() => {
-        if (OV) {
-          const publishers = OV.initPublisher(undefined, {
-            audioSource: undefined,
-            videoSource: undefined,
-            publishAudio: true,
-            publishVideo: true,
-            frameRate: 10,
-          });
+    const isOrg = true;
 
-          setPublisher(publishers);
-          session.publish(publishers);
-        }
+    if (isOrg) {
+      getToken().then((token) => {
+        session.connect(token, { nickname, userId }).then(() => {
+          if (OV) {
+            const newPublisher = OV.initPublisher(undefined, {
+              audioSource: undefined,
+              videoSource: undefined,
+              publishAudio: true,
+              publishVideo: true,
+              frameRate: 10,
+            });
+
+            setPublisher(newPublisher);
+            session.publish(newPublisher);
+          }
+        });
       });
-    });
-  }, [session, OV, sessionId, getToken, nickname, userId]);
+    } else {
+      getToken().then((token) => {
+        session.connect(token, { nickname, userId }).then(() => {
+          session.signal({
+            data: `${nickname}님이 입장하였습니다.`,
+            to: [],
+            type: "signal:chat",
+          });
+        });
+      });
+    }
+  }, [session, OV, sessionId, getToken]);
 
   return (
     <div>
@@ -140,7 +166,7 @@ const BroadCastPage = () => {
         {session ? (
           <SessionComponent
             publisher={publisher as Publisher}
-            subscriber={subscriber as Subscriber}
+            subscriber={subscriber!}
             session={session}
           />
         ) : (

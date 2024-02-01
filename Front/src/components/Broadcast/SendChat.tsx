@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface ChatProps {
   onForeceLeave?: (subscriber: Subscriber) => void;
-  subscriber: Subscriber;
+  subscribers: Subscriber[];
   session: Session;
 }
 
@@ -32,7 +32,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
     await session.signal({
       data: message, // Any string (optional)
       to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-      type: "my-chat", // The type of message (optional)
+      type: "chat", // The type of message (optional)
     });
 
     setMessage("");
@@ -40,7 +40,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
 
   // Receiver of the message (usually before calling 'session.connect')
   useEffect(() => {
-    session.on("signal:my-chat", (event) => {
+    session.on("signal:chat", (event) => {
       const data = JSON.parse(event.from?.data || "{}");
 
       setAllMessage((prev) => [

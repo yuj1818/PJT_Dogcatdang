@@ -8,9 +8,9 @@ interface UserList {
 const UserList: React.FC<UserList> = ({ subscribers }) => {
   return (
     <>
-      {subscribers.map((subscriber, idx) => (
+      {/* {subscribers.map((subscriber, idx) => (
         <p key={subscriber.id ?? idx}>{subscriber.id}</p>
-      ))}
+      ))} */}
     </>
   );
 };
