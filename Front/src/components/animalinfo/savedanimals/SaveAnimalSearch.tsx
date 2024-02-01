@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SaveAnimalCard from "./SaveAnimalCard";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 type AnimalType = {
@@ -579,12 +578,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  const navigate = useNavigate();
-
-  const handleRegistration = () => {
-    navigate("/registration");
-  };
-
   const ListStyle = styled.div<{ $itemsPerRow: number }>`
     display: flex;
     flex-wrap: wrap;
@@ -687,11 +680,9 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
         </div>
       </form>
 
-      <button onClick={handleRegistration}>동물 등록</button>
-
       <ListStyle $itemsPerRow={4}>
         {filteredAnimalData.map((animal) => (
-          <SaveAnimalCard key={animal.id} animals={animal} />
+          <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
       </ListStyle>
     </div>
