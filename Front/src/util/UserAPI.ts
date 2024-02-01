@@ -71,9 +71,10 @@ export const signIn = ( data: signInData ) => {
 };
 
 export const signUp = (data: signUpData) => {
-  return API.post(URL + "/join", data).then((res) => {
-    return res;
-  });
+  return API.post(URL + "/join", data)
+    .then((res) => {
+      return res;
+    });
 };
 
 export const checkUsername = (data: { username: string }) => {
@@ -115,9 +116,10 @@ export const logout = () => {
 };
 
 export const getUserInfo = (userId: string) => {
-  return API.get(URL + "/profiles/" + userId).then((res) => {
-    return res;
-  });
+  return API.get(URL + "/profiles/" + userId)
+    .then((res) => {
+      return res;
+    });
 };
 
 export const editUserInfo = (userId: string, data: editedInfoData | editedInfoDataWithPassword) => {
@@ -130,4 +132,4 @@ export const editUserInfo = (userId: string, data: editedInfoData | editedInfoDa
     .then(res => {
       return res;
     })
-}
+};
