@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
+import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.User;
@@ -56,16 +57,19 @@ public class AnimalServiceImpl implements AnimalService{
 	*/
 	@Override
 	@Transactional
-	public Page<ResponseAnimalListDto> findAll(int page, int recordSize) {
+	public ResponseAnimalPageDto findAll(int page, int recordSize) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
 		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
 		Page<Animal> animalPage = animalRepository.findAll(pageRequest);
 
-		// 3. 전체 페이지 수 계산 (5의 배수로 맞춤) -> 아래에 method 구현되어 있다
-		int totalPages = calculateTotalPages(animalPage.getTotalPages());
+		// 3. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
+		int totalPages = animalPage.getTotalPages();
+		long totalElements = animalPage.getTotalElements();
 		int currentPage = animalPage.getNumber() + 1; // 현재 페이지 번호
+		boolean hasNextPage = currentPage < totalPages;
+		boolean hasPreviousPage = currentPage > 1;
 
 		// 4. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
 		List<ResponseAnimalListDto> animalDtoList = animalPage.getContent().stream()
@@ -74,14 +78,23 @@ public class AnimalServiceImpl implements AnimalService{
 				.build())
 			.collect(Collectors.toList());
 
-		// 5. 변환된 데이터와 페이징 정보를 이용하여 새로운 Page 객체 생성
-		return new PageImpl<>(animalDtoList, PageRequest.of(currentPage - 1, recordSize), totalPages);
+		// AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
+		ResponseAnimalPageDto responseAnimalPageDto = ResponseAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(totalPages)
+			.currentPage(currentPage)
+			.totalElements(totalElements)
+			.hasNextPage(hasNextPage)
+			.hasPreviousPage(hasPreviousPage)
+			.build();
+
+		return responseAnimalPageDto;
 	}
 
-	// 전체 페이지 수 계산 메서드
-	private int calculateTotalPages(int totalPages) {
-		return totalPages % 5 != 0 ? (totalPages / 5) * 5 + 5 : totalPages;
-	}
+	// // 전체 페이지 수 계산 메서드
+	// private int calculateTotalPages(int totalPages) {
+	// 	return totalPages % 5 != 0 ? (totalPages / 5) * 5 + 5 : totalPages;
+	// }
 
 
 	/*	특정한 동물 데이터 상세 조회

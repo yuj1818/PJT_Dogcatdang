@@ -1,12 +1,15 @@
 package com.e202.dogcatdang.lostanimal.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.db.entity.User;
@@ -14,6 +17,8 @@ import com.e202.dogcatdang.db.repository.LostAnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
+import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalListDto;
+import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalPageDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -43,6 +48,46 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		LostAnimal lostAnimal = requestLostAnimalDto.toEntity(user);
 		Long savedId = lostAnimalRepository.save(lostAnimal).getLostAnimalId();
 		return new ResponseSavedIdDto(savedId);
+	}
+
+	/*	전체 동물 데이터(리스트) 조회
+	1. DB에 저장된 전체 동물 리스트(entity 저장)를 가져온다.
+	2. DtoList에 가져온 전체 동물 리스트의 값들을 Dto로 변환해 저장한다.
+*/
+	@Override
+	@Transactional
+	public ResponseLostAnimalPageDto findAll(int page, int recordSize) {
+		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
+		Page<LostAnimal> animalPage = lostAnimalRepository.findAll(pageRequest);
+
+		// 3. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
+		int totalPages = animalPage.getTotalPages();
+		long totalElements = animalPage.getTotalElements();
+		int currentPage = animalPage.getNumber() + 1; // 현재 페이지 번호
+		boolean hasNextPage = currentPage < totalPages;
+		boolean hasPreviousPage = currentPage > 1;
+
+		// 4. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseLostAnimalListDto> animalDtoList = animalPage.getContent().stream()
+			.map(animal -> ResponseLostAnimalListDto.builder()
+				.animal(animal)
+				.build())
+			.collect(Collectors.toList());
+
+		// AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
+		ResponseLostAnimalPageDto responseAnimalPageDto = ResponseLostAnimalPageDto.builder()
+			.lostAnimalDtoList(animalDtoList)
+			.totalPages(totalPages)
+			.currentPage(currentPage)
+			.totalElements(totalElements)
+			.hasNextPage(hasNextPage)
+			.hasPreviousPage(hasPreviousPage)
+			.build();
+
+		return responseAnimalPageDto;
 	}
 
 	/*	특정한 실종 동물 데이터 상세 조회
