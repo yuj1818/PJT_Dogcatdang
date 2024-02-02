@@ -14,6 +14,10 @@ const FormBox = styled.div`
 
   .img-box {
     width: 40%;
+
+    img {
+      width: 80%;
+    }
   }
 `
 
@@ -43,13 +47,19 @@ const SignInForm = styled.form`
   label {
     font-weight: bold;
   }
+
+  .err-msg {
+    color: red;
+    font-size: .8rem;
+  }
 `
 
 function SignInPage() {
   const navigate = useNavigate();
 
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(() => e.target.value);
@@ -68,7 +78,11 @@ function SignInPage() {
     };
 
     const response = await signIn(data);
-    console.log(response);
+    
+    if (response.status === 401) {
+      setErrMsg('아이디와 비밀번호를 다시 확인해주세요');
+      return ;
+    }
 
     navigate("/");
   };
@@ -77,7 +91,7 @@ function SignInPage() {
     <div className="flex flex-col justify-center h-screen gap-5">
       <Title title="로그인" />
       <FormBox>
-        <div className="img-box">
+        <div className="img-box flex justify-center">
           <img src="/src/assets/auth-image.png" alt="" />
         </div>
         <Line />
@@ -100,6 +114,7 @@ function SignInPage() {
               onChange={handlePassword}
               />
           </div>
+          { errMsg &&  <p className="err-msg">{errMsg}</p> }
           <div className="menus flex gap-2 items-center justify-center">
             <NavLink to="/signup" className="menu">회원가입</NavLink>
             |

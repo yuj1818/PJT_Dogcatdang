@@ -53,20 +53,19 @@ export interface editedInfoDataWithPassword extends editedInfoData {
 }
 
 export const signIn = (data: signInData) => {
-  return API.post("/login", data).then((res) => {
-    console.log(res);
-
-    if (res.status === 200) {
-      console.log(res.data);
+  return API.post("/login", data)
+    .then((res) => {
       const token = res.headers["authorization"];
       cookie.set("U_ID", token);
 
       const decodedData = jwtDecode(token);
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
-    }
-
-    return res;
-  });
+      
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    })
 };
 
 export const signUp = (data: signUpData) => {

@@ -13,6 +13,10 @@ const FormBox = styled.div`
 
   .img-box {
     width: 40%;
+
+    img {
+      width: 80%;
+    }
   }
 `
 
@@ -222,7 +226,7 @@ function SignUpPage() {
     <div className="flex flex-col justify-center h-screen gap-5">
       <Title title="회원가입" />
       <FormBox>
-        <div className="img-box">
+        <div className="img-box flex justify-center">
           <img src="/src/assets/auth-image.png" alt="" />
         </div>
         <Line />
