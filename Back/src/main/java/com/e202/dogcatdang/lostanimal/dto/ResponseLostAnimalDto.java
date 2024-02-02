@@ -1,6 +1,6 @@
 package com.e202.dogcatdang.lostanimal.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.enums.Gender;
@@ -23,7 +23,7 @@ public class ResponseLostAnimalDto {
 	private Gender gender;
 	private int weight;
 	private String lostLocation;
-	private LocalDateTime lostDate;
+	private LocalDate lostDate;
 	private String feature;
 	private String imgName;
 	private Long userId;
@@ -36,7 +36,7 @@ public class ResponseLostAnimalDto {
 		this.gender = lostAnimal.getGender();
 		this.weight = lostAnimal.getWeight();
 		this.lostLocation = lostAnimal.getLostLocation();
-		this.lostDate = lostAnimal.getLostDate().atStartOfDay();
+		this.lostDate = lostAnimal.getLostDate();
 		this.feature = lostAnimal.getFeature();
 		this.imgName = lostAnimal.getImgName();
 		this.userId = lostAnimal.getUser().getId();
