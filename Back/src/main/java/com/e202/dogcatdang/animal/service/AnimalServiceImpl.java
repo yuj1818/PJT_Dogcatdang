@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,7 @@ public class AnimalServiceImpl implements AnimalService{
 	@Transactional
 	public ResponseAnimalPageDto findAll(int page, int recordSize) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
-		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize, Sort.by(Sort.Direction.DESC, "animalId"));
 
 		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
 		Page<Animal> animalPage = animalRepository.findAllWithUser(pageRequest);
