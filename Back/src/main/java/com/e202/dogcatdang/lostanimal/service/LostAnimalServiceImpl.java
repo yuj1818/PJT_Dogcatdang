@@ -1,12 +1,14 @@
 package com.e202.dogcatdang.lostanimal.service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,18 +62,24 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
-		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
-		Page<LostAnimal> animalPage = lostAnimalRepository.findAllWithUser(pageRequest);
+		// 2. AnimalRepository를 사용하여 상태가 '실종'인 동물 데이터 조회
+		List<LostAnimal> lostAnimals = lostAnimalRepository.findByState(LostAnimal.State.실종);
 
-		// 3. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
-		int totalPages = animalPage.getTotalPages();
-		long totalElements = animalPage.getTotalElements();
-		int currentPage = animalPage.getNumber() + 1; // 현재 페이지 번호
+		// 3. 페이징 처리를 위해 서브리스트를 구함
+		lostAnimals.sort(Comparator.comparing(LostAnimal::getLostAnimalId).reversed());
+		int startIdx = pageRequest.getPageNumber() * pageRequest.getPageSize();
+		int endIdx = Math.min((startIdx + pageRequest.getPageSize()), lostAnimals.size());
+		List<LostAnimal> pagedLostAnimals = lostAnimals.subList(startIdx, endIdx);
+
+		// 4. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
+		int totalPages = (int) Math.ceil((double) lostAnimals .size() / pageRequest.getPageSize());
+		long totalElements = lostAnimals .size();
+		int currentPage = page;
 		boolean hasNextPage = currentPage < totalPages;
 		boolean hasPreviousPage = currentPage > 1;
 
-		// 4. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
-		List<ResponseLostAnimalListDto> animalDtoList = animalPage.getContent().stream()
+		// 5. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseLostAnimalListDto> animalDtoList = pagedLostAnimals.stream()
 			.map(animal -> ResponseLostAnimalListDto.builder()
 				.animal(animal)
 				.build())

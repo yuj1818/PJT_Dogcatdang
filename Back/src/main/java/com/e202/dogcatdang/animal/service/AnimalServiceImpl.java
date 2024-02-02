@@ -1,6 +1,7 @@
 package com.e202.dogcatdang.animal.service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,24 +63,33 @@ public class AnimalServiceImpl implements AnimalService{
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
-		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
-		Page<Animal> animalPage = animalRepository.findAllWithUser(pageRequest);
+		// 2. AnimalRepository를 사용하여 상태가 '보호중'인 동물 데이터 조회
+		List<Animal> protectedAnimals = animalRepository.findByState(Animal.State.보호중);
 
-		// 3. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
-		int totalPages = animalPage.getTotalPages();
-		long totalElements = animalPage.getTotalElements();
-		int currentPage = animalPage.getNumber() + 1; // 현재 페이지 번호
-		boolean hasNextPage = currentPage < totalPages;
-		boolean hasPreviousPage = currentPage > 1;
+		// 3. 페이징 처리를 위해 서브리스트를 구함
+		// 	sublist는 list의 부분을 반환하며 정렬 순서 보장 x
+		// 	정렬을 다시 해주어야 한다
+		protectedAnimals.sort(Comparator.comparing(Animal::getAnimalId).reversed());
 
-		// 4. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
-		List<ResponseAnimalListDto> animalDtoList = animalPage.getContent().stream()
+		int startIdx = pageRequest.getPageNumber() * pageRequest.getPageSize();
+		int endIdx = Math.min((startIdx + pageRequest.getPageSize()), protectedAnimals.size());
+		List<Animal> pagedProtectedAnimals = protectedAnimals.subList(startIdx, endIdx);
+
+		// 4. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
+		int totalPages = (int) Math.ceil((double) protectedAnimals.size() / pageRequest.getPageSize());
+		long totalElements = protectedAnimals.size();
+		int currentPage = page;
+		boolean hasNextPage = endIdx < totalElements;
+		boolean hasPreviousPage = page > 1;
+
+		// 5. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseAnimalListDto> animalDtoList = pagedProtectedAnimals.stream()
 			.map(animal -> ResponseAnimalListDto.builder()
 				.animal(animal)
 				.build())
 			.collect(Collectors.toList());
 
-		// AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
+		// 6. AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
 		ResponseAnimalPageDto responseAnimalPageDto = ResponseAnimalPageDto.builder()
 			.animalDtoList(animalDtoList)
 			.totalPages(totalPages)
@@ -87,6 +98,7 @@ public class AnimalServiceImpl implements AnimalService{
 			.hasNextPage(hasNextPage)
 			.hasPreviousPage(hasPreviousPage)
 			.build();
+
 
 		return responseAnimalPageDto;
 	}
