@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import API from "../../../util/axios";
 
 interface LostAnimalDetail {
+  animalType: string;
   breed: string;
   name: string;
   age: string;
@@ -14,6 +15,7 @@ interface LostAnimalDetail {
   lostDate: string;
   feature: string;
   imgName: string;
+  lostAnimalId: number;
 }
 
 function LostAnimalDetailPage() {
@@ -21,10 +23,10 @@ function LostAnimalDetailPage() {
   const [lostanimalDetail, setLostAnimalDetail] =
     useState<LostAnimalDetail | null>(null);
 
-  console.log("animalID", animalID);
+  console.log("lostanimalID", animalID);
 
   useEffect(() => {
-    const apiUrl = `lost-animals/${animalID}`;
+    const apiUrl = `api/lost-animals/${animalID}`;
     API.get(apiUrl)
       .then((res) => {
         console.log(res.data);

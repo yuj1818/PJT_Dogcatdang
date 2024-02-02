@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
 interface LostAnimal {
-  animalId: number;
+  lostAnimalId: number;
   animalType: string;
   breed: string;
   age: string;
@@ -36,7 +36,7 @@ function LostAnimalCard(props: LostAnimalCardProps) {
   const navigate = useNavigate();
 
   const gotoDetailPage = () => {
-    navigate(`/lost-animals/${props.animals.animalId}`);
+    navigate(`/lost-animals/${props.animals.lostAnimalId}`);
   };
 
   return (
@@ -45,7 +45,7 @@ function LostAnimalCard(props: LostAnimalCardProps) {
         <h4>이름 : {props.animals.name}</h4>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <p>품종 : {props.animals.breed}</p>
-        <p>특징 : {props.animals.feature}</p>
+
         {/* <p>실종 지역 : {props.animals.lostLocation}</p> */}
         <p>성별 : {props.animals.gender}</p>
       </div>
