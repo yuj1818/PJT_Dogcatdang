@@ -10,5 +10,7 @@ COPY build/libs/Dogcatdang-0.0.1-SNAPSHOT.jar app.jar
 # Expose the port that the Spring Boot app will run on
 EXPOSE 9000
 
+ENV profile prod
+
 # Command to start the Spring Boot app
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-Dspring.profiles.active=prod", "-jar", "app.jar"]

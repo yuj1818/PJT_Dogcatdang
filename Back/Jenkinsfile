@@ -8,15 +8,24 @@ pipeline {
     }
 
     stages {
-        // stage('Build'){
-        //     steps{
-        //         dir("./Back"){
-        //             sh "chmod +x gradlew"
-        //             sh "gradle wrapper"
-        //             sh "./gradlew clean build"
-        //         }
-        //     }
-        // }
+        stage('secret.yml download'){
+            steps{
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]){
+                    script{
+                        sh "cp $configFile Back/src/main/resources/application-secret.yml"
+                    }
+                }
+            }
+        }
+        stage('Build'){
+            steps{
+                dir("./Back"){
+                    sh "chmod +x gradlew"
+                    sh "gradle wrapper"
+                    sh "./gradlew clean build"
+                }
+            }
+        }
         stage("Build Image"){
             steps{
                 dir("./Back"){
@@ -38,7 +47,7 @@ pipeline {
            
             
         }
-         stage('stop prev conatiner'){
+         stage('stop prev container'){
             steps {
                 script {
                     try {
