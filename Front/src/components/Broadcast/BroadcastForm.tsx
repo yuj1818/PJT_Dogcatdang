@@ -6,11 +6,7 @@ import { isOrg } from "../../pages/users/SignInPage";
 import { useUserInfo } from "../../util/hooks";
 import { Button, Input, Contour } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
-import {
-  AnimalInfo,
-  BoadcastData,
-  requestBroadCast,
-} from "../../util/broadcastAPI";
+import { AnimalInfo, requestBroadCast } from "../../util/broadcastAPI";
 
 const TesxtArea = tw.textarea`
   w-64 h-32 border rounded-md p-2 resize-none block w-full border-gray-300

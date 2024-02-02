@@ -11,7 +11,6 @@ import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
 import { Button, Input } from "../common/Design";
-import { ArticleInterface } from "./ArticleInterface";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const MODULES = {
