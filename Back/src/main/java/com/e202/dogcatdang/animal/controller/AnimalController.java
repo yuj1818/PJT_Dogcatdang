@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
+import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.db.entity.Animal;
@@ -62,12 +63,12 @@ public class AnimalController {
 	   1페이지에 최대 8개의 데이터
 	*/
 	@GetMapping("")
-	public List<ResponseAnimalListDto> findAll(@RequestParam(defaultValue = "1") int page,
+	public ResponseEntity<ResponseAnimalPageDto> findAll(@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "8") int recordSize) {
-		Page<ResponseAnimalListDto> animalPage = animalService.findAll(page, recordSize);
+		ResponseAnimalPageDto animalPage = animalService.findAll(page, recordSize);
 
 		// model.addAttribute 대신 ResponseEntity에 데이터를 담아 반환
-		return animalPage.getContent();
+		return ResponseEntity.ok(animalPage);
 	}
 
 	/* 동물 정보 상세 조회
