@@ -36,7 +36,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
   const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-
+  console.log(filteredAnimalData);
   const dogInput = [
     "골든 리트리버",
     "그레이 하운드",
