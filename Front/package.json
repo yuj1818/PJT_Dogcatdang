@@ -28,6 +28,7 @@
     "react-quill": "^2.0.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.3",
+    "react-select": "^5.8.0",
     "react-use-pip": "^1.5.0",
     "styled-components": "^6.1.8",
     "tailwind-styled-components": "^2.2.0",
