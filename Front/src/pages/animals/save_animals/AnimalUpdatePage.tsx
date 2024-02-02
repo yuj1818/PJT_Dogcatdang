@@ -8,7 +8,7 @@ function AnimalUpdatePage() {
     [key: number]: string[];
   };
   const navigate = useNavigate();
-  const { animalID } = useParams();
+  const { animalID } = useParams() as { animalID: string };
 
   const dogInput = [
     "골든 리트리버",
@@ -551,9 +551,12 @@ function AnimalUpdatePage() {
 
   const cookie = new Cookies();
 
-  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>, animalID: string) => {
+  const handleUpdate = async (
+    e: React.FormEvent<HTMLFormElement>,
+    animalID: string
+  ) => {
     e.preventDefault();
-    console.log(animalID)
+    console.log(animalID);
     const token = cookie.get("U_ID");
     const data = {
       animalType: animalType,
@@ -577,7 +580,7 @@ function AnimalUpdatePage() {
   };
   return (
     <>
-      <form onSubmit={(e) => handleUpdate(e, animalID || '')}>
+      <form onSubmit={(e) => handleUpdate(e, animalID)}>
         <label>
           <input
             type="radio"
@@ -597,8 +600,11 @@ function AnimalUpdatePage() {
           고양이
         </label>
         <div>
-          <label htmlFor="breed">품종</label>
+          <label htmlFor="breed">품종 : </label>
           <select name="breed" id="breed" value={breed} onChange={handleBreed}>
+            <option value="" disabled hidden>
+              품종 선택
+            </option>
             {animalType === "강아지"
               ? dogInput.map((type, index) => (
                   <option key={index} value={type.replace(/\s/g, "_")}>
@@ -621,7 +627,7 @@ function AnimalUpdatePage() {
         </div> */}
         <div>
           <label>
-            이미지이름:
+            이미지이름 :
             <input
               type="text"
               value={imgName}
@@ -631,7 +637,7 @@ function AnimalUpdatePage() {
         </div>
         <div>
           <label>
-            이미지URL:
+            이미지URL :
             <input
               type="text"
               value={imgUrl}
@@ -642,8 +648,11 @@ function AnimalUpdatePage() {
 
         <div>
           <label>
-            성별:
+            성별 :
             <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="" disabled hidden>
+                성별
+              </option>
               <option value="남">남</option>
               <option value="여">여</option>
             </select>
@@ -652,7 +661,7 @@ function AnimalUpdatePage() {
 
         <div>
           <label>
-            추정나이:
+            추정나이 :
             <input
               type="text"
               value={age}
@@ -663,7 +672,7 @@ function AnimalUpdatePage() {
 
         <div>
           <label>
-            체중:
+            체중 :
             <input
               type="text"
               value={weight}
@@ -673,7 +682,7 @@ function AnimalUpdatePage() {
         </div>
 
         <div>
-          <label htmlFor="지역">지역</label>
+          <label htmlFor="지역">지역 : </label>
           <select
             name="region"
             id="region"
@@ -708,21 +717,21 @@ function AnimalUpdatePage() {
               )}
           </select>
           <label>
-            상세주소:
+            상세주소 :
             <input type="text" value={detailInfo} onChange={handleDetail} />
           </label>
         </div>
 
         <div>
           <label>
-            발견일자:
+            발견일자 :
             <input type="date" value={rescueDate} onChange={handleRescueDate} />
           </label>
         </div>
 
         <div>
           <label>
-            중성화 여부:
+            중성화 여부 :
             <input
               type="checkbox"
               name="isNeutered"
@@ -734,8 +743,11 @@ function AnimalUpdatePage() {
         <div>
           <div>
             <label>
-              보호현황:
+              보호현황 :
               <select value={state} onChange={(e) => setState(e.target.value)}>
+                <option value="" disabled hidden>
+                  보호현황
+                </option>
                 <option value="보호중">보호중</option>
                 <option value="입양완료">입양완료</option>
                 <option value="안락사">안락사</option>
@@ -747,7 +759,7 @@ function AnimalUpdatePage() {
 
         <div>
           <label>
-            특징:
+            특징 :
             <input
               type="text"
               value={feature}

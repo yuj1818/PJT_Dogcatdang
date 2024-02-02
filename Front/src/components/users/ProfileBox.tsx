@@ -1,12 +1,17 @@
 import styled from "styled-components";
 import { infoData } from "../../util/UserAPI";
+import KakaoMap from "./KakaoMap";
 
 const StyledBox = styled.div`
   border: 1px solid black;
   border-radius: 15px;
   display: flex;
+  align-items: center;
+  justify-content: space-around;
   padding: 1rem;
   gap: 1rem;
+  width: 100%;
+  height: 30vh;
   
   .profile-image-circle {
     border-radius: 50%;
@@ -32,6 +37,7 @@ const StyledButton = styled.button `
   border-radius: 5px;
   padding: .1rem .3rem;
   font-size: 12px;
+  white-space: nowrap;
 `
 
 const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
@@ -89,6 +95,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
             </>
           }
         </div>
+        { props.isOrg? <KakaoMap address={props.userInfo?.address || ""} /> : <></>}
       </StyledBox>
       {
         props.isOrg ? 

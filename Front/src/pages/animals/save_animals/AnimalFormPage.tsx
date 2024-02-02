@@ -7,6 +7,7 @@ function AnimalFormPage() {
   type CountryInput = {
     [key: number]: string[];
   };
+  const cookie = new Cookies();
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
@@ -547,8 +548,6 @@ function AnimalFormPage() {
     setIsNeuter(e.target.checked);
   };
 
-  const cookie = new Cookies();
-
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
@@ -598,8 +597,11 @@ function AnimalFormPage() {
           고양이
         </label>
         <div>
-          <label htmlFor="breed">품종</label>
+          <label htmlFor="breed">품종 : </label>
           <select name="breed" id="breed" value={breed} onChange={handleBreed}>
+            <option value="" disabled hidden>
+              품종 선택
+            </option>
             {animalType === "강아지"
               ? dogInput.map((type, index) => (
                   <option key={index} value={type.replace(/\s/g, "_")}>
@@ -622,7 +624,7 @@ function AnimalFormPage() {
         </div> */}
         <div>
           <label>
-            이미지이름:
+            이미지이름 :
             <input
               type="text"
               value={imgName}
@@ -632,7 +634,7 @@ function AnimalFormPage() {
         </div>
         <div>
           <label>
-            이미지URL:
+            이미지URL :
             <input
               type="text"
               value={imgUrl}
@@ -643,8 +645,11 @@ function AnimalFormPage() {
 
         <div>
           <label>
-            성별:
+            성별 :
             <select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="" disabled hidden>
+                성별 선택
+              </option>
               <option value="남">남</option>
               <option value="여">여</option>
             </select>
@@ -653,7 +658,7 @@ function AnimalFormPage() {
 
         <div>
           <label>
-            추정나이:
+            추정나이 :
             <input
               type="text"
               value={age}
@@ -664,7 +669,7 @@ function AnimalFormPage() {
 
         <div>
           <label>
-            체중:
+            체중 :
             <input
               type="text"
               value={weight}
@@ -674,7 +679,7 @@ function AnimalFormPage() {
         </div>
 
         <div>
-          <label htmlFor="지역">지역</label>
+          <label htmlFor="지역">지역 : </label>
           <select
             name="region"
             id="region"
@@ -709,21 +714,21 @@ function AnimalFormPage() {
               )}
           </select>
           <label>
-            상세주소:
+            상세주소 :
             <input type="text" value={detailInfo} onChange={handleDetail} />
           </label>
         </div>
 
         <div>
           <label>
-            발견일자:
+            발견일자 :
             <input type="date" value={rescueDate} onChange={handleRescueDate} />
           </label>
         </div>
 
         <div>
           <label>
-            중성화 여부:
+            중성화 여부 :
             <input
               type="checkbox"
               name="isNeutered"
@@ -735,8 +740,11 @@ function AnimalFormPage() {
         <div>
           <div>
             <label>
-              보호현황:
+              보호현황 :
               <select value={state} onChange={(e) => setState(e.target.value)}>
+                <option value="" disabled hidden>
+                  보호현황
+                </option>
                 <option value="보호중">보호중</option>
                 <option value="입양완료">입양완료</option>
                 <option value="안락사">안락사</option>
@@ -748,7 +756,7 @@ function AnimalFormPage() {
 
         <div>
           <label>
-            특징:
+            특징 :
             <input
               type="text"
               value={feature}

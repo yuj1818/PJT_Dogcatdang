@@ -1,11 +1,11 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { StreamManager } from "openvidu-browser";
 
-interface Props {
+interface VideoProps {
   streamManager: StreamManager;
 }
 
-const Video = ({ streamManager }: Props) => {
+const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const autoplay = true;
 
@@ -13,6 +13,7 @@ const Video = ({ streamManager }: Props) => {
     if (streamManager && videoRef.current) {
       streamManager.addVideoElement(videoRef.current);
     }
+    console.log(streamManager);
   }, [streamManager]);
 
   return (
