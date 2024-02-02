@@ -27,6 +27,7 @@ public class ResponseLostAnimalDto {
 	private String feature;
 	private String imgName;
 	private Long userId;
+	private String userNickname;
 
 	// Entity -> DTO
 	public ResponseLostAnimalDto(LostAnimal lostAnimal) {
@@ -40,5 +41,6 @@ public class ResponseLostAnimalDto {
 		this.feature = lostAnimal.getFeature();
 		this.imgName = lostAnimal.getImgName();
 		this.userId = lostAnimal.getUser().getId();
+		this.userNickname = lostAnimal.getUser().getNickname();
 	}
 }

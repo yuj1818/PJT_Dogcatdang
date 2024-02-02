@@ -104,7 +104,7 @@ public class AnimalServiceImpl implements AnimalService{
 	@Override
 	@Transactional
 	public ResponseAnimalDto findById(Long animalId) {
-		Animal animal = animalRepository.findById(animalId)
+		Animal animal = animalRepository.findByIdWithUser(animalId)
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
 		return new ResponseAnimalDto(animal);
 	}

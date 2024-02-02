@@ -27,6 +27,7 @@ public class ResponseAnimalDto {
 	private String feature;
 	private String imgName;
 	private Long userId;
+	private String userNickname;
 
 	// Entity -> DTO
 	public ResponseAnimalDto(Animal animal) {
@@ -40,5 +41,6 @@ public class ResponseAnimalDto {
 		this.feature = animal.getFeature();
 		this.imgName = animal.getImgName();
 		this.userId = animal.getUser().getId();
+		this.userNickname = animal.getUser().getNickname();
 	}
 }
