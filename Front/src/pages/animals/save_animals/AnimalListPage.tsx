@@ -45,7 +45,7 @@ function AnimalListPage() {
       }
     };
     searchData();
-  }, []);
+  }, [currentPage]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
