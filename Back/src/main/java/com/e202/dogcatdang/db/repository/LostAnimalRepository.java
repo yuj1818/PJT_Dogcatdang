@@ -1,5 +1,6 @@
 package com.e202.dogcatdang.db.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +21,6 @@ public interface LostAnimalRepository extends JpaRepository<LostAnimal, Long> {
 
 	@Query("SELECT l FROM LostAnimal l JOIN FETCH l.user")
 	Page<LostAnimal> findAllWithUser(PageRequest pageRequest);
+
+	List<LostAnimal> findByState(LostAnimal.State state);
 }
