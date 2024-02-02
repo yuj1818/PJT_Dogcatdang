@@ -61,7 +61,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
 		// 2. AnimalRepository를 사용하여 페이징된 동물 데이터 조회
-		Page<LostAnimal> animalPage = lostAnimalRepository.findAll(pageRequest);
+		Page<LostAnimal> animalPage = lostAnimalRepository.findAllWithUser(pageRequest);
 
 		// 3. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
 		int totalPages = animalPage.getTotalPages();
