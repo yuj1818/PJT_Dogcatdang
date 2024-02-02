@@ -40,6 +40,10 @@ const StyledButton = styled.button `
   white-space: nowrap;
 `
 
+const Spacer = styled.div`
+  flex-grow: .8;
+`
+
 const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
   
   const onClickEditBtn = () => {
@@ -49,53 +53,56 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
   return (
     <>
       <StyledBox>
-        <div className="profile-image-circle">
-          <img className="profile-image" src={props.userInfo?.imgUrl || "/src/assets/defaultProfile.png"} alt="" />
-        </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex gap-1">
-            <p className="nickname">{props.userInfo?.nickname}</p>
-            <div>{props.isMine ? <StyledButton onClick={onClickEditBtn}>정보 수정</StyledButton> : null}</div>
+        <div className="flex gap-1">
+          <div className="profile-image-circle">
+            <img className="profile-image" src={props.userInfo?.imgUrl || "/src/assets/defaultProfile.png"} alt="" />
           </div>
-        
-          {
-            props.isOrg ? 
-            <>
-              <div>
-                <p>주소: {props.userInfo?.address}</p>
-                <p>연락처: {props.userInfo?.phone}</p>
-                <p>이메일: {props.userInfo?.email}</p>
-              </div>
-              <div className="flex gap-1">
-                {
-                  props.isMine ?
-                  <>
-                    <StyledButton>입양 절차 설정</StyledButton>
-                    <StyledButton>방송 일정 관리</StyledButton>
-                    <StyledButton>방문 신청 관리</StyledButton>
-                    <StyledButton>방문 예약 관리</StyledButton>
-                  </>
-                  :
-                  <>
-                    <StyledButton>입양 절차 확인</StyledButton>
-                    <StyledButton>1:1 문의</StyledButton>
-                  </>
-                }
-              </div>
-            </>
-            :
-            <>
-              <div>
-                <p>지역: {props.userInfo?.address}</p>
-                <p>소개글: {props.userInfo?.bio || "없음"}</p>
-              </div>
-              <div>
-                {props.isMine ? <StyledButton>방문 일정</StyledButton> : null }
-              </div>
-            </>
-          }
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-1">
+              <p className="nickname">{props.userInfo?.nickname}</p>
+              <div>{props.isMine ? <StyledButton onClick={onClickEditBtn}>정보 수정</StyledButton> : null}</div>
+            </div>
+          
+            {
+              props.isOrg ? 
+              <>
+                <div>
+                  <p>주소: {props.userInfo?.address}</p>
+                  <p>연락처: {props.userInfo?.phone}</p>
+                  <p>이메일: {props.userInfo?.email}</p>
+                </div>
+                <div className="flex gap-1">
+                  {
+                    props.isMine ?
+                    <>
+                      <StyledButton>입양 절차 설정</StyledButton>
+                      <StyledButton>방송 일정 관리</StyledButton>
+                      <StyledButton>방문 신청 관리</StyledButton>
+                      <StyledButton>방문 예약 관리</StyledButton>
+                    </>
+                    :
+                    <>
+                      <StyledButton>입양 절차 확인</StyledButton>
+                      <StyledButton>1:1 문의</StyledButton>
+                    </>
+                  }
+                </div>
+              </>
+              :
+              <>
+                <div>
+                  <p>지역: {props.userInfo?.address}</p>
+                  <p>소개글: {props.userInfo?.bio || "없음"}</p>
+                </div>
+                <div>
+                  {props.isMine ? <StyledButton>방문 일정</StyledButton> : null }
+                </div>
+              </>
+            }
+          </div>
         </div>
         { props.isOrg? <KakaoMap address={props.userInfo?.address || ""} /> : <></>}
+        <Spacer />
       </StyledBox>
       {
         props.isOrg ? 

@@ -82,11 +82,16 @@ const router = createBrowserRouter([
       },
       {
         path: "lost-animals",
-        element: <LostAnimalListPage />,
-      },
-      {
-        path: "lost-animals/:animalID",
-        element: <LostAnimalDetailPage />,
+        children: [
+          {
+            index: true,
+            element: <LostAnimalListPage />,
+          },
+          {
+            path: ":animalID",
+            element: <LostAnimalDetailPage />,
+          },
+        ],
       },
       {
         path: "lost-registration",

@@ -7,7 +7,7 @@ const StyledMap = styled.div`
 `
 
 const KakaoMap: React.FC<{address: string}> = (props) => {
-  const [coords, setCoords] = useState({ lat: 33.5563, lng: 126.79581 });
+  const [coords, setCoords] = useState({ lat: 35.0961029679051, lng: 128.857751633716 });
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
