@@ -4,7 +4,7 @@ import API from "../../../util/axios";
 import LostAnimalCard from "../../../components/animalinfo/lostanimals/LostAnimalCard";
 import { useNavigate } from "react-router-dom";
 import { isOrg as org } from "../../../pages/users/SignInPage";
-import Pagination from "../../../components/articles/Pagination";
+import Pagination from "../../../components/common/Pagination";
 
 function LostAnimalListPage() {
   const [lostAnimalData, setLostAnimalData] = useState([]);

@@ -37,6 +37,7 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   selectedData,
 }) => {
   const [data, setData] = useState<AnimalInfo[]>([]);
+  setData(data);
   const [filteredResults, setFilteredResults] = useState<AnimalInfo[]>([]);
   const cardContainerRef = useRef<HTMLDivElement | null>(null);
 
