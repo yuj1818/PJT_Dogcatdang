@@ -30,6 +30,7 @@ function AnimalListPage() {
     state: string;
     imgName: string;
     imgUrl: string;
+    userNickname: string;
   }
 
   const ListStyle = styled.div<{ $itemsPerRow: number }>`
@@ -69,6 +70,7 @@ div {
     navigate("/registration");
   };
 
+  console.log(animalData);
   return (
     <>
       <SaveAnimalSearch animals={animalData} />
@@ -78,6 +80,7 @@ div {
       >
         동물 등록
       </button>
+
       <ListStyle $itemsPerRow={10}>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />

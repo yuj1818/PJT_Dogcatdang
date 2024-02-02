@@ -36,7 +36,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-
+  console.log(filteredAnimalData);
   const dogInput = [
     "골든 리트리버",
     "그레이 하운드",
@@ -549,9 +549,9 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setAnimalType(type);
   };
 
-  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setBreed(event.target.value);
-  };
+  // const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setBreed(event.target.value);
+  // };
 
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(event.target.value);
@@ -580,18 +580,18 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  // const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   justify-content: flex-start;
 
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
-  `;
+  //   div {
+  //     flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+  //     display: flex;
+  //     align-items: center;
+  //     flex-direction: column;
+  //   }
+  // `;
 
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
