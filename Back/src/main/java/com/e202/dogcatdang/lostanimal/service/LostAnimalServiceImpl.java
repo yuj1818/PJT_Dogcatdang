@@ -97,7 +97,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 
 	@Override
 	public ResponseLostAnimalDto findById(Long lostAnimalId) {
-		LostAnimal lostAnimal = lostAnimalRepository.findById(lostAnimalId)
+		LostAnimal lostAnimal = lostAnimalRepository.findByIdWithUser(lostAnimalId)
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
 		return new ResponseLostAnimalDto(lostAnimal);
 	}

@@ -1,5 +1,8 @@
 package com.e202.dogcatdang.lostanimal.dto;
 
+
+import java.time.LocalDate;
+
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.Gender;
@@ -22,6 +25,7 @@ public class ResponseLostAnimalListDto {
 	private Gender gender;
 
 	private LostAnimal.State state;
+	private LocalDate lostDate;
 	private String lostLocation;
 
 	private String imgName;
@@ -37,6 +41,7 @@ public class ResponseLostAnimalListDto {
 		this.age = animal.getAge();
 		this.gender = animal.getGender();
 		this.state = animal.getState();
+		this.lostDate = animal.getLostDate();
 		this.lostLocation = animal.getLostLocation();
 		// Animal entity와 User entity의 관계에서 userId 가져오기
 		this.userId = animal.getUser().getId();
