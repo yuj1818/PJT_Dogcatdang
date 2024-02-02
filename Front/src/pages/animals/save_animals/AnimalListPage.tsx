@@ -5,10 +5,12 @@ import API from "../../../util/axios";
 import SaveAnimalCard from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 function AnimalListPage() {
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalElements, setTotalElements] = useState(1);
   const itemsPerPage = 8;
   const navigate = useNavigate();
   const isOrg = org();
@@ -29,22 +31,39 @@ function AnimalListPage() {
     imgName: string;
     imgUrl: string;
   }
+
+  const ListStyle = styled.div<{ $itemsPerRow: number }>`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* 
+div {
+  flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+} */
+  `;
+
   useEffect(() => {
     const searchData = async () => {
       try {
-        const res = await API.get("/api/animals");
-        console.log("실행:", res.data);
-        setAnimalData(res.data);
+        const res = await API.get(`/api/animals?page=${currentPage}`);
+        console.log("실행:", res.data.animalDtoList);
+        console.log("실행:", res.data.currentPage);
+        console.log("실행:", res.data.totalElements);
+        setAnimalData(res.data.animalDtoList);
+        setCurrentPage(res.data.currentPage);
+        setTotalElements(res.data.totalElements);
       } catch (err) {
         console.error("Error:", err);
       }
     };
     searchData();
-  }, []);
+  }, [currentPage]);
+
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    console.log(`Page changed to: ${newPage}`);
-    console.log(`현재 페이지: ${currentPage}`);
   };
   const handleRegistration = () => {
     navigate("/registration");
@@ -59,13 +78,13 @@ function AnimalListPage() {
       >
         동물 등록
       </button>
-      <div>
+      <ListStyle $itemsPerRow={10}>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
-      </div>
+      </ListStyle>
       <Pagination
-        totalItems={animalData.length}
+        totalItems={totalElements}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />

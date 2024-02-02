@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import SaveAnimalCard from "./SaveAnimalCard";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Select from "react-select";
+import "./search.css";
 
 type AnimalType = {
   animalId: number;
@@ -271,6 +272,14 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     "제주특별자치도",
     "강원특별자치도",
   ];
+  const transformedDogInput = dogInput.map((dog) => ({
+    value: dog,
+    label: dog,
+  }));
+  const transformedCatInput = catInput.map((cat) => ({
+    value: cat,
+    label: cat,
+  }));
 
   const countryInput: CountryInput = {
     0: [
@@ -543,9 +552,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(event.target.value);
   };
-  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setBreed(event.target.value);
-  };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
@@ -578,50 +584,74 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    /* 
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    } */
+  const AnimalButton = styled.button<{ selected: boolean }>`
+    background-color: #ff8331;
+    color: white;
+    padding: 8px;
+    margin: 3px;
+    border-radius: 10px;
+    width: 100px;
+
+    ${(props) =>
+      props.selected &&
+      css`
+        filter: blur(1px); /* Adjust the blur amount as needed */
+        opacity: 0.9; /* Adjust the opacity as needed */
+      `};
   `;
 
   return (
-    <div>
-      <button onClick={() => handleAnimalType("강아지")}>강아지</button>
-      <button onClick={() => handleAnimalType("고양이")}>고양이</button>
-      <form>
-        <div>
-          <label htmlFor="breed">품종</label>
-          <select
+    <div className="container">
+      <div className="button-group">
+        <AnimalButton
+          selected={animalType === "고양이"}
+          onClick={() => handleAnimalType("강아지")}
+        >
+          강아지
+        </AnimalButton>
+        <AnimalButton
+          selected={animalType === "강아지"}
+          onClick={() => handleAnimalType("고양이")}
+        >
+          고양이
+        </AnimalButton>
+      </div>
+      <form className="search-form">
+        <div className="form-group">
+          <Select
             name="breed"
             id="breed"
-            value={breed}
-            onChange={handleBreedChange}
-          >
-            {animalType === "강아지"
-              ? dogInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))
-              : catInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))}
-          </select>
-          <label htmlFor="지역">지역</label>
+            value={
+              animalType === "강아지"
+                ? transformedDogInput.find((option) => option.value === breed)
+                : transformedCatInput.find((option) => option.value === breed)
+            }
+            options={
+              animalType === "강아지"
+                ? transformedDogInput
+                : transformedCatInput
+            }
+            onChange={(selectedOption) => setBreed(selectedOption?.value || "")}
+            placeholder="품종"
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                border: "1px solid #d5967b",
+                padding: "8px",
+                borderRadius: "10px",
+                width: "250px",
+                height: "70px",
+              }),
+            }}
+          />
+        </div>
+        <div className="form-group">
           <select
             name="region"
             id="region"
             value={region}
             onChange={handleRegionChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/도 선택
@@ -632,11 +662,14 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
           <select
             name="country"
             id="country"
             value={country}
             onChange={handleCountryChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/구/군 선택
@@ -648,12 +681,17 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
                 </option>
               ))}
           </select>
-          <label htmlFor="성별">성별</label>
+        </div>
+        <div className="form-group">
+          <option value="" disabled hidden>
+            성별
+          </option>
           <select
             name="gender"
             id="gender"
             value={gender}
             onChange={handleGenderChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               성별
@@ -664,28 +702,34 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               </option>
             ))}
           </select>
-          <label htmlFor="보호기관명">보호기관명</label>
+        </div>
+        <div className="form-group">
           <input
             type="text"
             id="shelterName"
             name="shelterName"
             value={shelterName}
             onChange={handleShelterNameChange}
+            placeholder="보호기관명"
+            className="custom-input"
           />
         </div>
-        <div>
-          <button type="button" onClick={handleSearch}>
+        <div className="form-group">
+          <button
+            className="search-button"
+            type="button"
+            onClick={handleSearch}
+          >
             검색
           </button>
         </div>
       </form>
-
-      <ListStyle $itemsPerRow={4}>
-        {filteredAnimalData.map((animal) => (
-          <SaveAnimalCard key={animal.animalId} animals={animal} />
-        ))}
-      </ListStyle>
     </div>
+    // {/* <ListStyle $itemsPerRow={4}>
+    //{filteredAnimalData.map((animal) => (
+    //<SaveAnimalCard key={animal.animalId} animals={animal} />
+    //))}
+    //</ListStyle> */}
   );
 }
 

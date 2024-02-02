@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
+import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalPageDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.lostanimal.service.LostAnimalService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
@@ -41,6 +44,19 @@ public class LostAnimalController {
 
 		ResponseSavedIdDto responseSavedIdDto = lostAnimalService.save(requestLostAnimalDto, token);
 		return ResponseEntity.ok(responseSavedIdDto);
+	}
+
+	/* 동물 목록 조회
+*  모든 동물을 페이지로 불러옴
+   1페이지에 최대 8개의 데이터
+*/
+	@GetMapping("")
+	public ResponseEntity<ResponseLostAnimalPageDto> findAll(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "8") int recordSize) {
+		ResponseLostAnimalPageDto animalPage = lostAnimalService.findAll(page, recordSize);
+
+		// model.addAttribute 대신 ResponseEntity에 데이터를 담아 반환
+		return ResponseEntity.ok(animalPage);
 	}
 
 	/* 실종 동물 정보 상세 조회

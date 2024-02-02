@@ -19,7 +19,7 @@ function AnimalDetailPage() {
   const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
 
   useEffect(() => {
-    const apiUrl = `animals/${animalID}`;
+    const apiUrl = `api/animals/${animalID}`;
 
     API.get(apiUrl)
       .then((res) => {
