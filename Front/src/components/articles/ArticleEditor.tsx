@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
 import DOMPurify from "dompurify";
 
-import { queryClient, requestArticle } from "../../util/articleAPI";
+import { queryClient } from "../../util/tanstackQuery";
+import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
-import { Button } from "../common/CommonComponents";
+import { Button, Input } from "../common/Design";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const MODULES = {
@@ -58,24 +59,25 @@ class BlockImage extends CustomImage {
 Quill.register(BlockImage, true);
 
 // ---------------------------------style------------------------------------------------------
-const Input = tw.input`
-w-full mt-2 p-2 border border-gray-300 rounded mb-8
-
-focus:outline-none
-focus:shadow-md
-focus:placeholder:opacity-0
-`;
 
 const Label = tw.label`
- text-lg font-bold text-gray-800 mb-2 block
+ text-lg font-bold text-gray-800 mb-2 block mt-8
 `;
 
-const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
-  prevTitle,
+interface ArticleEditorInterface {
+  title?: string;
+  content?: string;
+  boardId?: number;
+  isSaved?: boolean;
+}
+
+const ArticleEditor: React.FC<ArticleEditorInterface> = ({
+  title,
   content,
+  boardId,
 }) => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState(prevTitle ?? "");
+  const [articleTitle, setTitle] = useState(title ?? "");
   const [dirtyContent, setDirtyContent] = useState(content ?? "");
   const [preViewModalIsOpen, setPreViewModalIsOpen] = useState(false);
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
@@ -100,11 +102,17 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
     setAlertModalIsOpen(false);
   };
 
-  const handleCreateArticle = (isSaved: boolean) => {
+  const handleSubmitArticle = (isSaved: boolean) => {
     const cleanContent = DOMPurify.sanitize(dirtyContent);
+    const data = {
+      title: articleTitle as string,
+      content: cleanContent,
+      isSaved,
+      boardId,
+    };
     mutate({
-      data: { title: title as string, content: cleanContent, isSaved },
-      method: "POST",
+      data,
+      method: boardId ? "PUT" : "POST",
     });
     setAlertModalIsOpen(() => isError);
   };
@@ -112,7 +120,7 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
   return (
     <>
       <PreviewModal
-        title={title}
+        title={articleTitle}
         content={dirtyContent}
         closeModal={togglePreviwModal}
         modalIsOpen={preViewModalIsOpen}
@@ -127,9 +135,15 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
       )}
       <div>
         <Label htmlFor="title">제목</Label>
-        <Input id="title" type="text" onChange={handleTitleChange} />
+        <Input
+          id="title"
+          type="text"
+          value={articleTitle}
+          onChange={handleTitleChange}
+        />
         <Label htmlFor="content">내용</Label>
         <ReactQuill
+          value={dirtyContent}
           id="content"
           className="w-full"
           style={{ minHeight: "40vh", height: "300px", marginBottom: "50px" }}
@@ -145,7 +159,7 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
         <div>
           <Button
             onClick={() => {
-              handleCreateArticle(false);
+              handleSubmitArticle(false);
             }}
           >
             임시 저장
@@ -153,7 +167,7 @@ const ArticleEditor: React.FC<{ prevTitle?: string; content?: string }> = ({
           <Button onClick={togglePreviwModal}>미리보기</Button>
           <Button
             onClick={() => {
-              handleCreateArticle(true);
+              handleSubmitArticle(true);
             }}
           >
             제출

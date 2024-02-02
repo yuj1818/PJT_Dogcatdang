@@ -18,6 +18,7 @@ interface Animal {
   state: string;
   imgName: string;
   imgUrl: string;
+  userNickname: string;
 }
 
 interface AnimalCardProps {
@@ -61,6 +62,7 @@ function SaveAnimalCard(props: AnimalCardProps) {
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
         <p>성별 : {props.animals.gender}</p>
+        <p>보호기관 : {props.animals.userNickname}</p>
         <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
       </div>
     </Card>

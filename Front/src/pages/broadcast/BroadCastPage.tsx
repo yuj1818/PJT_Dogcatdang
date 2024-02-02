@@ -6,9 +6,10 @@ import {
   Subscriber,
 } from "openvidu-browser";
 import axios, { AxiosError } from "axios";
-import Form from "../../components/Broadcast/Form";
+import BroadcastForm from "../../components/Broadcast/BroadcastForm";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
+import { useUserInfo } from "../../util/hooks";
 
 const OPENVIDU_SERVER_URL = `http://localhost:4443`;
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -21,6 +22,7 @@ const BroadCastPage = () => {
   );
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
   const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
+  const { id, nickname } = useUserInfo();
 
   const leaveSession = useCallback(() => {
     if (session) {
@@ -112,23 +114,14 @@ const BroadCastPage = () => {
     }
   }, [sessionId]);
 
-  const sessionIdChangeHandler = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement> | string) => {
-      if (typeof event === "string") {
-        setSessionId(event);
-      } else {
-        setSessionId(event.target.value);
-      }
-    },
-    []
-  );
+  const sessionIdChangeHandler = useCallback((event: string) => {
+    setSessionId(event);
+  }, []);
 
   useEffect(() => {
     if (!session) {
       return;
     }
-    const nickname = `${Math.random()}`;
-    const userId = Math.random() * 100;
 
     session.on("streamCreated", (event) => {
       const newSubscriber = session.subscribe(event.stream, undefined);
@@ -140,7 +133,7 @@ const BroadCastPage = () => {
 
     if (isOrg) {
       getToken().then((token) => {
-        session.connect(token, { nickname, userId }).then(() => {
+        session.connect(token, { nickname, id }).then(() => {
           if (OV) {
             const newPublisher = OV.initPublisher(undefined, {
               audioSource: undefined,
@@ -157,7 +150,7 @@ const BroadCastPage = () => {
       });
     } else {
       getToken().then((token) => {
-        session.connect(token, { nickname, userId }).then(() => {
+        session.connect(token, { nickname, id }).then(() => {
           session.signal({
             data: `${nickname}님이 입장하였습니다.`,
             to: [],
@@ -170,7 +163,6 @@ const BroadCastPage = () => {
 
   return (
     <div>
-      <h1>진행화면</h1>
       <>
         {session ? (
           <SessionComponent
@@ -179,8 +171,7 @@ const BroadCastPage = () => {
             session={session}
           />
         ) : (
-          <Form
-            sessionId={sessionId}
+          <BroadcastForm
             sessionIdChangeHandler={sessionIdChangeHandler}
             joinSession={joinSession}
           />

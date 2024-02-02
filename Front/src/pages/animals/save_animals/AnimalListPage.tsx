@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
-import Pagination from "../../../components/articles/Pagination";
+import Pagination from "../../../components/common/Pagination";
 import API from "../../../util/axios";
 import SaveAnimalCard from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 function AnimalListPage() {
   const [animalData, setAnimalData] = useState([]);
@@ -29,7 +30,22 @@ function AnimalListPage() {
     state: string;
     imgName: string;
     imgUrl: string;
+    userNickname: string;
   }
+
+  const ListStyle = styled.div<{ $itemsPerRow: number }>`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* 
+div {
+  flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+} */
+  `;
+
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -54,6 +70,7 @@ function AnimalListPage() {
     navigate("/registration");
   };
 
+  console.log(animalData);
   return (
     <>
       <SaveAnimalSearch animals={animalData} />
@@ -63,11 +80,12 @@ function AnimalListPage() {
       >
         동물 등록
       </button>
-      <div>
+
+      <ListStyle $itemsPerRow={10}>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
-      </div>
+      </ListStyle>
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}

@@ -14,6 +14,7 @@ interface LostAnimalDetail {
   lostLocation: string;
   lostDate: string;
   feature: string;
+  userNickname: string;
   imgName: string;
   lostAnimalId: number;
 }
@@ -51,6 +52,7 @@ function LostAnimalDetailPage() {
     <>
       <h1>AnimalDetailPage</h1>
       <p>품종 : {lostanimalDetail?.breed.replace(/_/g, " ")}</p>
+      <p>보호기관 : {lostanimalDetail?.userNickname}</p>
       <p>몸무게 : {lostanimalDetail?.weight}</p>
       <p>나이 : {lostanimalDetail?.age}</p>
       <p>특징 : {lostanimalDetail?.feature}</p>

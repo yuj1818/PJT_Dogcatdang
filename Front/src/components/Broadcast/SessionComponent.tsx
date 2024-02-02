@@ -33,10 +33,6 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
     [setSubscribers, session, subscribers]
   );
 
-  useEffect(() => {
-    console.log(subscribers);
-  }, [subscribers]);
-
   return (
     <>
       {publisher && <MyVideo streamManager={publisher}></MyVideo>}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import LostAnimalCard from "./LostAnimalCard";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import Select from "react-select";
+import styled, { css } from "styled-components";
+import "./search.css";
 
 interface LostAnimalType {
   animalId: number;
@@ -30,14 +30,13 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     [key: number]: string[];
   };
 
-  const navigate = useNavigate();
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
   const [region, setRegion] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-
+  console.log(filteredAnimalData);
   const dogInput = [
     "골든 리트리버",
     "그레이 하운드",
@@ -253,7 +252,14 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     "하일랜드 폴드",
     "한국 고양이",
   ];
-
+  const transformedDogInput = dogInput.map((dog) => ({
+    value: dog,
+    label: dog,
+  }));
+  const transformedCatInput = catInput.map((cat) => ({
+    value: cat,
+    label: cat,
+  }));
   const genderInput = ["전체", "남", "여"];
   const regionInput = [
     "서울특별시",
@@ -543,9 +549,9 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setAnimalType(type);
   };
 
-  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setBreed(event.target.value);
-  };
+  // const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setBreed(event.target.value);
+  // };
 
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(event.target.value);
@@ -567,7 +573,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
       return (
         (animalType === "" || animal.animalType === animalType) &&
         (breed === "" || animal.breed === breed) &&
-        (region === "" || animal.lostLocation === combinedLocation) &&
         (gender === "" || animal.gender === gender)
       );
     });
@@ -575,50 +580,87 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  // const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   justify-content: flex-start;
 
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
+  //   div {
+  //     flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+  //     display: flex;
+  //     align-items: center;
+  //     flex-direction: column;
+  //   }
+  // `;
+
+  const AnimalButton = styled.button<{ selected: boolean }>`
+    background-color: #ff8331;
+    color: white;
+    padding: 8px;
+    margin: 3px;
+    border-radius: 10px;
+    width: 100px;
+
+    ${(props) =>
+      props.selected &&
+      css`
+        filter: blur(1px);
+        opacity: 0.9;
+      `};
   `;
 
   return (
-    <div>
-      <button onClick={() => handleAnimalType("강아지")}>강아지</button>
-      <button onClick={() => handleAnimalType("고양이")}>고양이</button>
-      <form>
-        <div>
-          <label htmlFor="breed">품종</label>
-          <select
+    <div className="container">
+      <div className="button-group">
+        <AnimalButton
+          selected={animalType === "고양이"}
+          onClick={() => handleAnimalType("강아지")}
+        >
+          강아지
+        </AnimalButton>
+        <AnimalButton
+          selected={animalType === "강아지"}
+          onClick={() => handleAnimalType("고양이")}
+        >
+          고양이
+        </AnimalButton>
+      </div>
+      <form className="search-form">
+        <div className="form-group">
+          <Select
             name="breed"
             id="breed"
-            value={breed}
-            onChange={handleBreedChange}
-          >
-            {animalType === "강아지"
-              ? dogInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))
-              : catInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))}
-          </select>
-          <label htmlFor="지역">지역</label>
+            value={
+              animalType === "강아지"
+                ? transformedDogInput.find((option) => option.value === breed)
+                : transformedCatInput.find((option) => option.value === breed)
+            }
+            options={
+              animalType === "강아지"
+                ? transformedDogInput
+                : transformedCatInput
+            }
+            onChange={(selectedOption) => setBreed(selectedOption?.value || "")}
+            placeholder="품종"
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                border: "1px solid #d5967b",
+                padding: "8px",
+                borderRadius: "10px",
+                width: "250px",
+                height: "70px",
+              }),
+            }}
+          />
+        </div>
+        <div className="form-group">
           <select
             name="region"
             id="region"
             value={region}
             onChange={handleRegionChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/도 선택
@@ -629,28 +671,36 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
               </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
           <select
             name="country"
             id="country"
             value={country}
             onChange={handleCountryChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/구/군 선택
             </option>
             {countryInput[regionInput.indexOf(region)] &&
-              countryInput[regionInput.indexOf(region)].map((ct) => (
-                <option key={ct} value={ct}>
+              countryInput[regionInput.indexOf(region)].map((ct, index) => (
+                <option key={index} value={ct}>
                   {ct}
                 </option>
               ))}
           </select>
-          <label htmlFor="성별">성별</label>
+        </div>
+        <div className="form-group">
+          <option value="" disabled hidden>
+            성별
+          </option>
           <select
             name="gender"
             id="gender"
             value={gender}
             onChange={handleGenderChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               성별
@@ -662,20 +712,16 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
             ))}
           </select>
         </div>
-        <div>
-          <button type="button" onClick={handleSearch}>
+        <div className="form-group">
+          <button
+            className="search-button"
+            type="button"
+            onClick={handleSearch}
+          >
             검색
           </button>
         </div>
       </form>
-
-      <ListStyle $itemsPerRow={4}>
-        {filteredAnimalData.map((animal, index) => (
-          <div>
-            <LostAnimalCard key={index} animals={animal} />
-          </div>
-        ))}
-      </ListStyle>
     </div>
   );
 }
