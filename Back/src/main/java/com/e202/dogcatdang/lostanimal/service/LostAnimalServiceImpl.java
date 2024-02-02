@@ -74,9 +74,8 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		// 4. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
 		int totalPages = (int) Math.ceil((double) lostAnimals .size() / pageRequest.getPageSize());
 		long totalElements = lostAnimals .size();
-		int currentPage = page;
-		boolean hasNextPage = currentPage < totalPages;
-		boolean hasPreviousPage = currentPage > 1;
+		boolean hasNextPage = page < totalPages;
+		boolean hasPreviousPage = page > 1;
 
 		// 5. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
 		List<ResponseLostAnimalListDto> animalDtoList = pagedLostAnimals.stream()
@@ -86,16 +85,15 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 			.collect(Collectors.toList());
 
 		// AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
-		ResponseLostAnimalPageDto responseAnimalPageDto = ResponseLostAnimalPageDto.builder()
+
+		return ResponseLostAnimalPageDto.builder()
 			.lostAnimalDtoList(animalDtoList)
 			.totalPages(totalPages)
-			.currentPage(currentPage)
+			.currentPage(page)
 			.totalElements(totalElements)
 			.hasNextPage(hasNextPage)
 			.hasPreviousPage(hasPreviousPage)
 			.build();
-
-		return responseAnimalPageDto;
 	}
 
 	/*	특정한 실종 동물 데이터 상세 조회

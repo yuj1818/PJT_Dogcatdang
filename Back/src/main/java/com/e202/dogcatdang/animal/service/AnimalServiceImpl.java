@@ -6,10 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +76,6 @@ public class AnimalServiceImpl implements AnimalService{
 		// 4. 페이징 정보 : 전체 페이지, 전체 요소, 현재 페이지, 다음 페이지와 이전 페이지 여부
 		int totalPages = (int) Math.ceil((double) protectedAnimals.size() / pageRequest.getPageSize());
 		long totalElements = protectedAnimals.size();
-		int currentPage = page;
 		boolean hasNextPage = endIdx < totalElements;
 		boolean hasPreviousPage = page > 1;
 
@@ -90,17 +87,15 @@ public class AnimalServiceImpl implements AnimalService{
 			.collect(Collectors.toList());
 
 		// 6. AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
-		ResponseAnimalPageDto responseAnimalPageDto = ResponseAnimalPageDto.builder()
+
+		return ResponseAnimalPageDto.builder()
 			.animalDtoList(animalDtoList)
 			.totalPages(totalPages)
-			.currentPage(currentPage)
+			.currentPage(page)
 			.totalElements(totalElements)
 			.hasNextPage(hasNextPage)
 			.hasPreviousPage(hasPreviousPage)
 			.build();
-
-
-		return responseAnimalPageDto;
 	}
 
 	// // 전체 페이지 수 계산 메서드
