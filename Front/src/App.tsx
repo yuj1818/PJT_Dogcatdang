@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
-import { queryClient } from "./util/articleAPI.ts";
+import { queryClient } from "./util/tanstackQuery.ts";
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
 const AnimalListPage = lazy(
@@ -25,8 +25,9 @@ import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import { LoadingIndicator } from "./components/common/Icons.tsx";
-const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage.tsx"));
+const BroadCastPage = lazy(() => import("./pages/broadcast/BroadcastPage.tsx"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
+import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
         element: <AnimalFormPage />,
       },
       {
-        path: "save-update/:animalID",
+        path: "save-update",
         element: <AnimalUpdatePage />,
       },
       {
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
         element: <LostAnimalFormPage />,
       },
       {
-        path: "lost-update/:animalID",
+        path: "lost-update",
         element: <LostAnimalUpdatePage />,
       },
       {
@@ -117,10 +118,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <ArticleWritePage />,
               },
-              {
-                path: ":boardId",
-                element: <ArticleWritePage />,
-              },
             ],
           },
         ],
@@ -143,6 +140,10 @@ const router = createBrowserRouter([
                 <BroadCastPage />
               </Suspense>
             ),
+          },
+          {
+            path: "list",
+            element: <BoradcastListPage />,
           },
         ],
       },

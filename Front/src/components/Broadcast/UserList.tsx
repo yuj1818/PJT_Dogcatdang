@@ -6,7 +6,7 @@ interface UserList {
 }
 
 const UserList: React.FC<UserList> = ({ subscribers }) => {
-  console.log(subscribers);
+  subscribers;
   return (
     <>
       {/* {subscribers.map((subscriber, idx) => (

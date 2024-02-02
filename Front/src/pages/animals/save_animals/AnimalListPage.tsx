@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
-import Pagination from "../../../components/articles/Pagination";
+import Pagination from "../../../components/common/Pagination";
 import API from "../../../util/axios";
 import SaveAnimalCard from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
