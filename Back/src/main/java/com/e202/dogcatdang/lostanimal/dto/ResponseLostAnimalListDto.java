@@ -30,6 +30,7 @@ public class ResponseLostAnimalListDto {
 
 	private String imgName;
 	private Long userId;
+	private String userNickname;
 
 	// Entity -> DTO
 	@Builder
@@ -45,6 +46,7 @@ public class ResponseLostAnimalListDto {
 		this.lostLocation = animal.getLostLocation();
 		// Animal entity와 User entity의 관계에서 userId 가져오기
 		this.userId = animal.getUser().getId();
+		this.userNickname = animal.getUser().getNickname();
 
 		this.imgName = animal.getImgName();
 	}
