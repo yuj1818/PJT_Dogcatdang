@@ -5,7 +5,6 @@ import com.e202.dogcatdang.user.Service.JoinService;
 import com.e202.dogcatdang.user.Service.UserProfileService;
 import com.e202.dogcatdang.user.dto.JoinDTO;
 import com.e202.dogcatdang.user.dto.UserProfileDTO;
-import jakarta.persistence.Id;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -147,19 +146,7 @@ public class UserController {
         try {
             // 업데이트된 유저 정보를 받아서 반환
             User updatedUser = userProfileService.updateUserProfile(userId, userProfileDTO);
-//
-//            UserProfileDTO putUserDTO = new UserProfileDTO();
-//            putUserDTO.setUsername((updatedUser.getUsername()));
-//            putUserDTO.setRole((updatedUser.getRole()));
-//            putUserDTO.setEmail((updatedUser.getEmail()));
-//            putUserDTO.setNickname((updatedUser.getNickname()));
-//            putUserDTO.setAddress((updatedUser.getAddress()));
-//            putUserDTO.setPhone((updatedUser.getPhone()));
-//            putUserDTO.setBio((updatedUser.getBio()));
-//            putUserDTO.setImgName((updatedUser.getImg_name()));
-//            putUserDTO.setImgUrl(updatedUser.getImg_url());
-
-            return ResponseEntity.ok("nice  "); // 업데이트된 유저 정보 반환
+            return ResponseEntity.ok(updatedUser); // 업데이트된 유저 정보 반환
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {

@@ -71,7 +71,7 @@ public class RequestAnimalDto {
 			.state(state)
 			.imgName(imgName)
 			.imgUrl(imgUrl)
-			.user(user)       // user의 식별자(id)가 animal entity user_id에 들어간다.
+			.user(user)
 			.build();
 	}
 }

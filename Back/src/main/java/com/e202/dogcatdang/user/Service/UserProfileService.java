@@ -3,8 +3,6 @@ package com.e202.dogcatdang.user.Service;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.user.dto.UserProfileDTO;
-import io.jsonwebtoken.security.Password;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -12,11 +10,10 @@ import java.util.NoSuchElementException;
 @Service
 public class UserProfileService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserProfileService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+
+    public UserProfileService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public UserProfileDTO getUserProfile(Long userId) {
@@ -43,46 +40,15 @@ public class UserProfileService {
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         // 유저 프로필 정보 업데이트
-        //변경 안하는 값은 그대로
-        if(userProfileDTO.getUsername() != null){
-            user.setUsername(userProfileDTO.getUsername());
-        }
-
-        if(userProfileDTO.getPassword() != null){
-            String password = userProfileDTO.getPassword();
-            user.setPassword(bCryptPasswordEncoder.encode(password));
-        }
-        if(userProfileDTO.getEmail() != null){
-            user.setEmail(userProfileDTO.getEmail());
-        }
-
-        if(userProfileDTO.getNickname() != null){
-            user.setNickname(userProfileDTO.getNickname());
-        }
-
-        if(userProfileDTO.getAddress() != null){
-            user.setAddress(userProfileDTO.getAddress());
-        }
-
-        if(userProfileDTO.getPhone() != null){
-            user.setPhone(userProfileDTO.getPhone());
-        }
-
-        if(userProfileDTO.getBio() != null){
-            user.setBio(userProfileDTO.getBio());
-        }
-
-        if(userProfileDTO.getImgName() != null){
-            user.setImg_name(userProfileDTO.getImgName());
-        }
-
-        if(userProfileDTO.getImgUrl() != null){
-            user.setImg_url(userProfileDTO.getImgUrl());
-        }
-
-        if(userProfileDTO.getRole() != null){
-            user.setRole(userProfileDTO.getRole());
-        }
+        user.setUsername(userProfileDTO.getUsername());
+        user.setEmail(userProfileDTO.getEmail());
+        user.setNickname(userProfileDTO.getNickname());
+        user.setAddress(userProfileDTO.getAddress());
+        user.setPhone(userProfileDTO.getPhone());
+        user.setBio(userProfileDTO.getBio());
+        user.setImg_name(userProfileDTO.getImgName());
+        user.setImg_url(userProfileDTO.getImgUrl());
+        user.setRole(userProfileDTO.getRole());
 
         // 업데이트된 유저 정보 저장
         userRepository.save(user);
