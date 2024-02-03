@@ -1,37 +1,83 @@
+import { useEffect, useState } from "react";
 import LostAnimalSearch from "../../../components/animalinfo/lostanimals/LostAnimalSearch";
+import API from "../../../util/axios";
+import LostAnimalCard from "../../../components/animalinfo/lostanimals/LostAnimalCard";
+import { useNavigate } from "react-router-dom";
+import { isOrg as org } from "../../../pages/users/SignInPage";
+import Pagination from "../../../components/common/Pagination";
 
 function LostAnimalListPage() {
-  const animalData = [
-    {
-      id: 1,
-      name: "소금이",
-      animalType: "강아지",
-      breed: "불독",
-      age: 2,
-      weight: 900,
-      color: "흰색",
-      feature: "사람을 잘 따르는 활발한 성격의 강아지입니다.",
-      lostDate: "2024-01-12",
-      lostLocation: "서울특별시 강서구",
-      gender: "남",
-      isNeuter: false,
-    },
-    {
-      id: 2,
-      name: "하양이",
-      animalType: "고양이",
-      breed: "먼치킨",
-      age: 3,
-      weight: 600,
-      color: "흰색",
-      feature: "사람을 잘 따르는 활발한 성격의 고양이입니다.",
-      lostDate: "2024-01-12",
-      lostLocation: "부산광역시 강서구",
-      gender: "여",
-      isNeuter: true,
-    },
-  ];
-  return <LostAnimalSearch animals={animalData} />;
+  const [lostAnimalData, setLostAnimalData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalElements, setTotalElements] = useState(1);
+
+  const navigate = useNavigate();
+  const isOrg = org();
+
+  interface LostRegistrationData {
+    lostAnimalId: number;
+    animalType: string;
+    name: string;
+    breed: string;
+    age: string;
+    weight: string;
+    lostDate: string;
+    selectedCity: string;
+    selectedDistrict: string;
+    detailInfo: string;
+    gender: string;
+    feature: string;
+    state: string;
+    imgName: string;
+    imgUrl: string;
+  }
+
+  useEffect(() => {
+    const searchData = async () => {
+      try {
+        const res = await API.get(`/api/lost-animals?page=${currentPage}`);
+        console.log("실행:", res.data.lostAnimalDtoList);
+        console.log("현재페이지:", res.data.currentPage);
+        console.log("총:", res.data.totalElements);
+        setLostAnimalData(res.data.lostAnimalDtoList);
+        setCurrentPage(res.data.currentPage);
+        setTotalElements(res.data.totalElements);
+      } catch (err) {
+        console.error("Error:", err);
+      }
+    };
+    searchData();
+  }, [currentPage]);
+  const handleRegistration = () => {
+    navigate("/lost-registration");
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const itemsPerPage = 8;
+  return (
+    <>
+      <LostAnimalSearch animals={lostAnimalData} />
+      <button
+        onClick={handleRegistration}
+        style={{ display: isOrg ? "none" : "block" }}
+      >
+        동물 등록
+      </button>
+      <div>
+        {lostAnimalData.map((animal: LostRegistrationData) => (
+          <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
+        ))}
+      </div>
+      <Pagination
+        totalItems={totalElements}
+        itemsPerPage={itemsPerPage}
+        onPageChange={handlePageChange}
+      />
+    </>
+  );
 }
 
 export default LostAnimalListPage;

@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import ReactModal from "react-modal";
-import { Button } from "../common/CommonComponents";
+import { Button } from "../common/Design";
 import tw from "tailwind-styled-components";
 import ArticleContent from "./ArticleContent";
 

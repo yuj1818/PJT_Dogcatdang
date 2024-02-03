@@ -27,7 +27,6 @@ public class RequestAnimalDto {
 	private String breed;
 	private Integer age;
 	private Integer weight;
-	private String color;
 	private LocalDate rescueDate;
 	private String rescueLocation;
 	private Boolean isNeuter;
@@ -56,7 +55,7 @@ public class RequestAnimalDto {
 		}
 	}
 
-	// DTO -> Entity
+	// DTO -> Entity (DB 저장용)
 	public Animal toEntity(User user) {
 		return Animal.builder()
 			.animalType(animalType)
@@ -71,7 +70,7 @@ public class RequestAnimalDto {
 			.state(state)
 			.imgName(imgName)
 			.imgUrl(imgUrl)
-			.user(user)
+			.user(user)       // user의 식별자(id)가 animal entity user_id에 들어간다.
 			.build();
 	}
 }

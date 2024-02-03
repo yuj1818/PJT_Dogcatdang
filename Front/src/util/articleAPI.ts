@@ -1,11 +1,8 @@
-import { QueryClient } from "@tanstack/react-query";
 import API from "./axios";
 // import { imageHandler } from "./imageHandler";
 import { AxiosError } from "axios";
 
-export const queryClient = new QueryClient();
-
-function handleAxiosError(error: AxiosError): void {
+export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
@@ -21,11 +18,12 @@ function handleAxiosError(error: AxiosError): void {
   }
 
   console.log("axios error:", error);
-}
+};
 export interface ArticlePostData {
   title: string;
   content: string;
   isSaved: boolean;
+  boardId?: number;
 }
 
 export interface FetchEventsOptions {
@@ -41,7 +39,7 @@ export const requestArticle = async ({
   data,
   method,
 }: FetchEventsOptions) => {
-  const URL = "boards";
+  const URL = "api/boards";
   let response;
   let proccesedData;
   if (data) {
@@ -80,7 +78,9 @@ export const requestArticle = async ({
       }
     } else if (method === "PUT") {
       // 수정
-      response = await API.put(URL, proccesedData, { signal });
+      response = await API.put(URL + "/" + data!.boardId!, proccesedData, {
+        signal,
+      });
     } else if (method === "DELETE") {
       // 삭제
       response = await API.delete(`${URL}/${boardId}`, { signal });
@@ -93,7 +93,7 @@ export const requestArticle = async ({
 
     return response.data;
   } catch (error) {
-    handleAxiosError(error as AxiosError);
+    // handleAxiosError(error as AxiosError);
     throw error;
   }
 };

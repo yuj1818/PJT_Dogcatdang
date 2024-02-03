@@ -1,0 +1,17 @@
+server:
+  port: 9000
+
+# database 연동 설정
+spring:
+    # spring data jpa 설정
+#  profiles:
+#    include: secret
+  datasource:
+    url: jdbc:mysql://i10e202.p.ssafy.io:3306/dogcatdang?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+

@@ -3,9 +3,9 @@ import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
 import ArticleList from "../../components/articles/ArticleList";
-import Pagination from "../../components/articles/Pagination";
+import Pagination from "../../components/common/Pagination";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle } from "../../util/HTTP";
+import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
 import { Link } from "react-router-dom";

@@ -2,11 +2,35 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { signUp, checkUsername, checkNickname, checkEmail } from "../../util/UserAPI";
 import { useNavigate } from "react-router-dom";
+import Title from "../../components/users/Title";
+import Line from "../../components/users/Line";
+import { Button } from "../../components/common/Button";
+
+const FormBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .img-box {
+    width: 40%;
+
+    img {
+      width: 80%;
+    }
+  }
+`
+
+const ErrMsg = styled.p<{ $isValid: boolean }>`
+  font-size: .8rem;
+  color: ${props => props.$isValid ? 'green' : 'red'};
+`
 
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  text-align: center;
+  width: 40%;
 
   .box {
     display: flex;
@@ -14,23 +38,26 @@ const SignUpForm = styled.form`
     align-items: center;
     .item {
       text-align: right;
-      width: 11rem;
+      width: 7rem;
       white-space: nowrap;
-      font-size: 25px;
+      font-weight: bold;
     }
     .input {
-      font-size: 22px;
       border: none;
       box-shadow: 0 3.5px 3.5px lightgrey;
       border-radius: 5px;
+      width: 15rem;
+      padding: .2rem .4rem;
+    }
+
+    .item-err-msg {
+      width: 15rem;
+      text-align: center;
     }
   }
 
-  button {
-    border: none;
-    font-size: 20px;
-    border-radius: 5px;
-    background-color: #F7EDE1;
+  .button-box {
+    width: 15rem;
   }
 `
 
@@ -50,9 +77,10 @@ function SignUpPage() {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidNickname, setIsValidNickname] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [usernameErrMsg, setUsernameErrMsg] = useState('중복 검사 필요');
-  const [emailErrMsg, setEmailErrMsg] = useState('중복 검사 필요');
-  const [nicknameErrMsg, setNicknameErrMsg] = useState('중복 검사 필요');
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [usernameErrMsg, setUsernameErrMsg] = useState('');
+  const [emailErrMsg, setEmailErrMsg] = useState('');
+  const [nicknameErrMsg, setNicknameErrMsg] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
   const [signUpErrMsg, setSignUpErrMsg] = useState('');
 
@@ -62,11 +90,15 @@ function SignUpPage() {
   }
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(() => e.target.value)
+    setUsername(() => e.target.value);
+    setUsernameErrMsg('중복 검사 필요');
+    setIsValidUsername(false);
   }
 
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(() => e.target.value);
+    setEmailErrMsg('중복 검사 필요');
+    setIsValidEmail(false);
   }
 
   const handlePassword1 = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,12 +107,12 @@ function SignUpPage() {
 
   const handlePassword2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword2(() => e.target.value);
-    // 비밀번호 같은지 체크
-    // setIsValidEmail(() => password1 === password2 ? true : false);
   }
 
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(() => e.target.value);
+    setNicknameErrMsg('중복 검사 필요');
+    setIsValidNickname(false);
   }
 
   const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,10 +124,14 @@ function SignUpPage() {
   }
 
   useEffect(() => {
-    if (password1 === password2) {
-      setPasswordErrMsg('비밀번호 일치');
-    } else {
-      setPasswordErrMsg('비밀번호 불일치');
+    if (password1) {
+      if (password1 === password2) {
+        setPasswordErrMsg('비밀번호 일치');
+        setIsValidPassword(true);
+      } else {
+        setPasswordErrMsg('비밀번호 불일치');
+        setIsValidPassword(false);
+      }
     }
   }, [password1, password2])
 
@@ -148,14 +184,22 @@ function SignUpPage() {
   }
 
   useEffect(() => {
-    setIsComplete(isValidUsername && isValidNickname && isValidEmail);
-  }, [isValidUsername, isValidNickname, isValidEmail])
+    setIsComplete(isValidUsername && isValidNickname && isValidEmail && isValidPassword);
+  }, [isValidUsername, isValidNickname, isValidEmail, isValidPassword])
 
-  const onSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (isComplete) {
+      setSignUpErrMsg('');
+    }
+  }, [isComplete])
+
+  const preventSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+  }
 
+  const onSubmit = async () => {
     if (!isComplete) {
-      setSignUpErrMsg('중복검사 해주세요');
+      setSignUpErrMsg('중복검사 여부와 비밀번호 일치 여부를 확인해주세요');
       return;
     }
 
@@ -179,59 +223,89 @@ function SignUpPage() {
   }
 
   return (
-    <div>
-      <img src="/src/assets/auth-image.png" alt="" />
-      <h3>회원가입</h3>
-      <SignUpForm onSubmit={onSubmit}>
-        <div className="box">
-          <label className="item" htmlFor="isOrg">회원 구분</label>
-          <div>
-            <input type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
-            <label htmlFor="개인">개인 회원</label>
+    <div className="flex flex-col justify-center h-screen gap-5">
+      <Title title="회원가입" />
+      <FormBox>
+        <div className="img-box flex justify-center">
+          <img src="/src/assets/auth-image.png" alt="" />
+        </div>
+        <Line />
+        <SignUpForm onSubmit={preventSubmit}>
+          <div className="box">
+            <label className="item" htmlFor="isOrg">회원 구분</label>
+            <div>
+              <input type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
+              <label htmlFor="개인">개인 회원</label>
+            </div>
+            <div>
+              <input type="radio" name="isOrg" value="ROLE_SHELTER" id="기관" onChange={selectType} />
+              <label htmlFor="기관">기관 회원</label>
+            </div>
           </div>
-          <div>
-            <input type="radio" name="isOrg" value="ROLE_SHELTER" id="기관" onChange={selectType} />
-            <label htmlFor="기관">기관 회원</label>
+          <div className="flex flex-col gap-1">
+            <div className="box">
+              <label className="item" htmlFor="username">ID</label>
+              <input className="input" type="text" id="username" name="username" onChange={handleUsername} required />
+              <Button background="#F7EDE1" color="black" onClick={onClickCheckUsername}>중복확인</Button>
+            </div>
+            <div className="box">
+              <div className="item"></div>
+              { usernameErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidUsername} >{usernameErrMsg}</ErrMsg> }
+            </div>
           </div>
-        </div>
-        <div className="box">
-          <label className="item" htmlFor="username">ID</label>
-          <input className="input" type="text" id="username" name="username" onChange={handleUsername} />
-          <button onClick={onClickCheckUsername}>중복확인</button>
-        </div>
-        <p>{usernameErrMsg}</p>
-        <div className="box">
-          <label className="item" htmlFor="nickname">{ isOrg ? '기관명' : '닉네임' }</label>
-          <input className="input" type="text" id="nickname" name="nickname" onChange={handleNickname} />
-          <button onClick={onClickCheckNickname}>중복확인</button>
-        </div>
-        <p>{nicknameErrMsg}</p>
-        <div className="box">
-          <label className="item" htmlFor="password1">비밀번호</label>
-          <input className="input" type="password" id="password1" name="password1" onChange={handlePassword1} />
-        </div>
-        <div className="box">
-          <label className="item" htmlFor="password2">비밀번호 확인</label>
-          <input className="input" type="password" id="password2" name="password2" onChange={handlePassword2} />
-        </div>
-        <p>{passwordErrMsg}</p>
-        <div className="box">
-          <label className="item" htmlFor="email">이메일</label>
-          <input className="input" type="email" id="email" name="email" onChange={handleEmail} />
-          <button onClick={onClickCheckEmail}>중복확인</button>
-        </div>
-        <p>{emailErrMsg}</p>
-        <div className="box">
-          <label className="item" htmlFor="phone-number">전화번호</label>
-          <input className="input" type="text" id="phone-number" name="phone-number" onChange={handlePhone} />
-        </div>
-        <div className="box">
-          <label className="item" htmlFor="address">주소</label>
-          <input className="input" type="text" id="address" name="address" onChange={handleAddress} />
-        </div>
-        <p>{signUpErrMsg}</p>
-        <button>회원가입</button>
-      </SignUpForm>
+          <div className="flex flex-col gap-1">
+            <div className="box">
+              <label className="item" htmlFor="nickname">{ isOrg ? '기관명' : '닉네임' }</label>
+              <input className="input" type="text" id="nickname" name="nickname" onChange={handleNickname} required />
+              <Button background="#F7EDE1" color="black" onClick={onClickCheckNickname}>중복확인</Button>
+            </div>
+            <div className="box">
+              <div className="item"></div>
+              { nicknameErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidNickname} >{nicknameErrMsg}</ErrMsg> }
+            </div>
+          </div>
+          <div className="box">
+            <label className="item" htmlFor="password1">비밀번호</label>
+            <input className="input" type="password" id="password1" name="password1" onChange={handlePassword1} required />
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="box">
+              <label className="item" htmlFor="password2">비밀번호 확인</label>
+              <input className="input" type="password" id="password2" name="password2" onChange={handlePassword2} required />
+            </div>
+            <div className="box">
+              <div className="item"></div>
+              { passwordErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidPassword} >{passwordErrMsg}</ErrMsg> }
+            </div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="box">
+              <label className="item" htmlFor="email">이메일</label>
+              <input className="input" type="email" id="email" name="email" onChange={handleEmail} required />
+              <Button background="#F7EDE1" color="black" onClick={onClickCheckEmail}>중복확인</Button>
+            </div>
+            <div className="box">
+              <div className="item"></div>
+              { emailErrMsg && <ErrMsg className="err-msg item-err-msg" $isValid={isValidEmail} >{emailErrMsg}</ErrMsg>} 
+            </div>
+          </div>
+          <div className="box">
+            <label className="item" htmlFor="phone-number">전화번호</label>
+            <input className="input" type="text" id="phone-number" name="phone-number" onChange={handlePhone} required />
+          </div>
+          <div className="box">
+            <label className="item" htmlFor="address">주소</label>
+            <input className="input" type="text" id="address" name="address" onChange={handleAddress} required />
+          </div>
+          <ErrMsg $isValid={isComplete}>{signUpErrMsg}</ErrMsg>
+          <div className="box">
+            <div className="item"></div>
+            <div className="button-box">
+              <Button background="#F7EDE1" color="black" onClick={onSubmit}>회원가입</Button>
+            </div>
+          </div>
+        </SignUpForm>
+      </FormBox>
     </div>
   );
 }
