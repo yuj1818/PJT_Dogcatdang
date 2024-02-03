@@ -1,0 +1,51 @@
+.container {
+  border: 1px solid #d5967b;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 10px;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.button-group {
+  margin-bottom: 10px;
+}
+
+.animal-button {
+  margin-right: 10px;
+  background-color: #ff8331;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.search-button {
+  background-color: #ff8331;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  width: 100px;
+  height: 70px;
+}
+
+.custom-input {
+  border: 1px solid #d5967b;
+  padding: 8px;
+  border-radius: 10px;
+  width: 250px;
+  height: 70px;
+}

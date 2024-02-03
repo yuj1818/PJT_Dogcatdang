@@ -1,6 +1,6 @@
 package com.e202.dogcatdang.animal.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.enums.Gender;
@@ -23,10 +23,11 @@ public class ResponseAnimalDto {
 	private Boolean isNeuter;
 	private int weight;
 	private String rescueLocation;
-	private LocalDateTime rescueDate;
+	private LocalDate rescueDate;
 	private String feature;
 	private String imgName;
-	private int userId;
+	private Long userId;
+	private String userNickname;
 
 	// Entity -> DTO
 	public ResponseAnimalDto(Animal animal) {
@@ -36,8 +37,10 @@ public class ResponseAnimalDto {
 		this.isNeuter = animal.getIsNeuter();
 		this.weight = animal.getWeight();
 		this.rescueLocation = animal.getRescueLocation();
-		this.rescueDate = animal.getRescueDate().atStartOfDay();
+		this.rescueDate = animal.getRescueDate();
 		this.feature = animal.getFeature();
 		this.imgName = animal.getImgName();
+		this.userId = animal.getUser().getId();
+		this.userNickname = animal.getUser().getNickname();
 	}
 }

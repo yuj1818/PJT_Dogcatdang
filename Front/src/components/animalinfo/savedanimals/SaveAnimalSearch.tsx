@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import SaveAnimalCard from "./SaveAnimalCard";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Select from "react-select";
+import "./search.css";
 
 type AnimalType = {
-  id: number;
-  shelterName: string;
+  animalId: number;
   animalType: string;
   breed: string;
-  age: number; // 수정: age는 숫자형으로 지정
-  weight: number; // 수정: weight는 숫자형으로 지정
-  color: string;
-  feature: string;
+  age: string;
+  weight: string;
   rescueDate: string;
-  rescueLocation: string;
+  selectedCity: string;
+  selectedDistrict: string;
+  detailInfo: string;
+  isNeuter: boolean;
   gender: string;
-  isNeuter: boolean; // 수정: isNeuter는 부울 타입으로 지정
+  feature: string;
+  state: string;
+  imgName: string;
+  imgUrl: string;
 };
 
 type SaveAnimalSearchProps = {
@@ -33,54 +36,222 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
   const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-
+  console.log(filteredAnimalData);
   const dogInput = [
-    "전체",
-    "불독",
     "골든 리트리버",
-    "시베리안 허스키",
-    "비글",
-    "미니어처 핀셔",
-    "보더 콜리",
+    "그레이 하운드",
+    "그레이트 덴",
+    "그레이트 피레니즈",
+    "꼬똥 드 뚤레아",
+    "네오폴리탄 마스티프",
+    "노르포크 테리어",
+    "노리치 테리어",
+    "뉴펀들랜드",
+    "닥스훈트",
     "달마시안",
-    "요크셔 테리어",
-    "보스턴 테리어",
-    "프렌치 불도그",
-    "시추",
-    "래브라도 리트리버",
-    "푸들",
-    "말티즈",
-    "비숑 프리제",
-    "도베르만 핀셔",
+    "댄디 딘몬트 테리어",
+    "도고 까니리오",
+    "도고 아르젠티노",
+    "도베르만",
+    "도사",
+    "동경견",
+    "라브라도 리트리버",
+    "라사 압소",
+    "라이카",
+    "래빗 닥스훈트",
+    "랫 테리어",
+    "레이크랜드 테리어",
+    "로디지안 리즈백",
     "로트와일러",
-    "아메리칸 불리",
-    "그레이트 데인",
-    "보르도 마스티프",
+    "마리노이즈",
+    "마스티프",
+    "말라뮤트",
+    "말티즈",
+    "맨체스터 테리어",
+    "미니어쳐 닥스훈트",
+    "미니어쳐 불 테리어",
+    "미니어쳐 슈나우저",
+    "미니어쳐 푸들",
+    "미니어쳐 핀셔",
+    "미디엄 푸들",
+    "미텔 스피츠",
+    "믹스견",
+    "바센지",
+    "바셋 하운드",
+    "버니즈 마운틴 독",
+    "베들링턴 테리어",
+    "벨기에 그로넨달",
+    "벨기에 쉽독",
+    "벨기에 테뷰런",
+    "벨지안 셰퍼드 독",
+    "보더 콜리",
+    "보르조이",
+    "보스턴 테리어",
+    "복서",
+    "볼로네즈",
+    "부비에 데 플랑드르",
+    "불 테리어",
+    "불독",
+    "브뤼셀 그리펀",
+    "브리타니 스파니엘",
+    "블랙 테리어",
+    "비글",
+    "비숑 프리제",
+    "비어디드 콜리",
+    "비즐라",
+    "빠삐용",
+    "사모예드",
+    "살루키",
+    "삽살개",
+    "샤페이",
+    "세인트 버나드",
+    "센트럴 아시안 오브차카",
+    "셔틀랜드 쉽독",
+    "셰퍼드",
+    "슈나우져",
+    "스코티쉬 테리어",
+    "스코티시 디어하운드",
+    "스태퍼드셔 불 테리어",
+    "스탠다드 푸들",
+    "스피츠",
+    "시바",
+    "시베리안 허스키",
+    "시베리안 라이카",
+    "시잉프랑세즈",
+    "시츄",
+    "시코쿠",
+    "실리햄 테리어",
+    "실키테리어",
+    "아나톨리안 셰퍼드",
+    "아메리칸 불독",
+    "아메리칸 스태퍼드셔 테리어",
+    "아메리칸 아키다",
+    "아메리칸 에스키모",
+    "아메리칸 코카 스파니엘",
+    "아메리칸 핏불 테리어",
+    "아메리칸불리",
+    "아이리쉬 레드 앤 화이트 세터",
+    "아이리쉬 세터",
+    "아이리쉬 울프 하운드",
+    "아이리쉬 소프트 코튼휘튼 테리어",
+    "아키다",
+    "아프간 하운드",
+    "알라스칸 말라뮤트",
+    "에어델 테리어",
+    "오브차카",
+    "오스트랄리안 셰퍼드 독",
+    "오스트랄리안 캐틀 독",
+    "올드 잉글리쉬 불독",
+    "올드 잉글리쉬 쉽독",
+    "와이마라너",
+    "와이어 폭스 테리어",
+    "요크셔 테리어",
+    "울프독",
+    "웨스트 시베리언 라이카",
+    "웨스트하이랜드화이트테리어",
+    "웰시 코기 카디건",
+    "웰시 코기 펨브로크",
+    "웰시 테리어",
+    "이탈리안 그레이 하운드",
+    "잉글리쉬 세터",
+    "잉글리쉬 스프링거 스파니엘",
+    "잉글리쉬 코카 스파니엘",
+    "잉글리쉬 포인터",
+    "자이언트 슈나우져",
+    "재패니즈 스피츠",
+    "잭 러셀 테리어",
+    "저먼 셰퍼드 독",
+    "저먼 와이어헤드 포인터",
+    "저먼 포인터",
+    "저먼 헌팅 테리어",
+    "제주개",
+    "제페니즈칭",
+    "진도견",
+    "차우차우",
+    "차이니즈 크레스티드 독",
+    "치와와",
+    "카레리안 베어독",
+    "카이훗",
+    "캐벌리어 킹 찰스 스파니엘",
+    "케니스펜더",
+    "케리 블루 테리어",
+    "케언 테리어",
+    "케인 코르소",
+    "코리아 트라이 하운드",
+    "코리안 마스티프",
+    "코카 스파니엘",
+    "코카 푸",
+    "코카시안오브차카",
+    "콜리",
+    "클라인스피츠",
+    "키슈",
+    "키스 훈드",
+    "토이 맨체스터 테리어",
+    "토이 푸들",
+    "티베탄 마스티프",
+    "파라오 하운드",
+    "파슨 러셀 테리어",
+    "팔렌",
+    "퍼그",
+    "페키니즈",
+    "페터데일테리어",
+    "포메라니안",
+    "포인터",
+    "폭스테리어",
+    "푸들",
+    "풀리",
+    "풍산견",
+    "프레사까나리오",
+    "프렌치 불독",
+    "프렌치 브리타니",
+    "플랫 코디드 리트리버",
+    "플롯하운드",
+    "피레니안 마운틴 독",
+    "필라 브라질레이로",
+    "핏불테리어",
+    "허배너스",
+    "화이트리트리버",
+    "화이트테리어",
+    "휘펫",
+    "기타",
   ];
   const catInput = [
-    "전체",
-    "먼치킨",
-    "러시안 블루",
-    "샴",
-    "스코티시 폴드",
-    "뱅갈",
-    "페르시안",
-    "시암",
-    "아비시니안",
-    "메인쿤",
-    "봄베이",
-    "옷족",
-    "터키시 앙고라",
-    "노르웨이 숲 고양이",
-    "먼치라",
-    "라팜",
-    "싱가푸라",
-    "스핑크스",
-    "빙골레즈",
-    "스노우슈",
+    "기타",
+    "노르웨이 숲",
+    "니벨룽",
+    "데본 렉스",
+    "레그돌",
+    "레그돌 라가머핀",
     "맹크스",
+    "먼치킨",
+    "메인쿤",
+    "믹스묘",
+    "발리네즈",
+    "버만",
+    "벵갈",
+    "봄베이",
+    "브리티쉬롱헤어",
+    "브리티시 쇼트헤어",
+    "사바나캣샤트룩스",
+    "샴",
+    "셀커크 렉스",
+    "소말리",
+    "스노우 슈",
+    "스코티시폴드",
+    "스핑크스",
+    "시베리안 포레스트",
+    "싱가퓨라",
+    "아메리칸 쇼트헤어",
+    "아비시니안",
+    "재패니즈밥테일",
+    "터키시 앙고라",
+    "통키니즈",
+    "페르시안",
+    "페르시안 친칠라",
+    "하바나 브라운",
+    "하일랜드 폴드",
+    "한국 고양이",
   ];
-
   const genderInput = ["전체", "남", "여"];
   const regionInput = [
     "서울특별시",
@@ -101,6 +272,14 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     "제주특별자치도",
     "강원특별자치도",
   ];
+  const transformedDogInput = dogInput.map((dog) => ({
+    value: dog,
+    label: dog,
+  }));
+  const transformedCatInput = catInput.map((cat) => ({
+    value: cat,
+    label: cat,
+  }));
 
   const countryInput: CountryInput = {
     0: [
@@ -373,9 +552,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(event.target.value);
   };
-  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setBreed(event.target.value);
-  };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
@@ -392,73 +568,90 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   };
 
   const handleSearch = () => {
-    const combinedLocation = region + " " + country;
+    // const combinedLocation = region + " " + country;
 
     // 필터링을 위한 로직을 추가
     const filteredData = animals.filter((animal) => {
       return (
         (animalType === "" || animal.animalType === animalType) &&
         (breed === "" || animal.breed === breed) &&
-        (region === "" || animal.rescueLocation === combinedLocation) &&
-        (gender === "" || animal.gender === gender) &&
-        (shelterName === "" || animal.shelterName.includes(shelterName))
+        // (region === "" || animal.rescueLocation === combinedLocation) &&
+        (gender === "" || animal.gender === gender)
+
+        //&& (shelterName === "" || animal.shelterName.includes(shelterName))
       );
     });
     setFilteredAnimalData(filteredData);
-    // console.log(filteredData);
   };
 
-  const navigate = useNavigate();
+  const AnimalButton = styled.button<{ selected: boolean }>`
+    background-color: #ff8331;
+    color: white;
+    padding: 8px;
+    margin: 3px;
+    border-radius: 10px;
+    width: 100px;
 
-  const handleRegistration = () => {
-    // 등록 버튼을 눌렀을 때 AnimalFormPage로 이동
-    navigate("/registration");
-  };
-
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    /* 
-    div {
-      flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    } */
+    ${(props) =>
+      props.selected &&
+      css`
+        filter: blur(1px); /* Adjust the blur amount as needed */
+        opacity: 0.9; /* Adjust the opacity as needed */
+      `};
   `;
 
   return (
-    <div>
-      <button onClick={() => handleAnimalType("강아지")}>강아지</button>
-      <button onClick={() => handleAnimalType("고양이")}>고양이</button>
-      <form>
-        <div>
-          <label htmlFor="breed">품종</label>
-          <select
+    <div className="container">
+      <div className="button-group">
+        <AnimalButton
+          selected={animalType === "고양이"}
+          onClick={() => handleAnimalType("강아지")}
+        >
+          강아지
+        </AnimalButton>
+        <AnimalButton
+          selected={animalType === "강아지"}
+          onClick={() => handleAnimalType("고양이")}
+        >
+          고양이
+        </AnimalButton>
+      </div>
+      <form className="search-form">
+        <div className="form-group">
+          <Select
             name="breed"
             id="breed"
-            value={breed}
-            onChange={handleBreedChange}
-          >
-            {animalType === "강아지"
-              ? dogInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))
-              : catInput.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))}
-          </select>
-          <label htmlFor="지역">지역</label>
+            value={
+              animalType === "강아지"
+                ? transformedDogInput.find((option) => option.value === breed)
+                : transformedCatInput.find((option) => option.value === breed)
+            }
+            options={
+              animalType === "강아지"
+                ? transformedDogInput
+                : transformedCatInput
+            }
+            onChange={(selectedOption) => setBreed(selectedOption?.value || "")}
+            placeholder="품종"
+            styles={{
+              control: (provided) => ({
+                ...provided,
+                border: "1px solid #d5967b",
+                padding: "8px",
+                borderRadius: "10px",
+                width: "250px",
+                height: "70px",
+              }),
+            }}
+          />
+        </div>
+        <div className="form-group">
           <select
             name="region"
             id="region"
             value={region}
             onChange={handleRegionChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/도 선택
@@ -469,11 +662,14 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
           <select
             name="country"
             id="country"
             value={country}
             onChange={handleCountryChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               시/구/군 선택
@@ -485,12 +681,17 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
                 </option>
               ))}
           </select>
-          <label htmlFor="성별">성별</label>
+        </div>
+        <div className="form-group">
+          <option value="" disabled hidden>
+            성별
+          </option>
           <select
             name="gender"
             id="gender"
             value={gender}
             onChange={handleGenderChange}
+            className="custom-input"
           >
             <option value="" disabled hidden>
               성별
@@ -501,30 +702,34 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
               </option>
             ))}
           </select>
-          <label htmlFor="보호기관명">보호기관명</label>
+        </div>
+        <div className="form-group">
           <input
             type="text"
             id="shelterName"
             name="shelterName"
             value={shelterName}
             onChange={handleShelterNameChange}
+            placeholder="보호기관명"
+            className="custom-input"
           />
         </div>
-        <div>
-          <button type="button" onClick={handleSearch}>
+        <div className="form-group">
+          <button
+            className="search-button"
+            type="button"
+            onClick={handleSearch}
+          >
             검색
           </button>
         </div>
       </form>
-
-      <button onClick={handleRegistration}>동물 등록</button>
-
-      <ListStyle $itemsPerRow={4}>
-        {filteredAnimalData.map((animal) => (
-          <SaveAnimalCard key={animal.id} animals={animal} />
-        ))}
-      </ListStyle>
     </div>
+    // {/* <ListStyle $itemsPerRow={4}>
+    //{filteredAnimalData.map((animal) => (
+    //<SaveAnimalCard key={animal.animalId} animals={animal} />
+    //))}
+    //</ListStyle> */}
   );
 }
 
