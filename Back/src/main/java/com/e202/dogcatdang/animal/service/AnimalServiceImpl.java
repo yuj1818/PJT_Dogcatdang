@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -98,11 +99,6 @@ public class AnimalServiceImpl implements AnimalService{
 			.build();
 	}
 
-	// // 전체 페이지 수 계산 메서드
-	// private int calculateTotalPages(int totalPages) {
-	// 	return totalPages % 5 != 0 ? (totalPages / 5) * 5 + 5 : totalPages;
-	// }
-
 
 	/*	특정한 동물 데이터 상세 조회
 		1. animalId를 이용하여 DB에서 해당하는 동물 정보(Entity)를 가져온다.
@@ -115,6 +111,7 @@ public class AnimalServiceImpl implements AnimalService{
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
 		return new ResponseAnimalDto(animal);
 	}
+
 
 	/*특정한 동물 데이터 수정*/
 	@Override
@@ -133,6 +130,14 @@ public class AnimalServiceImpl implements AnimalService{
 			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
 
 		return animal;
+	}
+
+	// JPA 기본 제공 findById가 dto를 반환하도록 커스텀(override)해 사용하기에
+	// 같은 기능을 하는 새 method 생성
+	@Override
+	public Animal getAnimalById(Long animalId) {
+		Optional<Animal> optionalAnimal = animalRepository.findById(animalId);
+		return optionalAnimal.orElse(null); // null을 반환하거나 원하는 예외를 던질 수 있습니다.
 	}
 
 }

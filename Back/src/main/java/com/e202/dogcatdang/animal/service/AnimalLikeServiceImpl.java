@@ -3,13 +3,16 @@ package com.e202.dogcatdang.animal.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.AnimalLike;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.AnimalLikeRespository;
+import com.e202.dogcatdang.db.repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -17,10 +20,15 @@ import lombok.AllArgsConstructor;
 public class AnimalLikeServiceImpl implements AnimalLikeService{
 
 	private final AnimalLikeRespository animalLikeRespository;
+	private final UserRepository userRepository;
 
 	// like 등록
 	// 해당 user와 animal로 animallike 생성 후 저장
-	public void likeAnimal(User user, Animal animal) {
+	public void likeAnimal(Long userId, Animal animal) {
+		// userId로 사용자 엔티티 찾아오기
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new EntityNotFoundException(userId + "를 가진 사용자가 없습니다."));
+
 		AnimalLike animalLike = AnimalLike.builder()
 				.user(user)
 			    .animal(animal)
@@ -29,7 +37,11 @@ public class AnimalLikeServiceImpl implements AnimalLikeService{
 	}
 
 	// like 취소
-	public void unlikeAnimal(User user, Animal animal) {
+	public void unlikeAnimal(Long userId, Animal animal) {
+		// userId로 사용자 엔티티 찾아오기
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new EntityNotFoundException(userId + "를 가진 사용자가 없습니다."));
+		
 		AnimalLike animalLike = animalLikeRespository.findByUserAndAnimal(user, animal);
 		// 해당 user와 animal을 가진 animallike가 있다면 삭제
 		if (animalLike != null) {

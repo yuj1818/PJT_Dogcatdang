@@ -21,4 +21,5 @@ public interface AnimalService {
 
 	Animal update(Long animalId, RequestAnimalDto requestAnimalDto) throws IOException;
 
+	Animal getAnimalById(Long animalId);
 }

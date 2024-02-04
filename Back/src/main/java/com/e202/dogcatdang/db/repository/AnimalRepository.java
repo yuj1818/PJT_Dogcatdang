@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.db.entity.Animal;
 
 @Repository
@@ -25,4 +26,5 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 	// state 상태에 따른 animal 정보 가져오기
 	@Query("SELECT a FROM Animal a WHERE a.state = :state")
 	List<Animal> findByState(Animal.State state);
+
 }
