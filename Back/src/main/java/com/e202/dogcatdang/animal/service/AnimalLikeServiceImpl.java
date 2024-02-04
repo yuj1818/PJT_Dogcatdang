@@ -29,11 +29,15 @@ public class AnimalLikeServiceImpl implements AnimalLikeService{
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new EntityNotFoundException(userId + "를 가진 사용자가 없습니다."));
 
-		AnimalLike animalLike = AnimalLike.builder()
+		if (!isAnimalLikedByUser(animal, user)) {
+			AnimalLike animalLike = AnimalLike.builder()
 				.user(user)
-			    .animal(animal)
-			    .build();
-		animalLikeRespository.save(animalLike);
+				.animal(animal)
+				.build();
+			animalLikeRespository.save(animalLike);
+		} else {
+			System.out.println("이미 좋아요를 등록한 동물입니다."); // 임시로 print
+		}
 	}
 
 	// like 취소
@@ -50,6 +54,7 @@ public class AnimalLikeServiceImpl implements AnimalLikeService{
 	}
 
 	// user가 animal에 like를 했는지 boolean 값으로 확인
+	@Override
 	public boolean isAnimalLikedByUser(Animal animal, User user) {
 		return animalLikeRespository.existsByAnimalAndUser(animal, user);
 	}

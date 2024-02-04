@@ -1,7 +1,10 @@
 package com.e202.dogcatdang.animal.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,7 @@ import com.e202.dogcatdang.animal.service.AnimalLikeService;
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.AnimalLike;
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.user.Service.CustomUserDetailsService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -123,6 +127,17 @@ public class AnimalController {
 		animalLikeService.unlikeAnimal(userId, animal);
 
 		return ResponseEntity.ok(userId + "가" + animalId + "의 관심 동물 등록을 취소하였습니다.");
+	}
+
+	// 특정 동물에 대한 현재 로그인한 사용자의 좋아요 여부 확인
+	@GetMapping("/{animalId}/likes")
+	public ResponseEntity<Map<String, Boolean>> isAnimalLikedByCurrentUser(
+		@PathVariable Long animalId,
+		@RequestHeader("Authorization") String token) {
+
+
+
+		return null;
 	}
 
 }
