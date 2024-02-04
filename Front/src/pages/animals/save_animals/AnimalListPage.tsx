@@ -36,21 +36,29 @@ function AnimalListPage() {
   interface StyledButtonProps {
     isOrg: boolean;
   }
-  const ListStyle = styled.div<{ $itemsPerRow: number }>`
-  width:100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    /* 
-div {
-  flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-} */
-  `;
+//   const ListStyle = styled.div<{ $itemsPerRow: number }>`
+//   width:100%;
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: space-between;
+//     /* 
+// div {
+//   flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+//   display: flex;
+//   align-items: center;
+//   flex-direction: column;
+// } */
+//   `;
+
+  const ListItems = styled.div`
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   gap: 10px;
+  
+  `
   const Space = styled.div`
-  flex-grow: 1;
+  flex-grow: 0.27
 `;
 
   const StyledButton = styled.button<StyledButtonProps>`
@@ -94,13 +102,16 @@ div {
           동물 등록
         </StyledButton>
       </div>
-
-      <ListStyle $itemsPerRow={10}>
+        <ListItems>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
+        
         <Space></Space>
-      </ListStyle>
+        <Space></Space>
+        <Space></Space>
+        </ListItems>
+
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}

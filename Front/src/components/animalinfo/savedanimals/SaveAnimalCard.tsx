@@ -28,14 +28,12 @@ interface AnimalCardProps {
   animals: Animal;
 }
 
+
 const Card = styled.div`
   border: 1px solid #ccc;
   padding: 10px;
   margin: 7px 0px 15px 0px;
-  display: flex;
-  flex-direction: row;
-  
-  width: 23%;
+  width: 22%;
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
@@ -59,21 +57,21 @@ function SaveAnimalCard(props: AnimalCardProps) {
   };
 
   return (
-    <Card>
-      <div>
-        <div onClick={gotoDetailPage}>
-        {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
-        {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
-        <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
-        <p>성별 : {props.animals.gender}</p>
-        <p>보호기관 : {props.animals.userNickname}</p>
-        <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
-        </div>
-        <LikeButton animalId={props.animals.animalId}
-        isActive={liked}
-        onToggle={handleToggleLike}></LikeButton>
-      </div>
-    </Card>
+      <Card>
+          <div onClick={gotoDetailPage}>
+            {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
+            {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
+            <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
+            <p>성별 : {props.animals.gender}</p>
+            <p>보호기관 : {props.animals.userNickname}</p>
+            <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
+          </div>
+          <div style={{display:'flex', justifyContent: 'end'}}>
+            <LikeButton animalId={props.animals.animalId}
+            isActive={liked}
+            onToggle={handleToggleLike}></LikeButton>
+          </div>
+      </Card>
   );
 }
 
