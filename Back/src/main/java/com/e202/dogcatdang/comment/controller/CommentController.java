@@ -29,7 +29,7 @@ public class CommentController {
 
 
 
-		return commentList;
+		return ResponseEntity.ok(commentList);
 	}
 
 }

@@ -31,7 +31,10 @@ public class ResponseCommentDto {
 		this.content = comment.getContent();
 		this.createTime = comment.getCreateTime();
 		this.nickname = comment.getUser().getNickname();
-		this.parentId = comment.getParent().getCommentId();
+		if(comment.getParent()!=null){
+			this.parentId = comment.getParent().getCommentId();
+
+		}
 	}
 
 }
