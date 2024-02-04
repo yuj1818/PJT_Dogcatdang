@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import LikeButton from "../../../components/animalinfo/LikeButton";
+import { useState } from "react";
+import axios from "axios";
+import API from "../../../util/axios";
 
 interface Animal {
   animalId: number;
@@ -36,36 +39,39 @@ const Card = styled.div`
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('https://api.example.com/data');
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //     fetchData();
-  //   }, []);
-
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
   const gotoDetailPage = () => {
     navigate(`/save-animals/${props.animals.animalId}`);
   };
+  const handleToggleLike = () => {
+    // if(!currentUser) {
+    //   return
+    // }
+    // try {
+    //   let request;
+    //   if(hasLike) {
+    //     request = () => API.delete(`api/`)
+    //   }
+    // }
+    setLiked(!liked);
+  };
 
   return (
     <Card>
-      <div onClick={gotoDetailPage}>
+      <div>
+        <div onClick={gotoDetailPage}>
         {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
         <p>성별 : {props.animals.gender}</p>
         <p>보호기관 : {props.animals.userNickname}</p>
         <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
+        </div>
+        <LikeButton animalId={props.animals.animalId}
+        isActive={liked}
+        onToggle={handleToggleLike}></LikeButton>
       </div>
     </Card>
   );
