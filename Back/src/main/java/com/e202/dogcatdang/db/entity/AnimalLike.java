@@ -39,9 +39,14 @@ public class AnimalLike {
 	@JoinColumn(name = "animal_id")
 	private Animal animal;
 
-	// 좋아요를 누른 시간 field, 좋아요를 누른 순서대로 정렬하기 위해 생성.
-	@CreatedDate
-	private LocalDate created;
+	@Builder
+	public AnimalLike(User user, Animal animal) {
+		this.user = user;
+		this.animal = animal;
+	}
 
+	// 좋아요를 누른 시간 field, 좋아요를 누른 순서대로 정렬하기 위해 생성.
+	// @CreatedDate
+	// private LocalDate created;
 
 }
