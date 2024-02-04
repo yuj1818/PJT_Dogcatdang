@@ -1,18 +1,23 @@
 package com.e202.dogcatdang.animal.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
+import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
@@ -23,6 +28,7 @@ import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -58,7 +64,7 @@ public class AnimalServiceImpl implements AnimalService{
 	*/
 	@Override
 	@Transactional
-	public ResponseAnimalPageDto findAll(int page, int recordSize) {
+	public ResponseAnimalPageDto findAllAnimals(int page, int recordSize) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
@@ -140,5 +146,43 @@ public class AnimalServiceImpl implements AnimalService{
 		return optionalAnimal.orElse(null); // null을 반환하거나 원하는 예외를 던질 수 있습니다.
 	}
 
+
+	// 복수 조건의 검색
+	// public List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto) {
+	// 	Specification<Animal> specification = (root, query, criteriaBuilder) -> {
+	// 		List<Predicate> predicates = new ArrayList<>();
+	//
+	// 		if (searchDto.getAnimalType() != null) {
+	// 			predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
+	// 		}
+	//
+	// 		if (searchDto.getBreed() != null) {
+	// 			predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+	// 		}
+	//
+	// 		if (searchDto.getRescuelocation() != null) {
+	// 			// 일부 일치 검색을 위해 like 사용
+	// 			predicates.add(criteriaBuilder.like(root.get("rescueLocation"), searchDto.getRescuelocation()));
+	// 		}
+	//
+	// 		if (searchDto.getGender() != null) {
+	// 			predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
+	// 		}
+	//
+	// 		if (searchDto.getUserNickname() != null) {
+	// 			predicates.add(criteriaBuilder.equal(root.join("user").get("nickname"), searchDto.getUserNickname()));
+	// 		}
+	//
+	// 		return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+	// 	};
+	//
+	// 	// 검색 결과 가져오기
+	// 	List<Animal> animals = animalRepository.findAll(specification);
+	//
+	// 	// 검색 결과를 ResponseAnimalListDto로 변환하여 반환
+	// 	return animals.stream()
+	// 		.map(ResponseAnimalListDto::new)
+	// 		.collect(Collectors.toList());
+	// }
 }
 
