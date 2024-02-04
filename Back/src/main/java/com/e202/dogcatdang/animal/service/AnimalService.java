@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
+import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
@@ -22,4 +23,6 @@ public interface AnimalService {
 	Animal update(Long animalId, RequestAnimalDto requestAnimalDto) throws IOException;
 
 	Animal getAnimalById(Long animalId);
+
+	List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto);
 }
