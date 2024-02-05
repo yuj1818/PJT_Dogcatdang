@@ -45,4 +45,8 @@ public class Comment {
 	@JoinColumn(name="parent_id")
 	private Comment parent;
 
+	public void updateContent(String content){
+		this.content = content;
+	}
+
 }
