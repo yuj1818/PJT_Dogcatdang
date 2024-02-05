@@ -67,8 +67,8 @@ public class AnimalController {
 	*/
 	@GetMapping("")
 	public ResponseEntity<ResponseAnimalPageDto> findAll(@RequestParam(defaultValue = "1") int page,
-		@RequestParam(defaultValue = "8") int recordSize) {
-		ResponseAnimalPageDto animalPage = animalService.findAllAnimals(page, recordSize);
+		@RequestParam(defaultValue = "8") int recordSize, @RequestHeader("Authorization") String token) {
+		ResponseAnimalPageDto animalPage = animalService.findAllAnimals(page, recordSize, token);
 
 		// model.addAttribute 대신 ResponseEntity에 데이터를 담아 반환
 		return ResponseEntity.ok(animalPage);
@@ -82,7 +82,9 @@ public class AnimalController {
 		return ResponseEntity.ok(animalDto);
 	}
 
-	/* 동물 정보 수정 */
+	/* 동물 정보 수정
+	   로그인한 현재 유저의 각 동물 별 좋아요 여부 확인할 수 있도록 로그인 토큰을 요구함
+	*/
 	@PutMapping("/{animalId}")
 	public ResponseEntity<Long> update(@PathVariable Long animalId, @RequestHeader("Authorization") String token, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
 		// 토큰에서 사용자 아이디(pk) 추출

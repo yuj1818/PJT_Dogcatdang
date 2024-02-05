@@ -25,6 +25,7 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.User;
+import com.e202.dogcatdang.db.repository.AnimalLikeRepository;
 import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
@@ -40,6 +41,8 @@ public class AnimalServiceImpl implements AnimalService{
 
 	private final AnimalRepository animalRepository;
 	private final UserRepository userRepository;
+	private final AnimalLikeRepository animalLikeRepository;
+
 
 	/*	동물 데이터 등록(작성)
 		1. Client에게 받은 RequestDto를 Entity로 변환하여 DB에 저장한다.
@@ -65,7 +68,7 @@ public class AnimalServiceImpl implements AnimalService{
 	*/
 	@Override
 	@Transactional
-	public ResponseAnimalPageDto findAllAnimals(int page, int recordSize) {
+	public ResponseAnimalPageDto findAllAnimals(int page, int recordSize, String token) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
@@ -88,11 +91,21 @@ public class AnimalServiceImpl implements AnimalService{
 		boolean hasPreviousPage = page > 1;
 
 		// 5. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		// 현재 로그인한 User 정보를 담은 객체 찾은 후, isLike 판별에 사용
+		Long userId = jwtUtil.getUserId(token.substring(7));
+
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NoSuchElementException("해당 Id의 회원이 없습니다"));
+
 		List<ResponseAnimalListDto> animalDtoList = pagedProtectedAnimals.stream()
-			.map(animal -> ResponseAnimalListDto.builder()
+			.map(animal -> {
+				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user);
+				return ResponseAnimalListDto.builder()
 				.animal(animal)
-				.build())
-			.collect(Collectors.toList());
+					.isLike(isLike)
+				.build();
+			})
+			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
 
 		// 6. AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
 

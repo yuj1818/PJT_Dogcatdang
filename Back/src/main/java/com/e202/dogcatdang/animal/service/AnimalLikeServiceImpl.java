@@ -37,6 +37,7 @@ public class AnimalLikeServiceImpl implements AnimalLikeService{
 		} else {
 			System.out.println("이미 좋아요를 등록한 동물입니다."); // 임시로 print
 		}
+
 	}
 
 	// like 취소
