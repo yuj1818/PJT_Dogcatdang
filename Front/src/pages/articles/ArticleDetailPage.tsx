@@ -15,6 +15,7 @@ import { getUserInfo } from "../../util/uitl";
 import { useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
 import CommentList from "../../components/articles/CommentList";
+import CommentForm from "../../components/articles/CommentForm";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
@@ -94,7 +95,8 @@ const ArticleDetail: React.FC = () => {
   return (
     <>
       {content}
-      <CommentList></CommentList>
+      <CommentList boardId={boardId!} />
+      <CommentForm boardId={boardId!} edit={false} />
     </>
   );
 };

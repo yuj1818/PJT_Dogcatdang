@@ -98,7 +98,7 @@ export const requestArticle = async ({
 };
 
 export interface CommentRequstInterface {
-  signal: AbortSignal;
+  signal?: AbortSignal;
   data?: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
   boardId: string;

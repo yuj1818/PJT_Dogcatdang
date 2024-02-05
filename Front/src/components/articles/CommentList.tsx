@@ -1,13 +1,15 @@
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { requestComment } from "../../util/articleAPI";
-import { useParams } from "react-router-dom";
 import { retryFn } from "../../util/tanstackQuery";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import { CommentInterface } from "./ArticleInterface";
+import Comment from "./Comment";
 
-const CommentList = () => {
-  const { boardId } = useParams();
+interface Props {
+  boardId: string;
+}
 
+const CommentList = ({ boardId }: Props) => {
   const { data, isLoading, isError, error } = useQuery<
     CommentInterface[],
     Error,
@@ -33,7 +35,7 @@ const CommentList = () => {
       )}
       {data &&
         data.map((comment: CommentInterface) => (
-          <div key={comment.commentId}></div>
+          <Comment key={comment.commentId} boardId={boardId} {...comment} />
         ))}
     </>
   );

@@ -5,7 +5,7 @@ interface buttonInterface {
   color?: string;
   fontSize?: number;
   height?: number;
-  marginTop?: number;
+  $marginTop?: number;
 }
 
 export const Button = styled.button<buttonInterface>`
@@ -17,7 +17,7 @@ export const Button = styled.button<buttonInterface>`
   padding: 0.2rem 0.4rem;
   white-space: nowrap;
   height: ${(props) => `${props.height}rem` || "auto"};
-  margin-top: ${(props) => `${props.marginTop}rem` || "auto"};
+  margin-top: ${(props) => `${props.$marginTop}rem` || "auto"};
 
   &:hover {
     box-shadow: 3.5px 3.5px 3.5px lightgrey;

@@ -2,7 +2,7 @@ import { Session, Subscriber } from "openvidu-browser";
 import React, { useEffect, useRef, useState } from "react";
 import { getUserInfo } from "../../util/uitl";
 import styled from "styled-components";
-import { Contour, Input } from "../common/Design";
+import { Contour, FormContainer, Input } from "../common/Design";
 import { Button } from "../common/Button";
 
 const ChattingContainer = styled.div`
@@ -30,11 +30,6 @@ const AllMessage = styled.div`
   scroll-snap-type: y mandatory;
   scroll-snap-align: end;
   scroll-behavior: smooth;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  align-items: center;
 `;
 
 interface ChatProps {
@@ -110,7 +105,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
       <FormContainer onSubmit={handleSubmitEvent}>
         <label htmlFor="message" />
         <Input id="message" value={message} onChange={handleMessageChange} />
-        <Button height={2.6} marginTop={0.4} type="submit" disabled={!message}>
+        <Button height={2.6} $marginTop={0.4} type="submit" disabled={!message}>
           보내기
         </Button>
       </FormContainer>
