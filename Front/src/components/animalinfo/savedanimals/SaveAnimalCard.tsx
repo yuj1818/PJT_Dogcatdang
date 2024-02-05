@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "../../../components/animalinfo/LikeButton";
 import { useState } from "react";
-import axios from "axios";
-import API from "../../../util/axios";
 
 interface Animal {
   animalId: number;
@@ -27,7 +25,6 @@ interface Animal {
 interface AnimalCardProps {
   animals: Animal;
 }
-
 
 const Card = styled.div`
   border: 1px solid #ccc;
@@ -57,21 +54,23 @@ function SaveAnimalCard(props: AnimalCardProps) {
   };
 
   return (
-      <Card>
-          <div onClick={gotoDetailPage}>
-            {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
-            {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
-            <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
-            <p>성별 : {props.animals.gender}</p>
-            <p>보호기관 : {props.animals.userNickname}</p>
-            <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
-          </div>
-          <div style={{display:'flex', justifyContent: 'end'}}>
-            <LikeButton animalId={props.animals.animalId}
-            isActive={liked}
-            onToggle={handleToggleLike}></LikeButton>
-          </div>
-      </Card>
+    <Card>
+      <div onClick={gotoDetailPage}>
+        {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
+        {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
+        <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
+        <p>성별 : {props.animals.gender}</p>
+        <p>보호기관 : {props.animals.userNickname}</p>
+        <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
+      </div>
+      <div style={{ display: "flex", justifyContent: "end" }}>
+        <LikeButton
+          animalId={props.animals.animalId}
+          isActive={liked}
+          onToggle={handleToggleLike}
+        ></LikeButton>
+      </div>
+    </Card>
   );
 }
 

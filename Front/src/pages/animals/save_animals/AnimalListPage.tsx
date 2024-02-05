@@ -36,39 +36,31 @@ function AnimalListPage() {
   interface StyledButtonProps {
     isOrg: boolean;
   }
-//   const ListStyle = styled.div<{ $itemsPerRow: number }>`
-//   width:100%;
-//     display: flex;
-//     flex-wrap: wrap;
-//     justify-content: space-between;
-//     /* 
-// div {
-//   flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-// } */
-//   `;
-
-  const ListItems = styled.div`
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: space-between;
-   gap: 10px;
-  
-  `
+  const ListStyle = styled.div<{ $itemsPerRow: number }>`
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* 
+div {
+  flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+} */
+  `;
   const Space = styled.div`
-  flex-grow: 0.27
-`;
+    flex-grow: 1;
+  `;
 
   const StyledButton = styled.button<StyledButtonProps>`
-  display: ${({ isOrg }) => isOrg ? "block" : "none"};
-  background-color: black;
-  color: white;
-  border-radius: 10px;
-  width: 10%;
-  height: 35px;
-`;
+    display: ${({ isOrg }) => (isOrg ? "block" : "none")};
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 10%;
+    height: 35px;
+  `;
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -92,32 +84,32 @@ function AnimalListPage() {
   const handleRegistration = () => {
     navigate("/registration");
   };
+  const handleTest = () => {
+    navigate("/test");
+  };
 
   console.log(animalData);
   return (
     <div>
       <SaveAnimalSearch animals={animalData} />
+      <button onClick={handleTest}>테스트 이동</button>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <StyledButton isOrg={isOrg} onClick={handleRegistration}>
           동물 등록
         </StyledButton>
       </div>
-        <ListItems>
+
+      <ListStyle $itemsPerRow={10}>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
-        
         <Space></Space>
-        <Space></Space>
-        <Space></Space>
-        </ListItems>
-
+      </ListStyle>
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />
-      
     </div>
   );
 }

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import Select from "react-select";
 import styled, { css } from "styled-components";
 import "./search.css";
-import { dogInput, catInput, regionInput, countryInput } from "../../../components/animalinfo/Input";
+import {
+  dogInput,
+  catInput,
+  regionInput,
+  countryInput,
+} from "../../../components/animalinfo/Input";
 
 interface LostAnimalType {
   animalId: number;
@@ -27,10 +32,6 @@ type LostAnimalSearchProps = {
 };
 
 function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
-  type CountryInput = {
-    [key: number]: string[];
-  };
-
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
   const [region, setRegion] = useState("");
