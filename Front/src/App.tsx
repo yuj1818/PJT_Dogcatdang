@@ -28,6 +28,7 @@ import { LoadingIndicator } from "./components/common/Icons.tsx";
 const BroadCastPage = lazy(() => import("./pages/broadcast/BroadcastPage.tsx"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
+import VisitManagementPage from "./pages/users/VisitManagementPage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -103,7 +104,16 @@ const router = createBrowserRouter([
       },
       {
         path: "profile/:userId",
-        element: <ProfilePage />,
+        children: [
+          {
+            index: true,
+            element: <ProfilePage />
+          },
+          {
+            path: "visit",
+            element: <VisitManagementPage />
+          }
+        ]
       },
       {
         path: "articles",
