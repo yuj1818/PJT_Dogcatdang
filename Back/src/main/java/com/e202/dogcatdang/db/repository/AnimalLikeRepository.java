@@ -10,7 +10,7 @@ import com.e202.dogcatdang.db.entity.AnimalLike;
 import com.e202.dogcatdang.db.entity.User;
 
 @Repository
-public interface AnimalLikeRespository extends JpaRepository<AnimalLike, Long> {
+public interface AnimalLikeRepository extends JpaRepository<AnimalLike, Long> {
 
 	List<AnimalLike> findByUser(User user);
 

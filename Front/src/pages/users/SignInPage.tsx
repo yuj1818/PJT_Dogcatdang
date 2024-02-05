@@ -123,7 +123,11 @@ function SignInPage() {
             <span className="menu">Password 찾기</span>
           </div>
           <div className="button-box flex justify-center">
-            <Button background="#F7EDE1" color="black">로그인</Button>
+            <Button>로그인</Button>
+          </div>
+          <div className="flex gap-2 mt-1">
+            <img src="/src/assets/naverLoginBtn.png" alt="" />
+            <img src="/src/assets/googleLoginBtn.png" alt="" />
           </div>
         </SignInForm>
       </FormBox>
