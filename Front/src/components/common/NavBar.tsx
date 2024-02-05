@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { logout } from "../../util/UserAPI";
+
 import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
+import { logout } from "../../util/UserAPI";
+import logo from "../../assets/main-logo-big.png";
 
 // -----------Styled Component-----------------------------------------------
-const Header = styled.header`
+const NavBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,16 +80,17 @@ const OutLet = tw.div`
 mx-4 sm:mx-60
 `;
 
-const ResponsiveButton = tw.button`
-  lg:hidden
-`;
-
 // -----------NavBar-----------------------------------------------
 const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
-  const nickName = "독캣당";
+  const [nickname, setNickname] = useState('');
+  const [userId, setUserId] = useState('');
+
+  const handleNoti = () => {
+    setIsNoti((prev) => !prev);
+  };
 
   const navigate = useNavigate();
 
@@ -125,7 +128,7 @@ const NavBar = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/watch">방송</StyledNavLink>
+        <StyledNavLink to="/broadcast/list">방송</StyledNavLink>
       </li>
       {commontNavTitles}
     </StyledUl>
@@ -138,7 +141,7 @@ const NavBar = () => {
         <StyledNavLink to="/articles">후기 게시판</StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/watch">방송 시청</StyledNavLink>
+        <StyledNavLink to="/broadcast/list">방송 시청</StyledNavLink>
       </li>
       <li>
         <StyledNavLink to="/lost-animals">동물 찾기</StyledNavLink>
@@ -256,24 +259,24 @@ const NavBar = () => {
       )
     );
   };
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '');
+    setNickname(() => userInfo.nickname);
+    setUserId(() => userInfo.id)
+  }, [])
+
   return (
     <>
-      <Header>
+      <NavBarContainer>
         <StyledNavLink to="/">
-          <img
-            src="/src/assets/main-logo.png"
-            alt="메인화면으로"
-            className="w-60 min-w-60"
-          />
+          <img src={logo} alt="메인화면으로" className="w-60 min-w-60" />
         </StyledNavLink>
-        <ResponsiveButton onClick={() => setIsNoti((prev) => !prev)}>
-          {isNoti ? "알람 없애기" : "알람 생성하기"}
-        </ResponsiveButton>
         <FlexColumnContainer>
           <StyledUl style={{ gap: "20px", marginRight: "20px" }}>
             {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-            <StyledNavLink to={`profile/${nickName}`}>
-              {nickName}님
+            <StyledNavLink to={`profile/${userId}`}>
+              {nickname}님
             </StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
@@ -290,7 +293,8 @@ const NavBar = () => {
             {navContent}
           </div>
         </FlexColumnContainer>
-      </Header>
+      </NavBarContainer>
+      <button onClick={handleNoti}>알람 상태 변경</button>
       <OutLet style={{ minWidth: "400px" }}>
         <Outlet />
       </OutLet>
