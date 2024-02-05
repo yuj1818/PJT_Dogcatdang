@@ -91,4 +91,21 @@ public class CommentServiceImpl implements CommentService {
 			//로그인 한 유저와 수정하려는 댓글의 작성자가 다른 경우
 		}
 	}
+
+	@Override
+	public ResponseSavedIdDto delete(Long loginUserId, Long boardId, Long commentId) {
+
+		Comment comment = commentRepository.findById(commentId).get();
+		if(comment.getUser().getId().equals(loginUserId)){
+
+			commentRepository.delete(comment);
+			return new ResponseSavedIdDto(commentId);
+		}else{
+			throw new InvalidUserException("댓글 작성자가 아닙니다!");
+			//에러 처리 해줘야 됨.
+			//로그인 한 유저와 수정하려는 댓글의 작성자가 다른 경우
+		}
+
+
+	}
 }

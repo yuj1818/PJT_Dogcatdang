@@ -12,4 +12,6 @@ public interface CommentService {
 	ResponseSavedIdDto save(Long loginUserId, RequestCommentDto requestCommentDto);
 
 	ResponseSavedIdDto update(Long loginUserId, RequestCommentDto requestCommentDto);
+
+	ResponseSavedIdDto delete(Long loginUserId, Long boardId, Long commentId);
 }
