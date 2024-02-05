@@ -30,12 +30,17 @@ function AnimalListPage() {
     state: string;
     imgName: string;
     imgUrl: string;
+    userNickname: string;
   }
 
+  interface StyledButtonProps {
+    isOrg: boolean;
+  }
   const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  width:100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     /* 
 div {
   flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
@@ -44,7 +49,18 @@ div {
   flex-direction: column;
 } */
   `;
+  const Space = styled.div`
+  flex-grow: 1;
+`;
 
+  const StyledButton = styled.button<StyledButtonProps>`
+  display: ${({ isOrg }) => isOrg ? "block" : "none"};
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  width: 10%;
+  height: 35px;
+`;
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -69,26 +85,28 @@ div {
     navigate("/registration");
   };
 
+  console.log(animalData);
   return (
-    <>
+    <div>
       <SaveAnimalSearch animals={animalData} />
-      <button
-        onClick={handleRegistration}
-        style={{ display: isOrg ? "block" : "none" }}
-      >
-        동물 등록
-      </button>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <StyledButton isOrg={isOrg} onClick={handleRegistration}>
+          동물 등록
+        </StyledButton>
+      </div>
+
       <ListStyle $itemsPerRow={10}>
         {animalData.map((animal: RegistrationData) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
+        <Space></Space>
       </ListStyle>
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />
-    </>
+    </div>
   );
 }
 

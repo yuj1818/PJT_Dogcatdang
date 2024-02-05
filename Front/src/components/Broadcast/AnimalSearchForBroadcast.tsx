@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Input } from "../common/Design";
-import { AnimalInfo, Label } from "./BroadcastForm";
+import { Label } from "./BroadcastForm";
 import styled from "styled-components";
-
+import { AnimalInfo } from "../../util/broadcastAPI";
 interface CardInterface {
   selected: boolean;
 }
@@ -36,8 +36,8 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   handleSelectedAnimal,
   selectedData,
 }) => {
-  const [data, setData] = useState<AnimalInfo[]>([]);
-  setData(data);
+  // const [data, setData] = useState<AnimalInfo[]>([]);
+  const data: AnimalInfo[] = [];
   const [filteredResults, setFilteredResults] = useState<AnimalInfo[]>([]);
   const cardContainerRef = useRef<HTMLDivElement | null>(null);
 

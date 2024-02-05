@@ -4,19 +4,17 @@ import { AxiosError } from "axios";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
-    // The request was made and the server responded with a status code
-    // that falls out of the range of 2xx
+    // 2XX번이 아닌 상태 코드를 받았다.
     console.log("axios error status:", error.response.status);
     console.log("axios error data:", error.response.data);
     console.log("axios error headers:", error.response.headers);
   } else if (error.request) {
-    // The request was made but no response was received
+    // 요청은 보내졌으나 응답이 없다.
     console.log("axios error request:", error.request);
   } else {
-    // Something happened in setting up the request that triggered an Error
+    // 그 외의 상황
     console.log("axios error message:", error.message);
   }
-
   console.log("axios error:", error);
 };
 export interface ArticlePostData {
@@ -93,7 +91,7 @@ export const requestArticle = async ({
 
     return response.data;
   } catch (error) {
-    // handleAxiosError(error as AxiosError);
+    handleAxiosError(error as AxiosError);
     throw error;
   }
 };

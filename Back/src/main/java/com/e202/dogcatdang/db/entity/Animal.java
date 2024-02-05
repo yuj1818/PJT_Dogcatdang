@@ -1,14 +1,10 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.ColumnTransformer;
 
 import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.CatBreed;
-import com.e202.dogcatdang.enums.DogBreed;
 import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
@@ -123,18 +119,54 @@ public class Animal {
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
 		State state, String imgName, String imgUrl) {
-		this.animalType = animalType;
-		this.breed = breed;
-		this.age = age;
-		this.weight = weight;
-		this.rescueDate = rescueDate;
-		this.rescueLocation = rescueLocation;
-		this.isNeuter = isNeuter;
-		this.gender = gender;
-		this.feature = feature;
-		this.state = state;
-		this.imgName = imgName;
-		this.imgUrl = imgUrl;
+		if (animalType != null) {
+			this.animalType = animalType;
+		}
+
+		if (breed != null) {
+			this.breed = breed;
+		}
+
+		if (age != null) {
+			this.age = age;
+		}
+
+		if (weight != null) {
+			this.weight = weight;
+		}
+
+		if (rescueDate != null) {
+			this.rescueDate = rescueDate;
+		}
+
+		if (rescueLocation != null) {
+			this.rescueLocation = rescueLocation;
+		}
+
+		if (isNeuter != null) {
+			this.isNeuter = isNeuter;
+		}
+
+		if (gender != null) {
+			this.gender = gender;
+		}
+
+		if (feature != null) {
+			this.feature = feature;
+		}
+
+		if (state != null) {
+			this.state = state;
+		}
+
+		if (imgName != null) {
+			this.imgName = imgName;
+		}
+
+		if (imgUrl != null) {
+			this.imgUrl = imgUrl;
+		}
+
 	}
 
 }

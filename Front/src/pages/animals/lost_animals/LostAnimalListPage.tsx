@@ -5,6 +5,7 @@ import LostAnimalCard from "../../../components/animalinfo/lostanimals/LostAnima
 import { useNavigate } from "react-router-dom";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import Pagination from "../../../components/common/Pagination";
+import styled from "styled-components";
 
 function LostAnimalListPage() {
   const [lostAnimalData, setLostAnimalData] = useState([]);
@@ -55,17 +56,26 @@ function LostAnimalListPage() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-
+  interface StyledButtonProps {
+    isOrg: boolean;
+  }
+  const StyledButton = styled.button<StyledButtonProps>`
+    display: ${({ isOrg }) => (isOrg ? "none" : "block")};
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 10%;
+    height: 35px;
+  `;
   const itemsPerPage = 8;
   return (
     <>
       <LostAnimalSearch animals={lostAnimalData} />
-      <button
-        onClick={handleRegistration}
-        style={{ display: isOrg ? "none" : "block" }}
-      >
-        동물 등록
-      </button>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <StyledButton isOrg={isOrg} onClick={handleRegistration}>
+          동물 등록
+        </StyledButton>
+      </div>
       <div>
         {lostAnimalData.map((animal: LostRegistrationData) => (
           <LostAnimalCard key={animal.lostAnimalId} animals={animal} />

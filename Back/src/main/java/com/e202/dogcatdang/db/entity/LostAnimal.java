@@ -85,18 +85,56 @@ public class LostAnimal {
 	public void update(AnimalType animalType, String name, String breed, Integer age, Integer weight,
 		LocalDate lostDate, String lostLocation, Gender gender, String feature, State state, String imgName,
 		String imgUrl) {
-		this.animalType = animalType;
-		this.name = name;
-		this.breed = breed;
-		this.age = age;
-		this.weight = weight;
-		this.lostDate = lostDate;
-		this.lostLocation = lostLocation;
-		this.gender = gender;
-		this.feature = feature;
-		this.state = state;
-		this.imgName = imgName;
-		this.imgUrl = imgUrl;
+		if (animalType != null) {
+			this.animalType = animalType;
+		}
+
+		if (name != null) {
+			this.name = name;
+		}
+
+		if (breed != null) {
+			this.breed = breed;
+		}
+
+		if (age != null) {
+			this.age = age;
+		}
+
+		if (weight != null) {
+			this.weight = weight;
+		}
+
+		if (lostDate != null) {
+			this.lostDate = lostDate;
+		}
+
+		if (lostLocation != null) {
+			this.lostLocation = lostLocation;
+		}
+
+
+		if (gender != null) {
+			this.gender = gender;
+		}
+
+		if (feature != null) {
+			this.feature = feature;
+		}
+
+		if (state != null) {
+			this.state = state;
+		}
+
+		if (imgName != null) {
+			this.imgName = imgName;
+		}
+
+		if (imgUrl != null) {
+			this.imgUrl = imgUrl;
+		}
+
+
 	}
 
 	// enum 정의는 클래스의 맨 아래에 위치
