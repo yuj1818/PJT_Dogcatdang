@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
@@ -117,7 +118,6 @@ public class AnimalServiceImpl implements AnimalService{
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
 		return new ResponseAnimalDto(animal);
 	}
-
 
 	/*특정한 동물 데이터 수정*/
 	@Override
