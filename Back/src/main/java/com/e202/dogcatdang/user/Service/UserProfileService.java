@@ -88,5 +88,10 @@ public class UserProfileService {
         userRepository.save(user);
         return user;
     }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원 아이디입니다."));
+    }
 }
 

@@ -8,5 +8,6 @@ public interface AnimalLikeService {
 
 	void unlikeAnimal(Long userId, Animal animal);
 
+	// user가 animal에 like를 했는지 boolean 값으로 확인
 	boolean isAnimalLikedByUser(Animal animal, User user);
 }
