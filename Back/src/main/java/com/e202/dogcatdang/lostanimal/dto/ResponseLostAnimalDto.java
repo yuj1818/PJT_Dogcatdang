@@ -26,6 +26,7 @@ public class ResponseLostAnimalDto {
 	private LocalDate lostDate;
 	private String feature;
 	private String imgName;
+	private String imgUrl;
 	private Long userId;
 	private String userNickname;
 
@@ -40,6 +41,7 @@ public class ResponseLostAnimalDto {
 		this.lostDate = lostAnimal.getLostDate();
 		this.feature = lostAnimal.getFeature();
 		this.imgName = lostAnimal.getImgName();
+		this.imgUrl = lostAnimal.getImgUrl();
 		this.userId = lostAnimal.getUser().getId();
 		this.userNickname = lostAnimal.getUser().getNickname();
 	}
