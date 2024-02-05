@@ -18,11 +18,13 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class RequestCommentDto {
+	private Long commentId;
 	private String content;
 	private Long boardId;
 	private long parentId;
 	@Builder
 	public RequestCommentDto(Comment comment) {
+		this.commentId = comment.getCommentId();
 		this.content = comment.getContent();
 		this.boardId = comment.getBoard().getBoardId();
 		if (comment.getParent() != null) {

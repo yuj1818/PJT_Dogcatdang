@@ -10,4 +10,6 @@ public interface CommentService {
 	List<ResponseCommentDto> findByBoardId(Long boardId);
 
 	ResponseSavedIdDto save(Long loginUserId, RequestCommentDto requestCommentDto);
+
+	ResponseSavedIdDto update(Long loginUserId, RequestCommentDto requestCommentDto);
 }

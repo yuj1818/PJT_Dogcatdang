@@ -14,6 +14,7 @@ import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.BoardRepository;
 import com.e202.dogcatdang.db.repository.CommentRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
+import com.e202.dogcatdang.exception.InvalidUserException;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -65,5 +66,29 @@ public class CommentServiceImpl implements CommentService {
 
 
 		return new ResponseSavedIdDto(savedId);
+	}
+
+
+	/*
+	* 댓글 수정
+	* 실제 댓글의 작성자와 로그인한 유저의 id 값을 비교하여 검증
+	* 다르다면 에러 처리
+	* */
+	@Override
+	public ResponseSavedIdDto update(Long loginUserId, RequestCommentDto requestCommentDto) {
+
+		Long commentId = requestCommentDto.getCommentId();
+		Comment comment = commentRepository.findById(commentId).get();
+
+
+		if(comment.getUser().getId().equals(loginUserId)){
+			comment.updateContent(requestCommentDto.getContent());
+			commentId = commentRepository.save(comment).getCommentId();
+			return new ResponseSavedIdDto(commentId);
+		}else{
+			throw new InvalidUserException("댓글 작성자가 아닙니다!");
+			//에러 처리 해줘야 됨.
+			//로그인 한 유저와 수정하려는 댓글의 작성자가 다른 경우
+		}
 	}
 }
