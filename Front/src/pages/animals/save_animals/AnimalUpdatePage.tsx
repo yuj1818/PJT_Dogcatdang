@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { saveUpdate } from "../../../util/SaveAPI";
 import { Cookies } from "react-cookie";
 import { dogInput, catInput, regionInput, countryInput } from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
+import API from "../../../util/axios";
 
 function AnimalUpdatePage() {
 
@@ -12,19 +13,19 @@ function AnimalUpdatePage() {
 
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [detailInfo, setDetailInfo] = useState("");
+  // const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
-  const [imgUrl, setImgUrl] = useState("");
-  const [animalType, setAnimalType] = useState("강아지");
+  // const [imgName, setImgName] = useState("");
+  // const [imgUrl, setImgUrl] = useState("");
+  // const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
 
   const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [rescueDate, setRescueDate] = useState("");
-  const [isNeuter, setIsNeuter] = useState(false);
-  const [feature, setFeature] = useState("");
+  // const [age, setAge] = useState("");
+  // const [weight, setWeight] = useState("");
+  // const [rescueDate, setRescueDate] = useState("");
+  // const [isNeuter, setIsNeuter] = useState(false);
+  // const [feature, setFeature] = useState("");
 
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
@@ -33,23 +34,65 @@ function AnimalUpdatePage() {
   const handleDistrict = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDistrict(event.target.value);
   };
-  const handleDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailInfo(e.target.value);
-  };
+  // const handleDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setDetailInfo(e.target.value);
+  // };
 
   const handleBreed = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBreed(e.target.value);
   };
 
-  const handleRescueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRescueDate(e.target.value);
-  };
+  // const handleRescueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRescueDate(e.target.value);
+  // };
 
-  const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsNeuter(e.target.checked);
-  };
+  // const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setIsNeuter(e.target.checked);
+  // };
 
   const cookie = new Cookies();
+  const [savedata, setSaveData] = useState({
+    idx: 0,
+    animalType: '',
+    breed: '',
+    age: '',
+    weight: '',
+    rescueDate: '',
+    selectedCity: '',
+    selectedDistrict: '',
+    detailInfo: '',
+    isNeuter: false,
+    gender: '',
+    feature: '',
+    state: '',
+    imgName: '',
+    imgUrl: '',
+  })
+
+  const { animalType, 
+    age,
+    weight,
+    rescueDate,
+    detailInfo,
+    feature,
+    isNeuter,
+    imgName,
+    imgUrl } = savedata
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
+      const { value, name } = event.target; //event.target에서 name과 value만 가져오기
+      setSaveData({
+        ...savedata,
+        [name]: value,
+      });
+    };
+
+    const getData = async () => {
+      const apiUrl = `api/animals/${animalID}`;
+      const res = await (await API.get(apiUrl));
+      console.log(res.data);
+      setSaveData(res.data);
+    };
 
   const handleUpdate = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -79,6 +122,10 @@ function AnimalUpdatePage() {
     navigate(`/save-animals/${animalID}`);
   };
 
+  useEffect(() => {
+    getData();
+  }, []);
+
   const [selectedImage, setSelectedImage] = useState<null | string>(null);;
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,8 +146,8 @@ function AnimalUpdatePage() {
       <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>보호 동물 수정</h1>
       <hr />
       <div className="flex justify-center h-screen gap-5">
-      <RegistForm onSubmit={(e) => handleUpdate(e, animalID)}>
-      <div className="flex">
+        <RegistForm onSubmit={(e) => handleUpdate(e, animalID)}>
+          <div className="flex">
             <div className="flex"
               style={{
                 flexDirection: 'column',
@@ -130,7 +177,7 @@ function AnimalUpdatePage() {
                     type="radio"
                     value="강아지"
                     checked={animalType === "강아지"}
-                    onChange={() => setAnimalType("강아지")}
+                    onChange={onChange}
                   />
                   강아지
                 </label>
@@ -139,7 +186,7 @@ function AnimalUpdatePage() {
                     type="radio"
                     value="고양이"
                     checked={animalType === "고양이"}
-                    onChange={() => setAnimalType("고양이")}
+                    onChange={onChange}
                   />
                   고양이
                 </label>
@@ -172,7 +219,7 @@ function AnimalUpdatePage() {
                   <input
                     type="text"
                     value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
+                    onChange={onChange}
                   />
                 </label>
               </div>
@@ -182,7 +229,7 @@ function AnimalUpdatePage() {
                   <input
                     type="text"
                     value={imgUrl}
-                    onChange={(e) => setImgUrl(e.target.value)}
+                    onChange={onChange}
                   />
                 </label>
               </div>
@@ -210,7 +257,7 @@ function AnimalUpdatePage() {
                     className="input"
                     type="text"
                     value={age}
-                    onChange={(e) => setAge(e.target.value)}
+                    onChange={onChange}
                   />
                 </div>
               </div>
@@ -223,7 +270,7 @@ function AnimalUpdatePage() {
                     className="input"
                     type="text"
                     value={weight}
-                    onChange={(e) => setWeight(e.target.value)}
+                    onChange={onChange}
                   />
                 </div>
               </div>
@@ -275,7 +322,7 @@ function AnimalUpdatePage() {
                   <label className="item">
                     상세주소
                   </label>
-                  <input className="input" type="text" value={detailInfo} onChange={handleDetail} />
+                  <input className="input" type="text" value={detailInfo} onChange={onChange} />
                 </div>
               </div>
               <div className="flex flex-col gap-1">
@@ -284,7 +331,7 @@ function AnimalUpdatePage() {
                   <label className="item">
                     발견일자
                   </label>
-                  <input className="input" type="date" value={rescueDate} onChange={handleRescueDate} />
+                  <input className="input" type="date" value={rescueDate} onChange={onChange} />
                 </div>
               </div>
               <div className="flex flex-col gap-1">
@@ -297,7 +344,7 @@ function AnimalUpdatePage() {
                     type="checkbox"
                     name="isNeutered"
                     checked={isNeuter}
-                    onChange={handleIsNeuter}
+                    onChange={onChange}
                   />
                 </div>
               </div>
@@ -328,7 +375,7 @@ function AnimalUpdatePage() {
                       className="input"
                       type="text"
                       value={feature}
-                      onChange={(e) => setFeature(e.target.value)}
+                      onChange={onChange}
                     />
                   </div>
                 </div>
@@ -338,7 +385,7 @@ function AnimalUpdatePage() {
           <div className="custom-button">
             <button type="submit">수정</button>
           </div>
-      </RegistForm>
+        </RegistForm>
       </div>
     </>
   );
