@@ -24,7 +24,7 @@ public class ResponseCommentDto {
 	private LocalDateTime createTime;
 	private String nickname;
 	private Long parentId;
-
+//a
 	@Builder
 	public ResponseCommentDto(Comment comment) {
 		this.commentId = comment.getCommentId();
