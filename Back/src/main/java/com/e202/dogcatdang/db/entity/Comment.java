@@ -28,6 +28,8 @@ public class Comment {
 	private Long commentId;
 
 	private String content;
+
+
 	private LocalDateTime createTime;
 
 	@ManyToOne

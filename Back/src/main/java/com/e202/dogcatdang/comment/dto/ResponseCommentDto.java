@@ -18,8 +18,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ResponseCommentDto {
-
-	private Long commentId;
 	private String content;
 	private LocalDateTime createTime;
 	private String nickname;
@@ -27,7 +25,6 @@ public class ResponseCommentDto {
 //a
 	@Builder
 	public ResponseCommentDto(Comment comment) {
-		this.commentId = comment.getCommentId();
 		this.content = comment.getContent();
 		this.createTime = comment.getCreateTime();
 		this.nickname = comment.getUser().getNickname();
