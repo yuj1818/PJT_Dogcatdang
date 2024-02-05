@@ -96,6 +96,7 @@ public class CommentServiceImpl implements CommentService {
 	public ResponseSavedIdDto delete(Long loginUserId, Long boardId, Long commentId) {
 
 		Comment comment = commentRepository.findById(commentId).get();
+		//댓글 작성자가 아니라면 InvalidUserException
 		if(comment.getUser().getId().equals(loginUserId)){
 
 			commentRepository.delete(comment);
