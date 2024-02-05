@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { SlRefresh } from "react-icons/sl";
+import { useNavigate } from "react-router-dom";
+
+const ResultBox = styled.div`
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(45,45,45);
+  border-radius: 15px;
+  padding: 2rem;
+`
+
+const Rowdiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 3px;
+`
 
 const StyledButton = styled.button`
   background-color: #ff8331;
@@ -19,6 +32,59 @@ const StyledHeading = styled.h5`
   font-size: 30px;
   text-align: center;
 `;
+
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+`;
+
+const StyledResetButton = styled.button`
+  display: flex;
+  text-align: center;
+  color: white;
+  border-radius: 15px;
+  padding: 1rem;
+  font-size: 20px;
+  width: 180px;
+  height: 70px;
+  background-color: #FF8331;
+`;
+
+const StyledAnimalsButton = styled.button`
+  background-color: #FF8331;
+  color: white;
+  border-radius: 15px;
+  font-size: 20px;
+  width: 200px;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 13px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 19px
+`;
+
+
+const DetailBox = styled.div`
+  background-color: rgb(45, 45, 45, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Detaillists = styled.div`
+  margin-bottom: 1rem;
+`
+
+
+const RefreshImg = styled.img`
+  width: 38px;
+  height: 39px;
+  margin-right: 1rem;
+`
+
 
 function AnimalMatching() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -443,12 +509,17 @@ function AnimalMatching() {
     setShowResult(false);
     setResultImgSrc(null);
   };
+  const navigate = useNavigate()
+  const gotoAnimals = () => {
+    navigate("/save-animals")
+  }
+
 
   return (
     <>
       {showResult ? (
         // 결과를 표시합니다.
-        <div>
+        <ResultBox>
           <StyledHeading>결과는 ...</StyledHeading>
           <img
             src={resultImgSrc || undefined}
@@ -456,20 +527,31 @@ function AnimalMatching() {
             style={{
               width: "70%",
               height: "50%",
-              textAlign: "center",
+              display: "block",
+              margin: "auto",
+
             }}
           />
-          {resultDescLines.map((line, index) => (
-            <div key={index}>{line}</div>
-          ))}
-          <button onClick={resetQuiz} style={{ width: "70px", height: "70px" }}>
-            <SlRefresh
-              style={{ width: "100%", height: "100%", textAlign: "center" }}
-            />
-            다시하기
-          </button>
-          {/* <SlRefresh onClick={resetQuiz}>다시 시작하기</SlRefresh> */}
-        </div>
+
+          <DetailBox>
+            {resultDescLines.map((line, index) => (
+              <Detaillists key={index}>{line}</Detaillists>
+            ))}
+          </DetailBox>
+
+          <StyledContainer>
+            <StyledAnimalsButton onClick={gotoAnimals}>
+              동물보러가기
+            </StyledAnimalsButton>
+
+            <StyledResetButton onClick={resetQuiz}>
+                <Rowdiv>
+                <RefreshImg src="src/assets/refresh.png" alt="refresh" />
+                 다시하기
+                </Rowdiv>
+            </StyledResetButton>
+          </StyledContainer>
+        </ResultBox>
       ) : (
         // 퀴즈 표시
         <>

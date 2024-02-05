@@ -25,7 +25,7 @@ import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.
 import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
 import ErrorBlock from "./components/common/Error.tsx";
 import { LoadingIndicator } from "./components/common/Icons.tsx";
-const BroadCastPage = lazy(() => import("./pages/broadcast/BroadcastPage.tsx"));
+const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage.tsx"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
 import AnimalMatching from "./pages/animals/matching_animals/AnimalMatching.tsx";
