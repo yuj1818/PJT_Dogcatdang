@@ -7,5 +7,7 @@ import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 @Service
 public interface ReservationService {
 
-	void registerReservation(Long animalId, Long userId, RequestReservationDto reservationDto);
+	void register(Long animalId, Long userId, RequestReservationDto reservationDto);
+
+	void delete(long reservationId);
 }
