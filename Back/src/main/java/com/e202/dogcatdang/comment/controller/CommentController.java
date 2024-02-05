@@ -6,11 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e202.dogcatdang.comment.dto.RequestCommentDto;
 import com.e202.dogcatdang.comment.dto.ResponseCommentDto;
+import com.e202.dogcatdang.comment.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.comment.service.CommentService;
+import com.e202.dogcatdang.user.jwt.JWTUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -22,14 +28,24 @@ import lombok.AllArgsConstructor;
 public class CommentController {
 
 	CommentService commentService;
+	JWTUtil jwtUtil;
 
 	@GetMapping("/{boardId}/comments")
 	public ResponseEntity<List<ResponseCommentDto>> findByBoardId(@PathVariable Long boardId){
 		List<ResponseCommentDto> commentList = commentService.findByBoardId(boardId);
-
-
-
 		return ResponseEntity.ok(commentList);
+	}
+
+	@PostMapping("/{boardId}/comments")
+	public ResponseEntity<ResponseSavedIdDto> save(@RequestHeader("Authorization") String token, @PathVariable Long boardId, @RequestBody RequestCommentDto requestCommentDto) {
+		// 토큰에서 사용자 아이디(pk) 추출
+
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+
+		ResponseSavedIdDto responseSavedIdDto = commentService.save(loginUserId, requestCommentDto);
+
+		return ResponseEntity.ok(responseSavedIdDto);
 	}
 
 }
