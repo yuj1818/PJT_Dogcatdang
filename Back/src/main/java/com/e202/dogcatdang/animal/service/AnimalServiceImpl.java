@@ -35,7 +35,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class AnimalServiceImpl implements AnimalService{
+public class AnimalServiceImpl implements AnimalService {
 
 	private JWTUtil jwtUtil;
 

@@ -13,8 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 
 @Entity
+@Builder
 @Table(name = "reservation")
 public class Reservation {
 
@@ -42,11 +44,11 @@ public class Reservation {
 	// 관계 매핑
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private User user;
+	private User user;                  // 방문 예약 신청을 한 일반 회원의 id
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "animal_id")
-	private Animal animal;
+	private Animal animal;              // 예약 신청 대상 동물의 id
 
 	// enum 정의는 클래스의 맨 아래에 위치
 	public enum State {
