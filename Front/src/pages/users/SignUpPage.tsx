@@ -25,13 +25,27 @@ const ErrMsg = styled.p<{ $isValid: boolean }>`
   color: ${props => props.$isValid ? 'green' : 'red'};
 `
 
+const StyledRadioBtn = styled.input.attrs({type: 'radio'})`
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 0 0 1px slategrey;
+
+  &:checked {
+    border: 3px solid white;
+    background-color: #FF8331;
+  }
+`
+
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
   text-align: center;
   width: 40%;
-
+  
   .box {
     display: flex;
     gap: 1rem;
@@ -83,6 +97,7 @@ function SignUpPage() {
   const [nicknameErrMsg, setNicknameErrMsg] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
   const [signUpErrMsg, setSignUpErrMsg] = useState('');
+  const isSocial = false;
 
   const selectType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsOrg(() => e.target.value === 'ROLE_SHELTER');
@@ -231,44 +246,44 @@ function SignUpPage() {
         </div>
         <Line />
         <SignUpForm onSubmit={preventSubmit}>
-          <div className="box">
+          { !isSocial && <div className="box">
             <label className="item" htmlFor="isOrg">회원 구분</label>
-            <div>
-              <input type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
+            <div className="flex items-center gap-1">
+              <StyledRadioBtn type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
               <label htmlFor="개인">개인 회원</label>
             </div>
-            <div>
-              <input type="radio" name="isOrg" value="ROLE_SHELTER" id="기관" onChange={selectType} />
+            <div className="flex items-center gap-1">
+              <StyledRadioBtn type="radio" name="isOrg" value="ROLE_SHELTER" id="기관" onChange={selectType} />
               <label htmlFor="기관">기관 회원</label>
             </div>
-          </div>
-          <div className="flex flex-col gap-1">
+          </div> }
+          { !isSocial && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="username">ID</label>
               <input className="input" type="text" id="username" name="username" onChange={handleUsername} required />
-              <Button background="#F7EDE1" color="black" onClick={onClickCheckUsername}>중복확인</Button>
+              <Button onClick={onClickCheckUsername}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
               { usernameErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidUsername} >{usernameErrMsg}</ErrMsg> }
             </div>
-          </div>
+          </div> }
           <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="nickname">{ isOrg ? '기관명' : '닉네임' }</label>
               <input className="input" type="text" id="nickname" name="nickname" onChange={handleNickname} required />
-              <Button background="#F7EDE1" color="black" onClick={onClickCheckNickname}>중복확인</Button>
+              <Button onClick={onClickCheckNickname}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
               { nicknameErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidNickname} >{nicknameErrMsg}</ErrMsg> }
             </div>
           </div>
-          <div className="box">
+          { !isSocial && <div className="box">
             <label className="item" htmlFor="password1">비밀번호</label>
             <input className="input" type="password" id="password1" name="password1" onChange={handlePassword1} required />
-          </div>
-          <div className="flex flex-col gap-1">
+          </div> }
+          { !isSocial && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="password2">비밀번호 확인</label>
               <input className="input" type="password" id="password2" name="password2" onChange={handlePassword2} required />
@@ -277,12 +292,12 @@ function SignUpPage() {
               <div className="item"></div>
               { passwordErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidPassword} >{passwordErrMsg}</ErrMsg> }
             </div>
-          </div>
+          </div> }
           <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="email">이메일</label>
               <input className="input" type="email" id="email" name="email" onChange={handleEmail} required />
-              <Button background="#F7EDE1" color="black" onClick={onClickCheckEmail}>중복확인</Button>
+              <Button onClick={onClickCheckEmail}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
@@ -301,7 +316,7 @@ function SignUpPage() {
           <div className="box">
             <div className="item"></div>
             <div className="button-box">
-              <Button background="#F7EDE1" color="black" onClick={onSubmit}>회원가입</Button>
+              <Button onClick={onSubmit}>회원가입</Button>
             </div>
           </div>
         </SignUpForm>
