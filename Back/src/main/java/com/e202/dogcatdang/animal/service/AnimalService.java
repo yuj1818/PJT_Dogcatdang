@@ -14,7 +14,7 @@ import com.e202.dogcatdang.db.entity.Animal;
 public interface AnimalService {
 	ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto, String token) throws IOException;
 
-	ResponseAnimalPageDto findAllAnimals(int page, int recordSize);
+	ResponseAnimalPageDto findAllAnimals(int page, int recordSize, String token);
 
 	ResponseAnimalDto findById(Long animalId);
 
