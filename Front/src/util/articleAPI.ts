@@ -99,9 +99,14 @@ export const requestArticle = async ({
 
 export interface CommentRequstInterface {
   signal?: AbortSignal;
-  data?: string;
+  data?: commentData;
   method: "GET" | "POST" | "PUT" | "DELETE";
   boardId: string;
+  commentId?: number;
+}
+
+interface commentData {
+  content: string;
   commentId?: number;
 }
 
@@ -119,17 +124,19 @@ export const requestComment = async ({
     if (method === "GET") {
       response = await API.get(URL, { signal });
     } else if (method === "POST") {
-      const requestbody = { content: data, boardId };
+      const requestbody = { ...data, boardId };
       response = await API.post(URL, requestbody, { signal });
     } else if (method === "PUT") {
       if (!commentId) {
         console.error("commentId 필요");
         return;
       }
-      const requestbody = { content: data, boardId };
+      const requestbody = { content: data, boardId, commentId };
       response = await API.put(URL + "/" + boardId, requestbody, { signal });
     } else if (method === "DELETE") {
-      response = await API.delete(URL + "/" + boardId, { signal });
+      response = await API.delete(URL + "/" + boardId + "/" + commentId, {
+        signal,
+      });
     } else {
       throw Error("잘못된 접근입니다.");
     }

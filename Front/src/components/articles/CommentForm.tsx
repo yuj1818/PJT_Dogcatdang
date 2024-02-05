@@ -11,7 +11,7 @@ interface Props {
   commentId?: number;
 }
 
-const CommentForm = ({ boardId }: Props) => {
+const CommentForm = ({ boardId, edit, commentId }: Props) => {
   const [comment, setComment] = useState("");
 
   const { mutate, isPending } = useMutation({
@@ -30,7 +30,11 @@ const CommentForm = ({ boardId }: Props) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    mutate({ method: "POST", boardId });
+    if (edit) {
+      mutate({ method: "PUT", boardId, commentId });
+    } else {
+      mutate({ method: "POST", boardId });
+    }
   };
   return (
     <FormContainer onSubmit={handleSubmit}>

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Button } from "../common/Button";
 import CommentForm from "./CommentForm";
 import styled from "styled-components";
+import { requestComment } from "../../util/articleAPI";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../../util/tanstackQuery";
 
 export interface CommentData {
   boardId: string;
@@ -42,9 +45,19 @@ const Comment: React.FC<CommentData> = ({
 }) => {
   const [editMode, setEditMode] = useState(false);
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: requestComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["commentList", boardId] });
+    },
+  });
+
   const handleEditButton = () => {
-    if (editMode) {
-    }
+    setEditMode((prev) => !prev);
+  };
+
+  const handleDelete = () => {
+    mutate({ method: "DELETE", boardId, commentId });
   };
 
   return (
@@ -52,8 +65,12 @@ const Comment: React.FC<CommentData> = ({
       <CommentId>{commentId}</CommentId>
       <CreateDate>{createDate}</CreateDate>
       <Content>{content}</Content>
-      {editMode && <CommentForm boardId={boardId} edit={editMode} />}
-      <Button onClick={handleEditButton}>{editMode ? "저장" : "수정"}</Button>
+      {editMode ? (
+        <CommentForm boardId={boardId} edit={editMode} />
+      ) : (
+        <Button onClick={handleEditButton}>수정</Button>
+      )}
+      <button onClick={handleDelete}>{isPending ? "-" : "X"}</button>
     </CommentContainer>
   );
 };
