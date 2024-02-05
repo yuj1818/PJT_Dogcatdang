@@ -11,9 +11,10 @@ import { LoadingOrError } from "./LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Design";
-import { useUserInfo } from "../../util/hooks";
+import { getUserInfo } from "../../util/uitl";
 import { useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
+import CommentList from "../../components/articles/CommentList";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
@@ -31,7 +32,7 @@ const ArticleDetail: React.FC = () => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-  const { id } = useUserInfo();
+  const { id } = getUserInfo();
   const [modificationMode, setModificationMod] = useState(false);
 
   const {
@@ -90,7 +91,12 @@ const ArticleDetail: React.FC = () => {
     }
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      {content}
+      <CommentList></CommentList>
+    </>
+  );
 };
 
 export default ArticleDetail;

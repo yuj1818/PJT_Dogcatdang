@@ -1,3 +1,4 @@
+import { CommentInterface } from "../components/articles/ArticleInterface";
 import API from "./axios";
 // import { imageHandler } from "./imageHandler";
 import { AxiosError } from "axios";
@@ -93,5 +94,47 @@ export const requestArticle = async ({
   } catch (error) {
     handleAxiosError(error as AxiosError);
     throw error;
+  }
+};
+
+export interface CommentRequstInterface {
+  signal: AbortSignal;
+  data?: string;
+  method: "GET" | "POST" | "PUT" | "DELETE";
+  boardId: string;
+  commentId?: number;
+}
+
+export const requestComment = async ({
+  data,
+  method,
+  boardId,
+  commentId,
+  signal,
+}: CommentRequstInterface) => {
+  const URL = `api/${boardId}/comments`;
+  let response;
+
+  try {
+    if (method === "GET") {
+      response = await API.get(URL, { signal });
+    } else if (method === "POST") {
+      const requestbody = { content: data, boardId };
+      response = await API.post(URL, requestbody, { signal });
+    } else if (method === "PUT") {
+      if (!commentId) {
+        console.error("commentId 필요");
+        return;
+      }
+      const requestbody = { content: data, boardId };
+      response = await API.put(URL + "/" + boardId, requestbody, { signal });
+    } else if (method === "DELETE") {
+      response = await API.delete(URL + "/" + boardId, { signal });
+    } else {
+      throw Error("잘못된 접근입니다.");
+    }
+    return response.data as CommentInterface[];
+  } catch (error) {
+    handleAxiosError(error as AxiosError);
   }
 };

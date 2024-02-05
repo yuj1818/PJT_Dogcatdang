@@ -22,7 +22,7 @@ interface RequestBroadCastInterface {
   data: BoadcastData;
 }
 
-const URL = "api/streamins";
+const URL = "api/streamings";
 
 export const requestBroadCast = async ({
   signal,

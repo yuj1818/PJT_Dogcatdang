@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
-import { queryClient } from "./util/tanstackQuery.ts";
+import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
 const AnimalListPage = lazy(
@@ -11,8 +11,8 @@ const AnimalListPage = lazy(
 );
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
-import ArticleDetailPage from "./pages/articles/ArticleDetailPage.tsx";
-import NavBar from "./components/common/NavBar.tsx";
+import ArticleDetailPage from "./pages/articles/ArticleDetailPage";
+import NavBar from "./components/common/NavBar";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
 import SignInPage from "./pages/users/SignInPage.tsx";
 import LandingPage from "./pages/home/LandingPage.tsx";
@@ -22,12 +22,12 @@ import AnimalFormPage from "./pages/animals/save_animals/AnimalFormPage.tsx";
 import AnimalUpdatePage from "./pages/animals/save_animals/AnimalUpdatePage.tsx";
 import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdatePage.tsx";
 import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
-import ArticleWritePage from "./pages/articles/ArticleWritePage.tsx";
-import ErrorBlock from "./components/common/Error.tsx";
-import { LoadingIndicator } from "./components/common/Icons.tsx";
-const BroadCastPage = lazy(() => import("./pages/broadcast/BroadcastPage.tsx"));
+import ArticleWritePage from "./pages/articles/ArticleWritePage";
+import ErrorBlock from "./components/common/Error";
+import { LoadingIndicator } from "./components/common/Icons";
+const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
-import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
+import BoradcastListPage from "./pages/broadcast/BoradcastListPage";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -131,7 +131,7 @@ const router = createBrowserRouter([
         path: "broadcast",
         children: [
           {
-            path: "trans",
+            path: "trans/*",
             element: (
               <Suspense fallback={<LoadingIndicator />}>
                 <BroadCastPage />

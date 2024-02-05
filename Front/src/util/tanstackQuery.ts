@@ -7,6 +7,6 @@ type ShouldRetryFunction = (failureCount: number, error: Error) => boolean;
 
 export const retryFn: ShouldRetryFunction = (failureCount, error) => {
   return (
-    failureCount < 3 && ((error as AxiosError).response?.status || 0) >= 500
+    failureCount < 3 && ((error as AxiosError).response?.status || 500) >= 500
   );
 };
