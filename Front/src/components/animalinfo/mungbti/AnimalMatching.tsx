@@ -7,6 +7,9 @@ const ResultBox = styled.div`
   border: 1px solid rgb(45, 45, 45);
   border-radius: 15px;
   padding: 2rem;
+  margin-top: 20px;
+  margin: 10px auto;
+  width: 75%;
 `;
 
 const Rowdiv = styled.div`
@@ -22,8 +25,9 @@ const StyledButton = styled.button`
   padding: 2rem;
   border: 5px solid #ff8331;
   border-radius: 15px;
-  margin: 10px;
+  margin: 10px auto; 
   font-size: 20px;
+  display: block;
 `;
 
 const StyledHeading = styled.h5`
@@ -498,15 +502,20 @@ function AnimalMatching() {
       setShowResult(true);
     }
   };
+  const navigate = useNavigate();
+
+  const gotoRefresh = () => {
+    navigate("/mung");
+  }
 
   const resetQuiz = () => {
-    setCurrentQuestion(0);
     setScores([]);
     setTotalScore(0);
     setShowResult(false);
     setResultImgSrc(null);
+    gotoRefresh();
   };
-  const navigate = useNavigate();
+
   const gotoAnimals = () => {
     navigate("/save-animals");
   };
@@ -561,7 +570,7 @@ function AnimalMatching() {
               <StyledButton
                 key={index}
                 onClick={() => handleAnswer(answer.score)}
-                style={{ width: "100%", height: "100%" }}
+                style={{ width: "80%", height: "80%" }}
               >
                 {answer.content}
               </StyledButton>
