@@ -8,7 +8,7 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
-import { Link, LoaderFunction, redirect, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);

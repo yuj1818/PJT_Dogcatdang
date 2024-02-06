@@ -44,7 +44,7 @@ const TextSearch: React.FC<{
       <FormMolecule>
         <label
           htmlFor="search"
-          className="text-sm font-medium text-gray-600 pr-2"
+          className="text-sm font-medium text-gray-600 pr-2 flex justify-center items-center"
         >
           검색
         </label>
