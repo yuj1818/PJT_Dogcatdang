@@ -4,13 +4,9 @@ import tw from "tailwind-styled-components";
 
 import { isOrg } from "../../pages/users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
-import { Button, Input, Contour } from "../common/Design";
+import { Button, Input, Contour, TextArea } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
-import { AnimalInfo, requestBroadCast } from "../../util/broadcastAPI";
-
-const TesxtArea = tw.textarea`
-  w-64 h-32 border rounded-md p-2 resize-none block w-full border-gray-300
-`;
+import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
@@ -34,7 +30,7 @@ const Form: React.FC<FormProps> = ({
   const params = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedAnimal, setSelectedAnimal] = useState<AnimalInfo[]>([]);
+  const [selectedAnimal, setSelectedAnimal] = useState<CallAnimal[]>([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -78,6 +74,7 @@ const Form: React.FC<FormProps> = ({
         return null;
       }
       // 서버 등록 요청
+      const animalIds = selectedAnimal.map((element) => element.animalId);
       console.log(selectedAnimal);
       console.log(sessionId);
       console.log(title);
@@ -85,7 +82,7 @@ const Form: React.FC<FormProps> = ({
       // 요청 보낼 데이터들
 
       const data = {
-        animalInfo: selectedAnimal,
+        animalInfo: animalIds,
         title,
         description,
         sessionId,
@@ -114,10 +111,10 @@ const Form: React.FC<FormProps> = ({
     }
   };
 
-  const handleSelectedAnimal = (info: AnimalInfo) => {
+  const handleSelectedAnimal = (info: CallAnimal) => {
     setSelectedAnimal((prev) => {
       if (prev.includes(info)) {
-        return prev.filter((prev) => prev.id !== info.id);
+        return prev.filter((prev) => prev.animalId !== info.animalId);
       } else {
         return [...prev, info];
       }
@@ -140,7 +137,7 @@ const Form: React.FC<FormProps> = ({
             />
             <TextLength>{title.length} / 30</TextLength>
             <Label htmlFor="description">방송 설명</Label>
-            <TesxtArea
+            <TextArea
               value={description}
               onChange={handleDescriptionChange}
               id="description"
@@ -150,10 +147,10 @@ const Form: React.FC<FormProps> = ({
               selectedData={selectedAnimal}
             />
             {selectedAnimal.map((animal) => (
-              <li key={animal.id}>
+              <li key={animal.animalId}>
                 code: {animal.code}
-                id: {animal.id}
-                imgURL: {animal.image}
+                id: {animal.animalId}
+                imgURL: {animal.imgUrl}
                 age: {animal.age}
               </li>
             ))}

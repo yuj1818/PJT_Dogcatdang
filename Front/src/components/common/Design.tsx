@@ -26,6 +26,15 @@ focus:shadow-md
 focus:placeholder:opacity-0
 `;
 
+export const TextArea = tw.textarea`
+h-32 border rounded-md p-2 resize-none block w-full
+w-full mt-2 p-2 border border-gray-300 rounded mb-0
+
+focus:outline-none
+focus:shadow-md
+focus:placeholder:opacity-0
+`;
+
 interface ContourProps {
   $thickness?: number;
   $marginTop?: number;
