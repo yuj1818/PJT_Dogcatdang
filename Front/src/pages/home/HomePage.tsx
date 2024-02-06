@@ -5,11 +5,7 @@ import { requestArticle } from "../../util/articleAPI";
 import ArticleList from "../../components/articles/ArticleList";
 
 const MainPage: React.FC = () => {
-  const { data, isLoading, isError, error } = useQuery<
-    ArticleInterface[],
-    Error,
-    ArticleInterface[]
-  >({
+  const { data } = useQuery<ArticleInterface[], Error, ArticleInterface[]>({
     queryKey: ["articleList"],
     queryFn: async ({
       signal,
