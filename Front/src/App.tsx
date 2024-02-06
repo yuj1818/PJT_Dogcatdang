@@ -79,16 +79,7 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/:animalID",
-        children: [
-          {
-            index: true,
-            element: <AnimalDetailPage />
-          },
-          {
-            path: "visit",
-            element: <VisitReservationPage />
-          }
-        ]
+        element: <AnimalDetailPage />
       },
       {
         path: "registration",
@@ -179,6 +170,10 @@ const router = createBrowserRouter([
             element: <BoradcastListPage />,
           },
         ],
+      },
+      {
+        path: "visit/:shelterId/:animalId",
+        element: <VisitReservationPage />
       },
     ],
   },
