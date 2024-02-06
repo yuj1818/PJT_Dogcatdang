@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+
 import { Input } from "../common/Design";
 import { Label } from "./BroadcastForm";
-import styled from "styled-components";
-import { AnimalInfo } from "../../util/broadcastAPI";
+import { CallAnimal, callAnimal } from "../../util/broadcastAPI";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
+import { getUserInfo } from "../../util/uitl";
+import { retryFn } from "../../util/tanstackQuery";
+import { LoadingOrError } from "../../pages/articles/LoadingOrError";
+
 interface CardInterface {
   selected: boolean;
 }
@@ -30,23 +36,42 @@ const List = styled.div<CardInterface>`
 `;
 
 interface AnimalSearchForBroadcastInterface {
-  handleSelectedAnimal: (info: AnimalInfo) => void;
-  selectedData: AnimalInfo[];
+  handleSelectedAnimal: (info: CallAnimal) => void;
+  selectedData: CallAnimal[];
 }
 
 const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   handleSelectedAnimal,
   selectedData,
 }) => {
-  // const [data, setData] = useState<AnimalInfo[]>([]);
-  const data: AnimalInfo[] = [];
-  const [filteredResults, setFilteredResults] = useState<AnimalInfo[]>([]);
+  // const data: AnimalInfo[] = [];
+  const [filteredResults, setFilteredResults] = useState<CallAnimal[]>([]);
   const cardContainerRef = useRef<HTMLDivElement | null>(null);
+  const { id } = getUserInfo();
+
+  const { data, isLoading, isError, error } = useQuery<
+    CallAnimal[],
+    Error,
+    CallAnimal[]
+  >({
+    queryKey: ["ORG", id, "animal"],
+    queryFn: async ({
+      signal,
+    }: QueryFunctionContext): Promise<CallAnimal[]> => {
+      const result = await callAnimal({ signal });
+      return result as CallAnimal[];
+    },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 100,
+  });
 
   const handleSearch = (query: string) => {
-    let filteredData: AnimalInfo[];
+    let filteredData: CallAnimal[];
     if (query.trim()) {
-      filteredData = data.filter((item) => item.code.includes(query));
+      filteredData = data!.filter(
+        (item) => item.code.includes(query) || item.breed.includes(query)
+      );
     } else {
       filteredData = [];
     }
@@ -73,15 +98,24 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   return (
     <>
       <Label htmlFor="search">출연 동물</Label>
-      <Input
-        id="search"
-        type="text"
-        placeholder="출연할 동물을 선택하세요(코드로 검색하기)"
-        onChange={(e) => {
-          handleSearch(e.target.value);
-        }}
-        autoComplete="off"
-      />
+      {data && (
+        <Input
+          id="search"
+          type="text"
+          placeholder={
+            data.length > 0
+              ? "출연할 동물을 선택하세요(코드 또는 종으로 검색하기)"
+              : "보호 중인 동물 정보가 없습니다. 동물을 등록하신 뒤 방송을 시작해 주세요"
+          }
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
+          autoComplete="off"
+        />
+      )}
+      {(isLoading || isError) && (
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
+      )}
 
       {filteredResults.length > 0 && (
         <Container ref={cardContainerRef} className="rounded-md">
@@ -89,7 +123,7 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
             <List
               className="rounded-md"
               selected={selectedData.includes(result)}
-              key={result.id}
+              key={result.animalId}
               onClick={() => {
                 handleSelectedAnimal(result);
               }}
