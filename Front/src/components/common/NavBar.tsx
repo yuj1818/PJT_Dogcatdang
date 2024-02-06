@@ -124,7 +124,7 @@ const commontNavTitles = (
       <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
     </ul>
     <ul>
-      <StyledNavLink to="/test">멍BTI</StyledNavLink>
+      <StyledNavLink to="/mung">멍BTI</StyledNavLink>
     </ul>
   </>
 );
@@ -138,7 +138,7 @@ const commonNavContent = (
     </ul>
     <ul>
       <li>
-        <StyledNavLink to="/test">멍BTI</StyledNavLink>
+        <StyledNavLink to="/mung">멍BTI</StyledNavLink>
       </li>
     </ul>
   </>
