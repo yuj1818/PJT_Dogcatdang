@@ -60,13 +60,13 @@ function LostAnimalListPage() {
     isOrg: boolean;
   }
   const StyledButton = styled.button<StyledButtonProps>`
-  display: ${({ isOrg }) => isOrg ? "none" : "block"};
-  background-color: black;
-  color: white;
-  border-radius: 10px;
-  width: 10%;
-  height: 35px;
-`;
+    display: ${({ isOrg }) => (isOrg ? "none" : "block")};
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 10%;
+    height: 35px;
+  `;
   const itemsPerPage = 8;
   return (
     <>

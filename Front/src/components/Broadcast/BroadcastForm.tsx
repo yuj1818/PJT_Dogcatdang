@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
 
 import { isOrg } from "../../pages/users/SignInPage";
-import { useUserInfo } from "../../util/hooks";
+import { getUserInfo } from "../../util/uitl";
 import { Button, Input, Contour } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { AnimalInfo, requestBroadCast } from "../../util/broadcastAPI";
@@ -23,45 +23,46 @@ export const Label = tw.label`
 interface FormProps {
   joinSession: () => void;
   sessionIdChangeHandler: (event: string) => void;
+  sessionId: string;
 }
 
-const Form: React.FC<FormProps> = ({ joinSession, sessionIdChangeHandler }) => {
-  const { broadcastId } = useParams();
-  const { id, nickname } = useUserInfo();
-  const [sessionId, setSessionId] = useState("");
-
+const Form: React.FC<FormProps> = ({
+  joinSession,
+  sessionIdChangeHandler,
+  sessionId,
+}) => {
+  const params = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedAnimal, setSelectedAnimal] = useState<AnimalInfo[]>([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (broadcastId) {
-      console.log(broadcastId);
-      sessionIdChangeHandler(broadcastId);
-    } else if (nickname && id) {
-      const encodedNickname = nickname.replace(
-        /[a-zA-Z0-9]/g,
-        (char, index) => {
-          if (index < 7) {
-            return String.fromCharCode(char.charCodeAt(0) + 1);
-          } else {
-            return "";
-          }
-        }
-      );
-      const today = new Date();
+    const { username } = getUserInfo();
+    if (params.broadcastId) {
+      sessionIdChangeHandler(params.broadcastId);
+    } else if (!params.broadcastId) {
+      let newSessionId: string;
 
-      const year = String(today.getFullYear()).slice(-2);
-      const month = String(today.getMonth() + 1).padStart(2, "0");
-      const day = String(today.getDate()).padStart(2, "0");
-      const numericFormat = `${year}${month}${day}`;
+      if (params["*"]) {
+        newSessionId = params["*"];
+        sessionIdChangeHandler(newSessionId);
+        joinSession();
+      } else {
+        const today = new Date();
 
-      const newSessionId = `${id}${encodedNickname}${numericFormat}`;
-      setSessionId(newSessionId);
-      sessionIdChangeHandler(newSessionId);
+        const year = String(today.getFullYear()).slice(-2);
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        const ranmdeNum = Math.ceil(Math.random() * 1000);
+        const numericFormat = `${year}${month}${day}${ranmdeNum}`;
+
+        newSessionId = `${username}${numericFormat}`;
+        sessionIdChangeHandler(newSessionId);
+      }
     }
-  }, [broadcastId, joinSession, sessionIdChangeHandler, id, nickname]);
+  }, [params, joinSession, sessionIdChangeHandler]);
 
   useEffect(() => {
     if (title.trim() && description.trim() && selectedAnimal.length > 0) {
@@ -72,27 +73,31 @@ const Form: React.FC<FormProps> = ({ joinSession, sessionIdChangeHandler }) => {
   const onSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isOrg()) {
-      if (!title.trim() || !description.trim() || selectedAnimal.length == 0) {
+      if (!title.trim() || !description.trim()) {
         setError("내용을 모두 입력하세요");
         return null;
       }
-    }
-    // 서버 등록 요청
-    console.log(selectedAnimal);
-    console.log(sessionId);
-    console.log(title);
-    console.log(description);
-    // 요청 보낼 데이터들
+      // 서버 등록 요청
+      console.log(selectedAnimal);
+      console.log(sessionId);
+      console.log(title);
+      console.log(description);
+      // 요청 보낼 데이터들
 
-    const data = {
-      animalInfo: selectedAnimal,
-      title,
-      description,
-      sessionId,
-    };
-    await requestBroadCast({ data });
+      const data = {
+        animalInfo: selectedAnimal,
+        title,
+        description,
+        sessionId,
+      };
+      await requestBroadCast({ data });
+    }
 
     joinSession();
+
+    if (isOrg()) {
+      navigate(`${sessionId}`);
+    }
   };
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +150,7 @@ const Form: React.FC<FormProps> = ({ joinSession, sessionIdChangeHandler }) => {
               selectedData={selectedAnimal}
             />
             {selectedAnimal.map((animal) => (
-              <li>
+              <li key={animal.id}>
                 code: {animal.code}
                 id: {animal.id}
                 imgURL: {animal.image}
