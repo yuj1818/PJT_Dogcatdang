@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import Select from "react-select";
 import styled, { css } from "styled-components";
 import "./search.css";
-import { dogInput, catInput, regionInput, countryInput } from "../../../components/animalinfo/Input";
+import {
+  dogInput,
+  catInput,
+  regionInput,
+  countryInput,
+} from "../../../components/animalinfo/Input";
 
 interface LostAnimalType {
   animalId: number;
@@ -27,10 +32,6 @@ type LostAnimalSearchProps = {
 };
 
 function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
-  type CountryInput = {
-    [key: number]: string[];
-  };
-
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
   const [region, setRegion] = useState("");
@@ -79,19 +80,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
 
     setFilteredAnimalData(filteredData);
   };
-
-  // const ListStyle = styled.div<{ $itemsPerRow: number }>`
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   justify-content: flex-start;
-
-  //   div {
-  //     flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-  //     display: flex;
-  //     align-items: center;
-  //     flex-direction: column;
-  //   }
-  // `;
 
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
@@ -148,8 +136,8 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 border: "1px solid #d5967b",
                 padding: "8px",
                 borderRadius: "10px",
-                width: "250px",
-                height: "70px",
+                width: "220px",
+                height: "60px",
               }),
             }}
           />

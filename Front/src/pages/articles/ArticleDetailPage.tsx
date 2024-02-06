@@ -11,12 +11,15 @@ import { LoadingOrError } from "./LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Design";
-import { useUserInfo } from "../../util/hooks";
-import { useState } from "react";
+import { getUserInfo } from "../../util/uitl";
+import { useEffect, useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
+import CommentList from "../../components/articles/comments/CommentList";
+import CommentForm from "../../components/articles/comments/CommentForm";
 
 const ArticleDetail: React.FC = () => {
-  const { boardId } = useParams();
+  const params = useParams();
+  const { boardId } = params;
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface,
@@ -31,8 +34,14 @@ const ArticleDetail: React.FC = () => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-  const { id } = useUserInfo();
-  const [modificationMode, setModificationMod] = useState(false);
+  const { id } = getUserInfo();
+  const [modificationMode, setModificationMod] = useState(
+    params["*"] === "edit"
+  );
+
+  useEffect(() => {
+    setModificationMod(params["*"] === "edit");
+  }, [params["*"]]);
 
   const {
     mutate,
@@ -43,7 +52,7 @@ const ArticleDetail: React.FC = () => {
     onSuccess: () => {
       // Invalidate the query and navigate on successful delete
       queryClient.invalidateQueries({ queryKey: ["articleList"] });
-      navigate("/articles");
+      navigate("/articles/1");
     },
     onError: (error) => {
       console.log(error);
@@ -62,6 +71,7 @@ const ArticleDetail: React.FC = () => {
   }
 
   const handleModificaion = () => {
+    navigate("edit");
     setModificationMod(true);
   };
 
@@ -78,7 +88,11 @@ const ArticleDetail: React.FC = () => {
     if (!modificationMode) {
       content = (
         <>
-          <ArticleContent title={data.title} content={data.content} />
+          <ArticleContent
+            title={data.title}
+            content={data.content}
+            nickname={data.userName}
+          />
           <Button onClick={handleDelte}>삭제하기</Button>
           {id === data.userId && (
             <Button onClick={handleModificaion}>수정하기</Button>
@@ -90,7 +104,13 @@ const ArticleDetail: React.FC = () => {
     }
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      {content}
+      <CommentList boardId={boardId!} />
+      <CommentForm boardId={boardId!} edit={false} />
+    </>
+  );
 };
 
 export default ArticleDetail;

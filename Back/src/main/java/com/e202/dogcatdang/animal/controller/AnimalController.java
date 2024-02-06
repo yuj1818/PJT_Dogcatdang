@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
-import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
-import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.animal.service.AnimalLikeService;
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.User;
-import com.e202.dogcatdang.user.Service.CustomUserDetailsService;
 import com.e202.dogcatdang.user.Service.UserProfileService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -44,9 +40,6 @@ public class AnimalController {
 	private final AnimalService animalService;
 	private final AnimalLikeService animalLikeService;
 	private final UserProfileService userService;
-
-
-
 
 	// 동물 정보 등록
 	@PostMapping("")

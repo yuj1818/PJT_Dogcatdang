@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
-interface LostAnimal {
+export interface LostAnimal {
   lostAnimalId: number;
   animalType: string;
   breed: string;
@@ -44,7 +44,7 @@ function LostAnimalCard(props: LostAnimalCardProps) {
       <div onClick={gotoDetailPage}>
         <h4>이름 : {props.animals.name}</h4>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
-        <p>품종 : {props.animals.breed}</p>
+        <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
 
         {/* <p>실종 지역 : {props.animals.lostLocation}</p> */}
         <p>성별 : {props.animals.gender}</p>

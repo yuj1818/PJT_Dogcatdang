@@ -3,6 +3,7 @@ import ReactModal from "react-modal";
 import { Button } from "../common/Design";
 import tw from "tailwind-styled-components";
 import ArticleContent from "./ArticleContent";
+import { getUserInfo } from "../../util/uitl";
 
 const ButtonLayout = tw.div`
 absolute bottom-1 left-1/2 transform -translate-x-1/2
@@ -34,6 +35,7 @@ const Preview: React.FC<articlePreviewModal> = ({
   title,
   content,
 }) => {
+  const { nickname } = getUserInfo();
   return (
     <ReactModal
       isOpen={modalIsOpen}
@@ -43,6 +45,7 @@ const Preview: React.FC<articlePreviewModal> = ({
       <ArticleContent
         title={title}
         content={DOMPurify.sanitize(String(content))}
+        nickname={nickname}
       />
       <ButtonLayout>
         <Button className="object-cover" onClick={closeModal}>

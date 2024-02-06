@@ -10,6 +10,7 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
 
 public interface AnimalService {
 	ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto, String token) throws IOException;
@@ -21,6 +22,8 @@ public interface AnimalService {
 	Animal update(Long animalId, RequestAnimalDto requestAnimalDto) throws IOException;
 
 	Animal getAnimalById(Long animalId);
+
+	List<ResponseStreamingAnimalDto> findAnimals(Long userId);
 
 	// List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto);
 }

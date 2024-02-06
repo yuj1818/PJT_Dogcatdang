@@ -20,7 +20,9 @@ export interface RegistrationData {
 
 export const search = (data: RegistrationData) => {
   console.log(data);
-  return API.get("/api/animals")
+  return API.get("/api/animals", {
+    method: "GET",
+  })
     .then((res) => {
       // console.log("Response:", res);
       return res;

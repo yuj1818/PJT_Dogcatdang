@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { regist } from "../../../util/SaveAPI";
 import { Cookies } from "react-cookie";
-import { dogInput, catInput, regionInput, countryInput } from "../../../components/animalinfo/Input";
+import {
+  dogInput,
+  catInput,
+  regionInput,
+  countryInput,
+} from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
 
 function AnimalFormPage() {
@@ -10,6 +15,7 @@ function AnimalFormPage() {
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
+  const [ code, setCode ] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
@@ -24,7 +30,6 @@ function AnimalFormPage() {
   const [rescueDate, setRescueDate] = useState("");
   const [isNeuter, setIsNeuter] = useState(false);
   const [feature, setFeature] = useState("");
-
 
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
@@ -52,10 +57,11 @@ function AnimalFormPage() {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-    // console.log(token);
+    console.log(token);
 
     const data = {
       animalType: animalType,
+      code: code,
       breed: breed,
       age: age,
       weight: weight,
@@ -76,7 +82,7 @@ function AnimalFormPage() {
     navigate("/save-animals");
   };
 
-  const [selectedImage, setSelectedImage] = useState<null | string>(null);;
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -94,30 +100,37 @@ function AnimalFormPage() {
 
   return (
     <>
-      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>보호 동물 등록</h1>
+      <h1 style={{ fontSize: "2em", fontWeight: "bold" }}>보호 동물 등록</h1>
       <hr />
       <div className="flex justify-center h-screen gap-5">
         <RegistForm onSubmit={handleRegistration}>
           <div className="flex">
-            <div className="flex"
+            <div
+              className="flex"
               style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
+                flexDirection: "column",
+                justifyContent: "center",
                 // marginBottom:'20px'
-              }}>
+              }}
+            >
               <div>
-                <label>
-                  이미지
-                </label>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
+                <label>이미지</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
               </div>
               {selectedImage && (
-                <div style={{ marginTop: '1.5rem' }}>
-                  <img src={selectedImage} alt="미리보기"
+                <div style={{ marginTop: "1.5rem" }}>
+                  <img
+                    src={selectedImage}
+                    alt="미리보기"
                     style={{
                       maxWidth: "100%",
-                      maxHeight: "300px"
-                    }} />
+                      maxHeight: "300px",
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -144,24 +157,43 @@ function AnimalFormPage() {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item" htmlFor="breed">품종</label>
-                  <select className="input" name="breed" id="breed" value={breed} onChange={handleBreed}>
+                  <label className="item" htmlFor="breed">
+                    품종
+                  </label>
+                  <select
+                    className="input"
+                    name="breed"
+                    id="breed"
+                    value={breed}
+                    onChange={handleBreed}
+                  >
                     <option value="" disabled hidden>
                       품종 선택
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                        <option key={index} value={type.replace(/\s/g, "_")}>
-                          {type}
-                        </option>
-                      ))
+                          <option key={index} value={type.replace(/\s/g, "_")}>
+                            {type}
+                          </option>
+                        ))
                       : catInput.map((type, index) => (
-                        <option key={index} value={type.replace(/\s/g, "_")}>
-                          {type}
-                        </option>
-                      ))}
+                          <option key={index} value={type.replace(/\s/g, "_")}>
+                            {type}
+                          </option>
+                        ))}
                   </select>
                 </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="box">
+                  <label className="item">동물코드</label>
+                  <input
+                    className="input"
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                  />
+                </div> 
               </div>
 
               <div>
@@ -187,10 +219,12 @@ function AnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    성별
-                  </label>
-                  <select className="input" value={gender} onChange={(e) => setGender(e.target.value)}>
+                  <label className="item">성별</label>
+                  <select
+                    className="input"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
                     <option value="" disabled hidden>
                       성별 선택
                     </option>
@@ -202,9 +236,7 @@ function AnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    추정나이
-                  </label>
+                  <label className="item">추정나이</label>
                   <input
                     className="input"
                     type="text"
@@ -216,9 +248,7 @@ function AnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    체중
-                  </label>
+                  <label className="item">체중</label>
                   <input
                     className="input"
                     type="text"
@@ -230,7 +260,9 @@ function AnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item" htmlFor="지역">지역</label>
+                  <label className="item" htmlFor="지역">
+                    지역
+                  </label>
                   <select
                     className="input"
                     name="region"
@@ -271,28 +303,31 @@ function AnimalFormPage() {
                   </select>
                 </div>
                 <div className="box">
-
-                  <label className="item">
-                    상세주소
-                  </label>
-                  <input className="input" type="text" value={detailInfo} onChange={handleDetail} />
+                  <label className="item">상세주소</label>
+                  <input
+                    className="input"
+                    type="text"
+                    value={detailInfo}
+                    onChange={handleDetail}
+                  />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    발견일자
-                  </label>
-                  <input className="input" type="date" value={rescueDate} onChange={handleRescueDate} />
+                  <label className="item">발견일자</label>
+                  <input
+                    className="input"
+                    type="date"
+                    value={rescueDate}
+                    onChange={handleRescueDate}
+                  />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    중성화 여부
-                  </label>
+                  <label className="item">중성화 여부</label>
                   <input
                     type="checkbox"
                     name="isNeutered"
@@ -303,10 +338,12 @@ function AnimalFormPage() {
               </div>
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    보호현황
-                  </label>
-                  <select className="input" value={state} onChange={(e) => setState(e.target.value)}>
+                  <label className="item">보호현황</label>
+                  <select
+                    className="input"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  >
                     <option value="" disabled hidden>
                       보호현황
                     </option>
@@ -318,12 +355,9 @@ function AnimalFormPage() {
                 </div>
               </div>
 
-
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    특징
-                  </label>
+                  <label className="item">특징</label>
                   <input
                     className="input"
                     type="text"
@@ -332,7 +366,6 @@ function AnimalFormPage() {
                   />
                 </div>
               </div>
-
             </div>
           </div>
           <div className="custom-button">

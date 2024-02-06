@@ -4,6 +4,7 @@ import tw from "tailwind-styled-components";
 interface ArticleContentInterface {
   title: string;
   content: string;
+  nickname: string;
 }
 
 const Container = tw.div`
@@ -16,7 +17,7 @@ const Title = tw.h2`
 
 const LineStyle = styled.div`
   position: relative;
-  height: 100px;
+  height: 1rem;
 
   div {
     position: absolute;
@@ -25,9 +26,14 @@ const LineStyle = styled.div`
     width: 100%;
     height: 2px;
     background-color: black;
-    transform-origin: 0 50%;
-    transform: translateY(-50%);
   }
+`;
+
+const Nickname = styled.span``;
+
+const HeadContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Line = () => {
@@ -41,10 +47,14 @@ const Line = () => {
 const ArticleContent: React.FC<ArticleContentInterface> = ({
   title,
   content,
+  nickname,
 }) => {
   return (
     <Container>
-      <Title>{title}</Title>
+      <HeadContainer>
+        <Title>{title}</Title>
+        <Nickname>{nickname}</Nickname>
+      </HeadContainer>
       <Line />
       <div
         className="leading-relaxed"
