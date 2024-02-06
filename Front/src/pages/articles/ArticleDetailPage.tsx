@@ -14,8 +14,8 @@ import { Button } from "../../components/common/Design";
 import { getUserInfo } from "../../util/uitl";
 import { useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
-import CommentList from "../../components/articles/CommentList";
-import CommentForm from "../../components/articles/CommentForm";
+import CommentList from "../../components/articles/comments/CommentList";
+import CommentForm from "../../components/articles/comments/CommentForm";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
@@ -80,7 +80,11 @@ const ArticleDetail: React.FC = () => {
     if (!modificationMode) {
       content = (
         <>
-          <ArticleContent title={data.title} content={data.content} />
+          <ArticleContent
+            title={data.title}
+            content={data.content}
+            nickname={data.userName}
+          />
           <Button onClick={handleDelte}>삭제하기</Button>
           {id === data.userId && (
             <Button onClick={handleModificaion}>수정하기</Button>

@@ -12,7 +12,8 @@ export interface ArticleInterface {
 export interface CommentInterface {
   commentId: number;
   content: string;
-  createDate: string;
+  createTime: string;
   nikname: string;
   parentId: null;
+  nickname: string;
 }

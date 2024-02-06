@@ -1,7 +1,9 @@
-import { CommentInterface } from "../components/articles/ArticleInterface";
-import API from "./axios";
-// import { imageHandler } from "./imageHandler";
+import { Cookies } from "react-cookie";
 import { AxiosError } from "axios";
+import API from "./axios";
+
+import { CommentInterface } from "../components/articles/ArticleInterface";
+// import { imageHandler } from "./imageHandler";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
@@ -38,6 +40,8 @@ export const requestArticle = async ({
   data,
   method,
 }: FetchEventsOptions) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
   const URL = "api/boards";
   let response;
   let proccesedData;
@@ -65,27 +69,57 @@ export const requestArticle = async ({
       // 리스트 조회 + 상세 조회
       response = await API.get(boardId ? `${URL}/${boardId}` : URL, {
         signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
       });
     } else if (method === "POST") {
       if (data?.isSaved) {
         // 등록
-        response = await API.post(URL, proccesedData, { signal });
+        response = await API.post(URL, proccesedData, {
+          signal,
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+        });
       } else {
         response = await API.post(`${URL}/temporary`, proccesedData, {
           signal,
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
         });
       }
     } else if (method === "PUT") {
       // 수정
       response = await API.put(URL + "/" + data!.boardId!, proccesedData, {
         signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
       });
     } else if (method === "DELETE") {
       // 삭제
-      response = await API.delete(`${URL}/${boardId}`, { signal });
+      response = await API.delete(`${URL}/${boardId}`, {
+        signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
     } else if (method === "temporaryDelete") {
       // 임시저장 삭제
-      response = await API.delete(`${URL}/${boardId}/temporary`, { signal });
+      response = await API.delete(`${URL}/${boardId}/temporary`, {
+        signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
     } else {
       throw Error("잘못된 접근입니다.");
     }
@@ -99,43 +133,63 @@ export const requestArticle = async ({
 
 export interface CommentRequstInterface {
   signal?: AbortSignal;
-  data?: commentData;
+  content?: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
   boardId: string;
   commentId?: number;
 }
 
-interface commentData {
-  content: string;
-  commentId?: number;
-}
-
 export const requestComment = async ({
-  data,
+  content,
   method,
   boardId,
   commentId,
   signal,
 }: CommentRequstInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
   const URL = `api/${boardId}/comments`;
   let response;
 
   try {
     if (method === "GET") {
-      response = await API.get(URL, { signal });
+      response = await API.get(URL, {
+        signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
     } else if (method === "POST") {
-      const requestbody = { ...data, boardId };
-      response = await API.post(URL, requestbody, { signal });
+      const requestbody = { content, boardId };
+      response = await API.post(URL, requestbody, {
+        signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
     } else if (method === "PUT") {
+      console.log(commentId);
       if (!commentId) {
         console.error("commentId 필요");
         return;
       }
-      const requestbody = { content: data, boardId, commentId };
-      response = await API.put(URL + "/" + boardId, requestbody, { signal });
-    } else if (method === "DELETE") {
-      response = await API.delete(URL + "/" + boardId + "/" + commentId, {
+      const requestbody = { content: content, boardId, commentId };
+      response = await API.put(URL + "/" + boardId, requestbody, {
         signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      });
+    } else if (method === "DELETE") {
+      response = await API.delete(URL + "/" + commentId, {
+        signal,
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
       });
     } else {
       throw Error("잘못된 접근입니다.");

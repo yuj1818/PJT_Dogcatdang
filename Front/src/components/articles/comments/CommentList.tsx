@@ -1,9 +1,14 @@
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
-import { requestComment } from "../../util/articleAPI";
-import { retryFn } from "../../util/tanstackQuery";
-import { LoadingOrError } from "../../pages/articles/LoadingOrError";
-import { CommentInterface } from "./ArticleInterface";
+import { requestComment } from "../../../util/articleAPI";
+import { retryFn } from "../../../util/tanstackQuery";
+import { LoadingOrError } from "../../../pages/articles/LoadingOrError";
+import { CommentInterface } from "../ArticleInterface";
 import Comment from "./Comment";
+import tw from "tailwind-styled-components";
+
+const Container = tw.div`
+ mt-2 p-4 bg-white rounded-md shadow-md
+`;
 
 interface Props {
   boardId: string;
@@ -27,9 +32,8 @@ const CommentList = ({ boardId }: Props) => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-
   return (
-    <>
+    <Container>
       {(isLoading || isError) && (
         <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       )}
@@ -37,7 +41,7 @@ const CommentList = ({ boardId }: Props) => {
         data.map((comment: CommentInterface) => (
           <Comment key={comment.commentId} boardId={boardId} {...comment} />
         ))}
-    </>
+    </Container>
   );
 };
 
