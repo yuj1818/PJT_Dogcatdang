@@ -59,9 +59,9 @@ public class AnimalLikeServiceImpl implements AnimalLikeService{
 		return animalLikeRepository.existsByAnimalAndUser(animal, user);
 	}
 
-	// 현재 user가 like 한 동물 목록 확인
-	public List<Animal> getLikedAnimalsByUser(User user) {
-		List<AnimalLike> animalLikes = animalLikeRepository.findByUser(user);
-		return animalLikes.stream().map(AnimalLike::getAnimal).collect(Collectors.toList());
-	}
+	// // 현재 user가 like 한 동물 목록 확인
+	// public List<Animal> getLikedAnimalsByUser(User user) {
+	// 	List<AnimalLike> animalLikes = animalLikeRepository.findByUser(user);
+	// 	return animalLikes.stream().map(AnimalLike::getAnimal).collect(Collectors.toList());
+	// }
 }
