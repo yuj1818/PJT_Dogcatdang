@@ -2,10 +2,10 @@ package com.e202.dogcatdang.comment.dto;
 
 import java.time.LocalDateTime;
 
-import com.e202.dogcatdang.board.dto.ResponseImageDto;
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.BoardImage;
 import com.e202.dogcatdang.db.entity.Comment;
+import com.e202.dogcatdang.db.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,24 +17,34 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ResponseCommentDto {
+public class RequestCommentDto {
 	private Long commentId;
 	private String content;
-	private LocalDateTime createTime;
-	private String nickname;
-	private Long parentId;
-
-	//a
+	private Long boardId;
+	private long parentId;
 	@Builder
-	public ResponseCommentDto(Comment comment) {
+	public RequestCommentDto(Comment comment) {
 		this.commentId = comment.getCommentId();
 		this.content = comment.getContent();
-		this.createTime = comment.getCreateTime();
-		this.nickname = comment.getUser().getNickname();
+		this.boardId = comment.getBoard().getBoardId();
 		if (comment.getParent() != null) {
 			this.parentId = comment.getParent().getCommentId();
-
 		}
 	}
 
+	/*
+	 * 작성된 댓글의 내용을 Entity로 변환
+	 * user와 board entity를 가지고 와서 함께 저장
+	 * 생성 시간은 LocalDatetime.now()로 현재 시간으로 저장
+	 * */
+	public Comment toEntity(User user, Board board, Comment Parent) {
+
+		return Comment.builder()
+			.content(content)
+			.user(user)
+			.board(board)
+			.createTime(LocalDateTime.now())
+			.parent(Parent)
+			.build();
+	}
 }
