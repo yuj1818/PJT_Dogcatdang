@@ -28,6 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
 	private final UserRepository userRepository;
 	private final AnimalService animalService;
 
+	// 일반 회원의 예약 등록
 	@Transactional
 	@Override
 	public void register(Long animalId, Long userId, RequestReservationDto reservationDto) {
@@ -40,12 +41,14 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationRepository.save(reservation);
 	}
 
+	// 일반 회원의 예약 취소(삭제)
 	@Transactional
 	@Override
 	public void delete(long reservationId) {
 		reservationRepository.deleteById(reservationId);
 	}
 
+	// 일반 회원의 본인 예약 상세 조회
 	@Transactional
 	@Override
 	public ResponseReservationDto finbReservationById(long reservationId) {
@@ -57,6 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 	}
 
+	// 일반 회원의 본인 예약 전체 조회
 	@Transactional
 	@Override
 	public List<ResponseReservationDto> findAllReservationsById(Long userId) {
