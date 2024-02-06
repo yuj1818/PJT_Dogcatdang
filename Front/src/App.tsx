@@ -10,9 +10,7 @@ const AnimalListPage = lazy(
   () => import("./pages/animals/save_animals/AnimalListPage")
 );
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
-import ArticleListPage, {
-  RedirectLoader,
-} from "./pages/articles/ArticleListPage";
+import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetailPage from "./pages/articles/ArticleDetailPage";
 import NavBar from "./components/common/NavBar";
 import SignUpPage from "./pages/users/SignUpPage.tsx";
@@ -31,6 +29,7 @@ const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage";
 import AnimalMatching from "./pages/animals/matching_animals/AnimalMatching.tsx";
+import styled from "styled-components";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -114,14 +113,13 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
-        loader: RedirectLoader,
         children: [
           {
             path: ":page",
             element: <ArticleListPage />,
           },
           {
-            path: "detail/:boardId",
+            path: "detail/:boardId/*",
             element: <ArticleDetailPage />,
           },
           {

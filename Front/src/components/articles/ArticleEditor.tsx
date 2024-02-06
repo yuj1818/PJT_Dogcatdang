@@ -86,7 +86,11 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
     mutationFn: requestArticle,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articleList"] });
-      navigate("/articles");
+      if (boardId) {
+        navigate(`/articles/detail/${boardId}`);
+      } else {
+        navigate("/articles/1");
+      }
     },
   });
 

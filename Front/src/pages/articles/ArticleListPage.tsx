@@ -99,10 +99,3 @@ export default ArticleListPage;
 //     </>
 //   );
 // };
-
-export const RedirectLoader: LoaderFunction = ({ params }) => {
-  if (!params.page) {
-    return redirect("/articles/1");
-  }
-  return null;
-};

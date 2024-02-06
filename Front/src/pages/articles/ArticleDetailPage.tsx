@@ -12,13 +12,14 @@ import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Design";
 import { getUserInfo } from "../../util/uitl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
 import CommentList from "../../components/articles/comments/CommentList";
 import CommentForm from "../../components/articles/comments/CommentForm";
 
 const ArticleDetail: React.FC = () => {
-  const { boardId } = useParams();
+  const params = useParams();
+  const { boardId } = params;
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface,
@@ -34,7 +35,13 @@ const ArticleDetail: React.FC = () => {
     retry: retryFn,
   });
   const { id } = getUserInfo();
-  const [modificationMode, setModificationMod] = useState(false);
+  const [modificationMode, setModificationMod] = useState(
+    params["*"] === "edit"
+  );
+
+  useEffect(() => {
+    setModificationMod(params["*"] === "edit");
+  }, [params["*"]]);
 
   const {
     mutate,
@@ -45,7 +52,7 @@ const ArticleDetail: React.FC = () => {
     onSuccess: () => {
       // Invalidate the query and navigate on successful delete
       queryClient.invalidateQueries({ queryKey: ["articleList"] });
-      navigate("/articles");
+      navigate("/articles/1");
     },
     onError: (error) => {
       console.log(error);
@@ -64,6 +71,7 @@ const ArticleDetail: React.FC = () => {
   }
 
   const handleModificaion = () => {
+    navigate("edit");
     setModificationMod(true);
   };
 
