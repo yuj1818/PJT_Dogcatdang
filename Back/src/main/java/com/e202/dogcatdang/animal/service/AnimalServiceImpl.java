@@ -147,7 +147,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
 			request.getRescueDate(), rescueLocation, request.getIsNeuter(), request.getGender(),
-			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
+			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl(), request.getCode());
 
 		return animal;
 	}
