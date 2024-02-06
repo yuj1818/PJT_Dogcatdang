@@ -87,15 +87,15 @@ function AnimalDetailPage() {
               {animalDetail?.gender}
             </div>
             <div className="flex">
-              <p>체중: </p>
+              <p>체중 : </p>
               {animalDetail?.weight}
             </div>
             <div className="flex">
-              <p>실종일자 : </p>
-              {animalDetail?.rescueDate ? "Y" : "N"}
+              <p>발견일자 : </p>
+              {animalDetail?.rescueDate}
             </div>
             <div className="flex">
-              <p>실종위치 : </p>
+              <p>발견위치 : </p>
               {animalDetail?.rescueLocation}
             </div>
             <div
