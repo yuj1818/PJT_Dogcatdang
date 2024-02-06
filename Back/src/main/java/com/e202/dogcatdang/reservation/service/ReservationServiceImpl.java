@@ -1,6 +1,8 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,5 +53,17 @@ public class ReservationServiceImpl implements ReservationService {
 		} else {
 			return null;
 		}
+	}
+
+	@Transactional
+	@Override
+	public List<ResponseReservationDto> findAllReservationsById(Long userId) {
+		// 현재 로그인한 사용자의 모든 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findAllByUserId(userId);
+
+		// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
+		return reservations.stream()
+			.map(ResponseReservationDto::new)
+			.collect(Collectors.toList());
 	}
 }

@@ -1,6 +1,7 @@
 package com.e202.dogcatdang.reservation.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,13 @@ public class ReservationController {
 	}
 
 	// 일반 회원이 본인의 예약 정보 전체 조회
+	@GetMapping("")
+	public ResponseEntity<List<ResponseReservationDto>> findAllReservations(@RequestHeader("Authorization") String token) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		List<ResponseReservationDto> reservations = reservationService.findAllReservationsById(loginUserId);
+		return ResponseEntity.ok(reservations);
+	}
 
 	// 일반 회원이 본인의 특정한 예약 1개 정보 상세 조회
 	@GetMapping("/{reservationId}")

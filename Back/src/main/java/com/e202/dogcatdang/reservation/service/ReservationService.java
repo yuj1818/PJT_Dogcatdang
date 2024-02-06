@@ -1,5 +1,7 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
@@ -13,4 +15,6 @@ public interface ReservationService {
 	void delete(long reservationId);
 
 	ResponseReservationDto finbReservationById(long reservationId);
+
+	List<ResponseReservationDto> findAllReservationsById(Long loginUserId);
 }
