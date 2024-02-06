@@ -26,7 +26,6 @@ const SignInForm = styled.form`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  width: 40%;
 
   input {
     font-size: 22px;
@@ -95,41 +94,43 @@ function SignInPage() {
           <img src="/src/assets/auth-image.png" alt="" />
         </div>
         <Line />
-        <SignInForm onSubmit={onSubmit}>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="username">ID</label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              onChange={handleUserName}
-              />
+        <div className="flex flex-col items-center gap-9 w-2/5">
+          <SignInForm onSubmit={onSubmit}>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="username">ID</label>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                onChange={handleUserName}
+                />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="password">PW</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                onChange={handlePassword}
+                />
+            </div>
+            { errMsg &&  <p className="err-msg">{errMsg}</p> }
+            <div className="menus flex gap-2 items-center justify-center">
+              <NavLink to="/signup" className="menu">회원가입</NavLink>
+              |
+              <span className="menu">ID 찾기</span>
+              |
+              <span className="menu">Password 찾기</span>
+            </div>
+            <div className="button-box flex justify-center">
+              <Button>로그인</Button>
+            </div>
+          </SignInForm>
+          <div className="flex gap-2">
+            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${import.meta.env.VITE_NAVER_CLIENT_ID}&scope=name%20email&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${import.meta.env.VITE_NAVER_REDIRECT_URI}`}><img src="/src/assets/naverLoginBtn.png" alt="" /></a>
+            <a href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&scope=profile%20email&state=${import.meta.env.VITE_GOOGLE_STATE}&redirect_uri=${import.meta.env.VITE_GOOGLE_REDIRECT_URI}`}><img src="/src/assets/googleLoginBtn.png" alt="" /></a>
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password">PW</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              onChange={handlePassword}
-              />
-          </div>
-          { errMsg &&  <p className="err-msg">{errMsg}</p> }
-          <div className="menus flex gap-2 items-center justify-center">
-            <NavLink to="/signup" className="menu">회원가입</NavLink>
-            |
-            <span className="menu">ID 찾기</span>
-            |
-            <span className="menu">Password 찾기</span>
-          </div>
-          <div className="button-box flex justify-center">
-            <Button>로그인</Button>
-          </div>
-          <div className="flex gap-2 mt-1">
-            <img src="/src/assets/naverLoginBtn.png" alt="" />
-            <img src="/src/assets/googleLoginBtn.png" alt="" />
-          </div>
-        </SignInForm>
+        </div>
       </FormBox>
     </div>
   );
