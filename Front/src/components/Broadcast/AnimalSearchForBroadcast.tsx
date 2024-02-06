@@ -12,7 +12,9 @@ const Container = styled.div`
   background-color: white;
   width: 100%;
   border: #121212 solid 1px;
+  z-index: 9999;
 `;
+
 const List = styled.div<CardInterface>`
   margin-top: 3px;
   cursor: pointer;

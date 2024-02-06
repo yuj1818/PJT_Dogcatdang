@@ -9,9 +9,9 @@ import axios, { AxiosError } from "axios";
 import BroadcastForm from "../../components/Broadcast/BroadcastForm";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
-import { useUserInfo } from "../../util/hooks";
+import { getUserInfo } from "../../util/uitl";
 
-const OPENVIDU_SERVER_URL = `http://localhost:4443`;
+const OPENVIDU_SERVER_URL = "http://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 const BroadCastPage = () => {
@@ -22,17 +22,14 @@ const BroadCastPage = () => {
   );
   const [publisher, setPublisher] = useState<Publisher | undefined>(undefined);
   const [OV, setOV] = useState<OpenVidu | undefined>(undefined);
-  const { id, nickname } = useUserInfo();
 
   const leaveSession = useCallback(() => {
     if (session) {
-      session
-        .signal({
-          data: "닉네임님이 퇴장하였습니다.",
-          to: [],
-          type: "signal:my-chat",
-        })
-        .then(() => {});
+      session.signal({
+        data: "닉네임님이 퇴장하였습니다.",
+        to: [],
+        type: "signal:my-chat",
+      });
 
       session.disconnect();
       setOV(undefined);
@@ -61,9 +58,10 @@ const BroadCastPage = () => {
 
   const getToken = useCallback(async (): Promise<string> => {
     const createToken = async (sessionIds: string): Promise<string> => {
+      const data = JSON.stringify({});
       const response = await axios.post(
         `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-        {},
+        data,
         {
           headers: {
             Authorization: `Basic ${btoa(
@@ -100,13 +98,15 @@ const BroadCastPage = () => {
         if (errorResponse?.status === 409) {
           return sessionIds;
         }
-
         return "";
       }
     };
 
     try {
       const newSessionId = await createSession(sessionId);
+      if (!newSessionId) {
+        throw Error;
+      }
       const token = await createToken(newSessionId);
       return token;
     } catch (error) {
@@ -114,8 +114,8 @@ const BroadCastPage = () => {
     }
   }, [sessionId]);
 
-  const sessionIdChangeHandler = useCallback((event: string) => {
-    setSessionId(event);
+  const sessionIdChangeHandler = useCallback((id: string) => {
+    setSessionId(id);
   }, []);
 
   useEffect(() => {
@@ -130,10 +130,11 @@ const BroadCastPage = () => {
     });
 
     const isOrg = org();
+    const { id, username } = getUserInfo();
 
     if (isOrg) {
       getToken().then((token) => {
-        session.connect(token, { nickname, id }).then(() => {
+        session.connect(token, { nickname: username, id }).then(() => {
           if (OV) {
             const newPublisher = OV.initPublisher(undefined, {
               audioSource: undefined,
@@ -150,9 +151,9 @@ const BroadCastPage = () => {
       });
     } else {
       getToken().then((token) => {
-        session.connect(token, { nickname, id }).then(() => {
+        session.connect(token, { nickname: username, id }).then(() => {
           session.signal({
-            data: `${nickname}님이 입장하였습니다.`,
+            data: `${username}님이 입장하였습니다.`,
             to: [],
             type: "signal:chat",
           });
@@ -174,6 +175,7 @@ const BroadCastPage = () => {
           <BroadcastForm
             sessionIdChangeHandler={sessionIdChangeHandler}
             joinSession={joinSession}
+            sessionId={sessionId}
           />
         )}
       </>

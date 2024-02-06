@@ -37,3 +37,8 @@ export const Contour = styled.hr<ContourProps>`
   margin: ${(props) => `${props.$marginTop || "0"}rem`} 0
     ${(props) => `${props.$marginBottom || "0"}rem`} 0;
 `;
+
+export const FormContainer = styled.form`
+  display: flex;
+  align-items: center;
+`;
