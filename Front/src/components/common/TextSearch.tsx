@@ -35,11 +35,18 @@ const FormMolecule = styled.div`
 
 const TextSearch: React.FC<{
   searchRef: React.RefObject<HTMLInputElement>;
-  onSubmit: (event: FormEvent) => void;
+  onSubmit: (event: string) => void;
   text?: string;
 }> = ({ searchRef, onSubmit, text }) => {
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    const searchWord = searchRef.current?.value.trim();
+    if (searchWord !== undefined) {
+      onSubmit(searchWord);
+    }
+  };
   return (
-    <FormLayout onSubmit={onSubmit}>
+    <FormLayout onSubmit={handleSubmit}>
       <p>{text}</p>
       <FormMolecule>
         <label

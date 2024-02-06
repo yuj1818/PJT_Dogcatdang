@@ -286,7 +286,7 @@ const NavBar = () => {
 
   return (
     <>
-      <Color>
+      <Color style={{ marginBottom: "2rem" }}>
         <NavBarContainer>
           <StyledNavLink to="/">
             <img src={logo} alt="메인화면으로" className="w-40 min-w-40" />

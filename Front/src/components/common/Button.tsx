@@ -6,6 +6,7 @@ interface buttonInterface {
   fontSize?: number;
   height?: number;
   $marginTop?: number;
+  $padding?: string;
 }
 
 export const Button = styled.button<buttonInterface>`
@@ -14,7 +15,7 @@ export const Button = styled.button<buttonInterface>`
   background-color: ${(props) => props.background || "#FF8331"};
   color: ${(props) => props.color || "white"};
   font-size: ${(props) => `${props.fontSize}rem` || "16px"};
-  padding: 0.2rem 0.4rem;
+  padding: ${(props) => `${props.$padding}` || "0.2rem 0.4rem"};
   white-space: nowrap;
   height: ${(props) => `${props.height}rem` || "auto"};
   margin-top: ${(props) => `${props.$marginTop}rem` || "auto"};

@@ -9,6 +9,7 @@ import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
 import { Link, useParams } from "react-router-dom";
+import { Button } from "../../components/common/Button";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -36,8 +37,7 @@ const ArticleListPage: React.FC = () => {
     setCurrentPage(newPage);
   };
 
-  const submitHandler = (event: FormEvent) => {
-    event.preventDefault();
+  const submitHandler = (event: string) => {
     console.log(searchRef.current!.value);
   };
 
@@ -45,7 +45,10 @@ const ArticleListPage: React.FC = () => {
 
   if (isError || isLoading) {
     content = (
-      <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
+      <>
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
+        <Link to="/articles/new">글쓰기</Link>
+      </>
     );
   }
 
@@ -61,6 +64,11 @@ const ArticleListPage: React.FC = () => {
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
         />
+        <div className="flex">
+          <Link to="/articles/new" className="ml-auto">
+            <Button $padding="0.3rem 0.5rem">글쓰기</Button>
+          </Link>
+        </div>
         <Pagination
           totalItems={data!.length}
           itemsPerPage={itemsPerPage}
@@ -72,7 +80,6 @@ const ArticleListPage: React.FC = () => {
 
   return (
     <>
-      <Link to="/articles/new">글쓰기</Link>
       <div>
         <TextSearch
           searchRef={searchRef}
