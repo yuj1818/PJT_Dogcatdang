@@ -28,9 +28,11 @@ interface AnimalCardProps {
 const Card = styled.div`
   border: 1px solid #ccc;
   padding: 10px;
-  margin: 10px;
+  margin: 7px 0px 15px 0px;
   display: flex;
   flex-direction: row;
+  
+  width: 23%;
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {

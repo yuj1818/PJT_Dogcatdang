@@ -28,6 +28,8 @@ public class Comment {
 	private Long commentId;
 
 	private String content;
+
+
 	private LocalDateTime createTime;
 
 	@ManyToOne
@@ -42,5 +44,9 @@ public class Comment {
 	@ManyToOne(optional = true)
 	@JoinColumn(name="parent_id")
 	private Comment parent;
+
+	public void updateContent(String content){
+		this.content = content;
+	}
 
 }
