@@ -9,6 +9,7 @@ const CardStyle = styled.div<{ $itemsPerRow: number }>`
   flex-direction: column;
   padding: 0.3rem;
   margin: 0.2rem;
+  text-align: center;
 `;
 
 const ArticleCard: React.FC<{
