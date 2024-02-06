@@ -2,5 +2,10 @@ import styled from "styled-components";
 
 export const Title = styled.p`
   font-size: 2rem;
-  font-weight: bold;
+  font-family: 'Pretendard-600';
 `;
+
+export const Bold = styled.p`
+  font-size: 1rem;
+  font-family: 'Pretendard-600'
+`

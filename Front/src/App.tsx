@@ -32,6 +32,7 @@ import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
 import VisitManagementPage from "./pages/users/VisitManagementPage.tsx";
 import AnimalMatching from "./pages/animals/matching_animals/AnimalMatching.tsx";
+import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -78,7 +79,16 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/:animalID",
-        element: <AnimalDetailPage />,
+        children: [
+          {
+            index: true,
+            element: <AnimalDetailPage />
+          },
+          {
+            path: "visit",
+            element: <VisitReservationPage />
+          }
+        ]
       },
       {
         path: "registration",
