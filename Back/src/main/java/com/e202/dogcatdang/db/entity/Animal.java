@@ -78,7 +78,7 @@ public class Animal {
 	private String imgUrl;
 
 	// 기관이 동물을 식별하기 위해 사용하는 코드
-	@Column(name = "code")
+	@Column(name = "code", nullable = false)
 	private String code;
 
 	// 1명의 user는 여러 개의 animal을 등록할 수 있다
