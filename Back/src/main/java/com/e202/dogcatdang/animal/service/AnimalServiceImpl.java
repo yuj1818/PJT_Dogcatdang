@@ -118,9 +118,11 @@ public class AnimalServiceImpl implements AnimalService {
 
 		List<ResponseAnimalListDto> animalDtoList = pagedProtectedAnimals.stream()
 			.map(animal -> {
+				int adoptionApplicantCount = getAdoptions(animal);
 				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user);
 				return ResponseAnimalListDto.builder()
 				.animal(animal)
+					.adoptionApplicantCount(adoptionApplicantCount)
 					.isLike(isLike)
 				.build();
 			})
