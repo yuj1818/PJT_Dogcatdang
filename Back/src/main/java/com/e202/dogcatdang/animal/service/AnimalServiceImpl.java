@@ -2,6 +2,7 @@ package com.e202.dogcatdang.animal.service;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,6 +29,7 @@ import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.AnimalLikeRepository;
 import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
+import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
 import jakarta.persistence.criteria.Predicate;
@@ -147,7 +149,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 		animal.update(request.getAnimalType(), request.getBreed(), request.getAge(), request.getWeight(),
 			request.getRescueDate(), rescueLocation, request.getIsNeuter(), request.getGender(),
-			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
+			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl(), request.getCode());
 
 		return animal;
 	}
@@ -159,6 +161,26 @@ public class AnimalServiceImpl implements AnimalService {
 		Optional<Animal> optionalAnimal = animalRepository.findById(animalId);
 		return optionalAnimal.orElse(null); // null을 반환하거나 원하는 예외를 던질 수 있습니다.
 	}
+
+	// 방송 개설 단계에서 방송에 출연할 동물들을 고르기 위한 동물 리스트를 반환하는 기능
+	// streamingcontroller에서 사용됨
+	@Override
+	public List<ResponseStreamingAnimalDto> findAnimals(Long userId) {
+		List<Animal> animals = animalRepository.findByUserIdAndState(userId, Animal.State.보호중);
+		List<ResponseStreamingAnimalDto> animalDtoList = new ArrayList<>();
+
+		for (Animal animal : animals) {
+			ResponseStreamingAnimalDto streamingAnimalDto = ResponseStreamingAnimalDto.builder()
+				.animal(animal)
+				.build();
+
+			animalDtoList.add(streamingAnimalDto);
+		}
+
+		return animalDtoList;
+	}
+
+
 
 
 	// 복수 조건의 검색

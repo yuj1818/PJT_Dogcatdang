@@ -41,9 +41,6 @@ public class AnimalController {
 	private final AnimalLikeService animalLikeService;
 	private final UserProfileService userService;
 
-
-
-
 	// 동물 정보 등록
 	@PostMapping("")
 	public ResponseEntity<ResponseSavedIdDto> registerAnimal(@RequestHeader("Authorization") String token, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {

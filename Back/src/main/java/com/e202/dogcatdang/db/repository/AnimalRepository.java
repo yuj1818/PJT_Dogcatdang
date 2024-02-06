@@ -24,9 +24,12 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 	@Query("SELECT a FROM Animal a JOIN FETCH a.user")
 	Page<Animal> findAllWithUser(PageRequest pageRequest);
 
-	// state 상태에 따른 animal 정보 가져오기
+	// state 상태가 일치하는 모든 animal 정보 가져오기
 	@Query("SELECT a FROM Animal a WHERE a.state = :state")
 	List<Animal> findByState(Animal.State state);
 
-	List<Animal> findAll(Specification<Animal> specification);
+	// userId와 state가 일치하는 모든 animal 정보 가져오기
+	List<Animal> findByUserIdAndState(Long userId, Animal.State state);
+
+	// List<Animal> findAll(Specification<Animal> specification);
 }
