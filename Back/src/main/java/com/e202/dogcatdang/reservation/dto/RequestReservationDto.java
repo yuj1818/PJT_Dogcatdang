@@ -20,6 +20,7 @@ public class RequestReservationDto {
 	private String name;
 	private String phone;
 	private int visitor;
+	private Reservation.State state;
 
 	// DTO -> Entity (DB 저장용)
 	public Reservation toEntity(User user, Animal animal) {
@@ -28,9 +29,10 @@ public class RequestReservationDto {
 			.name(name)
 			.phone(phone)
 			.visitor(visitor)
-			.state(Reservation.State.대기중)
+			.state(state)
 			.user(user)
 			.animal(animal)
 			.build();
 	}
+
 }

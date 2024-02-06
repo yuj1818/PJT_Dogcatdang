@@ -64,17 +64,11 @@ public class Reservation {
 		대기중, 승인, 거절
 	}
 
-	// // DTO -> Entity
-	// @Builder
-	// public ResponseReservationDto toDto(String shelterName, LocalDateTime reservationTime, State state,
-	// 	String imgUrl, String breed, Integer age) {
-	// 	return ResponseReservationDto.builder()
-	// 		.shelterName(this.animal.getUser().getNickname())
-	// 		.reservationTime(this.reservationTime)
-	// 		.state(this.state)
-	// 		.imgUrl(this.animal.getImgUrl())
-	// 		.breed(this.animal.getBreed())
-	// 		.age(this.animal.getAge())
-	// 		.build();
-	// }
+	// 보호 현황 상태 수정(갱신)
+	public void updateState(State state) {
+		if (state != null) {
+			this.state = state;
+		}
+	}
+
 }

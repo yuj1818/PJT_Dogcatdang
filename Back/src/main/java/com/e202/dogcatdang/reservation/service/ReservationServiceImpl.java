@@ -2,6 +2,7 @@ package com.e202.dogcatdang.reservation.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 import lombok.AllArgsConstructor;
 
@@ -66,4 +68,27 @@ public class ReservationServiceImpl implements ReservationService {
 			.map(ResponseReservationDto::new)
 			.collect(Collectors.toList());
 	}
+
+	@Transactional
+	@Override
+	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
+		RequestReservationDto reservationDto) {
+		// 특정 예약 조회 - shelterId와 reservationId 이용
+		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+
+		if (reservation != null && reservation.getAnimal().getUser().getId().equals(shelterId)) {
+			// state update method - Entity 내에 생성
+			reservation.updateState(reservationDto.getState());
+
+			// 업데이트된 예약을 저장
+			reservationRepository.save(reservation);
+
+			return new ResponseUpdatedStateDto(reservation.getState());
+
+		} else { // 예약을 찾지 못하거나 권한이 없음
+			return null;
+		}
+
+	}
+
 }

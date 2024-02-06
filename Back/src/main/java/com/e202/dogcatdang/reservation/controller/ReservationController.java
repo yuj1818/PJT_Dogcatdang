@@ -41,7 +41,7 @@ public class ReservationController {
 	// 일반 회원의 방문 예약 신청 - create
 	@PostMapping("/{animalId}")
 	public ResponseEntity<String> createReservation(@PathVariable long animalId, @RequestHeader("Authorization") String token, @RequestBody
-		RequestReservationDto reservationDto) throws IOException {
+		RequestReservationDto reservationDto) {
 		// 토큰에서 사용자 아이디(pk) 추출
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 		// 사용자 역할(role) 확인
@@ -113,4 +113,7 @@ public class ReservationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+
+
 }
