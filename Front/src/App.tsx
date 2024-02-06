@@ -30,6 +30,7 @@ import { LoadingIndicator } from "./components/common/Icons";
 const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage";
+import AnimalMatching from "./pages/animals/matching_animals/AnimalMatching.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <MainPage />,
+      },
+      {
+        path: "test",
+        element: <AnimalMatching />,
       },
       {
         path: "save-animals",

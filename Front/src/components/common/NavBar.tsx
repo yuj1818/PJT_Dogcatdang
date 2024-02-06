@@ -85,8 +85,8 @@ const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
   const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
-  const [nickname, setNickname] = useState('');
-  const [userId, setUserId] = useState('');
+  const [nickname, setNickname] = useState("");
+  const [userId, setUserId] = useState("");
 
   const handleNoti = () => {
     setIsNoti((prev) => !prev);
@@ -112,7 +112,7 @@ const NavBar = () => {
         <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/notice">공지사항</StyledNavLink>
+        <StyledNavLink to="/test">멍BTI</StyledNavLink>
       </li>
     </>
   );
@@ -160,7 +160,7 @@ const NavBar = () => {
       </StyledUl>
       <StyledUl>
         <li>
-          <StyledNavLink to="/notice">공지사항</StyledNavLink>
+          <StyledNavLink to="/test">멍BTI</StyledNavLink>
         </li>
       </StyledUl>
     </>
@@ -250,7 +250,7 @@ const NavBar = () => {
           </ul>
           <ul>
             <li>
-              <StyledNavLink to="/notice">공지사항</StyledNavLink>
+              <StyledNavLink to="/test">멍BTI</StyledNavLink>
             </li>
           </ul>
           {commonNavContent}
@@ -261,10 +261,10 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '');
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "");
     setNickname(() => userInfo.nickname);
-    setUserId(() => userInfo.id)
-  }, [])
+    setUserId(() => userInfo.id);
+  }, []);
 
   return (
     <>
@@ -275,9 +275,7 @@ const NavBar = () => {
         <FlexColumnContainer>
           <StyledUl style={{ gap: "20px", marginRight: "20px" }}>
             {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-            <StyledNavLink to={`profile/${userId}`}>
-              {nickname}님
-            </StyledNavLink>
+            <StyledNavLink to={`profile/${userId}`}>{nickname}님</StyledNavLink>
             <StyledNavLink to="notification">
               <Bell isNoti={isNoti} />
             </StyledNavLink>

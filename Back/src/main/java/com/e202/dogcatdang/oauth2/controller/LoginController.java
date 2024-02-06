@@ -30,16 +30,17 @@ public class LoginController {
         this.customOAuth2UserService = customOAuth2UserService;
     }
 
-    @GetMapping("/oauth2/oLogin")
-    public String loginPage(){
-        System.out.println("되는겨?");
-        return "oLogin";
+    @PostMapping("/oauth2/oLogin")
+    public void loginPage(){
+        System.out.println("oLogin되는겨?");
+
     }
 
-    @PostMapping("/oauth2/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserData userData) {
-        //customOAuth2UserService.loadUser(userData); // 서비스 클래스에서 사용자 생성 작업을 처리
-        return ResponseEntity.ok("User registered successfully!");
+
+    @PostMapping("/oauth2/join")
+    public void joinPage(){
+        System.out.println("join되는겨?");
+
     }
 //
 //    @PostMapping("/oauth2/join")

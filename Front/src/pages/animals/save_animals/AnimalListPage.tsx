@@ -6,8 +6,11 @@ import SaveAnimalCard from "../../../components/animalinfo/savedanimals/SaveAnim
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Cookies } from "react-cookie";
 
 function AnimalListPage() {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(1);
@@ -37,7 +40,7 @@ function AnimalListPage() {
     isOrg: boolean;
   }
   const ListStyle = styled.div<{ $itemsPerRow: number }>`
-  width:100%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -50,24 +53,30 @@ div {
 } */
   `;
   const Space = styled.div`
-  flex-grow: 1;
-`;
+    flex-grow: 1;
+  `;
 
   const StyledButton = styled.button<StyledButtonProps>`
-  display: ${({ isOrg }) => isOrg ? "block" : "none"};
-  background-color: black;
-  color: white;
-  border-radius: 10px;
-  width: 10%;
-  height: 35px;
-`;
+    display: ${({ isOrg }) => (isOrg ? "block" : "none")};
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    width: 10%;
+    height: 35px;
+  `;
   useEffect(() => {
     const searchData = async () => {
       try {
-        const res = await API.get(`/api/animals?page=${currentPage}`);
-        console.log("실행:", res.data.animalDtoList);
-        console.log("실행:", res.data.currentPage);
-        console.log("실행:", res.data.totalElements);
+        const headers = {
+          Authorization: token,
+        };
+
+        const res = await API.get(`/api/animals?page=${currentPage}`, {
+          headers,
+        });
+        // console.log("실행:", res.data.animalDtoList);
+        // console.log("실행:", res.data.currentPage);
+        // console.log("실행:", res.data.totalElements);
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);
         setTotalElements(res.data.totalElements);
@@ -76,7 +85,7 @@ div {
       }
     };
     searchData();
-  }, [currentPage]);
+  }, [currentPage, token]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
