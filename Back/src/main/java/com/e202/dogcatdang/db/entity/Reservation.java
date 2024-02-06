@@ -1,6 +1,9 @@
 package com.e202.dogcatdang.db.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,4 +63,18 @@ public class Reservation {
 	public enum State {
 		대기중, 승인, 거절
 	}
+
+	// // DTO -> Entity
+	// @Builder
+	// public ResponseReservationDto toDto(String shelterName, LocalDateTime reservationTime, State state,
+	// 	String imgUrl, String breed, Integer age) {
+	// 	return ResponseReservationDto.builder()
+	// 		.shelterName(this.animal.getUser().getNickname())
+	// 		.reservationTime(this.reservationTime)
+	// 		.state(this.state)
+	// 		.imgUrl(this.animal.getImgUrl())
+	// 		.breed(this.animal.getBreed())
+	// 		.age(this.animal.getAge())
+	// 		.build();
+	// }
 }

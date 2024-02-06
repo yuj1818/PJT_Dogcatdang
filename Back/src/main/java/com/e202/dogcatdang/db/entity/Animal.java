@@ -84,7 +84,7 @@ public class Animal {
 
 	// 1개의 animal은 여러 개의 visit reservation을 가질 수 있다
 	@OneToMany(mappedBy = "animal")
-	private List<Reservation> reservations;
+	private List<Reservation> adoptionApplicantCount;
 
 	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
 	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
@@ -121,6 +121,8 @@ public class Animal {
 		this.user = user;
 	}
 
+	// 엔티티 정보 수정(갱신)
+	// null이 아닌 값만 수정한다
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
 		State state, String imgName, String imgUrl) {

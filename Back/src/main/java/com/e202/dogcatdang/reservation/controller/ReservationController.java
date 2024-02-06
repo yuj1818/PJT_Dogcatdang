@@ -2,9 +2,11 @@ package com.e202.dogcatdang.reservation.controller;
 
 import java.io.IOException;
 
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
 import com.e202.dogcatdang.reservation.service.ReservationService;
 import com.e202.dogcatdang.user.Service.UserProfileService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
@@ -65,18 +68,41 @@ public class ReservationController {
 				return ResponseEntity.badRequest().body("예약 번호가 유효하지 않습니다.");
 			}
 
-			// 현재 로그인한 유저와 예약 내역의 유저 아이디 일치 검증
+			// 예약 정보 조회
+
 			Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+			// 예약 정보가 존재하지 않거나 현재 로그인한 유저와 예약 내역의 유저 아이디가 일치하지 않는다면 권한 없음
 			if (reservation == null || !reservation.getUser().getId().equals(loginUserId)) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한이 없습니다.");
 			}
-			// 예약 번호가 유효하고, 현재 유저가 신청한 예약이 맞다면 삭제 실행 
+			// 예약 번호가 유효하고, 현재 유저가 신청한 예약이 맞다면 삭제 실행
 			reservationService.delete(reservationId);
 			return ResponseEntity.ok("예약이 삭제되었습니다.");
 		} catch (HttpClientErrorException.NotFound e) { // 예약이 없는 예외 발생
 			return ResponseEntity.notFound().build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	// 일반 회원이 본인의 예약 정보 전체 조회
+
+	// 일반 회원이 본인의 특정한 예약 1개 정보 상세 조회
+	@GetMapping("/{reservationId}")
+	public ResponseEntity<ResponseReservationDto> findReservation(@PathVariable long reservationId, @RequestHeader("Authorization") String token) {
+
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		// 예약 정보 조회
+		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+		// 예약 정보가 존재하고, 예약한 유저와 로그인한 유저가 일치한다면
+		if (reservation != null && reservation.getUser().getId().equals(loginUserId)) {
+
+			ResponseReservationDto reservationDto = reservationService.finbReservationById(reservationId);
+			return ResponseEntity.ok(reservationDto);
+		} else {
+			return ResponseEntity.notFound().build();
 		}
 	}
 }
