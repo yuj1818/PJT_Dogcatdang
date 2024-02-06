@@ -1,21 +1,32 @@
-import { isOrg as org } from "./SignInPage";
+// import { isOrg as org } from "./SignInPage";
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const StyledCalendar = styled.div<{ $isTodaySelected: boolean }>`
+const Schedule = styled.div`
+  height: inherit;
+  width: 50%;
+  background-color: white;
+  border-radius: 10px;
+`
+
+const StyledCalendar = styled.div`
+  display: flex;
+  gap: 2rem;
+
   .react-calendar {
+    width: 40%;
     border: none;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, .1);
     border-radius: 10px;
     padding: 1.5rem;
 
     .react-calendar__tile--now {
-      background: ${props => props.$isTodaySelected ? '#FF8331' : 'white'};
-      color: ${props => props.$isTodaySelected ? 'white' : 'black'};
+      background: white;
+      color: black;
     }
 
     .react-calendar__month-view__days__day--neighboringMonth {
@@ -46,18 +57,19 @@ type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 function VisitManagementPage() {
-  const isOrg = org();
+  // const isOrg = org();
   const [selectedDate, setSelectedDate] = useState<Value>(new Date());
 
-  useEffect(() => {
-    console.log(selectedDate)
-    console.log(moment())
-  }, [selectedDate])
+  const handleDateChange = (value: Value) => {
+    setSelectedDate(value);
+  }
 
   return (
-    <StyledCalendar $isTodaySelected={false}>
+    <StyledCalendar>
+      <Schedule />
       <Calendar 
-        onChange={setSelectedDate}
+        onChange={handleDateChange}
+        value={selectedDate}
         formatDay={( _, date) => moment(date).format("D")}
       />
     </StyledCalendar>
