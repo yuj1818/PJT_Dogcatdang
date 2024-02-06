@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import LikeButton from "../../../components/animalinfo/LikeButton";
 import { useEffect, useState } from "react";
 
-interface Animal {
+export interface SaveAnimal {
   animalId: number;
+  code: string;
   animalType: string;
   breed: string;
   age: string;
@@ -25,14 +26,16 @@ interface Animal {
 }
 
 interface AnimalCardProps {
-  animals: Animal;
+  animals: SaveAnimal;
 }
 
 const Card = styled.div`
   background-color: rgb(255, 255, 255);
   border: 1px solid #ccc;
   padding: 5px 20px 15px 20px;
-  /* margin: 7px 0px 15px auto; */
+  position: relative;
+  box-shadow: 2px 2px 2px rgb(45,45,45, 0.4);
+  border-radius: 10px;
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
@@ -49,6 +52,13 @@ function SaveAnimalCard(props: AnimalCardProps) {
   const handleToggleLike = () => {
     setLiked(!liked);
   };
+
+  function getShortenedLocation(fullLocation: string) {
+    const parts = fullLocation.split(' ');
+  
+    const shortenedLocation = parts.slice(0, 2).join(' ');
+    return shortenedLocation;
+  }
 
   return (
     <Card>
@@ -74,18 +84,18 @@ function SaveAnimalCard(props: AnimalCardProps) {
             </p>
 
             <p style={{ fontSize: "10px", opacity: "0.7" }}>
-              지역 : {props.animals.rescueLocation}
+              지역 : {getShortenedLocation(props.animals.rescueLocation)}
             </p>
           </div>
-          <div style={{ marginTop: "30px" }}>
+        </div>
+      </div>
+          <div style={{ position: 'absolute', right: '8%', bottom: '4%' }}>
             <LikeButton
               animalId={props.animals.animalId}
               isActive={liked}
               onToggle={handleToggleLike}
             ></LikeButton>
           </div>
-        </div>
-      </div>
     </Card>
   );
 }

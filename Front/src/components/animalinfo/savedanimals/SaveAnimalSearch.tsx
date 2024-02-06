@@ -90,7 +90,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   };
 
   const handleSearch = () => {
-    // const combinedLocation = region + " " + country;
 
     // 필터링을 위한 로직을 추가
     const filteredData = animals.filter((animal) => {

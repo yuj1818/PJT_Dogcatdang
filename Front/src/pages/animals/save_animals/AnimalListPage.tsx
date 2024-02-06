@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
 import Pagination from "../../../components/common/Pagination";
 import API from "../../../util/axios";
-import SaveAnimalCard from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
+import SaveAnimalCard, { SaveAnimal } from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -45,26 +45,6 @@ function AnimalListPage() {
   const itemsPerPage = 8;
   const navigate = useNavigate();
   const isOrg = org();
-  interface RegistrationData {
-    animalId: number;
-    animalType: string;
-    breed: string;
-    age: string;
-    weight: string;
-    rescueDate: string;
-    selectedCity: string;
-    selectedDistrict: string;
-    detailInfo: string;
-    isNeuter: boolean;
-    gender: string;
-    feature: string;
-    state: string;
-    imgName: string;
-    imgUrl: string;
-    userNickname: string;
-    like: boolean;
-    rescueLocation: string;
-  }
 
   useEffect(() => {
     const searchData = async () => {
@@ -106,7 +86,7 @@ function AnimalListPage() {
       </div>
 
       <ListStyle $itemsPerRow={10}>
-        {animalData.map((animal: RegistrationData) => (
+        {animalData.map((animal: SaveAnimal) => (
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
       </ListStyle>
