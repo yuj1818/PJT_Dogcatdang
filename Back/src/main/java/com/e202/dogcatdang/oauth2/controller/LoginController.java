@@ -1,9 +1,11 @@
 package com.e202.dogcatdang.oauth2.controller;
 
+import com.amazonaws.services.ec2.model.UserData;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.oauth2.dto.CustomOAuth2User;
 import com.e202.dogcatdang.oauth2.dto.OauthUserDTO;
+import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +24,22 @@ public class LoginController {
 
     private final UserRepository userRepository;
 
-    public LoginController(UserRepository userRepository) {
+    private final CustomOAuth2UserService customOAuth2UserService;
+    public LoginController(UserRepository userRepository, CustomOAuth2UserService customOAuth2UserService) {
         this.userRepository = userRepository;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     @GetMapping("/oauth2/oLogin")
     public String loginPage(){
         System.out.println("되는겨?");
         return "oLogin";
+    }
+
+    @PostMapping("/oauth2/register")
+    public ResponseEntity<String> registerUser(@RequestBody UserData userData) {
+        //customOAuth2UserService.loadUser(userData); // 서비스 클래스에서 사용자 생성 작업을 처리
+        return ResponseEntity.ok("User registered successfully!");
     }
 //
 //    @PostMapping("/oauth2/join")
@@ -42,26 +52,26 @@ public class LoginController {
 //        userRepository.save(user);
 //        return ResponseEntity.ok("User registered successfully!");
 //    }
-    @GetMapping("/login/oauth2/code/google")
-    public Map<String, Object> showAdditionalInfoForm(OAuth2AuthenticationToken authentication) {
-        System.out.println("getmapping 인데 안도냐?");
-        Map<String, Object> userInfo = new HashMap<>();
-        OAuth2User principal = authentication.getPrincipal();
-
-        if (principal instanceof CustomOAuth2User) {
-            CustomOAuth2User customOAuth2User = (CustomOAuth2User) principal;
-            String key = customOAuth2User.getUserName();
-            userInfo.put("key", key);
-        } else {
-            userInfo.put("key", principal.getAttribute("key"));
-        }
-
-//        userInfo.put("email", principal.getAttribute("email"));
-        // 다른 필요한 사용자 정보도 추가할 수 있습니다.
-        System.out.println(userInfo.toString());
-        System.out.println("@GetMapping 잘 도냐");
-        return userInfo;
-    }
+//    @GetMapping("/login/oauth2/code/google")
+//    public Map<String, Object> showAdditionalInfoForm(OAuth2AuthenticationToken authentication) {
+//        System.out.println("getmapping 인데 안도냐?");
+//        Map<String, Object> userInfo = new HashMap<>();
+//        OAuth2User principal = authentication.getPrincipal();
+//
+//        if (principal instanceof CustomOAuth2User) {
+//            CustomOAuth2User customOAuth2User = (CustomOAuth2User) principal;
+//            String key = customOAuth2User.getUserName();
+//            userInfo.put("key", key);
+//        } else {
+//            userInfo.put("key", principal.getAttribute("key"));
+//        }
+//
+////        userInfo.put("email", principal.getAttribute("email"));
+//        // 다른 필요한 사용자 정보도 추가할 수 있습니다.
+//        System.out.println(userInfo.toString());
+//        System.out.println("@GetMapping 잘 도냐");
+//        return userInfo;
+//    }
 
 //    @GetMapping("/login/oauth2/code/google")
 //    @ResponseBody

@@ -2,6 +2,7 @@ package com.e202.dogcatdang.oauth2.service;
 
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
+import com.e202.dogcatdang.exception.CustomOAuth2AuthenticationException;
 import com.e202.dogcatdang.oauth2.dto.CustomOAuth2User;
 import com.e202.dogcatdang.oauth2.dto.GoogleResponse;
 import com.e202.dogcatdang.oauth2.dto.NaverResponse;
@@ -13,8 +14,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 
 @Service
@@ -52,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         else{
-            //? 뭐지
+            //? 구글 네이버 외 다른 provider 처리하는곳
             return null;
         }
 
@@ -73,7 +72,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if(existData == null){
             //회원가입 하러가
             System.out.println("회원가입 하러가");
-
+            throw new CustomOAuth2AuthenticationException("User not found.");
 ////            System.out.println("null 일때");
 ////            User user = new User();
 ////            user.setUsername(username);
