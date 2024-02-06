@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
@@ -37,7 +37,7 @@ const ArticleListPage: React.FC = () => {
     setCurrentPage(newPage);
   };
 
-  const submitHandler = (event: string) => {
+  const submitHandler = () => {
     console.log(searchRef.current!.value);
   };
 
