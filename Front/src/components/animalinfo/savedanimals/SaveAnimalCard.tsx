@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "../../../components/animalinfo/LikeButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Animal {
   animalId: number;
@@ -20,6 +20,8 @@ interface Animal {
   imgName: string;
   imgUrl: string;
   userNickname: string;
+  like: boolean;
+  rescueLocation: string;
 }
 
 interface AnimalCardProps {
@@ -27,48 +29,62 @@ interface AnimalCardProps {
 }
 
 const Card = styled.div`
+  background-color: rgb(255, 255, 255);
   border: 1px solid #ccc;
-  padding: 10px;
-  margin: 7px 0px 15px 0px;
-  width: 22%;
+  padding: 5px 20px 15px 20px;
+  /* margin: 7px 0px 15px auto; */
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(props.animals.like);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLiked(props.animals.like);
+  }, [props.animals.like]);
 
   const gotoDetailPage = () => {
     navigate(`/save-animals/${props.animals.animalId}`);
   };
   const handleToggleLike = () => {
-    // if(!currentUser) {
-    //   return
-    // }
-    // try {
-    //   let request;
-    //   if(hasLike) {
-    //     request = () => API.delete(`api/`)
-    //   }
-    // }
     setLiked(!liked);
   };
 
   return (
     <Card>
       <div onClick={gotoDetailPage}>
-        {/* <h4>보호 기관 : {props.animals.shelterName}</h4> */}
+        <div style={{ fontSize: "10px" }}>
+          보호 기관 : {props.animals.userNickname}
+        </div>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
-        <h4>품종 : {props.animals.breed.replace(/_/g, " ")}</h4>
-        <p>성별 : {props.animals.gender}</p>
-        <p>보호기관 : {props.animals.userNickname}</p>
-        <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
-      </div>
-      <div style={{ display: "flex", justifyContent: "end" }}>
-        <LikeButton
-          animalId={props.animals.animalId}
-          isActive={liked}
-          onToggle={handleToggleLike}
-        ></LikeButton>
+        <img
+          src="src/assets/dog.jpg"
+          alt="rkdkdwl"
+          style={{ border: "1px solid #ccc" }}
+        ></img>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto" }}>
+          <div>
+            <div>
+              <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
+              <strong>{props.animals.age}살 </strong>
+            </div>
+            <p style={{ fontSize: "13px" }}>
+              {props.animals.gender} |{" "}
+              {props.animals.isNeuter ? "중성화 완료" : "중성화 알 수 없음"}
+            </p>
+
+            <p style={{ fontSize: "10px", opacity: "0.7" }}>
+              지역 : {props.animals.rescueLocation}
+            </p>
+          </div>
+          <div style={{ marginTop: "30px" }}>
+            <LikeButton
+              animalId={props.animals.animalId}
+              isActive={liked}
+              onToggle={handleToggleLike}
+            ></LikeButton>
+          </div>
+        </div>
       </div>
     </Card>
   );

@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 const ResultBox = styled.div`
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(45,45,45);
+  border: 1px solid rgb(45, 45, 45);
   border-radius: 15px;
   padding: 2rem;
-`
+`;
 
 const Rowdiv = styled.div`
   display: flex;
   align-items: center;
   gap: 3px;
-`
+`;
 
 const StyledButton = styled.button`
   background-color: #ff8331;
@@ -48,11 +48,11 @@ const StyledResetButton = styled.button`
   font-size: 20px;
   width: 180px;
   height: 70px;
-  background-color: #FF8331;
+  background-color: #ff8331;
 `;
 
 const StyledAnimalsButton = styled.button`
-  background-color: #FF8331;
+  background-color: #ff8331;
   color: white;
   border-radius: 15px;
   font-size: 20px;
@@ -62,9 +62,8 @@ const StyledAnimalsButton = styled.button`
   padding-bottom: 13px;
   padding-left: 16px;
   padding-right: 16px;
-  padding-top: 19px
+  padding-top: 19px;
 `;
-
 
 const DetailBox = styled.div`
   background-color: rgb(45, 45, 45, 0.1);
@@ -76,15 +75,13 @@ const DetailBox = styled.div`
 
 const Detaillists = styled.div`
   margin-bottom: 1rem;
-`
-
+`;
 
 const RefreshImg = styled.img`
   width: 38px;
   height: 39px;
   margin-right: 1rem;
-`
-
+`;
 
 function AnimalMatching() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -480,14 +477,14 @@ function AnimalMatching() {
     if (currentQuestion < questions.length) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // calculateResult();
+      calculateResult(totalScore + score);
     }
   };
 
   const calculateResult = (e: number) => {
     let resultItem = null;
 
-    for (const item of result) {
+    for (let item of result) {
       const [start, end] = item.score_range;
       if (e >= start && e <= end) {
         resultItem = item;
@@ -509,11 +506,10 @@ function AnimalMatching() {
     setShowResult(false);
     setResultImgSrc(null);
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const gotoAnimals = () => {
-    navigate("/save-animals")
-  }
-
+    navigate("/save-animals");
+  };
 
   return (
     <>
@@ -529,7 +525,6 @@ function AnimalMatching() {
               height: "50%",
               display: "block",
               margin: "auto",
-
             }}
           />
 
@@ -545,10 +540,10 @@ function AnimalMatching() {
             </StyledAnimalsButton>
 
             <StyledResetButton onClick={resetQuiz}>
-                <Rowdiv>
+              <Rowdiv>
                 <RefreshImg src="src/assets/refresh.png" alt="refresh" />
-                 다시하기
-                </Rowdiv>
+                다시하기
+              </Rowdiv>
             </StyledResetButton>
           </StyledContainer>
         </ResultBox>

@@ -149,8 +149,8 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 border: "1px solid #d5967b",
                 padding: "8px",
                 borderRadius: "10px",
-                width: "250px",
-                height: "70px",
+                width: "220px",
+                height: "60px",
               }),
             }}
           />
