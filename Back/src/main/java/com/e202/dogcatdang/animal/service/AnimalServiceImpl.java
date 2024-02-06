@@ -1,7 +1,7 @@
 package com.e202.dogcatdang.animal.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,7 +35,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class AnimalServiceImpl implements AnimalService{
+public class AnimalServiceImpl implements AnimalService {
 
 	private JWTUtil jwtUtil;
 
@@ -48,6 +48,7 @@ public class AnimalServiceImpl implements AnimalService{
 		1. Client에게 받은 RequestDto를 Entity로 변환하여 DB에 저장한다.
 		2. animalId 값을 반환한다
 	*/
+	@Transactional
 	@Override
 	public ResponseSavedIdDto save(RequestAnimalDto requestAnimalDto, String token) throws IOException {
 		// JWT 토큰에서 userId 추출
@@ -66,8 +67,8 @@ public class AnimalServiceImpl implements AnimalService{
 		1. DB에 저장된 전체 동물 리스트(entity 저장)를 가져온다.
 		2. DtoList에 가져온 전체 동물 리스트의 값들을 Dto로 변환해 저장한다.
 	*/
-	@Override
 	@Transactional
+	@Override
 	public ResponseAnimalPageDto findAllAnimals(int page, int recordSize, String token) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
@@ -124,8 +125,8 @@ public class AnimalServiceImpl implements AnimalService{
 		1. animalId를 이용하여 DB에서 해당하는 동물 정보(Entity)를 가져온다.
 		2. Entity -> DTO로 바꿔서 반환한다.
 	*/
-	@Override
 	@Transactional
+	@Override
 	public ResponseAnimalDto findById(Long animalId) {
 		Animal animal = animalRepository.findByIdWithUser(animalId)
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
@@ -133,8 +134,8 @@ public class AnimalServiceImpl implements AnimalService{
 	}
 
 	/*특정한 동물 데이터 수정*/
-	@Override
 	@Transactional
+	@Override
 	public Animal update(Long animalId, RequestAnimalDto request) throws IOException {
 		// 특정 동물 데이터 조회
 		Animal animal = animalRepository.findById(animalId)

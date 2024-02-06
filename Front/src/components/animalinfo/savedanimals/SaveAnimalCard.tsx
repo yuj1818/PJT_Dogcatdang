@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import LikeButton from "../../../components/animalinfo/LikeButton";
+import { useState } from "react";
 
 interface Animal {
   animalId: number;
@@ -29,32 +30,27 @@ const Card = styled.div`
   border: 1px solid #ccc;
   padding: 10px;
   margin: 7px 0px 15px 0px;
-  display: flex;
-  flex-direction: row;
-  
-  width: 23%;
+  width: 22%;
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('https://api.example.com/data');
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //     fetchData();
-  //   }, []);
-
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
 
   const gotoDetailPage = () => {
     navigate(`/save-animals/${props.animals.animalId}`);
+  };
+  const handleToggleLike = () => {
+    // if(!currentUser) {
+    //   return
+    // }
+    // try {
+    //   let request;
+    //   if(hasLike) {
+    //     request = () => API.delete(`api/`)
+    //   }
+    // }
+    setLiked(!liked);
   };
 
   return (
@@ -66,6 +62,13 @@ function SaveAnimalCard(props: AnimalCardProps) {
         <p>성별 : {props.animals.gender}</p>
         <p>보호기관 : {props.animals.userNickname}</p>
         <p>중성화 여부 : {props.animals.isNeuter ? "Y" : "N"}</p>
+      </div>
+      <div style={{ display: "flex", justifyContent: "end" }}>
+        <LikeButton
+          animalId={props.animals.animalId}
+          isActive={liked}
+          onToggle={handleToggleLike}
+        ></LikeButton>
       </div>
     </Card>
   );

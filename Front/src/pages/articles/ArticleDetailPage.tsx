@@ -11,9 +11,11 @@ import { LoadingOrError } from "./LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Design";
-import { useUserInfo } from "../../util/hooks";
+import { getUserInfo } from "../../util/uitl";
 import { useState } from "react";
 import ArticleEditor from "../../components/articles/ArticleEditor";
+import CommentList from "../../components/articles/comments/CommentList";
+import CommentForm from "../../components/articles/comments/CommentForm";
 
 const ArticleDetail: React.FC = () => {
   const { boardId } = useParams();
@@ -31,7 +33,7 @@ const ArticleDetail: React.FC = () => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-  const { id } = useUserInfo();
+  const { id } = getUserInfo();
   const [modificationMode, setModificationMod] = useState(false);
 
   const {
@@ -78,7 +80,11 @@ const ArticleDetail: React.FC = () => {
     if (!modificationMode) {
       content = (
         <>
-          <ArticleContent title={data.title} content={data.content} />
+          <ArticleContent
+            title={data.title}
+            content={data.content}
+            nickname={data.userName}
+          />
           <Button onClick={handleDelte}>삭제하기</Button>
           {id === data.userId && (
             <Button onClick={handleModificaion}>수정하기</Button>
@@ -90,7 +96,13 @@ const ArticleDetail: React.FC = () => {
     }
   }
 
-  return <>{content}</>;
+  return (
+    <>
+      {content}
+      <CommentList boardId={boardId!} />
+      <CommentForm boardId={boardId!} edit={false} />
+    </>
+  );
 };
 
 export default ArticleDetail;

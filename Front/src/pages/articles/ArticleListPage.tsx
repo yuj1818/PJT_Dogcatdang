@@ -8,12 +8,13 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
-import { Link } from "react-router-dom";
+import { Link, LoaderFunction, redirect, useParams } from "react-router-dom";
 
 const ArticleListPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const { page } = useParams();
+  const [currentPage, setCurrentPage] = useState(parseInt(page ?? "1"));
+  const itemsPerPage = 12;
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface[],
     Error,
@@ -59,7 +60,6 @@ const ArticleListPage: React.FC = () => {
           data={data}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
-          itemPerRow={4}
         />
         <Pagination
           totalItems={data!.length}
@@ -72,7 +72,7 @@ const ArticleListPage: React.FC = () => {
 
   return (
     <>
-      <Link to="new">글쓰기</Link>
+      <Link to="/articles/new">글쓰기</Link>
       <div>
         <TextSearch
           searchRef={searchRef}
@@ -99,3 +99,10 @@ export default ArticleListPage;
 //     </>
 //   );
 // };
+
+export const RedirectLoader: LoaderFunction = ({ params }) => {
+  if (!params.page) {
+    return redirect("/articles/1");
+  }
+  return null;
+};
