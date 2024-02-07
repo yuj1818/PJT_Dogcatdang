@@ -31,5 +31,5 @@ public interface ReservationService {
 
 	ResponseShelterDto findShelterReservation(long reservationId);
 
-	// List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+	List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }
