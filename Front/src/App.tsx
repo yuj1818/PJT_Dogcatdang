@@ -80,13 +80,13 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AnimalDetailPage />
+            element: <AnimalDetailPage />,
           },
           {
             path: "visit",
-            element: <VisitReservationPage />
-          }
-        ]
+            element: <VisitReservationPage />,
+          },
+        ],
       },
       {
         path: "registration",
@@ -122,17 +122,21 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ProfilePage />
+            element: <ProfilePage />,
           },
           {
             path: "visit",
-            element: <VisitManagementPage />
-          }
-        ]
+            element: <VisitManagementPage />,
+          },
+        ],
       },
       {
         path: "articles/",
         children: [
+          {
+            path: "search/:searchKey",
+            element: <ArticleListPage />,
+          },
           {
             path: ":page",
             element: <ArticleListPage />,

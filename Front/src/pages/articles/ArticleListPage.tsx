@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
@@ -8,14 +8,16 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/common/Button";
 
 const ArticleListPage: React.FC = () => {
-  const searchRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const { searchKey } = useParams();
   const { page } = useParams();
   const [currentPage, setCurrentPage] = useState(parseInt(page ?? "1"));
   const itemsPerPage = 12;
+  const [content, setContent] = useState(<></>);
   const { data, isLoading, isError, error } = useQuery<
     ArticleInterface[],
     Error,
@@ -30,64 +32,80 @@ const ArticleListPage: React.FC = () => {
     },
     staleTime: 5 * 1000,
     retry: retryFn,
-    retryDelay: 100,
+    retryDelay: 300,
   });
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
-  const submitHandler = () => {
-    console.log(searchRef.current!.value);
+  const submitHandler = (searchword: string) => {
+    const searchResult = data!.filter((article) =>
+      article.title.includes(searchword)
+    );
+
+    setContent(
+      <ArticleList
+        data={searchResult}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+      ></ArticleList>
+    );
+
+    navigate(`/articles/search/title=${searchword}`);
   };
 
-  let content;
+  useEffect(() => {
+    if (searchKey) {
+      return;
+    }
+    if (isError || isLoading) {
+      setContent(
+        <>
+          <LoadingOrError
+            isLoading={isLoading}
+            isError={isError}
+            error={error}
+          />
+        </>
+      );
+    }
 
-  if (isError || isLoading) {
-    content = (
-      <>
-        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
-        <Link to="/articles/new">글쓰기</Link>
-      </>
-    );
-  }
+    if (data) {
+      setContent(
+        <>
+          {/* <h2>인기글</h2>
+      <ArticleListStyle $itemsPerRow={5}>
+        <PopularArticles articles={articles?.slice(0, 5)} />
+      </ArticleListStyle> */}
+          <ArticleList
+            data={data}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+          />
+        </>
+      );
+    }
+  }, [data, searchKey]);
 
-  if (data) {
-    content = (
-      <>
-        {/* <h2>인기글</h2>
-    <ArticleListStyle $itemsPerRow={5}>
-      <PopularArticles articles={articles?.slice(0, 5)} />
-    </ArticleListStyle> */}
-        <ArticleList
-          data={data}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-        />
-        <div className="flex">
-          <Link to="/articles/new" className="ml-auto">
-            <Button $padding="0.3rem 0.5rem">글쓰기</Button>
-          </Link>
-        </div>
+  return (
+    <>
+      <div>
+        <TextSearch onSubmit={submitHandler} text="입양 후 이야기" />
+      </div>
+      {content}
+      <div className="flex">
+        <Link to="/articles/new" className="ml-auto">
+          <Button $padding="0.3rem 0.5rem">글쓰기</Button>
+        </Link>
+      </div>
+      {data && (
         <Pagination
           totalItems={data!.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
         />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <div>
-        <TextSearch
-          searchRef={searchRef}
-          onSubmit={submitHandler}
-          text="입양 후 이야기"
-        />
-      </div>
-      {content}
+      )}
     </>
   );
 };

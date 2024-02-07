@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useRef } from "react";
 import styled from "styled-components";
 
 import { SearchGlasses } from "./Icons";
@@ -34,10 +34,10 @@ const FormMolecule = styled.div`
 `;
 
 const TextSearch: React.FC<{
-  searchRef: React.RefObject<HTMLInputElement>;
   onSubmit: (event: string) => void;
   text?: string;
-}> = ({ searchRef, onSubmit, text }) => {
+}> = ({ onSubmit, text }) => {
+  const searchRef = useRef<HTMLInputElement>(null);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const searchWord = searchRef.current?.value.trim();
