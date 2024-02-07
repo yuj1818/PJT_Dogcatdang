@@ -3,7 +3,7 @@
 # database 연동 설정
 spring:
   profiles:
-    active: local
+    active: ${profile}
     include: secret
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
