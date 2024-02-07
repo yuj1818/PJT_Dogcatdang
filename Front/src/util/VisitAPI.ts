@@ -6,7 +6,7 @@ const cookie = new Cookies();
 const token = cookie.get("U_ID");
 
 interface reservationData {
-  reservationTime: string;
+  reservationTime: Date;
   name: string;
   phone: string;
   visitor: number;

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
+import logo from "../../assets/auth-image.png";
 
 const FormBox = styled.div`
   display: flex;
@@ -242,7 +243,7 @@ function SignUpPage() {
       <Title title="회원가입" />
       <FormBox>
         <div className="img-box flex justify-center">
-          <img src="/src/assets/auth-image.png" alt="" />
+          <img src={ logo } alt="" />
         </div>
         <Line />
         <SignUpForm onSubmit={preventSubmit}>
