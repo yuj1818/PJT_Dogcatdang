@@ -54,4 +54,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Animal> animalList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AnimalLike> animalLikes = new ArrayList<>(); // User와 AnimalLike 사이의 1:N 관계
+
+
+
 }

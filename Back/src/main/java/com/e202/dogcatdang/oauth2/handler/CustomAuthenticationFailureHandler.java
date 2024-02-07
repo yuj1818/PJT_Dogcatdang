@@ -9,6 +9,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -21,11 +23,15 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             System.out.println("ExceptionHandler 잘 오니?");
             // metadata를 세션에 저장
             String metadata = ((CustomOAuth2AuthenticationException) exception).getMetadata();
-            request.getSession().setAttribute("OAUTH2_METADATA", metadata);
+            //request.getSession().setAttribute("OAUTH2_METADATA", metadata);
 
-            // 사용자 정의 예외에 따라 프론트엔드의 특정 URL로 리다이렉트
-            // getRedirectStrategy().sendRedirect(request, response, "/signUp?error=notfound");
-            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/signUp");
+            System.out.println("metadata : " + metadata.toString());
+            //URL에 포함될수 있도록 인코딩
+            String encodedMetadata = URLEncoder.encode(metadata, StandardCharsets.UTF_8.toString());
+
+            // 리다이렉션 URL에 메타데이터 쿼리 파라미터 추가
+            String redirectUrl = "http://localhost:5173/signup?oauth=true&metadata=" + encodedMetadata;
+            getRedirectStrategy().sendRedirect(request, response, redirectUrl);
         } else {
             super.onAuthenticationFailure(request, response, exception);
         }

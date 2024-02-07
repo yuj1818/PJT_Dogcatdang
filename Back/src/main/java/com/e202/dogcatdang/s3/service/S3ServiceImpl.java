@@ -2,6 +2,7 @@ package com.e202.dogcatdang.s3.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -33,10 +34,12 @@ public class S3ServiceImpl implements S3Service {
 	// 파일 업로드를 위한 presignedUrl 요청
 	@Override
 	public ResponseS3Dto getPresignedUrlToUpload(String fileName) {
-		// 제한 시간 설정
-		Date expiration = new Date();
-		long expTime = expiration.getTime();
-		expTime += TimeUnit.MINUTES.toMillis(15); // 10분
+		// 현재 시간을 기준으로 15분 후의 시간을 얻습니다.
+		Date expiration = new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(15));
+
+		// 한국 시간대로 변경합니다.
+		TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
+		expiration.setTime(expiration.getTime() + timeZone.getRawOffset());
 
 		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName)
 			.withMethod(HttpMethod.GET)
