@@ -33,7 +33,6 @@ public class RequestAnimalDto {
 	private Gender gender;
 	private String feature;
 	private Animal.State state;
-	private String imgName;
 	private String imgUrl;
 	private String code;
 	private Long userId;
@@ -70,7 +69,6 @@ public class RequestAnimalDto {
 			.gender(gender)
 			.feature(feature)
 			.state(state)
-			.imgName(imgName)
 			.imgUrl(imgUrl)
 			.code(code)
 			.user(user)       // user의 식별자(id)가 animal entity user_id에 들어간다.

@@ -1,4 +1,4 @@
-package com.e202.dogcatdang.s3;
+package com.e202.dogcatdang.s3.service;
 
 import java.io.IOException;
 
