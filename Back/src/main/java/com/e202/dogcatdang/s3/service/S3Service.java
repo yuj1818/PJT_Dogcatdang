@@ -10,11 +10,9 @@ import com.e202.dogcatdang.s3.dto.ResponseS3Dto;
 
 public interface S3Service {
 
-		String uploadFile(MultipartFile multipartFile) throws IOException;
-
-		ResponseEntity<UrlResource> downloadFile(String originalFilename);
-
-		void deleteFile(String originalFilename);
+g		// String uploadFile(MultipartFile multipartFile) throws IOException;
+		// ResponseEntity<UrlResource> downloadFile(String originalFilename);
+		// void deleteFile(String originalFilename);
 
 		ResponseS3Dto getPresignedUrlToUpload(String fileName);
 

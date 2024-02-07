@@ -36,7 +36,7 @@ public class S3ServiceImpl implements S3Service {
 		// 제한 시간 설정
 		Date expiration = new Date();
 		long expTime = expiration.getTime();
-		expTime += TimeUnit.MINUTES.toMillis(10); // 10분
+		expTime += TimeUnit.MINUTES.toMillis(15); // 10분
 
 		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName)
 			.withMethod(HttpMethod.GET)
@@ -46,7 +46,25 @@ public class S3ServiceImpl implements S3Service {
 			.build();
 	}
 
-	// 파일 업로드
+	// 파일 다운로드를 위한 presignedUrl 요청
+	@Override
+	public ResponseS3Dto getPresignedUrlToDownload(String fileName) {
+		Date expiration = new Date();
+		long expTime = expiration.getTime();
+		expTime += TimeUnit.MINUTES.toMillis(15);
+		expiration.setTime(expTime); // 3 Minute
+
+		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName)
+			.withMethod(HttpMethod.PUT)
+			.withExpiration(expiration);
+
+		return ResponseS3Dto.builder()
+			.url(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString())
+			.build();
+	}
+
+
+	// 파일 업로드 - 백에서 파일을 받아 서버에 저장하고 다시 돌려주는 방식
 	// public String uploadFile(MultipartFile multipartFile) throws IOException {
 	// 	// UUID를 사용하여 유니크한 파일명 생성
 	// 	String originalFilename = UUID.randomUUID().toString();
@@ -59,22 +77,7 @@ public class S3ServiceImpl implements S3Service {
 	// 	return amazonS3.getUrl(bucket, originalFilename).toString();
 	// }
 
-	// 파일 다운로드를 위한 presignedUrl 요청
-	@Override
-	public ResponseS3Dto getPresignedUrlToDownload(String fileName) {
-		Date expiration = new Date();
-		long expTime = expiration.getTime();
-		expTime += TimeUnit.MINUTES.toMillis(10);
-		expiration.setTime(expTime); // 3 Minute
 
-		GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, fileName)
-			.withMethod(HttpMethod.PUT)
-			.withExpiration(expiration);
-
-		return ResponseS3Dto.builder()
-			.url(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString())
-			.build();
-	}
 	// 파일 다운로드
 	// public ResponseEntity<UrlResource> downloadFile(String originalFilename) {
 	// 	UrlResource urlResource = new UrlResource(amazonS3.getUrl(bucket, originalFilename));
@@ -87,10 +90,10 @@ public class S3ServiceImpl implements S3Service {
 	//
 	// }
 
-	// 파일 삭제
-	public void deleteFile(String originalFilename)  {
-		amazonS3.deleteObject(bucket, originalFilename);
-	}
+	// // 파일 삭제
+	// public void deleteFile(String originalFilename)  {
+	// 	amazonS3.deleteObject(bucket, originalFilename);
+	// }
 
 
 
