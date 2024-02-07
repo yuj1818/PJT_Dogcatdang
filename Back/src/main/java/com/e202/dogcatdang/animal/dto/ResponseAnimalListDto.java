@@ -30,9 +30,12 @@ public class ResponseAnimalListDto {
 	private Long userId;
 	private String userNickname;
 
+	private int adoptionApplicantCount;
+	private boolean isLike; // 좋아요 여부 확인
+
 	// Entity -> DTO
 	@Builder
-    public ResponseAnimalListDto(Animal animal) {
+    public ResponseAnimalListDto(Animal animal, int adoptionApplicantCount, boolean isLike) {
 		this.animalId = animal.getAnimalId();
 		this.animalType = animal.getAnimalType();
 		this.breed = animal.getBreed();
@@ -47,6 +50,8 @@ public class ResponseAnimalListDto {
 		this.userNickname = animal.getUser().getNickname();
 
 		this.imgName = animal.getImgName();
+		this.adoptionApplicantCount = adoptionApplicantCount;
+		this.isLike = isLike;
 	}
 
 }

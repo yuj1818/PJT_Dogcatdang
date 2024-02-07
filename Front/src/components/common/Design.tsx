@@ -26,6 +26,15 @@ focus:shadow-md
 focus:placeholder:opacity-0
 `;
 
+export const TextArea = tw.textarea`
+h-32 border rounded-md p-2 resize-none block w-full
+w-full mt-2 p-2 border border-gray-300 rounded mb-0
+
+focus:outline-none
+focus:shadow-md
+focus:placeholder:opacity-0
+`;
+
 interface ContourProps {
   $thickness?: number;
   $marginTop?: number;
@@ -36,4 +45,9 @@ export const Contour = styled.hr<ContourProps>`
   border: ${(props) => `${props.$thickness || "1"}px`} solid #232323; /* Set thickness or default to 1px */
   margin: ${(props) => `${props.$marginTop || "0"}rem`} 0
     ${(props) => `${props.$marginBottom || "0"}rem`} 0;
+`;
+
+export const FormContainer = styled.form`
+  display: flex;
+  align-items: center;
 `;

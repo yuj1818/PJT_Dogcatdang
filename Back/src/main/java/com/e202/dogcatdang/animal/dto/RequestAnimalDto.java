@@ -35,7 +35,9 @@ public class RequestAnimalDto {
 	private Animal.State state;
 	private String imgName;
 	private String imgUrl;
+	private String code;
 	private Long userId;
+
 
 	// rescuelocation을 위해 입력받는 위치 정보들
 	private String selectedCity;
@@ -70,6 +72,7 @@ public class RequestAnimalDto {
 			.state(state)
 			.imgName(imgName)
 			.imgUrl(imgUrl)
+			.code(code)
 			.user(user)       // user의 식별자(id)가 animal entity user_id에 들어간다.
 			.build();
 	}

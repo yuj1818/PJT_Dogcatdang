@@ -52,6 +52,18 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		return new ResponseSavedIdDto(savedId);
 	}
 
+	/*	특정한 실종 동물 데이터 상세 조회
+		1. lostAnimalId를 이용하여 DB에서 해당하는 동물 정보(Entity)를 가져온다.
+		2. Entity -> DTO로 바꿔서 반환한다.
+	*/
+
+	@Override
+	public ResponseLostAnimalDto findById(Long lostAnimalId) {
+		LostAnimal lostAnimal = lostAnimalRepository.findByIdWithUser(lostAnimalId)
+			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
+		return new ResponseLostAnimalDto(lostAnimal);
+	}
+
 	/*	전체 동물 데이터(리스트) 조회
 	1. DB에 저장된 전체 동물 리스트(entity 저장)를 가져온다.
 	2. DtoList에 가져온 전체 동물 리스트의 값들을 Dto로 변환해 저장한다.
@@ -96,17 +108,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 			.build();
 	}
 
-	/*	특정한 실종 동물 데이터 상세 조회
-		1. lostAnimalId를 이용하여 DB에서 해당하는 동물 정보(Entity)를 가져온다.
-		2. Entity -> DTO로 바꿔서 반환한다.
-	*/
 
-	@Override
-	public ResponseLostAnimalDto findById(Long lostAnimalId) {
-		LostAnimal lostAnimal = lostAnimalRepository.findByIdWithUser(lostAnimalId)
-			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
-		return new ResponseLostAnimalDto(lostAnimal);
-	}
 
 	/* 특정한 실종 동물 데이터 수정 */
 	@Override
