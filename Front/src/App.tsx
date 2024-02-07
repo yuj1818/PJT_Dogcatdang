@@ -1,5 +1,9 @@
 import { Suspense, lazy } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
@@ -32,6 +36,7 @@ import VisitManagementPage from "./pages/visits/VisitManagementPage.tsx";
 import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
 import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
+import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -54,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignInPage />,
+  },
+  {
+    path: "/about",
+    element: <AboutDogCatDang />,
   },
   {
     path: "/",
@@ -82,7 +91,16 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/:animalID",
-        element: <AnimalDetailPage />
+        children: [
+          {
+            index: true,
+            element: <AnimalDetailPage />,
+          },
+          {
+            path: "visit",
+            element: <VisitReservationPage />,
+          },
+        ],
       },
       {
         path: "registration",
@@ -118,17 +136,22 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ProfilePage />
+            element: <ProfilePage />,
           },
           {
             path: "visit",
-            element: <VisitManagementPage />
-          }
-        ]
+            element: <VisitManagementPage />,
+          },
+        ],
       },
       {
         path: "articles/",
+        element: <Navigate to="/articles/1" replace />,
         children: [
+          {
+            path: "search/:searchKey",
+            element: <ArticleListPage />,
+          },
           {
             path: ":page",
             element: <ArticleListPage />,
@@ -175,7 +198,7 @@ const router = createBrowserRouter([
       },
       {
         path: "visit/:shelterId/:animalId",
-        element: <VisitReservationPage />
+        element: <VisitReservationPage />,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, memo } from "react";
 import ReactModal, { Styles } from "react-modal";
 import { AlertIcon } from "./Icons";
 import styled from "styled-components";
@@ -46,27 +46,27 @@ const Content = styled.p`
   margin: 0;
 `;
 
-const AlertModal: React.FC<alertModalInterface> = ({
-  isOpen,
-  closeModal,
-  title,
-  content,
-  children,
-}) => {
-  return (
-    <ReactModal isOpen={isOpen} onRequestClose={closeModal} style={modalStyle}>
-      <AlertIcon />
-      {children ? (
-        <>{children}</>
-      ) : (
-        <>
-          <Title>{title}</Title>
-          <Content>{content}</Content>
-        </>
-      )}
-      <button onClick={closeModal}>닫기</button>
-    </ReactModal>
-  );
-};
+const AlertModal: React.FC<alertModalInterface> = memo(
+  ({ isOpen, closeModal, title, content, children }) => {
+    return (
+      <ReactModal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        style={modalStyle}
+      >
+        <AlertIcon />
+        {children ? (
+          <>{children}</>
+        ) : (
+          <>
+            <Title>{title}</Title>
+            <Content>{content}</Content>
+          </>
+        )}
+        <button onClick={closeModal}>닫기</button>
+      </ReactModal>
+    );
+  }
+);
 
 export default AlertModal;
