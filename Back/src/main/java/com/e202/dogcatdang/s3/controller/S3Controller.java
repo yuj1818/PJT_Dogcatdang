@@ -1,22 +1,29 @@
 package com.e202.dogcatdang.s3.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.e202.dogcatdang.s3.dto.ResponseS3Dto;
 import com.e202.dogcatdang.s3.service.S3Service;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/images")
 public class S3Controller {
 
-	@Autowired
-	private S3Service s3Service;
+	private final S3Service s3Service;
 
+	// 단일 이미지 파일 업로드
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
 		try {
@@ -26,4 +33,16 @@ public class S3Controller {
 			return ResponseEntity.status(500).body("Image upload failed: " + e.getMessage());
 		}
 	}
+
+	// presigned url 요청 api
+	@GetMapping("/presigned/upload")
+	public ResponseS3Dto getPresignedUrlToUpload(@RequestParam(value = "filename") String fileName) throws IOException {
+		return s3Service.getPresignedUrlToUpload(fileName);
+	}
+
+	@GetMapping("/presigned/download")
+	public ResponseS3Dto getPresignedUrlToDownload(@RequestParam(value = "filename") String fileName) throws IOException {
+		return s3Service.getPresignedUrlToDownload(fileName);
+	}
+
 }

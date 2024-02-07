@@ -6,6 +6,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.e202.dogcatdang.s3.dto.ResponseS3Dto;
+
 public interface S3Service {
 
 		String uploadFile(MultipartFile multipartFile) throws IOException;
@@ -14,4 +16,7 @@ public interface S3Service {
 
 		void deleteFile(String originalFilename);
 
+		ResponseS3Dto getPresignedUrlToUpload(String fileName);
+
+		ResponseS3Dto getPresignedUrlToDownload(String fileName);
 }
