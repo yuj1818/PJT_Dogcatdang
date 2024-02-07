@@ -127,8 +127,10 @@ function SignInPage() {
             </div>
           </SignInForm>
           <div className="flex gap-2">
-            <a href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${import.meta.env.VITE_NAVER_CLIENT_ID}&scope=name%20email&state=${import.meta.env.VITE_NAVER_STATE}&redirect_uri=${import.meta.env.VITE_NAVER_REDIRECT_URI}`}><img src="/src/assets/naverLoginBtn.png" alt="" /></a>
-            <a href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&scope=profile%20email&state=${import.meta.env.VITE_GOOGLE_STATE}&redirect_uri=${import.meta.env.VITE_GOOGLE_REDIRECT_URI}`}><img src="/src/assets/googleLoginBtn.png" alt="" /></a>
+            <a href="http://localhost:8084/oauth2/authorization/naver"><img src="/src/assets/naverLoginBtn.png" alt="" /></a>
+
+            <a href="http://localhost:8084/oauth2/authorization/google"><img src="/src/assets/googleLoginBtn.png" alt="" /></a>
+            
           </div>
         </div>
       </FormBox>

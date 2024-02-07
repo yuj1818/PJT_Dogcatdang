@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
 import Pagination from "../../../components/common/Pagination";
 import API from "../../../util/axios";
-import SaveAnimalCard, { SaveAnimal } from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
+import SaveAnimalCard, {
+  SaveAnimal,
+} from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -58,7 +60,7 @@ function AnimalListPage() {
         });
         // console.log("실행:", res.data.animalDtoList);
         // console.log("실행:", res.data.currentPage);
-        // console.log(res.data.animalDtoList);
+        console.log(res.data.animalDtoList);
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);
         setTotalElements(res.data.totalElements);

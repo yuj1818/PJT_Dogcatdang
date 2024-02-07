@@ -73,6 +73,7 @@ public class ReservationServiceImpl implements ReservationService {
 			.collect(Collectors.toList());
 	}
 
+	// 기관 회원의 예약 상태 승인/거절 (상태 변경)
 	@Transactional
 	@Override
 	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
@@ -80,6 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
 		// 특정 예약 조회 - shelterId와 reservationId 이용
 		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
+		// 해당 번호의 예약이 존재하고, 예약된 동물을 등록한 회원 id가 현재 기관의 id와 같다면 수정
 		if (reservation != null && reservation.getAnimal().getUser().getId().equals(shelterId)) {
 			// state update method - Entity 내에 생성
 			reservation.updateState(reservationDto.getState());
