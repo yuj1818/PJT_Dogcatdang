@@ -10,11 +10,5 @@ COPY build/libs/Dogcatdang-0.0.1-SNAPSHOT.jar app.jar
 # Expose the port that the Spring Boot app will run on
 EXPOSE 8084
 
-RUN apt-get update && \
-    apt-get install -y locales && \
-    rm -rf /var/lib/apt/lists/* && \
-    localedef -i ko_KR -c -f UTF-8 -A /usr/share/locale/locale.alias ko_KR.UTF-8
-ENV LANG ko_KR.UTF-8
-
 # Command to start the Spring Boot app
 ENTRYPOINT ["java","-Dspring.profiles.active=prod", "-jar", "app.jar"]
