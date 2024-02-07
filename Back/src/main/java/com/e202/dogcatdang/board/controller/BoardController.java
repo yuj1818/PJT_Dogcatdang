@@ -38,6 +38,11 @@ public class BoardController {
 	@PostMapping("")
 	public ResponseEntity<ResponseIdDto> write(@RequestHeader("Authorization") String token,@RequestBody RequestBoardDto requestBoardDto) throws IOException {
 
+
+		//근황 글 작성
+		//이미지 첨부 S3 링크로 처리 되도록 해야 함.
+
+		System.out.println("requestBoardDto = " + requestBoardDto);
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
 		ResponseIdDto responseIdDto = boardService.save(loginUserId, requestBoardDto);
