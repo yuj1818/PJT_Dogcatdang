@@ -96,7 +96,9 @@ const ArticleListPage: React.FC = () => {
       {content}
       <div className="flex">
         <Link to="/articles/new" className="ml-auto">
-          <Button $padding="0.3rem 0.5rem">글쓰기</Button>
+          <Button $paddingX={0.3} $paddingY={0.5}>
+            글쓰기
+          </Button>
         </Link>
       </div>
       {data && (

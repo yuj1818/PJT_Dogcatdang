@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import {
   Navigate,
+  Outlet,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
@@ -141,7 +142,12 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
-        element: <Navigate to="/articles/1" replace />,
+        element: (
+          <>
+            <Navigate to="/articles/1" replace={true} />
+            <Outlet />
+          </>
+        ),
         children: [
           {
             path: "search/:searchKey",

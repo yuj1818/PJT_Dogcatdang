@@ -7,8 +7,8 @@ interface buttonInterface {
   height?: number;
   width?: number;
   marginTop?: number;
-  paddingX?: number;
-  paddingY?: number;
+  $paddingX?: number;
+  $paddingY?: number;
 }
 
 export const Button = styled.button<buttonInterface>`
@@ -17,7 +17,10 @@ export const Button = styled.button<buttonInterface>`
   background-color: ${(props) => props.background || "#FF8331"};
   color: ${(props) => props.color || "white"};
   font-size: ${(props) => `${props.fontSize || 1}rem`};
-  padding: ${(props) => `${props.paddingY || 0.2}rem`}${(props) => ` ${props.paddingX || 0.4}rem`};
+  padding-top: ${(props) => `${props.$paddingY || 0.2}rem`};
+  padding-bottom: ${(props) => `${props.$paddingY || 0.2}rem`};
+  padding-left: ${(props) => `${props.$paddingX || 0.4}rem`};
+  padding-right: ${(props) => `${props.$paddingX || 0.4}rem`};
   white-space: nowrap;
   height: ${(props) => (props.height ? `${props.height}rem` : "auto")};
   width: ${(props) => (props.width ? `${props.width}rem` : "auto")};
