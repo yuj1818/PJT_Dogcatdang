@@ -85,23 +85,21 @@ function SaveAnimalCard(props: AnimalCardProps) {
           alt="rkdkdwl"
           style={{ border: "1px solid #ccc" }}
         ></img>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto" }}>
-          <div>
-            <div>
-              <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
-              <strong>{props.animals.age}살 </strong>
-            </div>
-            <p style={{ fontSize: "13px" }}>
-              {props.animals.gender} |{" "}
-              {props.animals.isNeuter ? "중성화 완료" : "중성화 알 수 없음"}
-            </p>
 
-            <p style={{ fontSize: "10px", opacity: "0.7" }}>
-              지역 : {getShortenedLocation(props.animals.rescueLocation)}
-            </p>
-          </div>
+        <div>
+          <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
+          <strong>{props.animals.age}살 </strong>
         </div>
+        <p style={{ fontSize: "13px" }}>
+          {props.animals.gender} |{" "}
+          {props.animals.isNeuter ? "중성화 완료" : "중성화 알 수 없음"}
+        </p>
+
+        <p style={{ fontSize: "10px", opacity: "0.7" }}>
+          지역 : {getShortenedLocation(props.animals.rescueLocation)}
+        </p>
       </div>
+
       <div style={{ position: "absolute", right: "8%", bottom: "4%" }}>
         <LikeButton
           animalId={props.animals.animalId}
