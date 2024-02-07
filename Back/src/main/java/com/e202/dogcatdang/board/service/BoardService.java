@@ -6,16 +6,16 @@ import java.util.List;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
-import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
+import com.e202.dogcatdang.board.dto.ResponseIdDto;
 
 public interface BoardService {
-	ResponseSavedIdDto save(RequestBoardDto requestBoardDto) throws IOException;
+	ResponseIdDto save(Long loginUserId, RequestBoardDto requestBoardDto) throws IOException;
 
 	List<ResponseBoardSummaryDto> findAll();
 
 	ResponseBoardDto findById(Long boardId);
 
-	ResponseSavedIdDto update(Long boardId, RequestBoardDto requestBoardDto) throws IOException;
+	ResponseIdDto update(Long loginUserId, Long boardId,RequestBoardDto requestBoardDto) throws IOException;
 
-	void delete(Long boardId);
+	ResponseIdDto delete(Long loginUserId, Long boardId);
 }

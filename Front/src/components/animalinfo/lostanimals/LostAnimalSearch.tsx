@@ -81,19 +81,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  // const ListStyle = styled.div<{ $itemsPerRow: number }>`
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   justify-content: flex-start;
-
-  //   div {
-  //     flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-  //     display: flex;
-  //     align-items: center;
-  //     flex-direction: column;
-  //   }
-  // `;
-
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
     color: white;
@@ -149,8 +136,8 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 border: "1px solid #d5967b",
                 padding: "8px",
                 borderRadius: "10px",
-                width: "250px",
-                height: "70px",
+                width: "220px",
+                height: "60px",
               }),
             }}
           />

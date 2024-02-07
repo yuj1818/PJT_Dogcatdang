@@ -1,9 +1,11 @@
 .container {
   border: 1px solid #d5967b;
+  background-color: rgba(255, 255, 255, 0.6);
   padding: 15px;
-  margin: 0px;
+  margin-top: 15px;
   margin-bottom: 10px;
   border-radius: 10px;
+
 }
 
 .search-form {
@@ -40,13 +42,13 @@
   cursor: pointer;
   border-radius: 10px;
   width: 100px;
-  height: 70px;
+  height: 50px;
 }
 
 .custom-input {
   border: 1px solid #d5967b;
   padding: 8px;
   border-radius: 10px;
-  width: 250px;
-  height: 70px;
+  width: 150px;
+  height: 60px;
 }

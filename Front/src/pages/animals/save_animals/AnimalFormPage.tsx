@@ -15,6 +15,7 @@ function AnimalFormPage() {
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
+  const [ code, setCode ] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
@@ -60,6 +61,7 @@ function AnimalFormPage() {
 
     const data = {
       animalType: animalType,
+      code: code,
       breed: breed,
       age: age,
       weight: weight,
@@ -182,6 +184,17 @@ function AnimalFormPage() {
                         ))}
                   </select>
                 </div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="box">
+                  <label className="item">동물코드</label>
+                  <input
+                    className="input"
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                  />
+                </div> 
               </div>
 
               <div>

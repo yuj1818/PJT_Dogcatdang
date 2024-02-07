@@ -13,10 +13,13 @@ import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
-import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
+import com.e202.dogcatdang.board.dto.ResponseIdDto;
 import com.e202.dogcatdang.db.entity.Board;
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.BoardImageRepository;
 import com.e202.dogcatdang.db.repository.BoardRepository;
+import com.e202.dogcatdang.db.repository.UserRepository;
+import com.e202.dogcatdang.exception.InvalidUserException;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -27,10 +30,16 @@ public class BoardServiceImpl implements BoardService {
 
 	private final BoardRepository boardRepository;
 	private final BoardImageRepository boardImageRepository;
+	private final UserRepository userRepository;
 
 	@Override
-	public ResponseSavedIdDto save(RequestBoardDto requestBoardDto) throws IOException {
-		Board board = requestBoardDto.toEntity();
+	public ResponseIdDto save(Long loginUserId, RequestBoardDto requestBoardDto) throws IOException {
+
+		// 로그인한 유저
+		User loginUser = userRepository.findById(loginUserId).get();
+
+
+		Board board = requestBoardDto.toEntity(loginUser);
 		Long savedId = boardRepository.save(board).getBoardId();
 
 		if (!requestBoardDto.getImageList().isEmpty()) {
@@ -41,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
 				System.out.println(Arrays.toString(imageBytes));
 			}
 		}
-		return new ResponseSavedIdDto(savedId);
+		return new ResponseIdDto(savedId);
 	}
 
 	@Override
@@ -75,32 +84,54 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public ResponseSavedIdDto update(Long boardId, RequestBoardDto requestBoardDto) throws IOException {
+	public ResponseIdDto update(Long loginUserId, Long boardId, RequestBoardDto requestBoardDto) throws IOException {
 
+		User loginUser = userRepository.findById(loginUserId).get();
 		Board board = boardRepository.findById(boardId).get();
-		if(requestBoardDto.getTitle()!=null){
-			board.updateTitle(requestBoardDto.getTitle());
-		}
-		if(requestBoardDto.getContent()!=null){
-			board.updateContent(requestBoardDto.getContent());
-		}
-		if(requestBoardDto.getTitle()!=null){
-			board.updateTitle(requestBoardDto.getTitle());
-		}
-		if (!requestBoardDto.getImageList().isEmpty()) {
-			for (RequestImageDto boardImage : requestBoardDto.getImageList()) {
-				byte[] imageBytes = Base64.decodeBase64(boardImage.getBase64Image());
-				String key = UUID.randomUUID().toString();
-				System.out.println(Arrays.toString(imageBytes));
+		if(board.getUser().getId().equals(loginUserId)){
+			if(requestBoardDto.getTitle()!=null){
+				board.updateTitle(requestBoardDto.getTitle());
 			}
-		}
-		Long savedId = boardRepository.save(board).getBoardId();
+			if(requestBoardDto.getContent()!=null){
+				board.updateContent(requestBoardDto.getContent());
+			}
+			if(requestBoardDto.getTitle()!=null){
+				board.updateTitle(requestBoardDto.getTitle());
+			}
+			if (!requestBoardDto.getImageList().isEmpty()) {
+				for (RequestImageDto boardImage : requestBoardDto.getImageList()) {
+					byte[] imageBytes = Base64.decodeBase64(boardImage.getBase64Image());
+					String key = UUID.randomUUID().toString();
+					System.out.println(Arrays.toString(imageBytes));
+				}
+			}
+			Long savedId = boardRepository.save(board).getBoardId();
 
-		return new ResponseSavedIdDto(savedId);
+			return new ResponseIdDto(savedId);
+		}else{
+			throw new InvalidUserException("게시글 작성자가 아닙니다!");
+			//에러 처리 해줘야 됨.
+			//로그인 한 유저와 수정하려는 댓글의 작성자가 다른 경우
+		}
+
+
 	}
 
 	@Override
-	public void delete(Long boardId) {
-		boardRepository.deleteById(boardId);
+	public ResponseIdDto delete(Long loginUserId, Long boardId) {
+
+		User loginUser = userRepository.findById(loginUserId).get();
+		Board board = boardRepository.findById(boardId).get();
+
+		if(board.getUser().getId().equals(loginUserId)){
+
+			boardRepository.deleteById(boardId);
+
+			return new ResponseIdDto(boardId);
+		}else{
+			throw new InvalidUserException("게시글 작성자가 아닙니다!");
+			//에러 처리 해줘야 됨.
+			//로그인 한 유저와 수정하려는 댓글의 작성자가 다른 경우
+		}
 	}
 }

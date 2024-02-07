@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
-interface LostAnimal {
+export interface LostAnimal {
   lostAnimalId: number;
   animalType: string;
   breed: string;

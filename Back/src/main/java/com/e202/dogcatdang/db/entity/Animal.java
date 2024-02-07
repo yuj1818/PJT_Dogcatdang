@@ -77,14 +77,18 @@ public class Animal {
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
+	// 기관이 동물을 식별하기 위해 사용하는 코드
+	@Column(name = "code", nullable = false)
+	private String code;
+
 	// 1명의 user는 여러 개의 animal을 등록할 수 있다
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	// 1개의 animal은 여러 개의 visit reservation을 가질 수 있다
-	@OneToMany(mappedBy = "animal")
-	private List<Reservation> adoptionApplicantCount;
+
+	// 동물에게 들어온 방문 예약 신청 수를 count해 등록 -> 필드보다 메서드로 필요할 때마다 계산해주는 게 나을듯..?
+	// private Integer adoptionApplicantCount;
 
 	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
 	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
@@ -104,7 +108,7 @@ public class Animal {
 	@Builder
 	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, User user) {
+		State state, String imgName, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
 		this.breed = breed;
@@ -118,6 +122,7 @@ public class Animal {
 		this.state = state;
 		this.imgName = imgName;
 		this.imgUrl = imgUrl;
+		this.code = code;
 		this.user = user;
 	}
 
@@ -125,7 +130,7 @@ public class Animal {
 	// null이 아닌 값만 수정한다
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl) {
+		State state, String imgName, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;
 		}
@@ -172,6 +177,10 @@ public class Animal {
 
 		if (imgUrl != null) {
 			this.imgUrl = imgUrl;
+		}
+
+		if (code != null) {
+			this.code = code;
 		}
 
 	}

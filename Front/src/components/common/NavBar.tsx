@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
@@ -10,21 +10,25 @@ import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo-big.png";
 
 // -----------Styled Component-----------------------------------------------
+const Color = styled.div`
+  background-color: #fff;
+`;
+
 const NavBarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   white-space: nowrap;
-  background-color: #fafafa;
 
   @media screen and (max-width: 1024px) {
     .container {
-      width: 80%; /* Adjust the width for screens 1024px and below */
+      width: 80%;
     }
   }
 `;
 
 const FlexColumnContainer = styled.div`
+  flex-grow: 1;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,15 +39,30 @@ const FlexColumnContainer = styled.div`
 const StyledUl = styled.ul`
   list-style: none;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 0px;
   text-align: center;
-  padding: 0px 10px;
 
   li {
+    font-weight: bold;
     position: relative;
-    width: 150px;
+  }
+
+  p,
+  a,
+  button {
+    padding: 0 1rem;
+  }
+`;
+
+const drawFromAbove = keyframes`
+  0% {
+    transform: translateY(-30%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 `;
 
@@ -51,23 +70,27 @@ const StyledNav = styled.nav`
   position: absolute;
   display: flex;
   width: 100%;
-  left: 0;
-  top: 100%;
-  background-color: #fafafa;
-  padding: 0px 10px 3px 10px;
+  background-color: #fff;
   z-index: 99999;
+  border-radius: 1rem;
+  justify-content: space-around;
 
   ul {
+    flex-grow: 1;
     list-style: none;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     padding: 0px;
+    animation: ${drawFromAbove} 0.5s ease-out;
   }
 
   li {
-    width: 150px;
     text-align: center;
     padding: 15px 0px;
+
+    :hover {
+      background-color: antiquewhite;
+    }
   }
 `;
 
@@ -80,17 +103,53 @@ const OutLet = tw.div`
 mx-4 sm:mx-60
 `;
 
+const NavTitle = styled.div`
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+
+  ul {
+    flex-grow: 1;
+    text-align: center;
+    padding: 15px 0px;
+  }
+`;
+
 // -----------NavBar-----------------------------------------------
+const commontNavTitles = (
+  <>
+    <ul>
+      <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
+    </ul>
+    <ul>
+      <StyledNavLink to="/mung">멍BTI</StyledNavLink>
+    </ul>
+  </>
+);
+
+const commonNavContent = (
+  <>
+    <ul>
+      <li>
+        <StyledNavLink to="/about/">독캣당 소개</StyledNavLink>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <StyledNavLink to="/mung">멍BTI</StyledNavLink>
+      </li>
+    </ul>
+  </>
+);
+
 const NavBar = () => {
   const [navContent, setNavContent] = useState(<></>);
-  const [isNoti, setIsNoti] = useState(false);
+  // const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
-
-  const handleNoti = () => {
-    setIsNoti((prev) => !prev);
-  };
 
   const navigate = useNavigate();
 
@@ -105,65 +164,39 @@ const NavBar = () => {
     }
   };
 
-  const commontNavTitles = (
-    <>
-      {" "}
-      <li>
-        <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-      </li>
-      <li>
-        <StyledNavLink to="/test">멍BTI</StyledNavLink>
-      </li>
-    </>
-  );
-
   const navTitles = isOrg ? (
-    <StyledUl>
-      <li>
+    <NavTitle>
+      <ul>
         <StyledNavLink to="/save-animals">동물 관리</StyledNavLink>
-      </li>
-      <li>
+      </ul>
+      <ul>
         <StyledNavLink to="/visit-application-mangement">
           방문 일정 관리
         </StyledNavLink>
-      </li>
-      <li>
-        <StyledNavLink to="/broadcast/list">방송</StyledNavLink>
-      </li>
+      </ul>
+      <ul>
+        <StyledNavLink to="/broadcast/list">보호 동물 방송</StyledNavLink>
+      </ul>
       {commontNavTitles}
-    </StyledUl>
+      <ul></ul>
+    </NavTitle>
   ) : (
-    <StyledUl>
-      <li>
+    <NavTitle>
+      <ul>
         <StyledNavLink to="/save-animals">입양하기</StyledNavLink>
-      </li>
-      <li>
-        <StyledNavLink to="/articles">후기 게시판</StyledNavLink>
-      </li>
-      <li>
+      </ul>
+      <ul>
+        <StyledNavLink to="/articles/1">후기 게시판</StyledNavLink>
+      </ul>
+      <ul>
         <StyledNavLink to="/broadcast/list">방송 시청</StyledNavLink>
-      </li>
-      <li>
-        <StyledNavLink to="/lost-animals">동물 찾기</StyledNavLink>
-      </li>
+      </ul>
+      <ul>
+        <StyledNavLink to="/lost-animals">실종 동물</StyledNavLink>
+      </ul>
       {commontNavTitles}
-    </StyledUl>
-  );
-
-  const commonNavContent = (
-    <>
-      {" "}
-      <StyledUl>
-        <li>
-          <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-        </li>
-      </StyledUl>
-      <StyledUl>
-        <li>
-          <StyledNavLink to="/test">멍BTI</StyledNavLink>
-        </li>
-      </StyledUl>
-    </>
+      <ul></ul>
+    </NavTitle>
   );
 
   const hoverHandler = () => {
@@ -172,18 +205,18 @@ const NavBar = () => {
         <StyledNav>
           <ul>
             <li>
-              <StyledNavLink to="/save-animals">보호 동물 보기</StyledNavLink>
+              <StyledNavLink to="/save-animals">보호 동물</StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/lost-animals">실종 동물 보기</StyledNavLink>
+              <StyledNavLink to="/lost-animals">실종 동물</StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/articles">입양 근황 보기</StyledNavLink>
+              <StyledNavLink to="/articles/1">입양 근황</StyledNavLink>
             </li>
           </ul>
           <ul>
             <li>
-              <StyledNavLink to="/visit/approval">방문 신청 관리</StyledNavLink>
+              <StyledNavLink to="/visit/approval">방문 관리</StyledNavLink>
             </li>
             <li>
               <StyledNavLink to="/visit/mangement">
@@ -211,18 +244,18 @@ const NavBar = () => {
         <StyledNav>
           <ul>
             <li>
-              <StyledNavLink to="/save-animals">보호 동물 보기</StyledNavLink>
+              <StyledNavLink to="/save-animals">보호 동물</StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/profile">관심 동물 보기</StyledNavLink>
+              <StyledNavLink to="/profile">관심 동물</StyledNavLink>
             </li>
           </ul>
           <ul>
             <li>
-              <StyledNavLink to="/articles">전체 글 보기</StyledNavLink>
+              <StyledNavLink to="/articles/1">후기 글 보기</StyledNavLink>
             </li>
             <li>
-              <StyledNavLink to="/articles/new">글 작성하기</StyledNavLink>
+              <StyledNavLink to="/articles/new">작성하기</StyledNavLink>
             </li>
           </ul>
           <ul>
@@ -235,22 +268,7 @@ const NavBar = () => {
           </ul>
           <ul>
             <li>
-              <StyledNavLink to="/lost-animals">
-                실종 동물 전체 보기
-              </StyledNavLink>
-            </li>
-            <li>
-              <StyledNavLink to="/lost-animals/aisearch">AI 검색</StyledNavLink>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <StyledNavLink to="/test">멍BTI</StyledNavLink>
+              <StyledNavLink to="/lost-animals">동물 검색</StyledNavLink>
             </li>
           </ul>
           {commonNavContent}
@@ -268,32 +286,36 @@ const NavBar = () => {
 
   return (
     <>
-      <NavBarContainer>
-        <StyledNavLink to="/">
-          <img src={logo} alt="메인화면으로" className="w-60 min-w-60" />
-        </StyledNavLink>
-        <FlexColumnContainer>
-          <StyledUl style={{ gap: "20px", marginRight: "20px" }}>
-            {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-            <StyledNavLink to={`profile/${userId}`}>{nickname}님</StyledNavLink>
-            <StyledNavLink to="notification">
-              <Bell isNoti={isNoti} />
-            </StyledNavLink>
-            <button onClick={onClickLogout}>로그아웃</button>
-          </StyledUl>
-          <div
-            onMouseEnter={hoverHandler}
-            onMouseLeave={() => {
-              setNavContent(<></>);
-            }}
-          >
-            {navTitles}
-            {navContent}
-          </div>
-        </FlexColumnContainer>
-      </NavBarContainer>
-      <button onClick={handleNoti}>알람 상태 변경</button>
-      <OutLet style={{ minWidth: "400px" }}>
+      <Color>
+        <NavBarContainer>
+          <StyledNavLink to="/">
+            <img src={logo} alt="메인화면으로" className="w-40 min-w-40" />
+          </StyledNavLink>
+          <FlexColumnContainer>
+            <StyledUl>
+              {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
+              <StyledNavLink to={`profile/${userId}`}>
+                {nickname}님
+              </StyledNavLink>
+              <StyledNavLink to="notification">
+                <Bell isNoti={false} />
+              </StyledNavLink>
+              <button onClick={onClickLogout}>로그아웃</button>
+            </StyledUl>
+            <div
+              onMouseEnter={hoverHandler}
+              onMouseLeave={() => {
+                setNavContent(<></>);
+              }}
+              style={{ width: "100%" }}
+            >
+              {navTitles}
+              {navContent}
+            </div>
+          </FlexColumnContainer>
+        </NavBarContainer>
+      </Color>
+      <OutLet style={{ minWidth: "700px" }}>
         <Outlet />
       </OutLet>
     </>
