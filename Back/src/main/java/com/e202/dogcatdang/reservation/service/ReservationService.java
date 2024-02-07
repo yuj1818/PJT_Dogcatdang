@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 @Service
@@ -23,4 +24,6 @@ public interface ReservationService {
 	ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId, RequestReservationDto reservationDto);
 
 	List<ResponseReservationDto> findReservationsByDate(Long loginUserId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+	ResponseShelterDto findShelterReservation(long reservationId);
 }

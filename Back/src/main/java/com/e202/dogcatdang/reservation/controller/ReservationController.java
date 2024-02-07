@@ -40,8 +40,9 @@ public class ReservationController {
 
 	private JWTUtil jwtUtil;
 	private final ReservationService reservationService;
-	private final UserProfileService userService;
 	private final ReservationRepository reservationRepository;
+	private final UserProfileService userService;
+
 
 	// 일반 회원 기준
 	// 일반 회원의 방문 예약 신청 - create
@@ -121,7 +122,7 @@ public class ReservationController {
 		return ResponseEntity.ok(reservations);
 	}
 
-	// 일반 회원이 본인의 특정한 예약 1개 정보 상세 조회
+	// 일반 회원이 본인의 특정한 예약 정보 상세 조회
 	@Transactional
 	@GetMapping("/{reservationId}")
 	public ResponseEntity<ResponseReservationDto> findReservation(@PathVariable long reservationId, @RequestHeader("Authorization") String token) {
