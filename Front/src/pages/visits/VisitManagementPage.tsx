@@ -128,12 +128,14 @@ function VisitManagementPage() {
       <StyledCalendar>
         <Schedule>
           {
-            reservations.length && reservations.map((reservation: reservationData, idx) => (
+            reservations.length ? reservations.map((reservation: reservationData, idx) => (
               <>
                 <ScheduleCard key={idx} reservation={reservation} />
                 { idx !== reservations.length - 1 && <hr />}
               </>
             ))
+            :
+            <p>방문 일정이 없습니다</p>
           }
         </Schedule>
         <Calendar 
