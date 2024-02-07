@@ -32,6 +32,7 @@ import VisitManagementPage from "./pages/visits/VisitManagementPage.tsx";
 import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
 import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
+import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignInPage />,
+  },
+  {
+    path: "/about",
+    element: <AboutDogCatDang />,
   },
   {
     path: "/",
@@ -82,7 +87,7 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/:animalID",
-        element: <AnimalDetailPage />
+        element: <AnimalDetailPage />,
       },
       {
         path: "registration",
@@ -118,13 +123,13 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <ProfilePage />
+            element: <ProfilePage />,
           },
           {
             path: "visit",
-            element: <VisitManagementPage />
-          }
-        ]
+            element: <VisitManagementPage />,
+          },
+        ],
       },
       {
         path: "articles/",
@@ -175,7 +180,7 @@ const router = createBrowserRouter([
       },
       {
         path: "visit/:shelterId/:animalId",
-        element: <VisitReservationPage />
+        element: <VisitReservationPage />,
       },
     ],
   },
