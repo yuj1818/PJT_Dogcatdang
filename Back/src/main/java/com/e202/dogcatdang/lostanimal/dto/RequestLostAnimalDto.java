@@ -33,7 +33,6 @@ public class RequestLostAnimalDto {
 	private Gender gender;
 	private String feature;
 	private LostAnimal.State state;
-	private String imgName;
 	private String imgUrl;
 	private Long userId;
 
@@ -68,7 +67,6 @@ public class RequestLostAnimalDto {
 			.gender(gender)
 			.feature(feature)
 			.state(state)
-			.imgName(imgName)
 			.imgUrl(imgUrl)
 			.user(user)       // user의 식별자(id)가 lost-animal entity user_id에 들어간다.
 			.build();
