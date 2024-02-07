@@ -17,6 +17,7 @@ import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterApprovedDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
@@ -89,6 +90,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 
+	// 여기부터 기관 회원 기준 method
 	// 기관 회원의 방문 예약 승인/거절 (상태 변경)
 	@Transactional
 	@Override
@@ -124,5 +126,16 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 	}
 
+	// @Override
+	// public List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime,
+	// 	LocalDateTime endDateTime) {
+	// 	// 현재 로그인한 사용자의 특정 날짜에 대한 예약 정보 조회
+	// 	List<Reservation> reservations = reservationRepository.findShelterReservationsByDate(shelterId, startDateTime, endDateTime, Reservation.State.승인);
+	//
+	// 	// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
+	// 	return reservations.stream()
+	// 		.map(ResponseShelterApprovedDto::new)
+	// 		.collect(Collectors.toList());
+	// }
 
 }
