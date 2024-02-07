@@ -9,6 +9,7 @@ import {
   countryInput,
 } from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
+import { Input, Select } from "../../../components/animalinfo/style";
 
 function LostAnimalUpdatePage() {
   const navigate = useNavigate();
@@ -156,7 +157,7 @@ function LostAnimalUpdatePage() {
                   <label className="item" htmlFor="breed">
                     품종
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="breed"
                     id="breed"
@@ -177,14 +178,14 @@ function LostAnimalUpdatePage() {
                             {type}
                           </option>
                         ))}
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">이름</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={name}
@@ -216,7 +217,7 @@ function LostAnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">성별</label>
-                  <select
+                  <Select
                     className="input"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
@@ -226,7 +227,7 @@ function LostAnimalUpdatePage() {
                     </option>
                     <option value="남">남</option>
                     <option value="여">여</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
@@ -245,7 +246,7 @@ function LostAnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">체중</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={weight}
@@ -259,7 +260,7 @@ function LostAnimalUpdatePage() {
                   <label className="item" htmlFor="지역">
                     지역
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="region"
                     id="region"
@@ -274,11 +275,11 @@ function LostAnimalUpdatePage() {
                         {pr}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item" htmlFor=""></label>
-                  <select
+                  <Select
                     className="input"
                     name="country"
                     id="country"
@@ -296,11 +297,11 @@ function LostAnimalUpdatePage() {
                           </option>
                         )
                       )}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item">상세주소</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={detailInfo}
@@ -312,7 +313,7 @@ function LostAnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">실종일자</label>
-                  <input
+                  <Input
                     className="input"
                     type="date"
                     value={lostDate}
@@ -324,7 +325,7 @@ function LostAnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">실종현황</label>
-                  <select
+                  <Select
                     className="input"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
@@ -334,14 +335,14 @@ function LostAnimalUpdatePage() {
                     </option>
                     <option value="완료">완료</option>
                     <option value="실종">실종</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">특징</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={feature}

@@ -3,10 +3,15 @@ package com.e202.dogcatdang.oauth2.service;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.exception.CustomOAuth2AuthenticationException;
+import com.e202.dogcatdang.oauth2.OAuth2Metadata;
 import com.e202.dogcatdang.oauth2.dto.CustomOAuth2User;
 import com.e202.dogcatdang.oauth2.dto.GoogleResponse;
 import com.e202.dogcatdang.oauth2.dto.NaverResponse;
 import com.e202.dogcatdang.oauth2.dto.OAuth2Response;
+import com.e202.dogcatdang.user.Service.JoinService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -18,18 +23,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+//    private final JoinService joinService;
     private final UserRepository userRepository;
 
-    public CustomOAuth2UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-
+        OAuth2Metadata oAuth2Metadata = new OAuth2Metadata();
+        System.out.println("load user 왜 안들와 ㅁㄴㅇ러ㅣㅏㅁㄴ;ㅇ러");
         //유저 정보가져오기 userRequest는 구글 ,naver가 준거
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println(oAuth2User.getAttributes());
@@ -39,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         OAuth2Response oAuth2Response = null;
 
-        CustomOAuth2User customOAuth2User = null;
+       // CustomOAuth2User customOAuth2User = null;
 
         //받는 데이터 규격이 달라서 놔눠야댐.
 
@@ -54,25 +60,43 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             //? 구글 네이버 외 다른 provider 처리하는곳
             return null;
         }
+        String metaProviderId = oAuth2Response.getProviderId();
+        String metaEmail = oAuth2Response.getEmail();
 
+        System.out.println("metaProvider : " + metaProviderId);
+        System.out.println("metEmail :" + metaEmail);
+        oAuth2Metadata.setProviderId(metaProviderId);
+        oAuth2Metadata.setMetaEmail(metaEmail);
+        String metadata = "";
+        try {
+            ObjectMapper metadataObject = new ObjectMapper();
+            metadata = metadataObject.writeValueAsString(oAuth2Metadata);
+        } catch (JsonProcessingException e) {
+            System.out.println("왜 json 에러?");
+            throw new RuntimeException(e);
+        }
 
         String username = oAuth2Response.getProvider()+"_" +oAuth2Response.getProviderId();
         String email = oAuth2Response.getEmail();
-        //String username = customOAuth2User.getUserName();
         System.out.println("여긴 들어오니?");
         System.out.println(username);
+
         //이미 있는 아이디 인지 확인
         User existData = userRepository.findByEmail(email);
 
-//        Optional<User> existData= userRepository.findById(1L);
         System.out.println("여긴 나가니?");
 
         String role = null;
 
+//        String jwt = userRequest.getAccessToken().getTokenValue();
+//        String sub = (String) oAuth2User.getAttribute("sub");
         if(existData == null){
             //회원가입 하러가
             System.out.println("회원가입 하러가");
-            throw new CustomOAuth2AuthenticationException("User not found.");
+            // todo: 여기서, failureAuthenticationHandler로 jwt정보를 전달
+
+            throw new CustomOAuth2AuthenticationException("User not found.",metadata);
+
 ////            System.out.println("null 일때");
 ////            User user = new User();
 ////            user.setUsername(username);

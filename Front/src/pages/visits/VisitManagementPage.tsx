@@ -4,14 +4,20 @@ import 'react-calendar/dist/Calendar.css';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Title } from '../../components/common/Title';
+import { getReservations } from '../../util/VisitAPI';
+import ScheduleCard from '../../components/visits/ScheduleCard';
+
 const Schedule = styled.div`
   width: 50%;
   background-color: white;
   border-radius: 10px;
   overflow-y: auto;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
   &::-webkit-scrollbar {
     width: .7rem;
@@ -84,13 +90,34 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+export interface reservationData {
+  age: number;
+  breed: string;
+  imgUrl: string;
+  reservationTime: string;
+  shelterName: string;
+  state: string | null;
+}
+
 function VisitManagementPage() {
   // const isOrg = org();
   const [selectedDate, setSelectedDate] = useState<Value>(new Date());
+  const [reservations, setReservations] = useState([]);
+  // const [selectedReservations, setSelectedReservations] = useState([]);
 
   const handleDateChange = (value: Value) => {
     setSelectedDate(value);
-  }
+  };
+
+  const getReservationData = async() => {
+    const response = await getReservations();
+    setReservations(response);
+    // setSelectedReservations(response.filter((reservation: reservationData) => new Date(reservation.reservationTime) == selectedDate));
+  };
+
+  useEffect(() => {
+    getReservationData();
+  }, []);
 
   return (
     <div className="flex flex-col gap-8">
@@ -100,6 +127,14 @@ function VisitManagementPage() {
       </div>
       <StyledCalendar>
         <Schedule>
+          {
+            reservations.length && reservations.map((reservation: reservationData, idx) => (
+              <>
+                <ScheduleCard key={idx} reservation={reservation} />
+                { idx !== reservations.length - 1 && <hr />}
+              </>
+            ))
+          }
         </Schedule>
         <Calendar 
           onChange={handleDateChange}

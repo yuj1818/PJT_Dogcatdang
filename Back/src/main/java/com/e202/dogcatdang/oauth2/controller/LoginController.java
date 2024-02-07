@@ -37,11 +37,28 @@ public class LoginController {
     }
 
 
+
+    @PostMapping("/login/oauth2/code/google")
+    public void oauth2Login(){
+        System.out.println("oauth2Login() 실행");
+    }
+
+
     @PostMapping("/oauth2/join")
     public void joinPage(){
         System.out.println("join되는겨?");
 
+
     }
+
+
+//
+//    @GetMapping("/oauth2/failure")
+//    public String toJoinPage() {
+//        System.out.println("localhost 5173 여기로 가는겨?");
+//        return "redirect:http://localhost:5173/signup?oauth=true";
+//
+//    }
 //
 //    @PostMapping("/oauth2/join")
 //    public ResponseEntity<String> registerUser(@RequestBody OauthUserDTO oauthUserDTO) {
