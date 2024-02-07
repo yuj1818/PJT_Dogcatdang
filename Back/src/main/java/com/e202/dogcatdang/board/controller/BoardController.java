@@ -1,7 +1,6 @@
 package com.e202.dogcatdang.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -13,18 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
-import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
-import com.e202.dogcatdang.board.dto.ResponseSavedIdDto;
+import com.e202.dogcatdang.board.dto.ResponseIdDto;
 import com.e202.dogcatdang.board.service.BoardService;
+import com.e202.dogcatdang.user.jwt.JWTUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -36,13 +33,20 @@ import lombok.AllArgsConstructor;
 public class BoardController {
 
 	private final BoardService boardService;
+	private final JWTUtil jwtUtil;
 
 	@PostMapping("")
-	public ResponseEntity<ResponseSavedIdDto> write(@RequestBody RequestBoardDto requestBoardDto) throws IOException {
-		System.out.println("requestBoardDto = " + requestBoardDto);
+	public ResponseEntity<ResponseIdDto> write(@RequestHeader("Authorization") String token,@RequestBody RequestBoardDto requestBoardDto) throws IOException {
 
-		ResponseSavedIdDto responseSavedIdDto = boardService.save(requestBoardDto);
-		return ResponseEntity.ok(responseSavedIdDto);
+
+		//근황 글 작성
+		//이미지 첨부 S3 링크로 처리 되도록 해야 함.
+
+		System.out.println("requestBoardDto = " + requestBoardDto);
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		ResponseIdDto responseIdDto = boardService.save(loginUserId, requestBoardDto);
+		return ResponseEntity.ok(responseIdDto);
 	}
 
 	/* 게시글 목록 조회
@@ -72,12 +76,13 @@ public class BoardController {
 	*
 	* */
 	@PutMapping("/{boardId}")
-	public ResponseEntity<ResponseSavedIdDto> update(@PathVariable Long boardId, @RequestBody RequestBoardDto requestBoardDto) throws
+	public ResponseEntity<ResponseIdDto> update(@RequestHeader("Authorization") String token,@PathVariable Long boardId, @RequestBody RequestBoardDto requestBoardDto) throws
 		IOException {
 
-		ResponseSavedIdDto responseSavedIdDto = boardService.update(boardId, requestBoardDto);
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		ResponseIdDto responseIdDto = boardService.update(loginUserId, boardId, requestBoardDto);
 
-		return ResponseEntity.ok(responseSavedIdDto);
+		return ResponseEntity.ok(responseIdDto);
 
 	}
 
@@ -85,11 +90,12 @@ public class BoardController {
 	*
 	* */
 	@DeleteMapping("/{boardId}")
-	public ResponseEntity delete(@PathVariable Long boardId) {
+	public ResponseEntity<ResponseIdDto> delete(@RequestHeader("Authorization") String token,@PathVariable Long boardId) {
 
-		boardService.delete(boardId);
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		;
 
-		return new ResponseEntity(HttpStatus.OK);
+		return ResponseEntity.ok(boardService.delete(loginUserId, boardId));
 	}
 
 

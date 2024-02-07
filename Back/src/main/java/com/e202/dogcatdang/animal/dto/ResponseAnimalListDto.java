@@ -26,7 +26,7 @@ public class ResponseAnimalListDto {
 	private LocalDate rescueDate;
 	private String rescueLocation;
 
-	private String imgName;
+	private String imgUrl;
 	private Long userId;
 	private String userNickname;
 
@@ -49,7 +49,7 @@ public class ResponseAnimalListDto {
 		this.userId = animal.getUser().getId();
 		this.userNickname = animal.getUser().getNickname();
 
-		this.imgName = animal.getImgName();
+		this.imgUrl = animal.getImgUrl();
 		this.adoptionApplicantCount = adoptionApplicantCount;
 		this.isLike = isLike;
 	}

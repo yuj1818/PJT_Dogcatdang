@@ -9,13 +9,14 @@ import {
   countryInput,
 } from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
+import { Input, Select } from "../../../components/animalinfo/style";
 
 function AnimalFormPage() {
   const cookie = new Cookies();
   const navigate = useNavigate();
 
   const [selectedCity, setSelectedCity] = useState("");
-  const [ code, setCode ] = useState("");
+  const [code, setCode] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
@@ -160,7 +161,7 @@ function AnimalFormPage() {
                   <label className="item" htmlFor="breed">
                     품종
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="breed"
                     id="breed"
@@ -181,19 +182,19 @@ function AnimalFormPage() {
                             {type}
                           </option>
                         ))}
-                  </select>
+                  </Select>
                 </div>
               </div>
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">동물코드</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                   />
-                </div> 
+                </div>
               </div>
 
               <div>
@@ -220,7 +221,7 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">성별</label>
-                  <select
+                  <Select
                     className="input"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
@@ -230,14 +231,14 @@ function AnimalFormPage() {
                     </option>
                     <option value="남">남</option>
                     <option value="여">여</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">추정나이</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={age}
@@ -249,7 +250,7 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">체중</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={weight}
@@ -263,7 +264,7 @@ function AnimalFormPage() {
                   <label className="item" htmlFor="지역">
                     지역
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="region"
                     id="region"
@@ -278,11 +279,11 @@ function AnimalFormPage() {
                         {pr}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item" htmlFor=""></label>
-                  <select
+                  <Select
                     className="input"
                     name="country"
                     id="country"
@@ -300,11 +301,11 @@ function AnimalFormPage() {
                           </option>
                         )
                       )}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item">상세주소</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={detailInfo}
@@ -316,7 +317,7 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">발견일자</label>
-                  <input
+                  <Input
                     className="input"
                     type="date"
                     value={rescueDate}
@@ -328,7 +329,7 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">중성화 여부</label>
-                  <input
+                  <Input
                     type="checkbox"
                     name="isNeutered"
                     checked={isNeuter}
@@ -339,7 +340,7 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">보호현황</label>
-                  <select
+                  <Select
                     className="input"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
@@ -351,14 +352,14 @@ function AnimalFormPage() {
                     <option value="입양완료">입양완료</option>
                     <option value="안락사">안락사</option>
                     <option value="자연사">자연사</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">특징</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={feature}

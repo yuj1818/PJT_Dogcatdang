@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.BoardImage;
+import com.e202.dogcatdang.db.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,7 @@ public class ResponseBoardDto {
 	private String title;
 	private String content;
 	private List<ResponseImageDto> imageList = new ArrayList<>();
-	private Long userId;
-	private String userName;
-
+	private String nickname;
 	@Builder
 	public ResponseBoardDto(Board board) {
 		this.boardId = board.getBoardId();
@@ -37,18 +36,16 @@ public class ResponseBoardDto {
 				.build();
 			imageList.add(responseImageDto);
 		}
-
-		//실제 유저 연결해야함
-		this.userId = board.getUserId();
-		this.userName = "닉네임";
+		this.nickname = board.getUser().getNickname();
 	}
 
-	public Board toEntity() {
+	public Board toEntity(User user) {
 
 		return Board.builder()
 			.boardId(boardId)
 			.title(title)
 			.content(content)
+			.user(user)
 			.build();
 	}
 }

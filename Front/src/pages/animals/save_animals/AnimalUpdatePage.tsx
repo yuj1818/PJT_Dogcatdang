@@ -9,6 +9,7 @@ import {
   countryInput,
 } from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
+import { Input, Select } from "../../../components/animalinfo/style";
 
 function AnimalUpdatePage() {
   const navigate = useNavigate();
@@ -160,7 +161,7 @@ function AnimalUpdatePage() {
                   <label className="item" htmlFor="breed">
                     품종
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="breed"
                     id="breed"
@@ -181,7 +182,7 @@ function AnimalUpdatePage() {
                             {type}
                           </option>
                         ))}
-                  </select>
+                  </Select>
                 </div>
               </div>
 
@@ -208,7 +209,7 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">성별</label>
-                  <select
+                  <Select
                     className="input"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
@@ -218,13 +219,13 @@ function AnimalUpdatePage() {
                     </option>
                     <option value="남">남</option>
                     <option value="여">여</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">추정나이</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={age}
@@ -235,7 +236,7 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">체중</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={weight}
@@ -248,7 +249,7 @@ function AnimalUpdatePage() {
                   <label className="item" htmlFor="지역">
                     지역
                   </label>
-                  <select
+                  <Select
                     className="input"
                     name="region"
                     id="region"
@@ -263,11 +264,11 @@ function AnimalUpdatePage() {
                         {pr}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item" htmlFor=""></label>
-                  <select
+                  <Select
                     className="input"
                     name="country"
                     id="country"
@@ -285,11 +286,11 @@ function AnimalUpdatePage() {
                           </option>
                         )
                       )}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item">상세주소</label>
-                  <input
+                  <Input
                     className="input"
                     type="text"
                     value={detailInfo}
@@ -300,7 +301,7 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">발견일자</label>
-                  <input
+                  <Input
                     className="input"
                     type="date"
                     value={rescueDate}
@@ -311,7 +312,7 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">중성화 여부</label>
-                  <input
+                  <Input
                     type="checkbox"
                     name="isNeutered"
                     checked={isNeuter}
@@ -322,7 +323,7 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">보호현황</label>
-                  <select
+                  <Select
                     className="input"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
@@ -334,7 +335,7 @@ function AnimalUpdatePage() {
                     <option value="입양완료">입양완료</option>
                     <option value="안락사">안락사</option>
                     <option value="자연사">자연사</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
@@ -342,7 +343,7 @@ function AnimalUpdatePage() {
                 <div className="flex flex-col gap-1">
                   <div className="box">
                     <label className="item">특징</label>
-                    <input
+                    <Input
                       className="input"
                       type="text"
                       value={feature}

@@ -71,9 +71,6 @@ public class Animal {
 	@Column(name = "state", nullable = false)
 	private State state;
 
-	@Column(name = "img_name", length = 200, nullable = false)
-	private String imgName;
-
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
@@ -108,7 +105,7 @@ public class Animal {
 	@Builder
 	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, String code, User user) {
+		State state, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
 		this.breed = breed;
@@ -120,7 +117,6 @@ public class Animal {
 		this.gender = gender;
 		this.feature = feature;
 		this.state = state;
-		this.imgName = imgName;
 		this.imgUrl = imgUrl;
 		this.code = code;
 		this.user = user;
@@ -130,7 +126,7 @@ public class Animal {
 	// null이 아닌 값만 수정한다
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, String code) {
+		State state, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;
 		}
@@ -169,10 +165,6 @@ public class Animal {
 
 		if (state != null) {
 			this.state = state;
-		}
-
-		if (imgName != null) {
-			this.imgName = imgName;
 		}
 
 		if (imgUrl != null) {

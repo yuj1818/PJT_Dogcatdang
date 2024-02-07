@@ -110,11 +110,13 @@
 //}
 package com.e202.dogcatdang.user.config;
 
+//import com.e202.dogcatdang.oauth2.handler.CustomOAuth2FailureHandler;
 import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
 import com.e202.dogcatdang.user.jwt.JWTFilter;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 import com.e202.dogcatdang.user.jwt.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -124,6 +126,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -132,16 +135,20 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private final AuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, AuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     @Bean
@@ -186,10 +193,13 @@ public class SecurityConfig {
 
         // OAuth2 로그인 설정
         http.oauth2Login(oauth2 -> oauth2
+                //.loginPage("/oauth2/authorization/")
                 .loginPage("/oauth2/oLogin")
+                //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                 .userInfoEndpoint(userInfoEndpointConfig ->
                         userInfoEndpointConfig.userService(customOAuth2UserService)
                 )
+                .failureHandler(customAuthenticationFailureHandler)
         );
 
         // JWT 필터 설정
