@@ -1,5 +1,6 @@
 package com.e202.dogcatdang.db.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +21,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
 	// animalId와 state 상태가 조건에 맞는 모든 예약 정보 가져오기
 	List<Reservation> findByAnimal_AnimalIdAndState(Long animalId, Reservation.State state);
+
+	List<Reservation> findReservationsByUserIdAndReservationTimeBetween(Long userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }
