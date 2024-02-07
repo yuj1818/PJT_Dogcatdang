@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { signUp, checkUsername, checkNickname, checkEmail } from "../../util/UserAPI";
-import { useNavigate } from "react-router-dom";
+import { signUp, checkUsername, checkNickname, checkEmail, oauthSignUp } from "../../util/UserAPI";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
+import logo from "../../assets/auth-image.png";
 
 const FormBox = styled.div`
   display: flex;
@@ -75,8 +76,20 @@ const SignUpForm = styled.form`
   }
 `
 
+interface MetaData {
+  providerId: string;
+  metaEmail: string;
+}
+
 function SignUpPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isOauth = searchParams.get('oauth');
+  const [metadata, setMetadata] = useState<MetaData>();
+
+  useEffect(() => {
+    setMetadata(JSON.parse(searchParams.get('metadata') || ""));
+  }, [isOauth])
 
   const [isOrg, setIsOrg] = useState(false);
   const [role, setRole] = useState('ROLE_USER')
@@ -97,7 +110,6 @@ function SignUpPage() {
   const [nicknameErrMsg, setNicknameErrMsg] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
   const [signUpErrMsg, setSignUpErrMsg] = useState('');
-  const isSocial = false;
 
   const selectType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsOrg(() => e.target.value === 'ROLE_SHELTER');
@@ -213,26 +225,43 @@ function SignUpPage() {
   }
 
   const onSubmit = async () => {
-    if (!isComplete) {
-      setSignUpErrMsg('중복검사 여부와 비밀번호 일치 여부를 확인해주세요');
-      return;
+    if (isOauth) {
+      if (!isValidNickname) {
+        return;
+      }
+      
+      const data = {
+        nickname,
+        phone,
+        // address,
+        providerId: metadata?.providerId,
+        metaEmail: metadata?.metaEmail
+      };
+
+      const response = await oauthSignUp(data);
+      console.log(response);
+    } else {
+      if (!isComplete) {
+        setSignUpErrMsg('중복검사 여부와 비밀번호 일치 여부를 확인해주세요');
+        return;
+      }
+  
+      const data = {
+        username,
+        role: role,
+        code: '101',
+        email,
+        password: password1,
+        nickname,
+        address,
+        phone,
+        imgName: '',
+        imgUrl: '',
+      };
+  
+      const response = await signUp(data);
+      console.log(response);
     }
-
-    const data = {
-      username: username,
-      role: role,
-      code: '101',
-      email: email,
-      password: password1,
-      nickname: nickname,
-      address: address,
-      phone: phone,
-      imgName: '',
-      imgUrl: '',
-    };
-
-    const response = await signUp(data);
-    console.log(response);
 
     navigate('/signin');
   }
@@ -242,11 +271,11 @@ function SignUpPage() {
       <Title title="회원가입" />
       <FormBox>
         <div className="img-box flex justify-center">
-          <img src="/src/assets/auth-image.png" alt="" />
+          <img src={ logo } alt="" />
         </div>
         <Line />
         <SignUpForm onSubmit={preventSubmit}>
-          { !isSocial && <div className="box">
+          { !isOauth && <div className="box">
             <label className="item" htmlFor="isOrg">회원 구분</label>
             <div className="flex items-center gap-1">
               <StyledRadioBtn type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
@@ -257,7 +286,7 @@ function SignUpPage() {
               <label htmlFor="기관">기관 회원</label>
             </div>
           </div> }
-          { !isSocial && <div className="flex flex-col gap-1">
+          { !isOauth && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="username">ID</label>
               <input className="input" type="text" id="username" name="username" onChange={handleUsername} required />
@@ -279,11 +308,11 @@ function SignUpPage() {
               { nicknameErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidNickname} >{nicknameErrMsg}</ErrMsg> }
             </div>
           </div>
-          { !isSocial && <div className="box">
+          { !isOauth && <div className="box">
             <label className="item" htmlFor="password1">비밀번호</label>
             <input className="input" type="password" id="password1" name="password1" onChange={handlePassword1} required />
           </div> }
-          { !isSocial && <div className="flex flex-col gap-1">
+          { !isOauth && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="password2">비밀번호 확인</label>
               <input className="input" type="password" id="password2" name="password2" onChange={handlePassword2} required />
@@ -293,7 +322,7 @@ function SignUpPage() {
               { passwordErrMsg && <ErrMsg className="item-err-msg" $isValid={isValidPassword} >{passwordErrMsg}</ErrMsg> }
             </div>
           </div> }
-          <div className="flex flex-col gap-1">
+          { !isOauth && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="email">이메일</label>
               <input className="input" type="email" id="email" name="email" onChange={handleEmail} required />
@@ -303,7 +332,7 @@ function SignUpPage() {
               <div className="item"></div>
               { emailErrMsg && <ErrMsg className="err-msg item-err-msg" $isValid={isValidEmail} >{emailErrMsg}</ErrMsg>} 
             </div>
-          </div>
+          </div>}
           <div className="box">
             <label className="item" htmlFor="phone-number">전화번호</label>
             <input className="input" type="text" id="phone-number" name="phone-number" onChange={handlePhone} required />

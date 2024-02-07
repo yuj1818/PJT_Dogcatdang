@@ -66,9 +66,6 @@ public class LostAnimal {
 	@Column(name = "state", nullable = false)
 	private State state;
 
-	@Column(name = "img_name", length = 200, nullable = false)
-	private String imgName;
-
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
@@ -83,7 +80,7 @@ public class LostAnimal {
 	}
 
 	public void update(AnimalType animalType, String name, String breed, Integer age, Integer weight,
-		LocalDate lostDate, String lostLocation, Gender gender, String feature, State state, String imgName,
+		LocalDate lostDate, String lostLocation, Gender gender, String feature, State state,
 		String imgUrl) {
 		if (animalType != null) {
 			this.animalType = animalType;
@@ -126,10 +123,6 @@ public class LostAnimal {
 			this.state = state;
 		}
 
-		if (imgName != null) {
-			this.imgName = imgName;
-		}
-
 		if (imgUrl != null) {
 			this.imgUrl = imgUrl;
 		}
@@ -147,7 +140,7 @@ public class LostAnimal {
 	@Builder
 	public LostAnimal(Long lostAnimalId, String name, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate lostDate, String lostLocation, Gender gender, String feature,
-		LostAnimal.State state, String imgName, String imgUrl, User user) {
+		LostAnimal.State state, String imgUrl, User user) {
 		this.lostAnimalId = lostAnimalId;
 		this.name = name;
 		this.animalType = animalType;
@@ -159,7 +152,6 @@ public class LostAnimal {
 		this.gender = gender;
 		this.feature = feature;
 		this.state = state;
-		this.imgName = imgName;
 		this.imgUrl = imgUrl;
 		this.user = user;
 	}

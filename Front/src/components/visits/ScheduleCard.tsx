@@ -58,7 +58,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData }> = ({
       </div>
       <div className="flex flex-col gap-1 items-center justify-center">
         <p className="sm-font">{reservation.state || "방문 신청"}</p>
-        <Button background="red" $paddingX={1} fontSize={0.8} marginTop={0}>
+        <Button background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
           취소
         </Button>
       </div>

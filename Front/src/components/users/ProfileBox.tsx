@@ -2,10 +2,11 @@ import styled from "styled-components";
 import { infoData } from "../../util/UserAPI";
 import KakaoMap from "./KakaoMap";
 import { useNavigate } from "react-router-dom";
+import defaultProfile from "../../assets/defaultProfile.png";
 
 const StyledBox = styled.div`
-  border: 1px solid black;
   border-radius: 15px;
+  box-shadow: 0px 4px 4px lightgrey;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -13,6 +14,7 @@ const StyledBox = styled.div`
   gap: 1rem;
   width: 100%;
   height: 30vh;
+  background-color: white;
   
   .profile-image-circle {
     border-radius: 50%;
@@ -37,7 +39,7 @@ const StyledButton = styled.button `
   background-color: black;
   border-radius: 5px;
   padding: .1rem .3rem;
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: nowrap;
 `
 
@@ -45,7 +47,7 @@ const Spacer = styled.div`
   flex-grow: .8;
 `
 
-const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
+const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, isModalOpen:boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
   
   const navigate = useNavigate();
 
@@ -60,11 +62,11 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
   return (
     <>
       <StyledBox>
-        <div className="flex gap-1">
+        <div className="flex gap-4 items-center">
           <div className="profile-image-circle">
-            <img className="profile-image" src={props.userInfo?.imgUrl || "/src/assets/defaultProfile.png"} alt="" />
+            <img className="profile-image" src={props.userInfo?.imgUrl || defaultProfile} alt="" />
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             <div className="flex gap-1">
               <p className="nickname">{props.userInfo?.nickname}</p>
               <div>{props.isMine ? <StyledButton onClick={onClickEditBtn}>정보 수정</StyledButton> : null}</div>
@@ -73,7 +75,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
             {
               props.isOrg ? 
               <>
-                <div>
+                <div className="flex flex-col gap-1">
                   <p>주소: {props.userInfo?.address}</p>
                   <p>연락처: {props.userInfo?.phone}</p>
                   <p>이메일: {props.userInfo?.email}</p>
@@ -97,7 +99,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
               </>
               :
               <>
-                <div>
+                <div className="flex flex-col gap-1">
                   <p>지역: {props.userInfo?.address}</p>
                   <p>소개글: {props.userInfo?.bio || "없음"}</p>
                 </div>
@@ -108,24 +110,8 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
             }
           </div>
         </div>
-        { props.isOrg? <KakaoMap address={props.userInfo?.address || ""} /> : <></>}
-        <Spacer />
+        { props.isOrg && !props.isModalOpen ? <KakaoMap address={props.userInfo?.address || ""} /> : <Spacer />}
       </StyledBox>
-      {
-        props.isOrg ? 
-        <div className="flex gap-1">
-          <h4>{props.userInfo?.nickname}에서 보호 중인 동물</h4>
-          { props.isMine ? <StyledButton>보호 동물 관리</StyledButton> : null }
-        </div>
-        :
-        <div>
-          <div className="flex gap-3">
-            <h4>관심 동물</h4>
-            <h4>입양 근황</h4>
-            <h4>입양 신청 내역</h4>
-          </div>
-        </div>
-      }
     </>
   )
 }

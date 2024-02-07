@@ -20,7 +20,6 @@ function AnimalFormPage() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
@@ -28,6 +27,8 @@ function AnimalFormPage() {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
+  // const [age, setAge] = React.useState<string>("");
+  // const [weight, setWeight] = React.useState<string>("");
   const [rescueDate, setRescueDate] = useState("");
   const [isNeuter, setIsNeuter] = useState(false);
   const [feature, setFeature] = useState("");
@@ -74,7 +75,6 @@ function AnimalFormPage() {
       gender: gender,
       feature: feature,
       state: state,
-      imgName: imgName,
       imgUrl: imgUrl,
     };
 
@@ -99,6 +99,31 @@ function AnimalFormPage() {
     }
   };
 
+  // 함수: 입력된 값이 숫자인지 확인
+  // const isNumericInput = (key: string): boolean => {
+  //   return (
+  //     (key >= "0" && key <= "9") ||
+  //     key === "Backspace" ||
+  //     key === "Tab" ||
+  //     key === "ArrowLeft" ||
+  //     key === "ArrowRight" ||
+  //     key === "Delete" ||
+  //     key === "."
+  //   );
+  // };
+
+  // 함수: 입력값이 숫자가 아닌 경우 이벤트 취소
+  // const handleNumericInput = (
+  //   e: React.KeyboardEvent<HTMLInputElement>,
+  //   setValue: React.Dispatch<React.SetStateAction<string>>
+  // ): void => {
+  //   const inputKey = e.key;
+  //   if (!isNumericInput(inputKey)) {
+  //     e.preventDefault();
+  //   } else {
+  //     setValue(e.currentTarget.value);
+  //   }
+  // };
   return (
     <>
       <h1 style={{ fontSize: "2em", fontWeight: "bold" }}>보호 동물 등록</h1>
@@ -199,16 +224,6 @@ function AnimalFormPage() {
 
               <div>
                 <label>
-                  이미지이름 :
-                  <input
-                    type="text"
-                    value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
                   이미지URL :
                   <input
                     type="text"
@@ -243,6 +258,7 @@ function AnimalFormPage() {
                     type="text"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
+                    // onKeyPress={(e) => handleNumericInput(e, setAge)}
                   />
                 </div>
               </div>
@@ -252,9 +268,10 @@ function AnimalFormPage() {
                   <label className="item">체중</label>
                   <Input
                     className="input"
-                    type="text"
+                    type="number"
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
+                    // onKeyPress={(e) => handleNumericInput(e, setWeight)}
                   />
                 </div>
               </div>

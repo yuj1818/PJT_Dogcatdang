@@ -23,4 +23,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	List<Reservation> findByAnimal_AnimalIdAndState(Long animalId, Reservation.State state);
 
 	List<Reservation> findReservationsByUserIdAndReservationTimeBetween(Long userId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+	// List<Reservation> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime, LocalDateTime endDateTime, Reservation.State state);
 }

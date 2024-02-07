@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Cookies } from "react-cookie";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { lostUpdate } from "../../../util/LostAPI";
 import {
   dogInput,
@@ -14,24 +14,26 @@ import { Input, Select } from "../../../components/animalinfo/style";
 function LostAnimalUpdatePage() {
   const navigate = useNavigate();
   const { animalID } = useParams() as { animalID: string };
-
+  const { state } = useLocation();
   const cookie = new Cookies();
 
+
+  console.log(state)
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
-  const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
-  const [imgUrl, setImgUrl] = useState("");
+  const [loststate, setLostState] = useState("");
+  const [imgName, setImgName] = useState(state.imgName ||"");
+  const [imgUrl, setImgUrl] = useState(state.imgUrl || "");
   const [animalType, setAnimalType] = useState("강아지");
-  const [breed, setBreed] = useState("");
+  const [breed, setBreed] = useState(state.breed ||"");
 
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [lostDate, setLostDate] = useState("");
-  const [name, setName] = useState("");
-  const [feature, setFeature] = useState("");
+  const [gender, setGender] = useState(state.gender ||"");
+  const [age, setAge] = useState(state.age || "");
+  const [weight, setWeight] = useState(state.weight || "");
+  const [lostDate, setLostDate] = useState(state.lostDate || "");
+  const [name, setName] = useState(state.name || "");
+  const [feature, setFeature] = useState(state.feature || "");
 
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
@@ -71,7 +73,7 @@ function LostAnimalUpdatePage() {
       name: name,
       gender: gender,
       feature: feature,
-      state: state,
+      state: loststate,
       imgName: imgName,
       imgUrl: imgUrl,
     };
@@ -327,8 +329,8 @@ function LostAnimalUpdatePage() {
                   <label className="item">실종현황</label>
                   <Select
                     className="input"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
+                    value={loststate}
+                    onChange={(e) => setLostState(e.target.value)}
                   >
                     <option value="" disabled hidden>
                       실종현황
