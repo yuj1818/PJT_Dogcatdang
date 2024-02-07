@@ -1,27 +1,21 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
+import AWS from "aws-sdk";
 
 import { queryClient } from "../../util/tanstackQuery";
-import { requestArticle } from "../../util/articleAPI";
+import { getUploadURL, requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
 import { Button, Input } from "../common/Design";
+import axios from "axios";
 
 // -----------------------reat-quill--------------------------------------------------------------
-const MODULES = {
-  toolbar: [
-    [{ header: [1, 2, 3, 4, false] }],
-    [{ color: [] }, { align: [] }],
-    ["bold", "italic", "underline", "strike"],
-    ["link", "image"],
-  ],
-};
-
 const FORMATS = [
   "header",
   "bold",
@@ -59,7 +53,6 @@ class BlockImage extends CustomImage {
 Quill.register(BlockImage, true);
 
 // ---------------------------------style------------------------------------------------------
-
 const Label = tw.label`
  text-lg font-bold text-gray-800 mb-2 block mt-8
 `;
@@ -81,6 +74,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
   const [dirtyContent, setDirtyContent] = useState(content ?? "");
   const [preViewModalIsOpen, setPreViewModalIsOpen] = useState(false);
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
+  const quillRef = useRef<ReactQuill>();
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: requestArticle,
@@ -92,7 +86,62 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         navigate("/articles/1");
       }
     },
+    onError: () => {
+      setAlertModalIsOpen(true);
+    },
   });
+
+  // ------------------------imageHandler------------------------------------------------------
+  const imageHandler = async () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.addEventListener("change", async () => {
+      const file = input.files?.[0];
+      try {
+        const uploadURL = await getUploadURL();
+        // const IMG_URL = await upload.promise().then((res) => res.Location);
+
+        const IMG_URL = await axios
+          .put(uploadURL, file, {
+            headers: {
+              "Content-Type": "image/png",
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        const editor = quillRef?.current?.getEditor();
+        if (editor) {
+          const range = editor.getSelection();
+          editor.insertEmbed(range!.index, "image", IMG_URL);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  const MODULES = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, false] }],
+          [{ color: [] }, { align: [] }],
+          ["bold", "italic", "underline", "strike"],
+          ["link", "image"],
+        ],
+        handlers: {
+          image: imageHandler,
+        },
+      },
+    }),
+    []
+  );
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
@@ -118,7 +167,6 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
       data,
       method: boardId ? "PUT" : "POST",
     });
-    setAlertModalIsOpen(() => isError);
   };
 
   return (
@@ -137,26 +185,33 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
           closeModal={closeArletModal}
         />
       )}
-      <div>
-        <Label htmlFor="title">제목</Label>
-        <Input
-          id="title"
-          type="text"
-          value={articleTitle}
-          onChange={handleTitleChange}
-        />
-        <Label htmlFor="content">내용</Label>
-        <ReactQuill
-          value={dirtyContent}
-          id="content"
-          className="w-full"
-          style={{ minHeight: "40vh", height: "300px", marginBottom: "50px" }}
-          theme="snow"
-          modules={MODULES}
-          formats={FORMATS}
-          onChange={setDirtyContent}
-        />
-      </div>
+
+      <Label htmlFor="title">제목</Label>
+      <Input
+        id="title"
+        type="text"
+        value={articleTitle}
+        onChange={handleTitleChange}
+      />
+      <Label htmlFor="content">내용</Label>
+      <ReactQuill
+        ref={(element) => {
+          if (element != null) {
+            quillRef.current = element;
+          }
+        }}
+        style={{
+          backgroundColor: "#fff",
+        }}
+        value={dirtyContent}
+        id="content"
+        className="w-full"
+        theme="snow"
+        modules={MODULES}
+        formats={FORMATS}
+        onChange={setDirtyContent}
+      />
+
       {isPending ? (
         <LoadingOrError isLoading={isPending} size={32} />
       ) : (

@@ -3,7 +3,6 @@ import { AxiosError } from "axios";
 import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
-// import { imageHandler } from "./imageHandler";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
@@ -44,7 +43,6 @@ export const requestArticle = async ({
   const token = cookie.get("U_ID");
   const URL = "api/boards";
   let response;
-  let proccesedData;
   if (data) {
     if (!data.title.trim()) {
       const error = new Error();
@@ -59,9 +57,6 @@ export const requestArticle = async ({
       error.message = "내용을 입력하세요";
       throw error;
     }
-    // const [content, thumnailImg] = await imageHandler(data.content);
-    // proccesedData = { ...data, content, thumnailImg };
-    proccesedData = data;
   }
 
   try {
@@ -77,7 +72,7 @@ export const requestArticle = async ({
     } else if (method === "POST") {
       if (data?.isSaved) {
         // 등록
-        response = await API.post(URL, proccesedData, {
+        response = await API.post(URL, data, {
           signal,
           method: "POST",
           headers: {
@@ -85,7 +80,7 @@ export const requestArticle = async ({
           },
         });
       } else {
-        response = await API.post(`${URL}/temporary`, proccesedData, {
+        response = await API.post(`${URL}/temporary`, data, {
           signal,
           method: "POST",
           headers: {
@@ -95,7 +90,7 @@ export const requestArticle = async ({
       }
     } else if (method === "PUT") {
       // 수정
-      response = await API.put(URL + "/" + data!.boardId!, proccesedData, {
+      response = await API.put(URL + "/" + data!.boardId!, data, {
         signal,
         method: "POST",
         headers: {
@@ -198,4 +193,18 @@ export const requestComment = async ({
   } catch (error) {
     handleAxiosError(error as AxiosError);
   }
+};
+
+export const getUploadURL = async () => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  const URL = "api/images/presigned/upload";
+  const response = await API.get(URL, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data.url as string;
 };

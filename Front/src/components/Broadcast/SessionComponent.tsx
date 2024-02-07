@@ -25,6 +25,7 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   session,
 }) => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  const [end, setEnd] = useState(false);
 
   useEffect(() => {
     if (subscriber) {
@@ -35,6 +36,7 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   useEffect(() => {
     session.on("streamDestroyed", () => {
       setSubscribers([]);
+      setEnd(true);
     });
   }, []);
 
@@ -55,6 +57,7 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
         {subscribers.map((subscriberItem, idx) => (
           <MyVideo key={idx} streamManager={subscriberItem} />
         ))}
+        {end && <p>방송이 종료되었습니다.</p>}
         <Chat
           // onForeceLeave={handleForcedLeave}
           subscribers={subscribers}
