@@ -2,6 +2,7 @@ package com.e202.dogcatdang.reservation.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,15 @@ public class ReservationShelterController {
 	private final ReservationService reservationService;
 	private final UserProfileService userService;
 
+
+
 	// 기관 회원 기준
+	// 기관 회원의 예약 정보 상세 조회
+	// @GetMapping("/{shelterId}/{reservationId}")
+	// public
+
+	// 기관 회원의 예약 정보 전체 조회
+
 	// 기관 회원의 자신에게 들어온 방문 예약 상태 변경(수정 - update)
 	// 변경된 state만 반환하도록 만듦
 	@PutMapping("/{shelterId}/{reservationId}")

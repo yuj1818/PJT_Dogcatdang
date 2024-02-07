@@ -86,16 +86,7 @@ public class ReservationController {
 		}
 	}
 
-	// 일반 회원이 본인의 예약 정보 전체 조회
-	@GetMapping("")
-	public ResponseEntity<List<ResponseReservationDto>> findAllReservations(@RequestHeader("Authorization") String token) {
-		// 토큰에서 사용자 아이디(pk) 추출
-		Long loginUserId = jwtUtil.getUserId(token.substring(7));
-		List<ResponseReservationDto> reservations = reservationService.findAllReservationsById(loginUserId);
-		return ResponseEntity.ok(reservations);
-	}
-
-	// 일반 회원이 본인의 특정한 예약 1개 정보 상세 조회
+	// 일반 회원이 예약 정보 상세 조회
 	@GetMapping("/{reservationId}")
 	public ResponseEntity<ResponseReservationDto> findReservation(@PathVariable long reservationId, @RequestHeader("Authorization") String token) {
 
@@ -113,6 +104,17 @@ public class ReservationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+	// 일반 회원의 예약 정보 전체 조회
+	@GetMapping("")
+	public ResponseEntity<List<ResponseReservationDto>> findAllReservations(@RequestHeader("Authorization") String token) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		List<ResponseReservationDto> reservations = reservationService.findAllReservationsById(loginUserId);
+		return ResponseEntity.ok(reservations);
+	}
+
+
 
 
 
