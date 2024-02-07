@@ -8,6 +8,7 @@ import {
   regionInput,
   countryInput,
 } from "../../../components/animalinfo/Input";
+import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 
 type AnimalType = {
   animalId: number;
@@ -90,7 +91,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   };
 
   const handleSearch = () => {
-
     // 필터링을 위한 로직을 추가
     const filteredData = animals.filter((animal) => {
       return (
@@ -151,7 +151,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
           />
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="region"
             id="region"
             value={region}
@@ -166,10 +166,10 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
                 {pr}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="country"
             id="country"
             value={country}
@@ -185,13 +185,13 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
                   {ct}
                 </option>
               ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
           <option value="" disabled hidden>
             성별
           </option>
-          <select
+          <Select1
             name="gender"
             id="gender"
             value={gender}
@@ -206,10 +206,10 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
                 {ge}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
-          <input
+          <Input
             type="text"
             id="shelterName"
             name="shelterName"

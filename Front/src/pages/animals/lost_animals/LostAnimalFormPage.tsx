@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { lost_regist } from "../../../util/LostAPI";
 import { Cookies } from "react-cookie";
-import { dogInput, catInput, regionInput, countryInput } from "../../../components/animalinfo/Input";
+import {
+  dogInput,
+  catInput,
+  regionInput,
+  countryInput,
+} from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
+import { Input, Select } from "../../../components/animalinfo/style";
 
 function LostAnimalFormPage() {
   const navigate = useNavigate();
@@ -71,7 +77,7 @@ function LostAnimalFormPage() {
     setRescueDate(e.target.value);
   };
 
-  const [selectedImage, setSelectedImage] = useState<null | string>(null);;
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -89,30 +95,37 @@ function LostAnimalFormPage() {
 
   return (
     <>
-      <h1 style={{ fontSize: '2em', fontWeight: 'bold' }}>실종 동물 등록</h1>
+      <h1 style={{ fontSize: "2em", fontWeight: "bold" }}>실종 동물 등록</h1>
       <hr />
       <div className="flex justify-center h-screen gap-5">
         <RegistForm onSubmit={handleRegistration}>
           <div className="flex">
-            <div className="flex"
+            <div
+              className="flex"
               style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
+                flexDirection: "column",
+                justifyContent: "center",
                 // marginBottom:'20px'
-              }}>
+              }}
+            >
               <div>
-                <label>
-                  이미지
-                </label>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
+                <label>이미지</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
               </div>
               {selectedImage && (
-                <div style={{ marginTop: '1.5rem' }}>
-                  <img src={selectedImage} alt="미리보기"
+                <div style={{ marginTop: "1.5rem" }}>
+                  <img
+                    src={selectedImage}
+                    alt="미리보기"
                     style={{
                       maxWidth: "100%",
-                      maxHeight: "300px"
-                    }} />
+                      maxHeight: "300px",
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -140,33 +153,38 @@ function LostAnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item" htmlFor="breed">품종</label>
-                  <select className="input" name="breed" id="breed" value={breed} onChange={handleBreed}>
+                  <label className="item" htmlFor="breed">
+                    품종
+                  </label>
+                  <Select
+                    className="input"
+                    name="breed"
+                    id="breed"
+                    value={breed}
+                    onChange={handleBreed}
+                  >
                     <option value="" disabled hidden>
                       품종 선택
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                        <option key={index} value={type.replace(/\s/g, "_")}>
-                          {type}
-                        </option>
-                      ))
+                          <option key={index} value={type.replace(/\s/g, "_")}>
+                            {type}
+                          </option>
+                        ))
                       : catInput.map((type, index) => (
-                        <option key={index} value={type.replace(/\s/g, "_")}>
-                          {type}
-                        </option>
-                      ))}
-                  </select>
+                          <option key={index} value={type.replace(/\s/g, "_")}>
+                            {type}
+                          </option>
+                        ))}
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    이름
-
-                  </label>
-                  <input
+                  <label className="item">이름</label>
+                  <Input
                     className="input"
                     type="text"
                     value={name}
@@ -197,25 +215,25 @@ function LostAnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    성별
-                  </label>
-                  <select className="input" value={gender} onChange={(e) => setGender(e.target.value)}>
+                  <label className="item">성별</label>
+                  <Select
+                    className="input"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
                     <option value="" disabled hidden>
                       성별 선택
                     </option>
                     <option value="남">남</option>
                     <option value="여">여</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    나이
-                  </label>
-                  <input
+                  <label className="item">나이</label>
+                  <Input
                     className="input"
                     type="text"
                     value={age}
@@ -226,10 +244,8 @@ function LostAnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    체중
-                  </label>
-                  <input
+                  <label className="item">체중</label>
+                  <Input
                     className="input"
                     type="text"
                     value={weight}
@@ -240,8 +256,10 @@ function LostAnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item" htmlFor="지역">지역</label>
-                  <select
+                  <label className="item" htmlFor="지역">
+                    지역
+                  </label>
+                  <Select
                     className="input"
                     name="region"
                     id="region"
@@ -256,11 +274,11 @@ function LostAnimalFormPage() {
                         {pr}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
                   <label className="item" htmlFor=""></label>
-                  <select
+                  <Select
                     className="input"
                     name="country"
                     id="country"
@@ -278,47 +296,52 @@ function LostAnimalFormPage() {
                           </option>
                         )
                       )}
-                  </select>
+                  </Select>
                 </div>
                 <div className="box">
-
-                  <label className="item">
-                    상세주소
-                  </label>
-                  <input className="input" type="text" value={detailInfo} onChange={handleDetail} />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <div className="box">
-                  <label className="item">
-                    발견일자
-                  </label>
-                  <input className="input" type="date" value={rescueDate} onChange={handleRescueDate} />
+                  <label className="item">상세주소</label>
+                  <Input
+                    className="input"
+                    type="text"
+                    value={detailInfo}
+                    onChange={handleDetail}
+                  />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    실종현황
-                  </label>
-                  <select className="input" value={state} onChange={(e) => setState(e.target.value)}>
+                  <label className="item">발견일자</label>
+                  <Input
+                    className="input"
+                    type="date"
+                    value={rescueDate}
+                    onChange={handleRescueDate}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <div className="box">
+                  <label className="item">실종현황</label>
+                  <Select
+                    className="input"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                  >
                     <option value="" disabled hidden>
                       실종현황
                     </option>
                     <option value="완료">완료</option>
                     <option value="실종">실종</option>
-                  </select>
+                  </Select>
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">
-                    특징
-                  </label>
-                  <input
+                  <label className="item">특징</label>
+                  <Input
                     className="input"
                     type="text"
                     value={feature}

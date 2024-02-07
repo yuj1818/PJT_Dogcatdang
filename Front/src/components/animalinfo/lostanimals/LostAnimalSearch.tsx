@@ -8,6 +8,7 @@ import {
   regionInput,
   countryInput,
 } from "../../../components/animalinfo/Input";
+import { Select as Select1 } from "../../../components/animalinfo/style";
 
 interface LostAnimalType {
   animalId: number;
@@ -143,7 +144,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
           />
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="region"
             id="region"
             value={region}
@@ -158,10 +159,10 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 {pr}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="country"
             id="country"
             value={country}
@@ -177,13 +178,13 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                   {ct}
                 </option>
               ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
           <option value="" disabled hidden>
             성별
           </option>
-          <select
+          <Select1
             name="gender"
             id="gender"
             value={gender}
@@ -198,7 +199,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 {ge}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
           <button
