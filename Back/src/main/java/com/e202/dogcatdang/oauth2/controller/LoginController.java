@@ -55,7 +55,7 @@ public class LoginController {
 
     @GetMapping("/oauth2/failure")
     public String toJoinPage() {
-        return "redirect:http://localhost:5173/signUp";
+        return "redirect:http://localhost:5173/signUp?oauth=true";
 
     }
 //
