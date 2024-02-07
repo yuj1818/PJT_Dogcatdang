@@ -104,7 +104,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         <Button 
           onClick={onClickCheckBtn} 
           background="black"
-          paddingX={1}
+          $paddingX={1}
         >
           확인
         </Button>

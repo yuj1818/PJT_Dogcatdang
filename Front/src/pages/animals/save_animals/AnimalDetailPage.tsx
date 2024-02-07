@@ -125,8 +125,8 @@ function AnimalDetailPage() {
       <div className="flex justify-between">
         <Button
           background="black"
-          paddingX={1}
-          paddingY={0.5}
+          $paddingX={1}
+          $paddingY={0.5}
           onClick={handleBack}
         >
           전체 글 목록
@@ -134,16 +134,16 @@ function AnimalDetailPage() {
         {
           isOrg ? 
           <Button
-            paddingX={1}
-            paddingY={0.5}
+            $paddingX={1}
+            $paddingY={0.5}
             onClick={handleUpdate}
           >
             수정
           </Button>
           :
           <Button 
-            paddingX={1} 
-            paddingY={0.5} 
+            $paddingX={1} 
+            $paddingY={0.5} 
             onClick={handleVisit}
           >
             방문 예약

@@ -49,7 +49,7 @@ function ProfilePage() {
         isOrg ? 
         <div className="flex gap-1 items-center">
           <h4>{userInfo?.nickname}에서 보호 중인 동물</h4>
-          { isMine && <Button marginTop={0} paddingX={.3} paddingY={.1} fontSize={.75} fontFamily="Pretendard-400" background="black">보호 동물 관리</Button> }
+          { isMine && <Button $marginTop={0} $paddingX={.3} $paddingY={.1} $fontSize={.75} $fontFamily="Pretendard-400" background="black">보호 동물 관리</Button> }
         </div>
         :
         <div>

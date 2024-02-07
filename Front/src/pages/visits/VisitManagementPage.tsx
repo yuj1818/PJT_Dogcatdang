@@ -86,10 +86,6 @@ const StyledCalendar = styled.div`
   }
 `
 
-type ValuePiece = Date | null;
-
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 export interface reservationData {
   age: number;
   breed: string;
@@ -101,23 +97,21 @@ export interface reservationData {
 
 function VisitManagementPage() {
   // const isOrg = org();
-  const [selectedDate, setSelectedDate] = useState<Value>(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [reservations, setReservations] = useState([]);
-  // const [selectedReservations, setSelectedReservations] = useState([]);
 
-  const handleDateChange = (value: Value) => {
+  const handleDateChange = (value: any) => {
     setSelectedDate(value);
   };
 
   const getReservationData = async() => {
-    const response = await getReservations();
+    const response = await getReservations(moment(selectedDate).format("YYYY-MM-DD"));
     setReservations(response);
-    // setSelectedReservations(response.filter((reservation: reservationData) => new Date(reservation.reservationTime) == selectedDate));
   };
 
   useEffect(() => {
     getReservationData();
-  }, []);
+  }, [selectedDate]);
 
   return (
     <div className="flex flex-col gap-8">
