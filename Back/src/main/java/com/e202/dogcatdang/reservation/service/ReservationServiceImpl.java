@@ -17,6 +17,7 @@ import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 import lombok.AllArgsConstructor;
@@ -87,6 +88,8 @@ public class ReservationServiceImpl implements ReservationService {
 			.collect(Collectors.toList());
 	}
 
+
+	// 기관 회원의 방문 예약 승인/거절 (상태 변경)
 	@Transactional
 	@Override
 	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
@@ -110,6 +113,16 @@ public class ReservationServiceImpl implements ReservationService {
 
 	}
 
+	// 기관 회원의 들어온 예약 상세 조회
+	@Override
+	public ResponseShelterDto findShelterReservation(long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+		if (reservation != null) {
+			return new ResponseShelterDto(reservation);
+		} else {
+			return null;
+		}
+	}
 
 
 }
