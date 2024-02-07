@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserInfo } from "../../util/UserAPI";
+import { getUserInfo, infoData } from "../../util/UserAPI";
 import ProfileBox from "../../components/users/ProfileBox";
 import styled from "styled-components";
 import ProfileEditModal from "../../components/users/ProfileEditModal";
-import { infoData } from "../../util/UserAPI";
 
 const Title = styled.p`
   font-size: 2rem;

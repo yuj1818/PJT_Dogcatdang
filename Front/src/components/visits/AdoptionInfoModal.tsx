@@ -98,7 +98,13 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         </div>
       </div>
       <div className="flex justify-center my-8">
-        <Button onClick={onClickCheckBtn} background="black">확인</Button>
+        <Button 
+          onClick={onClickCheckBtn} 
+          background="black"
+          paddingX={1}
+        >
+          확인
+        </Button>
       </div>
     </ReactModal>
   );

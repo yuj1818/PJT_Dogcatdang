@@ -74,7 +74,7 @@ function AnimalFormPage() {
       feature: feature,
       state: state,
       imgName: imgName,
-      imgUrl: imgUrl,
+      imgUrl: imgUrl
     };
 
     const response = await regist(data, token);

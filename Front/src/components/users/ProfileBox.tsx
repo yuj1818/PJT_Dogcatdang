@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { infoData } from "../../util/UserAPI";
 import KakaoMap from "./KakaoMap";
+import { useNavigate } from "react-router-dom";
 
 const StyledBox = styled.div`
   border: 1px solid black;
@@ -46,9 +47,15 @@ const Spacer = styled.div`
 
 const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
   
+  const navigate = useNavigate();
+
   const onClickEditBtn = () => {
     props.openModal((prev) => !prev);
   };
+
+  const goVisitManagement = () => {
+    navigate(`/profile/${props.userInfo?.id}/visit`);
+  }
 
   return (
     <>
@@ -95,7 +102,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   <p>소개글: {props.userInfo?.bio || "없음"}</p>
                 </div>
                 <div>
-                  {props.isMine ? <StyledButton>방문 일정</StyledButton> : null }
+                  {props.isMine ? <StyledButton onClick={goVisitManagement}>방문 일정</StyledButton> : null }
                 </div>
               </>
             }
