@@ -1,11 +1,16 @@
 package com.e202.dogcatdang.reservation.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.hibernate.Hibernate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -39,6 +45,7 @@ public class ReservationController {
 
 	// 일반 회원 기준
 	// 일반 회원의 방문 예약 신청 - create
+	@Transactional
 	@PostMapping("/{animalId}")
 	public ResponseEntity<String> createReservation(@PathVariable long animalId, @RequestHeader("Authorization") String token, @RequestBody
 		RequestReservationDto reservationDto) {
@@ -57,6 +64,7 @@ public class ReservationController {
 	}
 
 	// 일반 회원의 방문 예약 삭제 - delete
+	@Transactional
 	@DeleteMapping("/{reservationId}")
 	public ResponseEntity<String> deleteReservation(@PathVariable long reservationId, @RequestHeader("Authorization") String token) {
 
@@ -86,7 +94,35 @@ public class ReservationController {
 		}
 	}
 
-	// 일반 회원이 예약 정보 상세 조회
+	// 일반 회원이 본인의 예약 정보 전체 조회
+	@Transactional
+	@GetMapping("")
+	public ResponseEntity<List<ResponseReservationDto>> findAllReservations(@RequestHeader("Authorization") String token) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		List<ResponseReservationDto> reservations = reservationService.findAllReservationsById(loginUserId);
+		return ResponseEntity.ok(reservations);
+	}
+
+	// 예약 정보를 일별로 전달
+	@Transactional
+	@GetMapping("/by-date")
+	public ResponseEntity<List<ResponseReservationDto>> findReservationsByDate(
+		@RequestHeader("Authorization") String token,
+		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		// 시작일자와 종료일자를 LocalDateTime으로 변환
+		LocalDateTime startDateTime = date.atStartOfDay();
+		LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusNanos(1);
+
+		List<ResponseReservationDto> reservations = reservationService.findReservationsByDate(loginUserId, startDateTime, endDateTime);
+		return ResponseEntity.ok(reservations);
+	}
+
+	// 일반 회원이 본인의 특정한 예약 1개 정보 상세 조회
+	@Transactional
 	@GetMapping("/{reservationId}")
 	public ResponseEntity<ResponseReservationDto> findReservation(@PathVariable long reservationId, @RequestHeader("Authorization") String token) {
 

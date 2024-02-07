@@ -1,5 +1,6 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -73,7 +74,19 @@ public class ReservationServiceImpl implements ReservationService {
 			.collect(Collectors.toList());
 	}
 
-	// 기관 회원의 예약 상태 승인/거절 (상태 변경)
+	// 일별 예약 조회
+	@Override
+	public List<ResponseReservationDto> findReservationsByDate(Long userId, LocalDateTime startDateTime,
+		LocalDateTime endDateTime) {
+		// 현재 로그인한 사용자의 특정 날짜에 대한 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findReservationsByUserIdAndReservationTimeBetween(userId, startDateTime, endDateTime);
+
+		// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
+		return reservations.stream()
+			.map(ResponseReservationDto::new)
+			.collect(Collectors.toList());
+	}
+
 	@Transactional
 	@Override
 	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
@@ -96,5 +109,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 
 	}
+
+
 
 }
