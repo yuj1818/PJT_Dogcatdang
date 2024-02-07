@@ -32,15 +32,20 @@ const CommentList = ({ boardId }: Props) => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
+
+  console.log(data);
   return (
     <Container>
       {(isLoading || isError) && (
         <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       )}
-      {data &&
+      {data && data.length > 0 ? (
         data.map((comment: CommentInterface) => (
           <Comment key={comment.commentId} boardId={boardId} {...comment} />
-        ))}
+        ))
+      ) : (
+        <p>작성된 댓글이 없습니다. 첫 번째 댓글을 작성해 보세요!</p>
+      )}
     </Container>
   );
 };

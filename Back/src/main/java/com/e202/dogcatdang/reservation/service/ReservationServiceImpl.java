@@ -1,5 +1,6 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 import lombok.AllArgsConstructor;
@@ -73,7 +75,21 @@ public class ReservationServiceImpl implements ReservationService {
 			.collect(Collectors.toList());
 	}
 
-	// 기관 회원의 예약 상태 승인/거절 (상태 변경)
+	// 일별 예약 조회
+	@Override
+	public List<ResponseReservationDto> findReservationsByDate(Long userId, LocalDateTime startDateTime,
+		LocalDateTime endDateTime) {
+		// 현재 로그인한 사용자의 특정 날짜에 대한 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findReservationsByUserIdAndReservationTimeBetween(userId, startDateTime, endDateTime);
+
+		// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
+		return reservations.stream()
+			.map(ResponseReservationDto::new)
+			.collect(Collectors.toList());
+	}
+
+
+	// 기관 회원의 방문 예약 승인/거절 (상태 변경)
 	@Transactional
 	@Override
 	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
@@ -96,5 +112,17 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 
 	}
+
+	// 기관 회원의 들어온 예약 상세 조회
+	@Override
+	public ResponseShelterDto findShelterReservation(long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+		if (reservation != null) {
+			return new ResponseShelterDto(reservation);
+		} else {
+			return null;
+		}
+	}
+
 
 }

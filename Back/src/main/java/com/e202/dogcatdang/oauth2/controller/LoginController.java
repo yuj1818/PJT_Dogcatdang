@@ -52,12 +52,13 @@ public class LoginController {
     }
 
 
-
-    @GetMapping("/oauth2/failure")
-    public String toJoinPage() {
-        return "redirect:http://localhost:5173/signUp";
-
-    }
+//
+//    @GetMapping("/oauth2/failure")
+//    public String toJoinPage() {
+//        System.out.println("localhost 5173 여기로 가는겨?");
+//        return "redirect:http://localhost:5173/signup?oauth=true";
+//
+//    }
 //
 //    @PostMapping("/oauth2/join")
 //    public ResponseEntity<String> registerUser(@RequestBody OauthUserDTO oauthUserDTO) {
