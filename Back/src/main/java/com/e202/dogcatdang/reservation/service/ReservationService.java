@@ -1,5 +1,6 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,4 +21,6 @@ public interface ReservationService {
 	List<ResponseReservationDto> findAllReservationsById(Long loginUserId);
 
 	ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId, RequestReservationDto reservationDto);
+
+	List<ResponseReservationDto> findReservationsByDate(Long loginUserId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 }
