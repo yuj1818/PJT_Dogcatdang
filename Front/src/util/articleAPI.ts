@@ -64,7 +64,7 @@ export const requestArticle = async ({
       // 리스트 조회 + 상세 조회
       response = await API.get(boardId ? `${URL}/${boardId}` : URL, {
         signal,
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: token,
         },
@@ -92,7 +92,7 @@ export const requestArticle = async ({
       // 수정
       response = await API.put(URL + "/" + data!.boardId!, data, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -101,7 +101,7 @@ export const requestArticle = async ({
       // 삭제
       response = await API.delete(`${URL}/${boardId}`, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -110,7 +110,7 @@ export const requestArticle = async ({
       // 임시저장 삭제
       response = await API.delete(`${URL}/${boardId}/temporary`, {
         signal,
-        method: "POST",
+        method: "DELETE",
         headers: {
           Authorization: token,
         },
@@ -150,7 +150,7 @@ export const requestComment = async ({
     if (method === "GET") {
       response = await API.get(URL, {
         signal,
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: token,
         },
@@ -173,7 +173,7 @@ export const requestComment = async ({
       const requestbody = { content: content, boardId, commentId };
       response = await API.put(URL + "/" + boardId, requestbody, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -181,7 +181,7 @@ export const requestComment = async ({
     } else if (method === "DELETE") {
       response = await API.delete(URL + "/" + commentId, {
         signal,
-        method: "POST",
+        method: "DELETE",
         headers: {
           Authorization: token,
         },
@@ -195,13 +195,14 @@ export const requestComment = async ({
   }
 };
 
-export const getUploadURL = async () => {
+export const getUploadURL = async (filename: string) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
   const URL = "api/images/presigned/upload";
   const response = await API.get(URL, {
-    method: "POST",
+    method: "GET",
+    params: { filename },
     headers: {
       Authorization: token,
     },

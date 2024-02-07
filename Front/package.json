@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
+    "react-image-file-resizer": "^0.4.8",
     "react-kakao-maps-sdk": "^1.1.26",
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
@@ -55,5 +56,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   },
-  "proxy": ["http://localhost:8084", "https://dog.ceo/api/breeds/image/random"]
+  "proxy": [
+    "http://localhost:8084",
+    "https://dog.ceo/api/breeds/image/random"
+  ]
 }

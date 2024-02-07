@@ -5,8 +5,6 @@ interface buttonInterface {
   color?: string;
   fontSize?: number;
   height?: number;
-  $marginTop?: number;
-  $padding?: string;
   width?: number;
   marginTop?: number;
   paddingX?: number;
@@ -18,11 +16,8 @@ export const Button = styled.button<buttonInterface>`
   border-radius: 5px;
   background-color: ${(props) => props.background || "#FF8331"};
   color: ${(props) => props.color || "white"};
-  font-size: ${(props) => `${props.fontSize}rem` || "16px"};
-  padding: ${(props) => `${props.$padding}` || "0.2rem 0.4rem"};
   font-size: ${(props) => `${props.fontSize || 1}rem`};
-  padding: ${(props) => `${props.paddingY || 0.2}rem`}
-    ${(props) => `${props.paddingX || 0.4}rem`};
+  padding: ${(props) => `${props.paddingY || 0.2}rem`}${(props) => ` ${props.paddingX || 0.4}rem`};
   white-space: nowrap;
   height: ${(props) => (props.height ? `${props.height}rem` : "auto")};
   width: ${(props) => (props.width ? `${props.width}rem` : "auto")};
