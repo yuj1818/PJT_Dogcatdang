@@ -59,7 +59,7 @@ const Page4 = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-top: 50px;
   align-items: center;
   font-size: 50px;
   white-space: pre-line;
@@ -71,6 +71,13 @@ const Button = styled.button`
   border-radius: 10px;
   font-size: 25px;
 `;
+
+const LeftinLeftside = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height:600px;
+`
 
 function AboutDogCatDang() {
   const DIVIDER_HEIGHT = 5;
@@ -90,9 +97,9 @@ function AboutDogCatDang() {
   const gotoMung = () => {
     navigate("/mung");
   };
-  const gotoVisited = () => {
-    navigate("/mung");
-  };
+  // const gotoVisited = () => {
+  //   navigate("/mung");
+  // };
   const gotoArticle = () => {
     navigate("/articles/1");
   };
@@ -223,6 +230,8 @@ function AboutDogCatDang() {
       </Page2>
       <Page3>
         <Leftside>
+          <LeftinLeftside>
+            <div style={{textAlign:'center'}}>
           <div>스트리밍 서비스</div>
           <div style={{ fontSize: "20px" }}>
             스트리밍 서비스를 통해 우리의 가족이 될 아이를 미리 만나 보세요.
@@ -230,6 +239,8 @@ function AboutDogCatDang() {
           <Button style={{ width: "30%" }} onClick={gotoBroad}>
             바로가기
           </Button>
+          </div>
+          <div style={{textAlign:'center'}}>
           <div>멍 BTI</div>
           <div style={{ fontSize: "20px" }}>
             나와 비슷한 동물의 성격을 알아보세요 !
@@ -237,13 +248,17 @@ function AboutDogCatDang() {
           <Button style={{ width: "30%" }} onClick={gotoMung}>
             바로가기
           </Button>
+          </div>
+          </LeftinLeftside>
         </Leftside>
         <Rightside>
+          <div  style={{textAlign:'center'}}>
           <div>방문 예약</div>
           <div style={{ fontSize: "20px" }}>
             예약 서비스를 통해 간편하게 보호 센터와 소통할 수 있습니다.
           </div>
           <Button style={{ width: "30%" }}>바로가기</Button>
+          </div>
         </Rightside>
       </Page3>
       <Page4>

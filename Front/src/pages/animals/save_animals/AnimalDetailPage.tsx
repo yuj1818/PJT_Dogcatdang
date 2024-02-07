@@ -38,7 +38,7 @@ function AnimalDetailPage() {
   const navigate = useNavigate();
 
   const handleUpdate = () => {
-    navigate(`/save-update/${animalID}`);
+    navigate(`/save-update/${animalID}`, { state: animalDetail});
   };
 
   const handleBack = () => {
@@ -62,7 +62,7 @@ function AnimalDetailPage() {
           }}
         >
           <Top>
-            <h1 style={{}}>상세정보</h1>
+            <h1>상세정보</h1>
           </Top>
         </div>
         <div className="flex" style={{ padding: "1rem" }}>
@@ -83,7 +83,7 @@ function AnimalDetailPage() {
             <div className="flex">
               {" "}
               <p style={{ fontSize: "25px" }}>
-                {animalDetail?.breed.replace(/_/g, " ")} | {animalDetail?.age}세
+                {animalDetail?.breed.replace(/_/g, " ")} | {animalDetail?.age} 살
               </p>{" "}
             </div>
             <div className="flex">
@@ -92,11 +92,11 @@ function AnimalDetailPage() {
             </div>
             <div className="flex">
               <p>성별 : </p>
-              {animalDetail?.gender}
+              {animalDetail?.gender === "남" ? "남아" : "여아" }
             </div>
             <div className="flex">
               <p>체중 : </p>
-              {animalDetail?.weight}
+              {animalDetail?.weight} kg
             </div>
             <div className="flex">
               <p>발견일자 : </p>
