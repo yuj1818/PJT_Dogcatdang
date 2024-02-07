@@ -64,7 +64,7 @@ pipeline {
             steps {
                 script {
                     // 이미지를 기반으로 컨테이너 실행
-                    dockerImage.run("-p 9000:9000 --name dogcatdang_backend -d")
+                    dockerImage.run("-p 8084:8084 --name dogcatdang_backend -d")
                 }
             }
         }
