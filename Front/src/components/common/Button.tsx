@@ -21,7 +21,7 @@ export const Button = styled.button<buttonInterface>`
   white-space: nowrap;
   height: ${(props) => props.height ? `${props.height}rem` : "auto"};
   width: ${(props) => props.width ? `${props.width}rem` : "auto"};
-  margin-top: ${(props) => props.marginTop ? `${props.marginTop}rem` : "auto"};
+  margin-top: ${(props) => props.marginTop === 0 || props.marginTop ? `${props.marginTop}rem` : "auto"};
   font-family: "Pretendard-600";
 
   &:hover {

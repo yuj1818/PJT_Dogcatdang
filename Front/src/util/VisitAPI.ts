@@ -13,7 +13,6 @@ interface reservationData {
 }
 
 export const makeReservation = (data: reservationData, animalId: string) => {
-  console.log(data);
   return API.post(URL + `/${animalId}`, data, {
     method: "POST",
     headers: {
@@ -22,5 +21,17 @@ export const makeReservation = (data: reservationData, animalId: string) => {
   })
     .then((res) => {
       return res;
+    });
+};
+
+export const getReservations = () => {
+  return API.get(URL, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((res) => {
+      return res.data;
     });
 };
