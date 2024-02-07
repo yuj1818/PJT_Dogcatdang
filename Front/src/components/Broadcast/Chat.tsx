@@ -47,12 +47,13 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
   const [message, setMessage] = useState("");
   const [allMessage, setAllMessage] = useState<Message[]>([]);
   const messageDiv = useRef<HTMLDivElement>(null);
+  const { nickname } = getUserInfo();
 
   useEffect(() => {
     if (messageDiv) {
       messageDiv.current!.scrollTop = messageDiv.current!.scrollHeight;
     }
-  }, []);
+  }, [allMessage]);
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -66,8 +67,10 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
       return;
     }
 
+    const data = JSON.stringify({ nickname, message });
+
     await session.signal({
-      data: message,
+      data: data,
       to: [],
       type: "chat",
     });
@@ -78,13 +81,12 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
   // 채팅 받기
   useEffect(() => {
     session.on("signal:chat", (event) => {
-      const { nickname } = getUserInfo();
-
+      const { nickname, message } = JSON.parse(event.data || "{}");
       setAllMessage((prev) => [
         ...prev,
         {
           nickname: nickname || "알 수 없는 사용자",
-          content: event.data || "",
+          content: message || "",
         },
       ]);
       console.log(event);

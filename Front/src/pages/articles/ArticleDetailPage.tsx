@@ -104,11 +104,17 @@ const ArticleDetail: React.FC = () => {
     }
   }
 
+  console.log(data);
+
   return (
     <>
       {content}
-      <CommentList boardId={boardId!} />
-      <CommentForm boardId={boardId!} edit={false} />
+      {!modificationMode && (
+        <>
+          <CommentList boardId={boardId!} />
+          <CommentForm boardId={boardId!} edit={false} />
+        </>
+      )}
     </>
   );
 };
