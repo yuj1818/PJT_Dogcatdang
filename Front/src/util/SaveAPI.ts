@@ -16,7 +16,6 @@ export interface RegistrationData {
   state: string;
   imgName: string;
   imgUrl: string;
-  code: String; // 임시 수정
 }
 
 export const search = (data: RegistrationData) => {

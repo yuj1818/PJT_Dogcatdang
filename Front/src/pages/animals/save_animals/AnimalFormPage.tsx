@@ -74,8 +74,7 @@ function AnimalFormPage() {
       feature: feature,
       state: state,
       imgName: imgName,
-      imgUrl: imgUrl,
-      code: 'e202' // 임시 수정
+      imgUrl: imgUrl
     };
 
     const response = await regist(data, token);

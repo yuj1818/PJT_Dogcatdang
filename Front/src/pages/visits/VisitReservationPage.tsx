@@ -1,6 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AdoptionInfoModal from "../../components/visits/AdoptionInfoModal";
-import styled from "styled-components";
 import { Title } from "../../components/common/Title";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../util/UserAPI";
@@ -75,7 +74,7 @@ function VisitReservationPage() {
 
   return (
     <div>
-      {/* <AdoptionInfoModal closeModal={setIsModalOpen} isModalOpen={isModalOpen} /> */}
+      <AdoptionInfoModal closeModal={setIsModalOpen} isModalOpen={isModalOpen} />
       <Title>방문 예약</Title>
       <hr className="border-black" />
       <p>{shelterInfo?.nickname}</p>
