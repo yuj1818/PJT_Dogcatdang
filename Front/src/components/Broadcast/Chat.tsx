@@ -107,7 +107,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
       <FormContainer onSubmit={handleSubmitEvent}>
         <label htmlFor="message" />
         <Input id="message" value={message} onChange={handleMessageChange} />
-        <Button height={2.6} marginTop={0.4} type="submit" disabled={!message}>
+        <Button height={2.6} $marginTop={0.4} type="submit" disabled={!message}>
           보내기
         </Button>
       </FormContainer>

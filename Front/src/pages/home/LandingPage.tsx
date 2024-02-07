@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import paw from "../../assets/paw-prints.png";
+import logo from "../../assets/main-logo-big.png";
 
 const Landing = styled.div`
   padding: 0 8rem;
@@ -157,9 +159,9 @@ function LandingPage() {
   return (
     <Landing>
       <div className="paw-prints">
-        <img className="paw1" src="/src/assets/paw-prints.png" alt="" />
-        <img className="paw2" src="/src/assets/paw-prints.png" alt="" />
-        <img className="paw3" src="/src/assets/paw-prints.png" alt="" />
+        <img className="paw1" src={ paw } alt="" />
+        <img className="paw2" src={ paw } alt="" />
+        <img className="paw3" src={ paw } alt="" />
       </div>
       
       <p className="slogan"><span className="point">가족</span>이 되면</p>
@@ -178,7 +180,7 @@ function LandingPage() {
         <div className="circle2"></div>
       </div>
 
-      <img className="logo" src="/src/assets/main-logo-big.png" alt="" />
+      <img className="logo" src={ logo } alt="" />
     </Landing>
   );
 }

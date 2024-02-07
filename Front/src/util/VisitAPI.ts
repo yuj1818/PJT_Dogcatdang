@@ -3,10 +3,9 @@ import { Cookies } from "react-cookie";
 
 const URL = "/api/reservations";
 const cookie = new Cookies();
-const token = cookie.get("U_ID");
 
 interface reservationData {
-  reservationTime: string;
+  reservationTime: Date;
   name: string;
   phone: string;
   visitor: number;
@@ -16,7 +15,7 @@ export const makeReservation = (data: reservationData, animalId: string) => {
   return API.post(URL + `/${animalId}`, data, {
     method: "POST",
     headers: {
-      Authorization: token,
+      Authorization: cookie.get("U_ID"),
     }
   })
     .then((res) => {
@@ -24,11 +23,14 @@ export const makeReservation = (data: reservationData, animalId: string) => {
     });
 };
 
-export const getReservations = () => {
-  return API.get(URL, {
+export const getReservations = (date: string) => {
+  return API.get(URL + '/by-date', {
     method: "GET",
     headers: {
-      Authorization: token,
+      Authorization: cookie.get("U_ID"),
+    },
+    params: {
+      date
     }
   })
     .then((res) => {

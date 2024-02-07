@@ -1,6 +1,9 @@
 import ReactModal from "react-modal";
 import { Button } from "../common/Button";
 import { Title, Bold } from "../common/Title";
+import stage1 from "../../assets/adoption-info-stage1.png";
+import stage2 from "../../assets/adoption-info-stage2.png";
+import stage3 from "../../assets/adoption-info-stage3.png";
 
 interface CheckInFo {
   isModalOpen: boolean;
@@ -40,7 +43,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
       <div className="flex flex-col gap-8 mt-8 items-center">
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src="/src/assets/adoption-info-stage1.png" alt="" />
+            <img className="w-4/5" src={ stage1 } alt="" />
             <Bold>방문 신청 전 확인</Bold>
           </div>
           <div className="flex flex-col gap-2">
@@ -50,7 +53,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         </div>
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src="/src/assets/adoption-info-stage2.png" alt="" />
+            <img className="w-4/5" src={ stage2 } alt="" />
             <Bold>방문 신청</Bold>
           </div>
           <div className="flex flex-col gap-2">
@@ -59,7 +62,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         </div>
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src="/src/assets/adoption-info-stage3.png" alt="" />
+            <img className="w-4/5" src={ stage3 } alt="" />
             <Bold>방문 및 입양 신청</Bold>
           </div>
           <div className="flex flex-col gap-2">
@@ -101,7 +104,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         <Button 
           onClick={onClickCheckBtn} 
           background="black"
-          paddingX={1}
+          $paddingX={1}
         >
           확인
         </Button>
