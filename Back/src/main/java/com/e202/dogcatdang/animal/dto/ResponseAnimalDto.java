@@ -25,12 +25,12 @@ public class ResponseAnimalDto {
 	private String rescueLocation;
 	private LocalDate rescueDate;
 	private String feature;
-	private String imgName;
 	private Long userId;
 	private String userNickname;
+	private int adoptionApplicantCount;
 
 	// Entity -> DTO
-	public ResponseAnimalDto(Animal animal) {
+	public ResponseAnimalDto(Animal animal, int adoptionApplicantCount) {
 		this.breed = animal.getBreed();
 		this.age = animal.getAge();
 		this.gender = animal.getGender();
@@ -39,8 +39,8 @@ public class ResponseAnimalDto {
 		this.rescueLocation = animal.getRescueLocation();
 		this.rescueDate = animal.getRescueDate();
 		this.feature = animal.getFeature();
-		this.imgName = animal.getImgName();
 		this.userId = animal.getUser().getId();
 		this.userNickname = animal.getUser().getNickname();
+		this.adoptionApplicantCount = adoptionApplicantCount;
 	}
 }

@@ -71,9 +71,6 @@ public class Animal {
 	@Column(name = "state", nullable = false)
 	private State state;
 
-	@Column(name = "img_name", length = 200, nullable = false)
-	private String imgName;
-
 	@Column(name = "img_url", nullable = false)
 	private String imgUrl;
 
@@ -86,11 +83,9 @@ public class Animal {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	// 1개의 animal은 여러 개의 visit reservation을 가질 수 있다
-	// 동물에게 들어온 방문 예약 신청 수를 count해 등록
-	@OneToMany(mappedBy = "animal")
-	@Column(name = "adoption_count")
-	private List<Reservation> adoptionApplicantCount;
+
+	// 동물에게 들어온 방문 예약 신청 수를 count해 등록 -> 필드보다 메서드로 필요할 때마다 계산해주는 게 나을듯..?
+	// private Integer adoptionApplicantCount;
 
 	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
 	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
@@ -110,7 +105,7 @@ public class Animal {
 	@Builder
 	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, String code, User user) {
+		State state, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
 		this.breed = breed;
@@ -122,7 +117,6 @@ public class Animal {
 		this.gender = gender;
 		this.feature = feature;
 		this.state = state;
-		this.imgName = imgName;
 		this.imgUrl = imgUrl;
 		this.code = code;
 		this.user = user;
@@ -132,7 +126,7 @@ public class Animal {
 	// null이 아닌 값만 수정한다
 	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
 		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
-		State state, String imgName, String imgUrl, String code) {
+		State state, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;
 		}
@@ -171,10 +165,6 @@ public class Animal {
 
 		if (state != null) {
 			this.state = state;
-		}
-
-		if (imgName != null) {
-			this.imgName = imgName;
 		}
 
 		if (imgUrl != null) {

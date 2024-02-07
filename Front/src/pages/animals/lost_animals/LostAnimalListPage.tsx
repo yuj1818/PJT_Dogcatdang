@@ -1,11 +1,41 @@
 import { useEffect, useState } from "react";
 import LostAnimalSearch from "../../../components/animalinfo/lostanimals/LostAnimalSearch";
 import API from "../../../util/axios";
-import LostAnimalCard from "../../../components/animalinfo/lostanimals/LostAnimalCard";
+import LostAnimalCard, {
+  LostAnimal,
+} from "../../../components/animalinfo/lostanimals/LostAnimalCard";
 import { useNavigate } from "react-router-dom";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import Pagination from "../../../components/common/Pagination";
 import styled from "styled-components";
+
+const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & > div {
+    flex: 0 0 23%;
+    box-sizing: border-box;
+    margin: 1%;
+  }
+  & > div:last-child {
+    margin-right: auto;
+  }
+`;
+
+interface StyledButtonProps {
+  isOrg: boolean;
+}
+
+const StyledButton = styled.button<StyledButtonProps>`
+  display: ${({ isOrg }) => (isOrg ? "none" : "block")};
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  width: 10%;
+  height: 35px;
+`;
 
 function LostAnimalListPage() {
   const [lostAnimalData, setLostAnimalData] = useState([]);
@@ -14,24 +44,6 @@ function LostAnimalListPage() {
 
   const navigate = useNavigate();
   const isOrg = org();
-
-  interface LostRegistrationData {
-    lostAnimalId: number;
-    animalType: string;
-    name: string;
-    breed: string;
-    age: string;
-    weight: string;
-    lostDate: string;
-    selectedCity: string;
-    selectedDistrict: string;
-    detailInfo: string;
-    gender: string;
-    feature: string;
-    state: string;
-    imgName: string;
-    imgUrl: string;
-  }
 
   useEffect(() => {
     const searchData = async () => {
@@ -56,17 +68,7 @@ function LostAnimalListPage() {
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
-  interface StyledButtonProps {
-    isOrg: boolean;
-  }
-  const StyledButton = styled.button<StyledButtonProps>`
-    display: ${({ isOrg }) => (isOrg ? "none" : "block")};
-    background-color: black;
-    color: white;
-    border-radius: 10px;
-    width: 10%;
-    height: 35px;
-  `;
+
   const itemsPerPage = 8;
   return (
     <>
@@ -76,11 +78,11 @@ function LostAnimalListPage() {
           동물 등록
         </StyledButton>
       </div>
-      <div>
-        {lostAnimalData.map((animal: LostRegistrationData) => (
+      <ListStyle $itemsPerRow={10}>
+        {lostAnimalData.map((animal: LostAnimal) => (
           <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
         ))}
-      </div>
+      </ListStyle>
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}

@@ -8,6 +8,7 @@ import {
   regionInput,
   countryInput,
 } from "../../../components/animalinfo/Input";
+import { Select as Select1 } from "../../../components/animalinfo/style";
 
 interface LostAnimalType {
   animalId: number;
@@ -81,19 +82,6 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setFilteredAnimalData(filteredData);
   };
 
-  // const ListStyle = styled.div<{ $itemsPerRow: number }>`
-  //   display: flex;
-  //   flex-wrap: wrap;
-  //   justify-content: flex-start;
-
-  //   div {
-  //     flex-basis: ${(props) => `calc(${100 / props.$itemsPerRow}%)`};
-  //     display: flex;
-  //     align-items: center;
-  //     flex-direction: column;
-  //   }
-  // `;
-
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
     color: white;
@@ -149,14 +137,14 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 border: "1px solid #d5967b",
                 padding: "8px",
                 borderRadius: "10px",
-                width: "250px",
-                height: "70px",
+                width: "220px",
+                height: "60px",
               }),
             }}
           />
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="region"
             id="region"
             value={region}
@@ -171,10 +159,10 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 {pr}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
-          <select
+          <Select1
             name="country"
             id="country"
             value={country}
@@ -190,13 +178,13 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                   {ct}
                 </option>
               ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
           <option value="" disabled hidden>
             성별
           </option>
-          <select
+          <Select1
             name="gender"
             id="gender"
             value={gender}
@@ -211,7 +199,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
                 {ge}
               </option>
             ))}
-          </select>
+          </Select1>
         </div>
         <div className="form-group">
           <button

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e202.dogcatdang.db.entity.Board;
+import com.e202.dogcatdang.db.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,10 +35,10 @@ public class RequestBoardDto {
 		this.isSaved = board.isSaved();
 	}
 
-	public Board toEntity() {
+	public Board toEntity(User user) {
 
 		return Board.builder()
-			.userId(1L)
+			.user(user)
 			.title(title)
 			.content(content)
 			.isSaved(isSaved)

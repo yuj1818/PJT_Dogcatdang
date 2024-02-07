@@ -28,6 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
 	private final UserRepository userRepository;
 	private final AnimalService animalService;
 
+	// 일반 회원의 예약 등록
 	@Transactional
 	@Override
 	public void register(Long animalId, Long userId, RequestReservationDto reservationDto) {
@@ -40,12 +41,14 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationRepository.save(reservation);
 	}
 
+	// 일반 회원의 예약 취소(삭제)
 	@Transactional
 	@Override
 	public void delete(long reservationId) {
 		reservationRepository.deleteById(reservationId);
 	}
 
+	// 일반 회원의 본인 예약 상세 조회
 	@Transactional
 	@Override
 	public ResponseReservationDto finbReservationById(long reservationId) {
@@ -57,6 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 	}
 
+	// 일반 회원의 본인 예약 전체 조회
 	@Transactional
 	@Override
 	public List<ResponseReservationDto> findAllReservationsById(Long userId) {
@@ -69,6 +73,7 @@ public class ReservationServiceImpl implements ReservationService {
 			.collect(Collectors.toList());
 	}
 
+	// 기관 회원의 예약 상태 승인/거절 (상태 변경)
 	@Transactional
 	@Override
 	public ResponseUpdatedStateDto updateState(Long shelterId, Long reservationId,
@@ -76,6 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
 		// 특정 예약 조회 - shelterId와 reservationId 이용
 		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
+		// 해당 번호의 예약이 존재하고, 예약된 동물을 등록한 회원 id가 현재 기관의 id와 같다면 수정
 		if (reservation != null && reservation.getAnimal().getUser().getId().equals(shelterId)) {
 			// state update method - Entity 내에 생성
 			reservation.updateState(reservationDto.getState());

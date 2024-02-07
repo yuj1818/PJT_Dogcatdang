@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../../../util/axios";
 import { Container, Top, Leftside, Rightside } from "../StyleDetail";
+import { isOrg as org } from "../../users/SignInPage";
+import { Button } from "../../../components/common/Button";
 
 interface AnimalDetail {
   animalType: string;
@@ -14,11 +16,13 @@ interface AnimalDetail {
   rescueLocation: string;
   weight: string;
   userNickname: string;
+  userId: number;
 }
 
 function AnimalDetailPage() {
   const { animalID } = useParams();
   const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
+  const isOrg = org();
 
   useEffect(() => {
     const apiUrl = `api/animals/${animalID}`;
@@ -39,6 +43,10 @@ function AnimalDetailPage() {
 
   const handleBack = () => {
     navigate("/save-animals");
+  };
+
+  const handleVisit = () => {
+    navigate(`/visit/${animalDetail?.userId}/${animalID}`);
   };
 
   return (
@@ -114,32 +122,33 @@ function AnimalDetailPage() {
           </Rightside>
         </div>
       </Container>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <button
-          style={{
-            background: "black",
-            padding: "0.5rem",
-            color: "white",
-            borderRadius: "5px",
-            width: "110px",
-          }}
+      <div className="flex justify-between">
+        <Button
+          background="black"
+          paddingX={1}
+          paddingY={0.5}
           onClick={handleBack}
         >
           전체 글 목록
-        </button>
-        <button
-          style={{
-            background: "#FF8331",
-            padding: "0.5rem",
-            color: "white",
-            borderRadius: "5px",
-            width: "80px",
-            marginLeft: "10px",
-          }}
-          onClick={handleUpdate}
-        >
-          수정
-        </button>
+        </Button>
+        {
+          isOrg ? 
+          <Button
+            paddingX={1}
+            paddingY={0.5}
+            onClick={handleUpdate}
+          >
+            수정
+          </Button>
+          :
+          <Button 
+            paddingX={1} 
+            paddingY={0.5} 
+            onClick={handleVisit}
+          >
+            방문 예약
+          </Button>
+        }
       </div>
     </>
   );

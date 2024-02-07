@@ -54,7 +54,7 @@ const CommentForm = ({ boardId, edit, commentId, onDelete }: Props) => {
         value={comment}
         placeholder="내용을 입력하세요"
       />
-      <Button height={2.5} $marginTop={0.5} type="submit">
+      <Button height={2.5} marginTop={0.5} type="submit">
         {isPending ? "작성 중.." : "작성하기"}
       </Button>
     </FormContainer>

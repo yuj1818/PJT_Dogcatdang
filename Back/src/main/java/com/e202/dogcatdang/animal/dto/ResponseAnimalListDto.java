@@ -26,15 +26,16 @@ public class ResponseAnimalListDto {
 	private LocalDate rescueDate;
 	private String rescueLocation;
 
-	private String imgName;
+	private String imgUrl;
 	private Long userId;
 	private String userNickname;
 
+	private int adoptionApplicantCount;
 	private boolean isLike; // 좋아요 여부 확인
 
 	// Entity -> DTO
 	@Builder
-    public ResponseAnimalListDto(Animal animal, boolean isLike) {
+    public ResponseAnimalListDto(Animal animal, int adoptionApplicantCount, boolean isLike) {
 		this.animalId = animal.getAnimalId();
 		this.animalType = animal.getAnimalType();
 		this.breed = animal.getBreed();
@@ -48,8 +49,8 @@ public class ResponseAnimalListDto {
 		this.userId = animal.getUser().getId();
 		this.userNickname = animal.getUser().getNickname();
 
-		this.imgName = animal.getImgName();
-
+		this.imgUrl = animal.getImgUrl();
+		this.adoptionApplicantCount = adoptionApplicantCount;
 		this.isLike = isLike;
 	}
 

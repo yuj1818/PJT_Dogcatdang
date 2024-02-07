@@ -28,8 +28,9 @@ import { LoadingIndicator } from "./components/common/Icons";
 const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
 import BoradcastListPage from "./pages/broadcast/BoradcastListPage.tsx";
-import VisitManagementPage from "./pages/users/VisitManagementPage.tsx";
-import AnimalMatching from "./pages/animals/matching_animals/AnimalMatching.tsx";
+import VisitManagementPage from "./pages/visits/VisitManagementPage.tsx";
+import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
+import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 // import { loginOnly } from "./util/commonLoader.ts";
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "test",
         element: <AnimalMatching />,
+      },
+      {
+        path: "mung",
+        element: <MungBTIPage />,
       },
       {
         path: "save-animals",
@@ -180,6 +185,10 @@ const router = createBrowserRouter([
             element: <BoradcastListPage />,
           },
         ],
+      },
+      {
+        path: "visit/:shelterId/:animalId",
+        element: <VisitReservationPage />,
       },
     ],
   },
