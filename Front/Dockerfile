@@ -14,5 +14,11 @@ COPY dist/ .
 
 EXPOSE 80
 
+RUN apt-get update && \
+    apt-get install -y locales && \
+    rm -rf /var/lib/apt/lists/* && \
+    localedef -i ko_KR -c -f UTF-8 -A /usr/share/locale/locale.alias ko_KR.UTF-8
+ENV LANG ko_KR.UTF-8
+
 # 앱 실행 (production 환경)
 CMD ["nginx", "-g", "daemon off;"]
