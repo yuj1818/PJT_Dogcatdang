@@ -97,9 +97,9 @@ function AboutDogCatDang() {
   const gotoMung = () => {
     navigate("/mung");
   };
-  const gotoVisited = () => {
-    navigate("/mung");
-  };
+  // const gotoVisited = () => {
+  //   navigate("/mung");
+  // };
   const gotoArticle = () => {
     navigate("/articles/1");
   };
