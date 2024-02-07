@@ -66,7 +66,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const OutLet = tw.div`
-  mx-4 sm:mx-60
+  mx-4 sm:mx-60 relative
 `;
 
 const NavTitle = styled.div`

@@ -104,6 +104,8 @@ const ArticleDetail: React.FC = () => {
     }
   }
 
+  console.log(data);
+
   return (
     <>
       {content}

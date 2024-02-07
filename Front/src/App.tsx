@@ -1,5 +1,9 @@
 import { Suspense, lazy } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
@@ -137,6 +141,7 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
+        element: <Navigate to="/articles/1" replace />,
         children: [
           {
             path: "search/:searchKey",
