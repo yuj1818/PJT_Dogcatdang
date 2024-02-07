@@ -18,7 +18,6 @@ export interface SaveAnimal {
   gender: string;
   feature: string;
   state: string;
-  imgName: string;
   imgUrl: string;
   userNickname: string;
   like: boolean;

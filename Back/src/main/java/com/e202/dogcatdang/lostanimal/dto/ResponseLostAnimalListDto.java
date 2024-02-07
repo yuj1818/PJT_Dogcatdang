@@ -28,7 +28,7 @@ public class ResponseLostAnimalListDto {
 	private LocalDate lostDate;
 	private String lostLocation;
 
-	private String imgName;
+	private String imgUrl;
 	private Long userId;
 	private String userNickname;
 
@@ -48,6 +48,6 @@ public class ResponseLostAnimalListDto {
 		this.userId = animal.getUser().getId();
 		this.userNickname = animal.getUser().getNickname();
 
-		this.imgName = animal.getImgName();
+		this.imgUrl = animal.getImgUrl();
 	}
 }

@@ -124,7 +124,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 
 		animal.update(request.getAnimalType(), request.getName(), request.getBreed(), request.getAge(), request.getWeight(),
 			request.getLostDate(), lostLocation, request.getGender(),
-			request.getFeature(),request.getState(), request.getImgName(), request.getImgUrl());
+			request.getFeature(),request.getState(), request.getImgUrl());
 
 		return animal;
 	}

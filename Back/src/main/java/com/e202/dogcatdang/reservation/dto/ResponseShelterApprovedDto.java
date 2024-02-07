@@ -9,24 +9,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// 예약 정보 상세 조회 목록
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseShelterDto {
+public class ResponseShelterApprovedDto {
 	private Long reservationId;
 	private String name;
 	private LocalDateTime reservationTime;
 	private String phone;
 	private int visitor;
 
+	// 동물 정보
+	private String code;
+	private String imgUrl;
+
 	// Entity -> DTO
-	public ResponseShelterDto(Reservation reservation) {
+	public ResponseShelterApprovedDto(Reservation reservation) {
 		this.reservationId = reservation.getReservationId();
 		this.name = reservation.getName();
 		this.reservationTime = reservation.getReservationTime();
 		this.phone = reservation.getPhone();
 		this.visitor = reservation.getVisitor();
+		this.code = reservation.getAnimal().getCode();
+		this.imgUrl = reservation.getAnimal().getImgUrl();
 	}
+
 }

@@ -14,7 +14,6 @@ export interface RegistrationData {
   gender: string;
   feature: string;
   state: string;
-  imgName: string;
   imgUrl: string;
 }
 
