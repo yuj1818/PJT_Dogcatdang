@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
