@@ -23,6 +23,7 @@ export interface SaveAnimal {
   userNickname: string;
   like: boolean;
   rescueLocation: string;
+  adoptionApplicantCount: number;
 }
 
 interface AnimalCardProps {
@@ -34,8 +35,19 @@ const Card = styled.div`
   border: 1px solid #ccc;
   padding: 5px 20px 15px 20px;
   position: relative;
-  box-shadow: 2px 2px 2px rgb(45,45,45, 0.4);
+  box-shadow: 2px 2px 2px rgb(45, 45, 45, 0.4);
   border-radius: 10px;
+`;
+
+const Adoption = styled.div`
+  font-size: 8px;
+  background-color: #ff8331;
+  color: white;
+  border: 1px solid white;
+  padding: 5px;
+  position: absolute;
+  right: 10%;
+  top: 10%;
 `;
 
 function SaveAnimalCard(props: AnimalCardProps) {
@@ -54,14 +66,15 @@ function SaveAnimalCard(props: AnimalCardProps) {
   };
 
   function getShortenedLocation(fullLocation: string) {
-    const parts = fullLocation.split(' ');
-  
-    const shortenedLocation = parts.slice(0, 2).join(' ');
+    const parts = fullLocation.split(" ");
+
+    const shortenedLocation = parts.slice(0, 2).join(" ");
     return shortenedLocation;
   }
 
   return (
     <Card>
+      <Adoption>입양희망자: {props.animals.adoptionApplicantCount}</Adoption>
       <div onClick={gotoDetailPage}>
         <div style={{ fontSize: "10px" }}>
           보호 기관 : {props.animals.userNickname}
@@ -89,13 +102,13 @@ function SaveAnimalCard(props: AnimalCardProps) {
           </div>
         </div>
       </div>
-          <div style={{ position: 'absolute', right: '8%', bottom: '4%' }}>
-            <LikeButton
-              animalId={props.animals.animalId}
-              isActive={liked}
-              onToggle={handleToggleLike}
-            ></LikeButton>
-          </div>
+      <div style={{ position: "absolute", right: "8%", bottom: "4%" }}>
+        <LikeButton
+          animalId={props.animals.animalId}
+          isActive={liked}
+          onToggle={handleToggleLike}
+        ></LikeButton>
+      </div>
     </Card>
   );
 }
