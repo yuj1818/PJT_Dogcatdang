@@ -2,6 +2,8 @@ server:
   port: 8084
 
 spring:
+  cors:
+  allowed-origins: http://localhost:5173
   # spring data jpa 설정
 #  profiles:
 #    include: secret
