@@ -1,9 +1,11 @@
 import axios from "axios";
 
-const env = process.env.NODE_ENV || "development";
+const env = import.meta.env.VITE_IS_PRODUCTION || "development";
 export const isProduction = env === "production";
 
-export const HOST = "http://localhost";
+export const HOST = isProduction
+  ? "i10e202.p.ssay.io:8084"
+  : "http://localhost";
 
 export const PORT = ":8084";
 
