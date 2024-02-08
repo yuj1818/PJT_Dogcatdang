@@ -78,6 +78,7 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const togglePictureInPicture = () => {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
+      console.log(pipActive);
       setPipActive(false);
     } else {
       videoRef.current
