@@ -233,9 +233,9 @@ function SignUpPage() {
       const data = {
         nickname,
         phone,
-        // address,
-        providerId: metadata?.providerId,
-        metaEmail: metadata?.metaEmail
+        address,
+        username: metadata?.providerId,
+        email: metadata?.metaEmail
       };
 
       const response = await oauthSignUp(data);
