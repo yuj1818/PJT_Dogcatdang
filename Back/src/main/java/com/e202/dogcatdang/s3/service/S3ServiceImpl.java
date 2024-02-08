@@ -69,17 +69,17 @@ public class S3ServiceImpl implements S3Service {
 
 
 	// 파일 업로드 - 백에서 파일을 받아 서버에 저장하고 다시 돌려주는 방식
-	// public String uploadFile(MultipartFile multipartFile) throws IOException {
-	// 	// UUID를 사용하여 유니크한 파일명 생성
-	// 	String originalFilename = UUID.randomUUID().toString();
-	//
-	// 	ObjectMetadata metadata = new ObjectMetadata();
-	// 	metadata.setContentLength(multipartFile.getSize());
-	// 	metadata.setContentType(multipartFile.getContentType());
-	//
-	// 	amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-	// 	return amazonS3.getUrl(bucket, originalFilename).toString();
-	// }
+	public String uploadFile(MultipartFile multipartFile) throws IOException {
+		// UUID를 사용하여 유니크한 파일명 생성
+		String originalFilename = UUID.randomUUID().toString();
+
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(multipartFile.getSize());
+		metadata.setContentType(multipartFile.getContentType());
+
+		amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
+		return amazonS3.getUrl(bucket, originalFilename).toString();
+	}
 
 
 	// 파일 다운로드
