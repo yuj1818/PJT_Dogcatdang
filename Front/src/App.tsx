@@ -28,7 +28,6 @@ import AnimalUpdatePage from "./pages/animals/save_animals/AnimalUpdatePage.tsx"
 import LostAnimalUpdatePage from "./pages/animals/lost_animals/LostAnimalUpdatePage.tsx";
 import LostAnimalFormPage from "./pages/animals/lost_animals/LostAnimalFormPage.tsx";
 import ArticleWritePage from "./pages/articles/ArticleWritePage";
-import ErrorBlock from "./components/common/Error";
 import { LoadingIndicator } from "./components/common/Icons";
 const BroadCastPage = lazy(() => import("./pages/broadcast/BroadCastPage"));
 import ProfilePage from "./pages/users/ProfilePage.tsx";
@@ -45,10 +44,7 @@ const router = createBrowserRouter([
   //   path: "/",
   //   element: <Page />,
   // },
-  {
-    path: "/error",
-    element: <ErrorBlock />,
-  },
+
   {
     path: "/landing",
     element: <LandingPage />,

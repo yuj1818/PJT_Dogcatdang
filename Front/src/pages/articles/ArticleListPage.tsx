@@ -91,15 +91,16 @@ const ArticleListPage: React.FC = () => {
   return (
     <>
       <div>
-        <TextSearch onSubmit={submitHandler} text="입양 후 이야기" />
-      </div>
-      {content}
-      <div className="flex">
-        <Link to="/articles/new" className="ml-auto">
+        <TextSearch onSubmit={submitHandler} text="입양 후 이야기">
+          {" "}
           <Button $paddingX={0.3} $paddingY={0.5}>
             글쓰기
           </Button>
-        </Link>
+        </TextSearch>
+      </div>
+      {content}
+      <div className="flex">
+        <Link to="/articles/new" className="ml-auto"></Link>
       </div>
       {data && (
         <Pagination
