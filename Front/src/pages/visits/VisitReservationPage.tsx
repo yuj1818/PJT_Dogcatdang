@@ -67,7 +67,7 @@ function VisitReservationPage() {
       const response = await makeReservation(data, params.animalId);
       console.log(response);
 
-      navigate(`/profile/${JSON.parse(localStorage.getItem('userInfo') || "")?.id}/visit`);
+      navigate(`/visit/${JSON.parse(localStorage.getItem('userInfo') || "")?.id}`);
     }
 
   }

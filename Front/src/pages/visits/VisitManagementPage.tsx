@@ -87,6 +87,7 @@ const StyledCalendar = styled.div`
 `
 
 export interface reservationData {
+  reservationId: number;
   age: number;
   breed: string;
   imgUrl: string;
@@ -98,7 +99,7 @@ export interface reservationData {
 function VisitManagementPage() {
   // const isOrg = org();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [reservations, setReservations] = useState([]);
+  const [reservations, setReservations] = useState<reservationData[]>([]);
 
   const handleDateChange = (value: any) => {
     setSelectedDate(value);
@@ -124,7 +125,7 @@ function VisitManagementPage() {
           {
             reservations.length ? reservations.map((reservation: reservationData, idx) => (
               <>
-                <ScheduleCard key={idx} reservation={reservation} />
+                <ScheduleCard key={reservation.reservationId} reservation={reservation} handleReservations={setReservations} />
                 { idx !== reservations.length - 1 && <hr />}
               </>
             ))
