@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { saveUpdate } from "../../../util/SaveAPI";
 import { Cookies } from "react-cookie";
 import {
@@ -13,23 +13,24 @@ import { Input, Select } from "../../../components/animalinfo/style";
 
 function AnimalUpdatePage() {
   const navigate = useNavigate();
+  const { state } = useLocation(); 
   const { animalID } = useParams() as { animalID: string };
 
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState(state.rescueLocation.split(' ')[0] ||"");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
-  const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
-  const [imgUrl, setImgUrl] = useState("");
+  const [savestate, setSaveState] = useState("");
+  const [imgName, setImgName] = useState(state.imgName ||"");
+  const [imgUrl, setImgUrl] = useState(state.imgUrl || "");
   const [animalType, setAnimalType] = useState("강아지");
-  const [breed, setBreed] = useState("");
+  const [breed, setBreed] = useState(state.breed || "");
 
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [weight, setWeight] = useState("");
-  const [rescueDate, setRescueDate] = useState("");
-  const [isNeuter, setIsNeuter] = useState(false);
-  const [feature, setFeature] = useState("");
+  const [gender, setGender] = useState(state.gender || "");
+  const [age, setAge] = useState(state.age || "");
+  const [weight, setWeight] = useState(state.weight || "");
+  const [rescueDate, setRescueDate] = useState(state.rescueDate || "");
+  const [isNeuter, setIsNeuter] = useState(state.isNeuter || false);
+  const [feature, setFeature] = useState(state.feature || "");
 
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
@@ -75,7 +76,7 @@ function AnimalUpdatePage() {
       isNeuter: isNeuter,
       gender: gender,
       feature: feature,
-      state: state,
+      state: savestate,
       imgName: imgName,
       imgUrl: imgUrl,
     };
@@ -325,8 +326,8 @@ function AnimalUpdatePage() {
                   <label className="item">보호현황</label>
                   <Select
                     className="input"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
+                    value={savestate}
+                    onChange={(e) => setSaveState(e.target.value)}
                   >
                     <option value="" disabled hidden>
                       보호현황

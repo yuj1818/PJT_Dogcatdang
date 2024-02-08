@@ -58,7 +58,7 @@ function VisitReservationPage() {
 
     if (params.animalId) {
       const data = {
-        reservationTime: date + 'T' + time,
+        reservationTime: new Date(date + 'T' + time),
         name,
         phone,
         visitor: parseInt(visitor)

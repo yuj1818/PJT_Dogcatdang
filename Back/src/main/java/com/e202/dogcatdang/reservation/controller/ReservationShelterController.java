@@ -1,5 +1,10 @@
 package com.e202.dogcatdang.reservation.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.db.entity.Reservation;
@@ -16,6 +22,7 @@ import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterApprovedDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 import com.e202.dogcatdang.reservation.service.ReservationService;
@@ -79,4 +86,21 @@ public class ReservationShelterController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 	}
+
+	// 기관 회원이 신청 상태가 '승인'인 예약 정보들을 일자 별로 필터링해 조회
+	// @Transactional
+	// @GetMapping("/by-date")
+	// public ResponseEntity<List<ResponseShelterApprovedDto>> findShelterReservationsByDate(
+	// 	@RequestHeader("Authorization") String token,
+	// 	@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+	// 	// 토큰에서 사용자 아이디(pk) 추출
+	// 	Long shelterId = jwtUtil.getUserId(token.substring(7));
+	//
+	// 	// 시작일자와 종료일자를 LocalDateTime으로 변환
+	// 	LocalDateTime startDateTime = date.atStartOfDay();
+	// 	LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusNanos(1);
+	//
+	// 	List<ResponseShelterApprovedDto> reservations = reservationService.findShelterReservationsByDate(shelterId, startDateTime, endDateTime);
+	// 	return ResponseEntity.ok(reservations);
+	// }
 }

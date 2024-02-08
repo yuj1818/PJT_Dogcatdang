@@ -5,6 +5,7 @@ import { requestComment } from "../../../util/articleAPI";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../../util/tanstackQuery";
 import tw from "tailwind-styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CommentContainer = styled.div`
   border: 1px solid #e2e8f0;
@@ -57,6 +58,7 @@ export interface CommentData {
   content: string;
   createTime: string;
   nickname: string;
+  userId?: number;
 }
 
 const Comment: React.FC<CommentData> = ({
@@ -65,7 +67,9 @@ const Comment: React.FC<CommentData> = ({
   createTime,
   boardId,
   nickname,
+  userId,
 }) => {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const inputDate = new Date(createTime);
   const formattedDate = `${inputDate.getFullYear()}-${String(
@@ -89,10 +93,16 @@ const Comment: React.FC<CommentData> = ({
     mutate({ method: "DELETE", boardId, commentId });
   };
 
+  const handleNicknameClick = () => {
+    if (userId) {
+      navigate(`/profile/${userId}`);
+    }
+  };
+
   return (
     <CommentContainer>
       <Header>
-        <Nickname>{nickname}</Nickname>
+        <Nickname onClick={handleNicknameClick}>{nickname}</Nickname>
         <HeadContainer>
           <CreateDate>{formattedDate}</CreateDate>
           <ButtonContainer>
