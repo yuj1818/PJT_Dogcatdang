@@ -9,6 +9,7 @@ export default ({ mode }) => {
   console.log(env);
 
   return defineConfig({
+    base: '/',
     plugins: [
       react(),
       createHtmlPlugin({
