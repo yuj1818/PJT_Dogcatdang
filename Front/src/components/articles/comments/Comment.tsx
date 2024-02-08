@@ -59,6 +59,7 @@ export interface CommentData {
   createTime: string;
   nickname: string;
   userId?: number;
+  veiwerId: number;
 }
 
 const Comment: React.FC<CommentData> = ({
@@ -68,6 +69,7 @@ const Comment: React.FC<CommentData> = ({
   boardId,
   nickname,
   userId,
+  veiwerId,
 }) => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
@@ -105,22 +107,28 @@ const Comment: React.FC<CommentData> = ({
         <Nickname onClick={handleNicknameClick}>{nickname}</Nickname>
         <HeadContainer>
           <CreateDate>{formattedDate}</CreateDate>
-          <ButtonContainer>
-            {editMode ? (
-              <CommentForm
-                boardId={boardId}
-                edit={editMode}
-                commentId={commentId}
-                onDelete={() => {
-                  setEditMode(false);
-                }}
-              />
-            ) : (
-              <button onClick={handleEditButton}>수정</button>
-            )}
-            <Gutter>|</Gutter>
-            <button onClick={handleDelete}>{isPending ? "..." : "삭제"}</button>
-          </ButtonContainer>
+          {veiwerId === userId && (
+            <ButtonContainer>
+              {editMode ? (
+                <CommentForm
+                  boardId={boardId}
+                  edit={editMode}
+                  commentId={commentId}
+                  onDelete={() => {
+                    setEditMode(false);
+                  }}
+                />
+              ) : (
+                <button onClick={handleEditButton}>수정</button>
+              )}
+              <Gutter>|</Gutter>
+              {
+                <button onClick={handleDelete}>
+                  {isPending ? "..." : "삭제"}
+                </button>
+              }
+            </ButtonContainer>
+          )}
         </HeadContainer>
       </Header>
 

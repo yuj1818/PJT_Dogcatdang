@@ -93,9 +93,12 @@ const ArticleDetail: React.FC = () => {
             content={data.content}
             nickname={data.userName}
           />
-          <Button onClick={handleDelte}>삭제하기</Button>
           {id === data.userId && (
-            <Button onClick={handleModificaion}>수정하기</Button>
+            <>
+              <Button onClick={handleDelte}>삭제하기</Button>
+
+              <Button onClick={handleModificaion}>수정하기</Button>
+            </>
           )}
         </>
       );
@@ -103,8 +106,6 @@ const ArticleDetail: React.FC = () => {
       content = <ArticleEditor {...data} />;
     }
   }
-
-  console.log(data);
 
   return (
     <>

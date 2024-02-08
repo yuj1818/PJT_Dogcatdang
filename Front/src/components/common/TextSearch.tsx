@@ -5,6 +5,7 @@ import { SearchGlasses } from "./Icons";
 
 const FormLayout = styled.form`
   display: flex;
+  flex-grow: 1;
   height: 32px;
   justify-content: space-between;
 
