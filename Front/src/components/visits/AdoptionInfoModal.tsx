@@ -28,7 +28,7 @@ const modalStyle = {
 const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
   const onClickCheckBtn = () => {
     props.closeModal((prev) => !prev);
-  }
+  };
 
   return (
     <ReactModal
@@ -43,7 +43,7 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
       <div className="flex flex-col gap-8 mt-8 items-center">
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src={ stage1 } alt="" />
+            <img className="w-4/5" src={stage1} alt="" />
             <Bold>방문 신청 전 확인</Bold>
           </div>
           <div className="flex flex-col gap-2">
@@ -53,23 +53,35 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
         </div>
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src={ stage2 } alt="" />
+            <img className="w-4/5" src={stage2} alt="" />
             <Bold>방문 신청</Bold>
           </div>
           <div className="flex flex-col gap-2">
-            <p>방문 전 예약을 통해 승인을 받으면 예약 일자에 센터로 방문하시기 바랍니다.</p>
+            <p>
+              방문 전 예약을 통해 승인을 받으면 예약 일자에 센터로 방문하시기
+              바랍니다.
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-6 w-4/5">
           <div className="flex flex-col items-center gap-2">
-            <img className="w-4/5" src={ stage3 } alt="" />
+            <img className="w-4/5" src={stage3} alt="" />
             <Bold>방문 및 입양 신청</Bold>
           </div>
           <div className="flex flex-col gap-2">
-            <p>입양은 1~2회 입양 상담 및 개체 만남을 통해 진행되며, 상담 후 설문지를 작성합니다.</p>
-            <p>입양 후 파양은 불가능하니 여러 번 방문을 통해 신중하게 결정하시기 바랍니다.</p>
+            <p>
+              입양은 1~2회 입양 상담 및 개체 만남을 통해 진행되며, 상담 후
+              설문지를 작성합니다.
+            </p>
+            <p>
+              입양 후 파양은 불가능하니 여러 번 방문을 통해 신중하게 결정하시기
+              바랍니다.
+            </p>
             <div>
-              <p>입양 희망자가 여러 명인 경우, 기관 관리자들이 회의를 거쳐 선정하게 됩니다.</p>
+              <p>
+                입양 희망자가 여러 명인 경우, 기관 관리자들이 회의를 거쳐
+                선정하게 됩니다.
+              </p>
               <p>선택이 안되더라도 양해해 주시기 바랍니다.</p>
             </div>
           </div>
@@ -80,37 +92,44 @@ const AdoptionInfoModal: React.FC<CheckInFo> = (props) => {
             <div className="flex gap-2">
               <p>1.</p>
               <div>
-                <p>입양 희망자가 여러 명인 경우, 기관 관리자들이 회의를 거쳐 선정하게 됩니다</p>
+                <p>
+                  입양 희망자가 여러 명인 경우, 기관 관리자들이 회의를 거쳐
+                  선정하게 됩니다
+                </p>
                 <p>선택이 안되더라도 양해해 주시기 바랍니다.</p>
               </div>
             </div>
             <div className="flex gap-2">
               <p>2.</p>
               <div>
-                <p>입양을 진행하면서 각 가정에서 필요한 필수 물품을 권해드립니다.</p>
-                <p>필요 물품들은 준비하여 편안한 가정환경을 만들어 주시기 바랍니다.</p>
+                <p>
+                  입양을 진행하면서 각 가정에서 필요한 필수 물품을 권해드립니다.
+                </p>
+                <p>
+                  필요 물품들은 준비하여 편안한 가정환경을 만들어 주시기
+                  바랍니다.
+                </p>
               </div>
             </div>
             <div className="flex gap-2">
               <p>3.</p>
               <div>
-                <p>입양 후 파양은 불가합니다. 가족 구성원 모두가 신중하게 생각하시고 입양을 결정해주세요.</p>
+                <p>
+                  입양 후 파양은 불가합니다. 가족 구성원 모두가 신중하게
+                  생각하시고 입양을 결정해주세요.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="flex justify-center my-8">
-        <Button 
-          onClick={onClickCheckBtn} 
-          background="black"
-          $paddingX={1}
-        >
+        <Button onClick={onClickCheckBtn} background="black" $paddingX={1}>
           확인
         </Button>
       </div>
     </ReactModal>
   );
-}
+};
 
 export default AdoptionInfoModal;
