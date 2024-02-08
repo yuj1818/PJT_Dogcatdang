@@ -9,7 +9,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
 
 import { queryClient } from "./util/tanstackQuery";
-import "/src/App.css";
+import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
 const AnimalListPage = lazy(
   () => import("./pages/animals/save_animals/AnimalListPage")
