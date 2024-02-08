@@ -25,11 +25,13 @@ export interface signUpData {
 }
 
 export interface oauthSignUpData {
-  providerId: string | undefined;
-  metaEmail: string | undefined;
+  username: string | undefined;
+  email: string | undefined;
   nickname: string;
   phone: string;
-  // address: string; 
+  address: string; 
+  role: string;
+  password: string;
 }
 
 export interface infoData {
