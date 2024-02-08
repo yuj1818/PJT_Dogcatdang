@@ -3,7 +3,6 @@ import { AxiosError } from "axios";
 import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
-// import { imageHandler } from "./imageHandler";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
@@ -44,7 +43,6 @@ export const requestArticle = async ({
   const token = cookie.get("U_ID");
   const URL = "api/boards";
   let response;
-  let proccesedData;
   if (data) {
     if (!data.title.trim()) {
       const error = new Error();
@@ -59,9 +57,6 @@ export const requestArticle = async ({
       error.message = "내용을 입력하세요";
       throw error;
     }
-    // const [content, thumnailImg] = await imageHandler(data.content);
-    // proccesedData = { ...data, content, thumnailImg };
-    proccesedData = data;
   }
 
   try {
@@ -69,7 +64,7 @@ export const requestArticle = async ({
       // 리스트 조회 + 상세 조회
       response = await API.get(boardId ? `${URL}/${boardId}` : URL, {
         signal,
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: token,
         },
@@ -77,7 +72,7 @@ export const requestArticle = async ({
     } else if (method === "POST") {
       if (data?.isSaved) {
         // 등록
-        response = await API.post(URL, proccesedData, {
+        response = await API.post(URL, data, {
           signal,
           method: "POST",
           headers: {
@@ -85,7 +80,7 @@ export const requestArticle = async ({
           },
         });
       } else {
-        response = await API.post(`${URL}/temporary`, proccesedData, {
+        response = await API.post(`${URL}/temporary`, data, {
           signal,
           method: "POST",
           headers: {
@@ -95,9 +90,9 @@ export const requestArticle = async ({
       }
     } else if (method === "PUT") {
       // 수정
-      response = await API.put(URL + "/" + data!.boardId!, proccesedData, {
+      response = await API.put(URL + "/" + data!.boardId!, data, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -106,7 +101,7 @@ export const requestArticle = async ({
       // 삭제
       response = await API.delete(`${URL}/${boardId}`, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -115,7 +110,7 @@ export const requestArticle = async ({
       // 임시저장 삭제
       response = await API.delete(`${URL}/${boardId}/temporary`, {
         signal,
-        method: "POST",
+        method: "DELETE",
         headers: {
           Authorization: token,
         },
@@ -155,7 +150,7 @@ export const requestComment = async ({
     if (method === "GET") {
       response = await API.get(URL, {
         signal,
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: token,
         },
@@ -178,7 +173,7 @@ export const requestComment = async ({
       const requestbody = { content: content, boardId, commentId };
       response = await API.put(URL + "/" + boardId, requestbody, {
         signal,
-        method: "POST",
+        method: "PUT",
         headers: {
           Authorization: token,
         },
@@ -186,7 +181,7 @@ export const requestComment = async ({
     } else if (method === "DELETE") {
       response = await API.delete(URL + "/" + commentId, {
         signal,
-        method: "POST",
+        method: "DELETE",
         headers: {
           Authorization: token,
         },
@@ -198,4 +193,19 @@ export const requestComment = async ({
   } catch (error) {
     handleAxiosError(error as AxiosError);
   }
+};
+
+export const getUploadURL = async (filename: string) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  const URL = "api/images/presigned/upload";
+  const response = await API.get(URL, {
+    method: "GET",
+    params: { filename },
+    headers: {
+      Authorization: token,
+    },
+  });
+  return response.data.url as string;
 };

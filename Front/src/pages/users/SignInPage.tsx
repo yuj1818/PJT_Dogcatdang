@@ -6,6 +6,9 @@ import styled from "styled-components";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
+import logo from '../../assets/auth-image.png';
+import naverLoginBtn from '../../assets/naverLoginBtn.png';
+import googleLoginBtn from '../../assets/googleLoginBtn.png';
 
 const FormBox = styled.div`
   display: flex;
@@ -91,7 +94,7 @@ function SignInPage() {
       <Title title="로그인" />
       <FormBox>
         <div className="img-box flex justify-center">
-          <img src="/src/assets/auth-image.png" alt="" />
+          <img src={ logo } alt="" />
         </div>
         <Line />
         <div className="flex flex-col items-center gap-9 w-2/5">
@@ -127,9 +130,9 @@ function SignInPage() {
             </div>
           </SignInForm>
           <div className="flex gap-2">
-            <a href="http://localhost:8084/oauth2/authorization/naver"><img src="/src/assets/naverLoginBtn.png" alt="" /></a>
+            <a href="http://localhost:8084/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
 
-            <a href="http://localhost:8084/oauth2/authorization/google"><img src="/src/assets/googleLoginBtn.png" alt="" /></a>
+            <a href="http://localhost:8084/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
             
           </div>
         </div>

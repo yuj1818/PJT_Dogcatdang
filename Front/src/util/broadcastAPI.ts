@@ -34,7 +34,7 @@ export const requestBroadCast = async ({
   try {
     const response = await API.post(URL, data, {
       signal,
-      method: "GET",
+      method: "POST",
       headers: {
         Authorization: token,
       },

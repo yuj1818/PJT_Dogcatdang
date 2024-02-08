@@ -46,6 +46,7 @@ public class Reservation {
 	@Column(name = "visitor", nullable = false)
 	private int visitor;
 
+	@Builder.Default
 	@Enumerated(EnumType.STRING)
 	@Column(name = "state")
 	private State state = State.대기중;

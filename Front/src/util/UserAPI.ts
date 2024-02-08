@@ -24,6 +24,16 @@ export interface signUpData {
   imgUrl: string;
 }
 
+export interface oauthSignUpData {
+  username: string | undefined;
+  email: string | undefined;
+  nickname: string;
+  phone: string;
+  address: string; 
+  role: string;
+  password: string;
+}
+
 export interface infoData {
   id: number;
   username: string;
@@ -132,3 +142,10 @@ export const editUserInfo = (
     return res;
   });
 };
+
+export const oauthSignUp = (data: oauthSignUpData) => {
+  return API.post('/oauth2/join', data)
+    .then((res) => {
+      return res;
+    })
+}

@@ -42,12 +42,7 @@ function LostAnimalDetailPage() {
   const navigate = useNavigate();
 
   const handleUpdate = () => {
-    // Update API call
-    // Replace 'updateAnimalDetails' with your actual function
-    // Example:
-    // api.updateAnimalDetails(animalID, { breed, image, gender, ... });
-    // After updating, navigate back to AnimalDetailPage
-    navigate(`/lost-update/${animalID}`);
+    navigate(`/lost-update/${animalID}`, { state: lostanimalDetail});
   };
 
   const handleBack = () => {
@@ -80,11 +75,11 @@ function LostAnimalDetailPage() {
           </Leftside>
 
           <Rightside>
-            <div className="flex"> <p style={{ fontSize: '25px' }}>{lostanimalDetail?.breed.replace(/_/g, " ")} |  {lostanimalDetail?.age}세</p> </div>
-            <div className="flex"><p>보호기관 : </p>{lostanimalDetail?.userNickname}</div>
-            <div className="flex"><p>성별 : </p>{lostanimalDetail?.gender}</div>
-            <div className="flex"><p>체중: </p>{lostanimalDetail?.weight}</div>
-            <div className="flex"><p>실종일자 : </p>{lostanimalDetail?.lostDate ? "Y" : "N"}</div>
+            <div className="flex"> <p style={{ fontSize: '25px' }}>{lostanimalDetail?.breed.replace(/_/g, " ")}  |  {lostanimalDetail?.age} 살</p> </div>
+            <div className="flex"><p>닉네임 : </p>{lostanimalDetail?.userNickname}</div>
+            <div className="flex"><p>성별 : </p>{lostanimalDetail?.gender === "남" ? "남아" : "여아"}</div>
+            <div className="flex"><p>체중: </p>{lostanimalDetail?.weight} kg</div>
+            <div className="flex"><p>실종일자 : </p>{lostanimalDetail?.lostDate}</div>
             <div className="flex"><p>실종위치 : </p>{lostanimalDetail?.lostLocation}</div>
             <div className="flex"
               style={{
