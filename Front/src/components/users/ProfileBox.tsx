@@ -56,7 +56,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
   };
 
   const goVisitManagement = () => {
-    navigate(`/profile/${props.userInfo?.id}/visit`);
+    navigate(`/visit/${props.userInfo?.id}`);
   }
 
   return (
