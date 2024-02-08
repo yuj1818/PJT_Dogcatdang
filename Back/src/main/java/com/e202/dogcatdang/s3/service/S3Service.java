@@ -16,5 +16,5 @@ public interface S3Service {
 
 		ResponseS3Dto getPresignedUrlToUpload(String fileName);
 
-		ResponseS3Dto getPresignedUrlToDownload(String fileName);
+		// ResponseS3Dto getPresignedUrlToDownload(String fileName);
 }

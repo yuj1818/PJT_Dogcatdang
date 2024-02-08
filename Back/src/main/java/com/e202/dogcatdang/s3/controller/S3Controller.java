@@ -29,10 +29,10 @@ public class S3Controller {
 		return s3Service.getPresignedUrlToUpload(fileName);
 	}
 
-	@GetMapping("/presigned/download")
-	public ResponseS3Dto getPresignedUrlToDownload(@RequestParam(value = "filename") String fileName) throws IOException {
-		return s3Service.getPresignedUrlToDownload(fileName);
-	}
+	// @GetMapping("/presigned/download")
+	// public ResponseS3Dto getPresignedUrlToDownload(@RequestParam(value = "filename") String fileName) throws IOException {
+	// 	return s3Service.getPresignedUrlToDownload(fileName);
+	// }
 
 	// 단일 이미지 파일 업로드
 	// @PostMapping("/upload")
