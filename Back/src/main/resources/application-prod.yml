@@ -4,7 +4,7 @@ server:
 # database 연동 설정
 spring:
   cors:
-  allowed-origins: https://i10e202.p.ssafy:
+  allowed-origins: https://i10e202.p.ssafy
     # spring data jpa 설정
 #  profiles:
 #    include: secret
