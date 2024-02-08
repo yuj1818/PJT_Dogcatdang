@@ -29,19 +29,19 @@ public class S3Controller {
 		return s3Service.getPresignedUrlToUpload(fileName);
 	}
 
-	@GetMapping("/presigned/download")
-	public ResponseS3Dto getPresignedUrlToDownload(@RequestParam(value = "filename") String fileName) throws IOException {
-		return s3Service.getPresignedUrlToDownload(fileName);
-	}
+	// @GetMapping("/presigned/download")
+	// public ResponseS3Dto getPresignedUrlToDownload(@RequestParam(value = "filename") String fileName) throws IOException {
+	// 	return s3Service.getPresignedUrlToDownload(fileName);
+	// }
 
 	// 단일 이미지 파일 업로드
-	// @PostMapping("/upload")
-	// public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-	// 	try {
-	// 		String imageUrl = s3Service.uploadFile(file);
-	// 		return ResponseEntity.ok("Image uploaded successfully. Image URL: " + imageUrl);
-	// 	} catch (Exception e) {
-	// 		return ResponseEntity.status(500).body("Image upload failed: " + e.getMessage());
-	// 	}
-	// }
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+		try {
+			String imageUrl = s3Service.uploadFile(file);
+			return ResponseEntity.ok("Image uploaded successfully. Image URL: " + imageUrl);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("Image upload failed: " + e.getMessage());
+		}
+	}
 }
