@@ -6,7 +6,11 @@ import { createHtmlPlugin } from 'vite-plugin-html'
 
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd());
+<<<<<<< HEAD
   console.log(env)
+=======
+  console.log(env);
+>>>>>>> af81ff5fb808b1d8bbecfca8d60f152f55766db0
 
   return {
     plugins: [
