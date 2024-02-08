@@ -7,7 +7,8 @@ import { createHtmlPlugin } from "vite-plugin-html";
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
-  return {
+  return defineConfig({
+    base: '/',
     plugins: [
       react(),
       createHtmlPlugin({

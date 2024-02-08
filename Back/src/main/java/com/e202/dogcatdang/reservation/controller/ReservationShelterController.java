@@ -88,19 +88,19 @@ public class ReservationShelterController {
 	}
 
 	// 기관 회원이 신청 상태가 '승인'인 예약 정보들을 일자 별로 필터링해 조회
-	// @Transactional
-	// @GetMapping("/by-date")
-	// public ResponseEntity<List<ResponseShelterApprovedDto>> findShelterReservationsByDate(
-	// 	@RequestHeader("Authorization") String token,
-	// 	@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-	// 	// 토큰에서 사용자 아이디(pk) 추출
-	// 	Long shelterId = jwtUtil.getUserId(token.substring(7));
-	//
-	// 	// 시작일자와 종료일자를 LocalDateTime으로 변환
-	// 	LocalDateTime startDateTime = date.atStartOfDay();
-	// 	LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusNanos(1);
-	//
-	// 	List<ResponseShelterApprovedDto> reservations = reservationService.findShelterReservationsByDate(shelterId, startDateTime, endDateTime);
-	// 	return ResponseEntity.ok(reservations);
-	// }
+	@Transactional
+	@GetMapping("/by-date")
+	public ResponseEntity<List<ResponseShelterApprovedDto>> findShelterReservationsByDate(
+		@RequestHeader("Authorization") String token,
+		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long shelterId = jwtUtil.getUserId(token.substring(7));
+
+		// 시작일자와 종료일자를 LocalDateTime으로 변환
+		LocalDateTime startDateTime = date.atStartOfDay();
+		LocalDateTime endDateTime = date.atStartOfDay().plusDays(1).minusNanos(1);
+
+		List<ResponseShelterApprovedDto> reservations = reservationService.findShelterReservationsByDate(shelterId, startDateTime, endDateTime);
+		return ResponseEntity.ok(reservations);
+	}
 }

@@ -24,17 +24,17 @@ pipeline {
                 }
             }
         }
-        stage('Push image') {
-            steps{
-                script{
-                    echo "=================== push image ================="
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-        }
+        // stage('Push image') {
+        //     steps{
+        //         script{
+        //             echo "=================== push image ================="
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+        //                 dockerImage.push("${env.BUILD_NUMBER}")
+        //                 dockerImage.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
         stage('stop prev conatiner'){
             steps {
                 script {
