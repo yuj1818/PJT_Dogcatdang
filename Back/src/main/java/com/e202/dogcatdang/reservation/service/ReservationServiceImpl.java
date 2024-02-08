@@ -126,16 +126,16 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 	}
 
-	// @Override
-	// public List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime,
-	// 	LocalDateTime endDateTime) {
-	// 	// 현재 로그인한 사용자의 특정 날짜에 대한 예약 정보 조회
-	// 	List<Reservation> reservations = reservationRepository.findShelterReservationsByDate(shelterId, startDateTime, endDateTime, Reservation.State.승인);
-	//
-	// 	// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
-	// 	return reservations.stream()
-	// 		.map(ResponseShelterApprovedDto::new)
-	// 		.collect(Collectors.toList());
-	// }
+	@Override
+	public List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime,
+		LocalDateTime endDateTime) {
+		// 현재 로그인한 사용자의 특정 날짜에 대한 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findShelterReservationsByDate(shelterId, startDateTime, endDateTime, Reservation.State.승인);
+
+		// 예약 정보를 ResponseReservationDto로 변환한 후 리스트로 반환
+		return reservations.stream()
+			.map(ResponseShelterApprovedDto::new)
+			.collect(Collectors.toList());
+	}
 
 }
