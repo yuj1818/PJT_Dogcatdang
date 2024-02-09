@@ -114,11 +114,12 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         const fileName = YYMMDD + nickname + randomNumber + ".jpeg";
         const uploadURL = await getUploadURL(fileName);
 
-        const formData = new FormData();
-        formData.append("file", uploadFile);
-
-        const IMG_URL = await axios
-          .put(uploadURL, formData)
+        await axios
+          .put(uploadURL, uploadFile, {
+            headers: {
+              "Content-Type": uploadFile.type,
+            },
+          })
           .then((response) => {
             console.log(response);
           })
@@ -129,7 +130,11 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         const editor = quillRef.current?.getEditor();
         if (editor) {
           const range = editor.getSelection();
-          editor.insertEmbed(range!.index, "image", IMG_URL);
+          editor.insertEmbed(
+            range!.index,
+            "image",
+            `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`
+          );
         }
       } catch (error) {
         console.log(error);
