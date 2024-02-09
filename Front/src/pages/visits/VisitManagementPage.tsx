@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'moment/locale/ko';
 import { useEffect, useState } from "react";
 import { Title } from '../../components/common/Title';
-import { getReservations } from '../../util/VisitAPI';
+import { getReservationDates, getReservations } from '../../util/VisitAPI';
 import ScheduleCard from '../../components/visits/ScheduleCard';
 
 const Schedule = styled.div`
@@ -58,6 +58,10 @@ const StyledCalendar = styled.div`
       color: black;
     }
 
+    .react-calendar__tile {
+      position: relative;
+    }
+
     .react-calendar__month-view__days__day--neighboringMonth {
       background: #F2F3F7;
       color: #A8A8A8;
@@ -83,7 +87,18 @@ const StyledCalendar = styled.div`
         text-decoration: none;
       }
     }
+
+    .dot {
+      border-radius: 50%;
+      width: .3rem;
+      height: .3rem;
+      background-color: #FF8331;
+    }
   }
+`
+
+const Spacer = styled.div`
+  height: .3rem;
 `
 
 export interface reservationData {
@@ -100,6 +115,7 @@ function VisitManagementPage() {
   // const isOrg = org();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [reservations, setReservations] = useState<reservationData[]>([]);
+  const [reservationDates, setReservatoinDates] = useState<string[]>([]);
 
   const handleDateChange = (value: any) => {
     setSelectedDate(value);
@@ -110,9 +126,19 @@ function VisitManagementPage() {
     setReservations(response);
   };
 
+  const getReservationSchedules = async() => {
+    const response = await getReservationDates();
+    console.log(response);
+    setReservatoinDates(response);
+  }
+
   useEffect(() => {
     getReservationData();
   }, [selectedDate]);
+
+  useEffect(() => {
+    getReservationSchedules();
+  }, []);
 
   return (
     <div className="flex flex-col gap-8">
@@ -137,6 +163,17 @@ function VisitManagementPage() {
           onChange={handleDateChange}
           value={selectedDate}
           formatDay={( _, date) => moment(date).format("D")}
+          tileContent={({ date, view }) => {
+            if (reservationDates.find(x => x === moment(date).format('YYYY-MM-DD'))) {
+              return (
+                <div className="flex justify-center items-center">
+                  <div className="dot"></div>
+                </div>
+              )
+            } else {
+              return <Spacer />
+            }
+          }}
         />
       </StyledCalendar>
     </div>

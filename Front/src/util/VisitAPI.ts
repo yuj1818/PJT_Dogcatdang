@@ -38,6 +38,18 @@ export const getReservations = (date: string) => {
     });
 };
 
+export const getReservationDates = () => {
+  return API.get(URL + '/dates', {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
+};
+
 export const cancelReservation = (reservationId: number) => {
   return API.delete(URL + `/${reservationId}`, {
     method: "DELETE",
