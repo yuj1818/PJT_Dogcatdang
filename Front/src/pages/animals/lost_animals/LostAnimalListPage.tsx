@@ -87,6 +87,7 @@ function LostAnimalListPage() {
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
+        currentPage={currentPage}
       />
     </>
   );

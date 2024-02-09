@@ -7,7 +7,7 @@ import { getUserInfo } from "../../util/uitl";
 import { Button, Input, Contour, TextArea } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
-import { resizeFile } from "../../util/imageHandler";
+import { resizeFile } from "../../util/S3";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500

@@ -3,21 +3,12 @@ import { AxiosError } from "axios";
 import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
-
-const handleImage = (htmlTag: string) => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = htmlTag;
-
-  const firstImgSrc = tempElement.querySelector("img")?.getAttribute("src");
-  return firstImgSrc;
-};
+import { imageHandler } from "./S3";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     // 2XX번이 아닌 상태 코드를 받았다.
     console.log("axios error status:", error.response.status);
-    console.log("axios error data:", error.response.data);
-    console.log("axios error headers:", error.response.headers);
   } else if (error.request) {
     // 요청은 보내졌으나 응답이 없다.
     console.log("axios error request:", error.request);
@@ -39,6 +30,7 @@ export interface FetchEventsOptions {
   boardId?: string;
   data?: ArticlePostData;
   method?: "GET" | "POST" | "PUT" | "DELETE" | "temporaryDelete";
+  nickname?: string;
 }
 
 export const requestArticle = async ({
@@ -46,10 +38,12 @@ export const requestArticle = async ({
   boardId,
   data,
   method,
+  nickname,
 }: FetchEventsOptions) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
   const URL = "api/boards";
+  let thumnailImgURL = "";
   let response;
   if (data) {
     if (!data.title.trim()) {
@@ -65,6 +59,13 @@ export const requestArticle = async ({
       error.message = "내용을 입력하세요";
       throw error;
     }
+
+    const [imgTagProcessed, imgURL] = await imageHandler(
+      data.content,
+      nickname!
+    );
+    data.content = imgTagProcessed;
+    thumnailImgURL = imgURL;
   }
 
   try {
@@ -78,12 +79,11 @@ export const requestArticle = async ({
         },
       });
     } else if (method === "POST") {
-      const firsImgURL = handleImage(data?.content!);
       if (data?.isSaved) {
         // 등록
         response = await API.post(
           URL,
-          { ...data, thumbnailImgUrl: firsImgURL },
+          { ...data, thumnailImgURL },
           {
             signal,
             method: "POST",
@@ -95,7 +95,7 @@ export const requestArticle = async ({
       } else {
         response = await API.post(
           `${URL}/temporary`,
-          { ...data, thumnail: firsImgURL },
+          { ...data, thumnailImgURL },
           {
             signal,
             method: "POST",
@@ -107,13 +107,17 @@ export const requestArticle = async ({
       }
     } else if (method === "PUT") {
       // 수정
-      response = await API.put(URL + "/" + data!.boardId!, data, {
-        signal,
-        method: "PUT",
-        headers: {
-          Authorization: token,
-        },
-      });
+      response = await API.put(
+        URL + "/" + data!.boardId!,
+        { ...data, thumnailImgURL },
+        {
+          signal,
+          method: "PUT",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
     } else if (method === "DELETE") {
       // 삭제
       response = await API.delete(`${URL}/${boardId}`, {
@@ -211,17 +215,17 @@ export const requestComment = async ({
   }
 };
 
-export const getUploadURL = async (filename: string) => {
-  const cookie = new Cookies();
-  const token = cookie.get("U_ID");
+// export const getUploadURL = async (filename: string) => {
+//   const cookie = new Cookies();
+//   const token = cookie.get("U_ID");
 
-  const URL = "api/images/presigned/upload";
-  const response = await API.get(URL, {
-    method: "GET",
-    params: { filename },
-    headers: {
-      Authorization: token,
-    },
-  });
-  return response.data.url as string;
-};
+//   const URL = "api/images/presigned/upload";
+//   const response = await API.get(URL, {
+//     method: "GET",
+//     params: { filename },
+//     headers: {
+//       Authorization: token,
+//     },
+//   });
+//   return response.data.url as string;
+// };

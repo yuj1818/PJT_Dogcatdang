@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
@@ -6,15 +6,13 @@ import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 
 import { queryClient } from "../../util/tanstackQuery";
-import { getUploadURL, requestArticle } from "../../util/articleAPI";
+import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "../../pages/articles/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
 import { Button, Input } from "../common/Design";
-import axios from "axios";
 import { getUserInfo } from "../../util/uitl";
-import { resizeFile } from "../../util/imageHandler";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const FORMATS = [
@@ -33,6 +31,18 @@ const FORMATS = [
   "color",
   "background",
 ];
+
+const MODULES = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, 4, false] }],
+      [{ color: [] }, { align: [] }],
+      ["bold", "italic", "underline", "strike"],
+      ["link", "image"],
+    ],
+    handlers: {},
+  },
+};
 
 interface BlockImageValue {
   alt: string;
@@ -92,73 +102,6 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
     },
   });
 
-  // ------------------------imageHandler------------------------------------------------------
-
-  const imageHandler = async () => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.click();
-    input.addEventListener("change", async () => {
-      const uploadFile = await resizeFile(input.files![0]);
-
-      try {
-        const { nickname } = getUserInfo();
-        const date = new Date();
-        const year = date.getFullYear().toString().slice(-2);
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const YYMMDD = year + month + day;
-
-        const randomNumber = Math.ceil(Math.random() * 10000);
-        const fileName = YYMMDD + nickname + randomNumber + ".jpeg";
-        const uploadURL = await getUploadURL(fileName);
-
-        await axios
-          .put(uploadURL, uploadFile, {
-            headers: {
-              "Content-Type": uploadFile.type,
-            },
-          })
-          .then((response) => {
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-        const editor = quillRef.current?.getEditor();
-        if (editor) {
-          const range = editor.getSelection();
-          editor.insertEmbed(
-            range!.index,
-            "image",
-            `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  };
-
-  const MODULES = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [{ header: [1, 2, 3, 4, false] }],
-          [{ color: [] }, { align: [] }],
-          ["bold", "italic", "underline", "strike"],
-          ["link", "image"],
-        ],
-        handlers: {
-          image: imageHandler,
-        },
-      },
-    }),
-    []
-  );
-
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value);
   };
@@ -173,6 +116,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
 
   const handleSubmitArticle = (isSaved: boolean) => {
     const cleanContent = DOMPurify.sanitize(dirtyContent);
+    const { nickname } = getUserInfo();
     const data = {
       title: articleTitle as string,
       content: cleanContent,
@@ -182,6 +126,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
     mutate({
       data,
       method: boardId ? "PUT" : "POST",
+      nickname,
     });
   };
 
