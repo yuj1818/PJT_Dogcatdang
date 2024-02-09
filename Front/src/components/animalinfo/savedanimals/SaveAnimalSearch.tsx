@@ -113,7 +113,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
         alt="search"
         style={{
           position: "absolute",
-          right: 100,
+          right: 90,
           top: 0,
           width: "70px",
           height: "70px",
