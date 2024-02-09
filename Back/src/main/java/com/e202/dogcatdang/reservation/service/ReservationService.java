@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterApprovedDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterListDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 @Service
@@ -32,4 +34,6 @@ public interface ReservationService {
 	ResponseShelterDto findShelterReservation(long reservationId);
 
 	List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+	List<ResponseShelterListDto> findShelterReservationsByMonths(Long shelterId, int months);
 }
