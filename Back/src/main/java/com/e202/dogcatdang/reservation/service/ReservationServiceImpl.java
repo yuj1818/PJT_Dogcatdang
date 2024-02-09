@@ -1,9 +1,9 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -88,6 +88,22 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservations.stream()
 			.map(ResponseReservationDto::new)
 			.collect(Collectors.toList());
+	}
+
+	// 일반 회원의 예약이 있는 날의 날짜 리스트 반환
+	@Override
+	public List<LocalDate> findReservationDates(Long loginUserId) {
+
+		// 현재 로그인한 사용자의 모든 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findAllByUserId(loginUserId);
+
+		// 중복되지 않은 날짜들을 추출하여 리스트에 저장
+		List<LocalDate> uniqueDates = reservations.stream()
+			.map(reservation -> reservation.getReservationTime().toLocalDate())
+			.distinct()
+			.collect(Collectors.toList());
+
+		return uniqueDates;
 	}
 
 
@@ -176,5 +192,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 		return shelterDtoList;
 	}
+
+
 
 }

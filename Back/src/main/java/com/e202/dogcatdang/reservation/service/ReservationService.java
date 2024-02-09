@@ -1,11 +1,11 @@
 package com.e202.dogcatdang.reservation.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterApprovedDto;
@@ -36,4 +36,6 @@ public interface ReservationService {
 	List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 	List<ResponseShelterListDto> findShelterReservationsByMonths(Long shelterId, int months);
+
+	List<LocalDate> findReservationDates(Long loginUserId);
 }

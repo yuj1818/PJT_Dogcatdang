@@ -1,12 +1,9 @@
 package com.e202.dogcatdang.reservation.controller;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,10 +47,13 @@ public class ReservationController {
 	@PostMapping("/{animalId}")
 	public ResponseEntity<String> createReservation(@PathVariable long animalId, @RequestHeader("Authorization") String token, @RequestBody
 		RequestReservationDto reservationDto) {
+
 		// 토큰에서 사용자 아이디(pk) 추출
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
 		// 사용자 역할(role) 확인
 		User user = userService.findById(loginUserId);
+
 		// 예약 권한 검증 조건문 -> 지금은 test를 위해 관리자 계정도 가능하게 함, 추후 일반 회원만이 가능하도록 바꿔야 함
 		if (user.getRole().equals("ROLE_USER") || user.getRole().equals("ROLE_ADMIN")) {
 			// 역할(role)이 "ROLE_USER"인 경우에만 예약 생성
@@ -99,6 +99,7 @@ public class ReservationController {
 	@Transactional
 	@GetMapping("")
 	public ResponseEntity<List<ResponseReservationDto>> findAllReservations(@RequestHeader("Authorization") String token) {
+
 		// 토큰에서 사용자 아이디(pk) 추출
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 		List<ResponseReservationDto> reservations = reservationService.findAllReservationsById(loginUserId);
@@ -111,6 +112,7 @@ public class ReservationController {
 	public ResponseEntity<List<ResponseReservationDto>> findReservationsByDate(
 		@RequestHeader("Authorization") String token,
 		@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+
 		// 토큰에서 사용자 아이디(pk) 추출
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
@@ -132,6 +134,7 @@ public class ReservationController {
 
 		// 예약 정보 조회
 		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+
 		// 예약 정보가 존재하고, 예약한 유저와 로그인한 유저가 일치한다면
 		if (reservation != null && reservation.getUser().getId().equals(loginUserId)) {
 
@@ -142,6 +145,18 @@ public class ReservationController {
 		}
 	}
 
+	// 일반 회원의 예약이 있는 날의 날짜 리스트 반환
+	@Transactional
+	@GetMapping("/dates")
+	public ResponseEntity<List<LocalDate>> findReservationDates(@RequestHeader("Authorization") String token) {
+
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		List<LocalDate> dates = reservationService.findReservationDates(loginUserId);
+
+		return ResponseEntity.ok(dates);
+	}
 
 
 }
