@@ -54,8 +54,6 @@ export const lostUpdate = (
   token: string,
   animalID: string
 ) => {
-  console.log(token);
-  console.log(data);
   return API.put(`/api/lost-animals/${animalID}`, data, {
     method: "PUT",
     headers: {
