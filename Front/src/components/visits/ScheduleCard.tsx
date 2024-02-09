@@ -2,6 +2,7 @@ import { reservationData } from "../../pages/visits/VisitManagementPage";
 import styled from "styled-components";
 import moment from "moment";
 import { Button } from "../common/Button";
+import { cancelReservation } from "../../util/VisitAPI";
 
 const Card = styled.div`
   display: flex;
@@ -33,9 +34,16 @@ const Card = styled.div`
   }
 `;
 
-const ScheduleCard: React.FC<{ reservation: reservationData }> = ({
+const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations: React.Dispatch<React.SetStateAction<reservationData[]>> }> = ({
   reservation,
+  handleReservations
 }) => {
+
+  const onClickCancel = async() => {
+    await cancelReservation(reservation.reservationId);
+    handleReservations((prev: reservationData[]) => prev.filter((el: reservationData) => el.reservationId !== reservation.reservationId));
+  };
+
   return (
     <Card>
       <div className="circle">
@@ -58,7 +66,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData }> = ({
       </div>
       <div className="flex flex-col gap-1 items-center justify-center">
         <p className="sm-font">{reservation.state || "방문 신청"}</p>
-        <Button background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
+        <Button onClick={onClickCancel} background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
           취소
         </Button>
       </div>
