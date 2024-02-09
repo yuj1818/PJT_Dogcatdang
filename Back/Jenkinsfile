@@ -15,6 +15,11 @@ pipeline {
                         sh "cp $configFile Back/src/main/resources/application-secret.yml"
                     }
                 }
+                withCredentials([file(credentialsId: 'key-store', variable: 'keyFile')]){
+                    script{
+                        sh "cp $keyFile Back/keystore.p12"
+                    }
+                }
             }
         }
         stage('Build'){

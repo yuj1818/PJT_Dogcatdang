@@ -10,7 +10,7 @@ pipeline {
                 nodejs(nodeJSInstallationName: 'nodejs') {
                     dir("./Front"){
                         sh "npm install"
-                        sh "npm run build"
+                        sh "npm run build -- --mode production"
                     }
                 }
             }
