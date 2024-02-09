@@ -88,7 +88,7 @@ function SignUpPage() {
   const [metadata, setMetadata] = useState<MetaData>();
 
   useEffect(() => {
-    setMetadata(JSON.parse(searchParams.get('metadata') || ""));
+    setMetadata(searchParams.get('metadata') && JSON.parse(searchParams.get('metadata') || ""));
   }, [isOauth])
 
   const [isOrg, setIsOrg] = useState(false);
