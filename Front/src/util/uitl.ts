@@ -7,7 +7,7 @@ interface userInformation {
 
 export const getUserInfo = () => {
   const userInfo: userInformation = JSON.parse(
-    localStorage.getItem("userInfo") || ""
+    localStorage.getItem("userInfo") || "{}"
   );
   return { ...userInfo };
 };

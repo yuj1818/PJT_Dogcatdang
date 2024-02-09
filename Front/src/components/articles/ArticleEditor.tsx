@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
@@ -12,9 +12,7 @@ import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
 import { Button, Input } from "../common/Design";
-import axios from "axios";
 import { getUserInfo } from "../../util/uitl";
-import { getFileName, getPresignedURL, resizeFile } from "../../util/S3";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const FORMATS = [
