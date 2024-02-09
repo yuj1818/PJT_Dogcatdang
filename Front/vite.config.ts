@@ -14,8 +14,11 @@ export default ({ mode }) => {
     plugins: [
       million.vite({ auto: true }),
       react(),
+      compression(),
       compression({
-        threshold: 1400,
+        algorithm: "brotliCompress",
+        exclude: [/\.(br)$/, /\.(gz)$/],
+        deleteOriginalAssets: true,
       }),
       createHtmlPlugin({
         minify: true,
