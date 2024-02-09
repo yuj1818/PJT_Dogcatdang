@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { Title } from '../../components/common/Title';
 import { getReservationDates, getReservations } from '../../util/VisitAPI';
 import ScheduleCard from '../../components/visits/ScheduleCard';
@@ -150,10 +150,10 @@ function VisitManagementPage() {
         <Schedule>
           {
             reservations.length ? reservations.map((reservation: reservationData, idx) => (
-              <>
-                <ScheduleCard key={reservation.reservationId} reservation={reservation} handleReservations={setReservations} />
+              <Fragment key={reservation.reservationId}>
+                <ScheduleCard reservation={reservation} handleReservations={setReservations} />
                 { idx !== reservations.length - 1 && <hr />}
-              </>
+              </Fragment>
             ))
             :
             <p>방문 일정이 없습니다</p>
@@ -163,7 +163,7 @@ function VisitManagementPage() {
           onChange={handleDateChange}
           value={selectedDate}
           formatDay={( _, date) => moment(date).format("D")}
-          tileContent={({ date, view }) => {
+          tileContent={({ date }) => {
             if (reservationDates.find(x => x === moment(date).format('YYYY-MM-DD'))) {
               return (
                 <div className="flex justify-center items-center">
