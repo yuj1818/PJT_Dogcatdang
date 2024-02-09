@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import {
-  Navigate,
   Outlet,
   RouterProvider,
   createBrowserRouter,
