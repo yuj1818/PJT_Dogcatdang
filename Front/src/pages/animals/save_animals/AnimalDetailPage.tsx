@@ -23,6 +23,10 @@ function AnimalDetailPage() {
   const { animalID } = useParams();
   const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
   const isOrg = org();
+  const userInfoString = localStorage.getItem('userInfo') ?? '';
+  const userInfo = JSON.parse(userInfoString);
+  const userId = userInfo.id
+
 
   useEffect(() => {
     const apiUrl = `api/animals/${animalID}`;
@@ -38,7 +42,7 @@ function AnimalDetailPage() {
   const navigate = useNavigate();
 
   const handleUpdate = () => {
-    navigate(`/save-update/${animalID}`, { state: animalDetail});
+    navigate(`/save-update/${animalID}`, { state: animalDetail });
   };
 
   const handleBack = () => {
@@ -92,7 +96,7 @@ function AnimalDetailPage() {
             </div>
             <div className="flex">
               <p>성별 : </p>
-              {animalDetail?.gender === "남" ? "남아" : "여아" }
+              {animalDetail?.gender === "남" ? "남아" : "여아"}
             </div>
             <div className="flex">
               <p>체중 : </p>
@@ -132,22 +136,26 @@ function AnimalDetailPage() {
           전체 글 목록
         </Button>
         {
-          isOrg ? 
-          <Button
-            $paddingX={1}
-            $paddingY={0.5}
-            onClick={handleUpdate}
-          >
-            수정
-          </Button>
-          :
-          <Button 
-            $paddingX={1} 
-            $paddingY={0.5} 
-            onClick={handleVisit}
-          >
-            방문 예약
-          </Button>
+          isOrg ?
+            (userId === animalDetail?.userId ?
+              <Button
+                $paddingX={1}
+                $paddingY={0.5}
+                onClick={handleUpdate}
+              >
+                수정
+              </Button>
+              :
+              null
+            )
+            :
+            <Button
+              $paddingX={1}
+              $paddingY={0.5}
+              onClick={handleVisit}
+            >
+              방문 예약
+            </Button>
         }
       </div>
     </>

@@ -19,7 +19,6 @@ function LostAnimalFormPage() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
@@ -49,7 +48,6 @@ function LostAnimalFormPage() {
       gender: gender,
       feature: feature,
       state: state,
-      imgName: imgName,
       imgUrl: imgUrl,
     };
 
@@ -192,16 +190,7 @@ function LostAnimalFormPage() {
                   />
                 </div>
               </div>
-              <div>
-                <label>
-                  이미지이름 :
-                  <input
-                    type="text"
-                    value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
-                  />
-                </label>
-              </div>
+
               <div>
                 <label>
                   이미지URL :
