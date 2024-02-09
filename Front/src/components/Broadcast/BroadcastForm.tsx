@@ -7,6 +7,7 @@ import { getUserInfo } from "../../util/uitl";
 import { Button, Input, Contour, TextArea } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
+import { resizeFile } from "../../util/S3";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
@@ -14,6 +15,13 @@ const TextLength = tw.p`
 
 export const Label = tw.label`
   mt-3
+`;
+
+const ImageUploadLabel = tw.label`
+cursor-pointer flex items-center justify-center w-full px-4 py-2
+border border-transparent rounded-md shadow-sm text-sm font-medium
+text-white bg-orange-400 hover:bg-orange-600 focus:outline-none focus:ring-2
+focus:ring-offset-2 focus:ring-orange-400 mt-5 mb-5
 `;
 
 interface FormProps {
@@ -27,12 +35,13 @@ const Form: React.FC<FormProps> = ({
   sessionIdChangeHandler,
   sessionId,
 }) => {
+  const navigate = useNavigate();
   const params = useParams();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedAnimal, setSelectedAnimal] = useState<CallAnimal[]>([]);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [file, setFile] = useState<File>();
 
   useEffect(() => {
     const { username } = getUserInfo();
@@ -79,6 +88,7 @@ const Form: React.FC<FormProps> = ({
       console.log(sessionId);
       console.log(title);
       console.log(description);
+      console.log(file);
       // 요청 보낼 데이터들
 
       const data = {
@@ -121,6 +131,16 @@ const Form: React.FC<FormProps> = ({
     });
   };
 
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const addedfile = event.target.files;
+    if (addedfile) {
+      const img = await resizeFile(addedfile[0]);
+      setFile(img);
+    }
+  };
+
   return (
     <>
       {isOrg() ? (
@@ -142,6 +162,17 @@ const Form: React.FC<FormProps> = ({
               onChange={handleDescriptionChange}
               id="description"
             />
+            <ImageUploadLabel htmlFor="imageUpload">
+              <span>썸네일 이미지</span>
+              <input
+                type="file"
+                id="imageUpload"
+                name="imageUpload"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </ImageUploadLabel>
             <AnimalSearchForBroadcast
               handleSelectedAnimal={handleSelectedAnimal}
               selectedData={selectedAnimal}
