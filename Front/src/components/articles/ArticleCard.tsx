@@ -15,7 +15,7 @@ const CardStyle = styled.div<{ $itemsPerRow: number }>`
 const ArticleCard: React.FC<{
   article: ArticleInterface;
 }> = (props) => {
-  const { boardId, title, thumbNailImgUrl, userName } = props.article;
+  const { boardId, title, thumbnailImgUrl, userName } = props.article;
   return (
     <CardStyle
       $itemsPerRow={4}
@@ -24,7 +24,7 @@ const ArticleCard: React.FC<{
       <NavLink to={`/articles/detail/${boardId}`} className="block h-full">
         <img
           className="w-full h-40 object-cover object-center"
-          src={thumbNailImgUrl}
+          src={thumbnailImgUrl}
           alt={title}
         />
         <h4 className="text-xl font-bold mb-2">{title}</h4>

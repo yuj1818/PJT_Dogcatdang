@@ -19,6 +19,7 @@ import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseReservationDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterApprovedDto;
 import com.e202.dogcatdang.reservation.dto.ResponseShelterDto;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterListDto;
 import com.e202.dogcatdang.reservation.dto.ResponseUpdatedStateDto;
 
 import lombok.AllArgsConstructor;
@@ -126,6 +127,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 	}
 
+	// 기관이 승인한 예약 목록을 일별로 조회
 	@Override
 	public List<ResponseShelterApprovedDto> findShelterReservationsByDate(Long shelterId, LocalDateTime startDateTime,
 		LocalDateTime endDateTime) {
@@ -136,6 +138,43 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservations.stream()
 			.map(ResponseShelterApprovedDto::new)
 			.collect(Collectors.toList());
+	}
+
+	// 기관이 개월 수로 필터링 된 전체 예약 목록을 조회
+	@Override
+	public List<ResponseShelterListDto> findShelterReservationsByMonths(Long shelterId, int months) {
+		// months 값이 0보다 작은 경우 현재 달을 포함하여 전체 데이터를 가져오도록 설정
+		LocalDateTime fromDateTime;
+		if (months <= 0) {
+			fromDateTime = LocalDateTime.MIN; // 가장 이전의 날짜로 설정
+		} else {
+			// 현재 달을 포함하여 n 개월 이전의 데이터를 가져오기 위한 계산
+			fromDateTime = LocalDateTime.now().minusMonths(months);
+		}
+
+		// 현재 기관에게 들어온 모든 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findByAnimal_User_Id(shelterId);
+
+		// fromDateTime 이후의 예약 정보 필터링
+		List<Reservation> filteredReservations = reservations.stream()
+			.filter(reservation -> reservation.getReservationTime().isAfter(fromDateTime))
+			.collect(Collectors.toList());
+
+		List<ResponseShelterListDto> shelterDtoList = filteredReservations.stream()
+			.map(reservation -> ResponseShelterListDto.builder() // ResponseShelterListDto의 빌더 호출
+				.reservationId(reservation.getReservationId())
+				.name(reservation.getName())
+				.reservationTime(reservation.getReservationTime())
+				.phone(reservation.getPhone())
+				.visitor(reservation.getVisitor())
+				.code(reservation.getAnimal().getCode())
+				.imgUrl(reservation.getAnimal().getImgUrl())
+				.breed(reservation.getAnimal().getBreed())
+				.state(reservation.getState())
+				.build())
+			.collect(Collectors.toList());
+
+		return shelterDtoList;
 	}
 
 }

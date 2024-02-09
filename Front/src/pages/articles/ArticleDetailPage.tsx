@@ -10,10 +10,12 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { LoadingOrError } from "./LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
-import { Button } from "../../components/common/Design";
+import { Button } from "../../components/common/Button";
 import { getUserInfo } from "../../util/uitl";
-import { useEffect, useState } from "react";
-import ArticleEditor from "../../components/articles/ArticleEditor";
+import { lazy, useEffect, useState } from "react";
+const ArticleEditor = lazy(
+  () => import("../../components/articles/ArticleEditor")
+);
 import CommentList from "../../components/articles/comments/CommentList";
 import CommentForm from "../../components/articles/comments/CommentForm";
 
@@ -93,9 +95,14 @@ const ArticleDetail: React.FC = () => {
             content={data.content}
             nickname={data.userName}
           />
-          <Button onClick={handleDelte}>삭제하기</Button>
           {id === data.userId && (
-            <Button onClick={handleModificaion}>수정하기</Button>
+            <>
+              <Button background="#da5454" onClick={handleDelte}>
+                삭제하기
+              </Button>
+
+              <Button onClick={handleModificaion}>수정하기</Button>
+            </>
           )}
         </>
       );
@@ -103,8 +110,6 @@ const ArticleDetail: React.FC = () => {
       content = <ArticleEditor {...data} />;
     }
   }
-
-  console.log(data);
 
   return (
     <>

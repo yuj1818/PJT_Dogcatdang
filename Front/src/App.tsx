@@ -1,9 +1,9 @@
 import { Suspense, lazy } from "react";
 import {
-  Navigate,
   Outlet,
   RouterProvider,
   createBrowserRouter,
+  redirect,
 } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
@@ -37,7 +37,6 @@ import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
 import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
-// import { loginOnly } from "./util/commonLoader.ts";
 
 const router = createBrowserRouter([
   // {
@@ -64,7 +63,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <NavBar />,
-    // loader: loginOnly,
+    loader: () => {
+      if (!localStorage.getItem("userInfo")) {
+        return redirect("/landing");
+      }
+      return null;
+    },
     children: [
       {
         index: true,
@@ -125,12 +129,14 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
-        element: (
-          <>
-            <Navigate to="/articles/1" replace={true} />
-            <Outlet />
-          </>
-        ),
+        loader: ({ request }) => {
+          const url = request.url.split("/");
+          if (url.length === 4 || url[4] === "") {
+            return redirect("/articles/1");
+          }
+          return null;
+        },
+        element: <Outlet />,
         children: [
           {
             path: "search/:searchKey",
@@ -185,13 +191,13 @@ const router = createBrowserRouter([
         children: [
           {
             path: ":shelterId/:animalId",
-            element: <VisitReservationPage />
+            element: <VisitReservationPage />,
           },
           {
             path: ":userId",
-            element: <VisitManagementPage />
-          }
-        ]
+            element: <VisitManagementPage />,
+          },
+        ],
       },
     ],
   },

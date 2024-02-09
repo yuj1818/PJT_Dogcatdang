@@ -45,6 +45,9 @@ public class S3ServiceImpl implements S3Service {
 			.withMethod(HttpMethod.PUT)
 			.withExpiration(expiration);
 
+		// content-type을 지정합니다.
+		generatePresignedUrlRequest.addRequestParameter("Content-Type", "image/jpeg");
+
 		return ResponseS3Dto.builder()
 			.url(amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString())
 			.build();

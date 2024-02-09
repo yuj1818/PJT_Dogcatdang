@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.e202.dogcatdang.db.entity.Reservation;
+import com.e202.dogcatdang.reservation.dto.ResponseShelterListDto;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -32,4 +33,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	@Query("SELECT r FROM Reservation r " + "JOIN r.animal a " + "JOIN a.user u " + "WHERE u.id = :userId " + "AND r.reservationTime BETWEEN :startDateTime AND :endDateTime " + "AND r.state = :state")
 	List<Reservation> findShelterReservationsByDate(@Param("userId")Long shelterId, @Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime")LocalDateTime endDateTime, @Param("state")Reservation.State state);
 
+	List<Reservation> findByAnimal_User_Id(Long shelterId);
 }

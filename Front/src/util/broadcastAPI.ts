@@ -72,5 +72,6 @@ export const callAnimal = async ({ signal }: Siganl) => {
     return response.data as CallAnimal[];
   } catch (error) {
     handleAxiosError(error as AxiosError);
+    return [];
   }
 };

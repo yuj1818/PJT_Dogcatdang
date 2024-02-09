@@ -5,6 +5,7 @@ import { LoadingOrError } from "../../../pages/articles/LoadingOrError";
 import { CommentInterface } from "../ArticleInterface";
 import Comment from "./Comment";
 import tw from "tailwind-styled-components";
+import { getUserInfo } from "../../../util/uitl";
 
 const Container = tw.div`
  mt-2 p-4 bg-white rounded-md shadow-md
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const CommentList = ({ boardId }: Props) => {
+  const { id } = getUserInfo();
   const { data, isLoading, isError, error } = useQuery<
     CommentInterface[],
     Error,
@@ -32,7 +34,6 @@ const CommentList = ({ boardId }: Props) => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-
   console.log(data);
   return (
     <Container>
@@ -41,7 +42,12 @@ const CommentList = ({ boardId }: Props) => {
       )}
       {data && data.length > 0 ? (
         data.map((comment: CommentInterface) => (
-          <Comment key={comment.commentId} boardId={boardId} {...comment} />
+          <Comment
+            key={comment.commentId}
+            boardId={boardId}
+            {...comment}
+            veiwerId={id}
+          />
         ))
       ) : (
         <p>작성된 댓글이 없습니다. 첫 번째 댓글을 작성해 보세요!</p>
