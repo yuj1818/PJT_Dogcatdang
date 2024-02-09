@@ -1,9 +1,9 @@
 import { Suspense, lazy } from "react";
 import {
-  Navigate,
   Outlet,
   RouterProvider,
   createBrowserRouter,
+  redirect,
 } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
@@ -125,12 +125,14 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
-        element: (
-          <>
-            <Navigate to="/articles/1" replace={true} />
-            <Outlet />
-          </>
-        ),
+        loader: ({ request }) => {
+          const url = request.url.split("/");
+          if (url.length === 4 || url[4] === "") {
+            return redirect("/articles/1");
+          }
+          return null;
+        },
+        element: <Outlet />,
         children: [
           {
             path: "search/:searchKey",

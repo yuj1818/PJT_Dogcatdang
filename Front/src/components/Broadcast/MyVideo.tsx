@@ -31,6 +31,10 @@ const FullscreenButtonContainer = styled.button`
 
 const GroupComtainer = styled.div`
   display: flex;
+
+  button {
+    margin-left: 1rem;
+  }
 `;
 
 interface VideoProps {

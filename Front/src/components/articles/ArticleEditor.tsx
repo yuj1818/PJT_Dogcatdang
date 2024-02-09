@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
-import Resizer from "react-image-file-resizer";
 
 import { queryClient } from "../../util/tanstackQuery";
 import { getUploadURL, requestArticle } from "../../util/articleAPI";
@@ -15,6 +14,7 @@ import tw from "tailwind-styled-components";
 import { Button, Input } from "../common/Design";
 import axios from "axios";
 import { getUserInfo } from "../../util/uitl";
+import { resizeFile } from "../../util/imageHandler";
 
 // -----------------------reat-quill--------------------------------------------------------------
 const FORMATS = [
@@ -93,19 +93,6 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
   });
 
   // ------------------------imageHandler------------------------------------------------------
-  const resizeFile = (file: File) =>
-    new Promise((res) => {
-      Resizer.imageFileResizer(
-        file, // target file
-        200, // maxWidth
-        200, // maxHeight
-        "JPEG", // compressFormat : Can be either JPEG, PNG or WEBP.
-        80, // quality : 0 and 100. Used for the JPEG compression
-        0, // rotation
-        (uri) => res(uri), // responseUriFunc
-        "file" // outputType : Can be either base64, blob or file.(Default type is base64)
-      );
-    });
 
   const imageHandler = async () => {
     const input = document.createElement("input");
@@ -113,7 +100,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
     input.setAttribute("accept", "image/*");
     input.click();
     input.addEventListener("change", async () => {
-      const file = resizeFile(input.files![0]);
+      const uploadFile = await resizeFile(input.files![0]);
 
       try {
         const { nickname } = getUserInfo();
@@ -124,16 +111,13 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         const YYMMDD = year + month + day;
 
         const randomNumber = Math.ceil(Math.random() * 10000);
-        const fileName = YYMMDD + nickname + randomNumber;
+        const fileName = YYMMDD + nickname + randomNumber + ".jpeg";
         const uploadURL = await getUploadURL(fileName);
 
-        const IMG_URL = await axios
-          .put(uploadURL, {
-            method: "put",
-            data: file,
+        await axios
+          .put(uploadURL, uploadFile, {
             headers: {
-              "Content-Type": "image/jpeg",
-              "x-amz-acl": "public-read",
+              "Content-Type": uploadFile.type,
             },
           })
           .then((response) => {
@@ -146,7 +130,11 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         const editor = quillRef.current?.getEditor();
         if (editor) {
           const range = editor.getSelection();
-          editor.insertEmbed(range!.index, "image", IMG_URL);
+          editor.insertEmbed(
+            range!.index,
+            "image",
+            `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`
+          );
         }
       } catch (error) {
         console.log(error);

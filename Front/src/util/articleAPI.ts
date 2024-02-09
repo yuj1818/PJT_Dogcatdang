@@ -4,6 +4,14 @@ import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
 
+const handleImage = (htmlTag: string) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = htmlTag;
+
+  const firstImgSrc = tempElement.querySelector("img")?.getAttribute("src");
+  return firstImgSrc;
+};
+
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     // 2XX번이 아닌 상태 코드를 받았다.
@@ -70,23 +78,32 @@ export const requestArticle = async ({
         },
       });
     } else if (method === "POST") {
+      const firsImgURL = handleImage(data?.content!);
       if (data?.isSaved) {
         // 등록
-        response = await API.post(URL, data, {
-          signal,
-          method: "POST",
-          headers: {
-            Authorization: token,
-          },
-        });
+        response = await API.post(
+          URL,
+          { ...data, thumbnailImgUrl: firsImgURL },
+          {
+            signal,
+            method: "POST",
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
       } else {
-        response = await API.post(`${URL}/temporary`, data, {
-          signal,
-          method: "POST",
-          headers: {
-            Authorization: token,
-          },
-        });
+        response = await API.post(
+          `${URL}/temporary`,
+          { ...data, thumnail: firsImgURL },
+          {
+            signal,
+            method: "POST",
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
       }
     } else if (method === "PUT") {
       // 수정
@@ -165,7 +182,6 @@ export const requestComment = async ({
         },
       });
     } else if (method === "PUT") {
-      console.log(commentId);
       if (!commentId) {
         console.error("commentId 필요");
         return;
