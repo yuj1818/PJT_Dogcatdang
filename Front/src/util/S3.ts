@@ -118,6 +118,7 @@ export const imageHandler = async (data: string, nickname: string) => {
       "src",
       `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
     );
+    imageTags[i].setAttribute("loading", "lazy");
   }
 
   const thumnailImgURL = firstImgTag?.getAttribute("src") ?? null;

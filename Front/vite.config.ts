@@ -16,7 +16,6 @@ export default ({ mode }) => {
       react(),
       compression(),
       compression({
-        algorithm: "brotliCompress",
         exclude: [/\.(br)$/, /\.(gz)$/],
         deleteOriginalAssets: true,
       }),

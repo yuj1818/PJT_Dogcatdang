@@ -8,7 +8,7 @@ import { ArticleInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/common/Button";
 import styled from "styled-components";
 
@@ -109,9 +109,6 @@ const ArticleListPage: React.FC = () => {
         </Button>
       </HeadContainer>
       {content}
-      <div className="flex">
-        <Link to="/articles/new" className="ml-auto"></Link>
-      </div>
       {data && (
         <Pagination
           totalItems={data!.length}
