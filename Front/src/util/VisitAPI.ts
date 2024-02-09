@@ -37,3 +37,15 @@ export const getReservations = (date: string) => {
       return res.data;
     });
 };
+
+export const cancelReservation = (reservationId: number) => {
+  return API.delete(URL + `/${reservationId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res;
+    });
+};

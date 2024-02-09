@@ -121,16 +121,7 @@ const router = createBrowserRouter([
       },
       {
         path: "profile/:userId",
-        children: [
-          {
-            index: true,
-            element: <ProfilePage />,
-          },
-          {
-            path: "visit",
-            element: <VisitManagementPage />,
-          },
-        ],
+        element: <ProfilePage />,
       },
       {
         path: "articles/",
@@ -192,8 +183,17 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "visit/:shelterId/:animalId",
-        element: <VisitReservationPage />,
+        path: "visit",
+        children: [
+          {
+            path: ":shelterId/:animalId",
+            element: <VisitReservationPage />
+          },
+          {
+            path: ":userId",
+            element: <VisitManagementPage />
+          }
+        ]
       },
     ],
   },
