@@ -193,6 +193,20 @@ public class ReservationServiceImpl implements ReservationService {
 		return shelterDtoList;
 	}
 
+	// 기관 회원의 승인된 예약이 있는 날의 날짜 리스트 반환
+	@Transactional
+	@Override
+	public List<LocalDate> findShelterReservationDates(Long shelterId) {
+		// 현재 기관의 승인된 모든 예약 정보 조회
+		List<Reservation> reservations = reservationRepository.findShelterReservations(shelterId, Reservation.State.승인);
 
+		// 중복되지 않은 날짜들을 추출하여 리스트에 저장
+		List<LocalDate> uniqueDates = reservations.stream()
+			.map(reservation -> reservation.getReservationTime().toLocalDate())
+			.distinct()
+			.collect(Collectors.toList());
+
+		return uniqueDates;
+	}
 
 }

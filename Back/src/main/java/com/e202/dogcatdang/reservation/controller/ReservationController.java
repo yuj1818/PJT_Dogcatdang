@@ -154,7 +154,6 @@ public class ReservationController {
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
 		List<LocalDate> dates = reservationService.findReservationDates(loginUserId);
-
 		return ResponseEntity.ok(dates);
 	}
 
