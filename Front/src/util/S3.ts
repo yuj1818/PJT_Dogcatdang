@@ -32,7 +32,7 @@ export const getPresignedURL = async (filename: string) => {
   return response.data.url as string;
 };
 
-const getFileName = (nickname: string) => {
+export const getFileName = (nickname: string) => {
   const date = new Date();
   const year = date.getFullYear().toString().slice(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -40,8 +40,37 @@ const getFileName = (nickname: string) => {
   const YYMMDD = year + month + day;
   const randomNumber = Math.ceil(Math.random() * 10000);
 
-  return YYMMDD + nickname + randomNumber;
+  return YYMMDD + nickname + randomNumber + ".jpeg";
 };
+
+const base64toFile = (
+  base64String: string,
+  filename: string,
+  mimeType: string
+) => {
+  const byteCharacters: string = atob(base64String);
+  const byteArrays: Uint8Array[] = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: mimeType });
+
+  // Create a File from the Blob
+  const file = new File([blob], filename, { type: mimeType });
+
+  return file;
+};
+
 export const imageHandler = async (data: string, nickname: string) => {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = data;
@@ -58,21 +87,22 @@ export const imageHandler = async (data: string, nickname: string) => {
 
   const imageURLs = await Promise.all(
     Array.from(imageTags).map(async (imgTag) => {
-      const uploadURL = await getPresignedURL(getFileName(nickname));
+      const filename = getFileName(nickname);
+      const uploadURL = await getPresignedURL(filename);
 
       const base64ImgData = imgTag.getAttribute("src")!.split(",")[1];
-      const binaryData = atob(base64ImgData);
-      const formData = new FormData();
-      formData.append("file", binaryData);
+      const file = await resizeFile(
+        base64toFile(base64ImgData!, filename, "image/jpeg")
+      );
 
       try {
-        const response = await axios.post(uploadURL, formData, {
+        const response = await axios.put(uploadURL, file, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": file.type,
           },
         });
         console.log("성공", response);
-        return response.data;
+        return filename;
       } catch (error) {
         console.log("이미지 업로드 실패", error);
         const err = new Error();
@@ -84,7 +114,10 @@ export const imageHandler = async (data: string, nickname: string) => {
   );
 
   for (let i = 0; i < imageURLs.length; i++) {
-    imageTags[i].setAttribute("src", imageURLs[i]);
+    imageTags[i].setAttribute(
+      "src",
+      `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
+    );
   }
 
   const thumnailImgURL = firstImgTag?.getAttribute("src") ?? null;

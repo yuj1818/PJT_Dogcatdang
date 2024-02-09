@@ -96,6 +96,7 @@ function AnimalListPage() {
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
+        currentPage={currentPage}
       />
     </div>
   );

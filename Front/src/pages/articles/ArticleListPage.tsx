@@ -46,6 +46,7 @@ const ArticleListPage: React.FC = () => {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    navigate(`/articles/${newPage}`);
   };
 
   const submitHandler = (searchword: string) => {
@@ -95,7 +96,7 @@ const ArticleListPage: React.FC = () => {
         </>
       );
     }
-  }, [data, searchKey]);
+  }, [data, searchKey, currentPage]);
 
   return (
     <>
@@ -116,6 +117,7 @@ const ArticleListPage: React.FC = () => {
           totalItems={data!.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
+          currentPage={currentPage}
         />
       )}
     </>
