@@ -13,7 +13,10 @@ interface shelterData {
 }
 
 const ReservationFormBox = styled.div`
-  width: 65%;
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   .md-font {
     font-size: 1.3rem;
     font-family: 'Pretendard-500';
@@ -25,14 +28,23 @@ const ReservationForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 
   .item {
     display: flex;
     align-items: center;
+    width: 100%;
   }
 
   label {
     width: 6rem;
+  }
+
+  input {
+    flex-grow: 1;
+    border-radius: 10px;
+    box-shadow: 0 3.5px 3.5px lightgrey;
+    padding: .2rem .5rem;
   }
 `
 
@@ -159,7 +171,12 @@ function VisitReservationPage() {
                 <label htmlFor="visitor">방문 인원</label>
                 <input  type="text" name="visitor" id="visitor" onChange={handleVisitor} required />
               </div>
-              <Button $paddingX={1}>등록</Button>
+              <div className="item">
+                <label htmlFor=""></label>
+                <div className="flex w-full justify-center">
+                  <Button $paddingX={1}>등록</Button>
+                </div>
+              </div>
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
