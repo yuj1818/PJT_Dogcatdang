@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @Slf4j
@@ -82,7 +84,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         System.out.println(username);
 
         //이미 있는 아이디 인지 확인
-        User existData = userRepository.findByEmail(email);
+        Optional<User> existData = userRepository.findByEmail(email);
+        //User existData = userRepository.findByEmail(email);
 
         System.out.println("여긴 나가니?");
 
@@ -93,21 +96,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if(existData == null){
             //회원가입 하러가
             System.out.println("회원가입 하러가");
-            // todo: 여기서, failureAuthenticationHandler로 jwt정보를 전달
 
+            //metadata 랑 exception 던져서 redirect 하기( metadata 도 넘기기)
             throw new CustomOAuth2AuthenticationException("User not found.",metadata);
 
-////            System.out.println("null 일때");
-////            User user = new User();
-////            user.setUsername(username);
-////            user.setEmail(oAuth2Response.getEmail());
-////            user.setRole("ROLE_USER");
-////            user.setPassword(username);
-////            user.setAddress(username);
-////            user.setNickname(username);
-////            user.setPhone(username);
-//
-//           userRepository.save(user);
         }
         else{
             //이미 있는 이메일이면 메인으로 가야지?
