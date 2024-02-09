@@ -17,18 +17,18 @@ function LostAnimalUpdatePage() {
   const { state } = useLocation();
   const cookie = new Cookies();
 
-
-  console.log(state)
-  const [selectedCity, setSelectedCity] = useState("");
+  console.log(state);
+  const [selectedCity, setSelectedCity] = useState(
+    state.lostLocation.split(" ")[0] || ""
+  );
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
-  const [loststate, setLostState] = useState("");
-  const [imgName, setImgName] = useState(state.imgName ||"");
+  const [loststate, setLostState] = useState(state.state || "");
   const [imgUrl, setImgUrl] = useState(state.imgUrl || "");
-  const [animalType, setAnimalType] = useState("강아지");
-  const [breed, setBreed] = useState(state.breed ||"");
+  const [animalType, setAnimalType] = useState(state.animalType || "강아지");
+  const [breed, setBreed] = useState(state.breed || "");
 
-  const [gender, setGender] = useState(state.gender ||"");
+  const [gender, setGender] = useState(state.gender || "");
   const [age, setAge] = useState(state.age || "");
   const [weight, setWeight] = useState(state.weight || "");
   const [lostDate, setLostDate] = useState(state.lostDate || "");
@@ -74,7 +74,6 @@ function LostAnimalUpdatePage() {
       gender: gender,
       feature: feature,
       state: loststate,
-      imgName: imgName,
       imgUrl: imgUrl,
     };
     const response = await lostUpdate(data, token, animalID);
@@ -195,16 +194,7 @@ function LostAnimalUpdatePage() {
                   />
                 </div>
               </div>
-              <div>
-                <label>
-                  이미지이름 :
-                  <input
-                    type="text"
-                    value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
-                  />
-                </label>
-              </div>
+
               <div>
                 <label>
                   이미지URL :

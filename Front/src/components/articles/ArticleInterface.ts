@@ -5,7 +5,7 @@ export interface ArticleInterface {
   userId: number;
   userName: string;
   isSave: boolean;
-  thumbNailImgUrl: string;
+  thumbnailImgUrl: string;
   isSaved: boolean;
 }
 

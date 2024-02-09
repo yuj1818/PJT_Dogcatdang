@@ -142,6 +142,7 @@ const BroadCastPage = () => {
               publishAudio: true,
               publishVideo: true,
               frameRate: 10,
+              mirror: false,
             });
 
             setPublisher(newPublisher);

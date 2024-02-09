@@ -13,16 +13,17 @@ import { Input, Select } from "../../../components/animalinfo/style";
 
 function AnimalUpdatePage() {
   const navigate = useNavigate();
-  const { state } = useLocation(); 
+  const { state } = useLocation();
   const { animalID } = useParams() as { animalID: string };
-
-  const [selectedCity, setSelectedCity] = useState(state.rescueLocation.split(' ')[0] ||"");
+  console.log(state);
+  const [selectedCity, setSelectedCity] = useState(
+    state.rescueLocation.split(" ")[0] || ""
+  );
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
-  const [savestate, setSaveState] = useState("");
-  const [imgName, setImgName] = useState(state.imgName ||"");
+  const [savestate, setSaveState] = useState(state.state || "");
   const [imgUrl, setImgUrl] = useState(state.imgUrl || "");
-  const [animalType, setAnimalType] = useState("강아지");
+  const [animalType, setAnimalType] = useState(state.animalType || "강아지");
   const [breed, setBreed] = useState(state.breed || "");
 
   const [gender, setGender] = useState(state.gender || "");
@@ -77,7 +78,6 @@ function AnimalUpdatePage() {
       gender: gender,
       feature: feature,
       state: savestate,
-      imgName: imgName,
       imgUrl: imgUrl,
     };
     const response = await saveUpdate(data, token, animalID);
@@ -112,7 +112,6 @@ function AnimalUpdatePage() {
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
-                // marginBottom:'20px'
               }}
             >
               <div>
@@ -187,16 +186,6 @@ function AnimalUpdatePage() {
                 </div>
               </div>
 
-              <div>
-                <label>
-                  이미지이름 :
-                  <input
-                    type="text"
-                    value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
-                  />
-                </label>
-              </div>
               <div>
                 <label>
                   이미지URL :

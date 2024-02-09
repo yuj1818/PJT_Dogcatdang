@@ -118,6 +118,8 @@ import com.e202.dogcatdang.user.jwt.JWTUtil;
 import com.e202.dogcatdang.user.jwt.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -138,7 +140,8 @@ import java.util.Collections;
 @EnableWebSecurity
 //@RequiredArgsConstructor
 public class SecurityConfig {
-
+    @Value("${spring.cors.allowed-origins}")
+    private String allowedOrigins;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
@@ -174,7 +177,7 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         //프론트엔드 서버 허용
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedOrigins(Collections.singletonList(allowedOrigins));
 
 
                         configuration.setAllowedMethods(Collections.singletonList("*"));

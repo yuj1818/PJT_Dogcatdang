@@ -1,10 +1,11 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, ReactNode, useRef } from "react";
 import styled from "styled-components";
 
 import { SearchGlasses } from "./Icons";
 
 const FormLayout = styled.form`
   display: flex;
+  flex-grow: 1;
   height: 32px;
   justify-content: space-between;
 
@@ -33,10 +34,17 @@ const FormMolecule = styled.div`
   }
 `;
 
-const TextSearch: React.FC<{
-  onSubmit: (event: string) => void;
+interface TesxtSearchProps {
+  onSubmit: (world: string) => void;
   text?: string;
-}> = ({ onSubmit, text }) => {
+  children?: ReactNode;
+}
+
+const TextSearch: React.FC<TesxtSearchProps> = ({
+  onSubmit,
+  text,
+  children,
+}) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -64,6 +72,7 @@ const TextSearch: React.FC<{
         />
         <SearchGlasses />
       </FormMolecule>
+      {children}
     </FormLayout>
   );
 };

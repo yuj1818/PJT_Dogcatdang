@@ -10,6 +10,11 @@ import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/common/Button";
+import styled from "styled-components";
+
+const HeadContainer = styled.div`
+  display: flex;
+`;
 
 const ArticleListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,8 +40,13 @@ const ArticleListPage: React.FC = () => {
     retryDelay: 300,
   });
 
+  const handlewriteButton = () => {
+    navigate("/articles/new");
+  };
+
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    navigate(`/articles/${newPage}`);
   };
 
   const submitHandler = (searchword: string) => {
@@ -86,26 +96,28 @@ const ArticleListPage: React.FC = () => {
         </>
       );
     }
-  }, [data, searchKey]);
+  }, [data, searchKey, currentPage]);
 
   return (
     <>
-      <div>
-        <TextSearch onSubmit={submitHandler} text="입양 후 이야기" />
-      </div>
+      <HeadContainer>
+        <TextSearch onSubmit={submitHandler} text="입양 후 이야기">
+          {" "}
+        </TextSearch>
+        <Button $paddingX={0.3} $paddingY={0.5} onClick={handlewriteButton}>
+          글쓰기
+        </Button>
+      </HeadContainer>
       {content}
       <div className="flex">
-        <Link to="/articles/new" className="ml-auto">
-          <Button $paddingX={0.3} $paddingY={0.5}>
-            글쓰기
-          </Button>
-        </Link>
+        <Link to="/articles/new" className="ml-auto"></Link>
       </div>
       {data && (
         <Pagination
           totalItems={data!.length}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
+          currentPage={currentPage}
         />
       )}
     </>

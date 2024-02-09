@@ -15,6 +15,11 @@ pipeline {
                         sh "cp $configFile Back/src/main/resources/application-secret.yml"
                     }
                 }
+                // withCredentials([file(credentialsId: 'key-store', variable: 'keyFile')]){
+                //     script{
+                //         sh "cp $keyFile Back/keystore.p12"
+                //     }
+                // }
             }
         }
         stage('Build'){
@@ -35,18 +40,16 @@ pipeline {
                 }
             }
         }
-        stage('Push image') {
-            steps{
-                script{
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push("latest")
-                    }
-                }
-            }
-           
-            
-        }
+        // stage('Push image') {
+        //     steps{
+        //         script{
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+        //                 dockerImage.push("${env.BUILD_NUMBER}")
+        //                 dockerImage.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
          stage('stop prev container'){
             steps {
                 script {
@@ -64,7 +67,7 @@ pipeline {
             steps {
                 script {
                     // 이미지를 기반으로 컨테이너 실행
-                    dockerImage.run("-p 8084:8084 --name dogcatdang_backend -d")
+                    dockerImage.run("-p 9090:9090 --name dogcatdang_backend -d")
                 }
             }
         }

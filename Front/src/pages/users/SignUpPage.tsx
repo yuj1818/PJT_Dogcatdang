@@ -88,7 +88,7 @@ function SignUpPage() {
   const [metadata, setMetadata] = useState<MetaData>();
 
   useEffect(() => {
-    setMetadata(JSON.parse(searchParams.get('metadata') || ""));
+    setMetadata(searchParams.get('metadata') && JSON.parse(searchParams.get('metadata') || ""));
   }, [isOauth])
 
   const [isOrg, setIsOrg] = useState(false);
@@ -231,11 +231,13 @@ function SignUpPage() {
       }
       
       const data = {
+        username: metadata?.providerId,
+        email: metadata?.metaEmail,
         nickname,
         phone,
         address,
-        username: metadata?.providerId,
-        email: metadata?.metaEmail
+        role: 'ROLE_USER', //db 입력할 때 notnull로 되어 있어서 고정값 부여
+        password: '1234' //db 입력할 때 notnull로 되어 있어서 고정값 부여(진짜 비밀번호 아님)
       };
 
       const response = await oauthSignUp(data);

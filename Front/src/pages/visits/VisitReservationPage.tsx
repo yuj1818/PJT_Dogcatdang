@@ -1,14 +1,64 @@
 import { useEffect, useState } from "react";
 import AdoptionInfoModal from "../../components/visits/AdoptionInfoModal";
-import { Title } from "../../components/common/Title";
+import { Title, SubTitle } from "../../components/common/Title";
 import { useParams, useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../util/UserAPI";
 import { makeReservation } from "../../util/VisitAPI";
+import styled from "styled-components";
+import { Button } from "../../components/common/Button";
 
 interface shelterData {
   nickname: string,
   address: string
 }
+
+const ReservationFormBox = styled.div`
+  width: 65%;
+  .md-font {
+    font-size: 1.3rem;
+    font-family: 'Pretendard-500';
+  }
+`
+
+const ReservationForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .item {
+    display: flex;
+    align-items: center;
+  }
+
+  label {
+    width: 6rem;
+  }
+`
+
+const ReservationBox = styled.div`
+  display: flex;
+  gap: 1rem;
+
+  .img-box {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-circle {
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      overflow: hidden;
+
+      .img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+`
 
 function VisitReservationPage() {
   const params = useParams();
@@ -67,46 +117,57 @@ function VisitReservationPage() {
       const response = await makeReservation(data, params.animalId);
       console.log(response);
 
-      navigate(`/profile/${JSON.parse(localStorage.getItem('userInfo') || "")?.id}/visit`);
+      navigate(`/visit/${JSON.parse(localStorage.getItem('userInfo') || "")?.id}`);
     }
 
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <AdoptionInfoModal closeModal={setIsModalOpen} isModalOpen={isModalOpen} />
       <Title>방문 예약</Title>
       <hr className="border-black" />
-      <p>{shelterInfo?.nickname}</p>
-      <p>{shelterInfo?.address}</p>
-      <p>예약 정보</p>
-      <div>
-        <form onSubmit={onSubmitReservationForm}>
-          <div>
-            <label htmlFor="name">방문자 이름</label>
-            <input type="text" name="name" id="name" onChange={handleName} required />
-          </div>
-          <div>
-            <label htmlFor="date">예약 날짜</label>
-            <input type="date" name="date" id="date" onChange={handleDate} required />
-          </div>
-          <div>
-            <label htmlFor="time">예약 시간</label>
-            <input type="time" name="time" id="time" onChange={handleTime} required />
-          </div>
-          <div>
-            <label htmlFor="phone">연락처</label>
-            <input type="text" name="phone" id="phone" onChange={handlePhone} required />
-          </div>
-          <div>
-            <label htmlFor="visitor">방문 인원</label>
-            <input type="text" name="visitor" id="visitor" onChange={handleVisitor} required />
-          </div>
-          <button>등록</button>
-        </form>
+      <div className="flex flex-col gap-6">
         <div>
-          <img src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png" alt="" />
+          <div className="flex items-center gap-2">  
+            <SubTitle>{shelterInfo?.nickname}</SubTitle>
+            <Button background="black" $fontSize={.8} $marginTop={0}>지도보기</Button>
+          </div>
+          <p>{shelterInfo?.address}</p>
         </div>
+        <ReservationBox>
+          <ReservationFormBox>
+            <p className="md-font">예약 정보</p>
+            <ReservationForm onSubmit={onSubmitReservationForm}>
+              <div className="item">
+                <label htmlFor="name">방문자 이름</label>
+                <input  type="text" name="name" id="name" onChange={handleName} required />
+              </div>
+              <div className="item">
+                <label htmlFor="date">예약 날짜</label>
+                <input type="date" name="date" id="date" onChange={handleDate} data-placeholder="날짜 선택" required />
+              </div>
+              <div className="item">
+                <label htmlFor="time">예약 시간</label>
+                <input  type="time" name="time" id="time" onChange={handleTime} required />
+              </div>
+              <div className="item">
+                <label htmlFor="phone">연락처</label>
+                <input  type="text" name="phone" id="phone" onChange={handlePhone} required />
+              </div>
+              <div className="item">
+                <label htmlFor="visitor">방문 인원</label>
+                <input  type="text" name="visitor" id="visitor" onChange={handleVisitor} required />
+              </div>
+              <Button $paddingX={1}>등록</Button>
+            </ReservationForm>
+          </ReservationFormBox>
+          <div className="img-box">
+            <div className="img-circle">
+              <img className="img" src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png" alt="" />
+            </div>
+          </div>
+        </ReservationBox>
       </div>
     </div>
   )

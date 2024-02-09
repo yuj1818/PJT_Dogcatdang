@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const env = process.env.NODE_ENV || "development";
+const env = import.meta.env.VITE_IS_PRODUCTION || "development";
 export const isProduction = env === "production";
 
-export const HOST = "http://localhost";
+export const HOST = isProduction ? "https://i10e202.p.ssafy.io" : "http://localhost";
 
-export const PORT = ":8084";
+export const PORT = ":8443";
 
-export const URL = HOST + PORT;
+export const URL = isProduction? HOST : HOST + PORT;
 
 const API = axios.create({
   baseURL: URL,
