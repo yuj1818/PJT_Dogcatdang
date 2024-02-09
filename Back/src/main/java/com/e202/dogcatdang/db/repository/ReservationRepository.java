@@ -31,7 +31,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
 	// 기관 일별 조회 : 기관에게 들어온 예약 정보를 승인 상태와 일자로 필터링한 후 조건에 맞는 모든 예약 정보 가져오기
 	@Query("SELECT r FROM Reservation r " + "JOIN r.animal a " + "JOIN a.user u " + "WHERE u.id = :userId " + "AND r.reservationTime BETWEEN :startDateTime AND :endDateTime " + "AND r.state = :state")
-	List<Reservation> findShelterReservationsByDate(@Param("userId")Long shelterId, @Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime")LocalDateTime endDateTime, @Param("state")Reservation.State state);
+	List<Reservation> findShelterReservationsByDate(@Param("userId") Long shelterId, @Param("startDateTime")LocalDateTime startDateTime, @Param("endDateTime")LocalDateTime endDateTime, @Param("state")Reservation.State state);
 
+	// 기관에게 들어온 모든 예약 정보 조회
 	List<Reservation> findByAnimal_User_Id(Long shelterId);
+
+	// 기관에게 들어온 승인된 모든 예약 정보 가져오기
+	@Query("SELECT r FROM Reservation r " + "JOIN r.animal a " + "JOIN a.user u " + "WHERE u.id = :userId " + "AND r.state = :state")
+	List<Reservation> findShelterReservations(@Param("userId") Long shelterId, @Param("state") Reservation.State state);
 }
