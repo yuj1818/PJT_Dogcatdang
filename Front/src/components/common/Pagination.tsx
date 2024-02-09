@@ -5,6 +5,7 @@ interface PaginationProps {
   totalItems: number;
   itemsPerPage: number;
   onPageChange: (newPage: number) => void;
+  currentPage: number;
 }
 
 const PaginationContainer = styled.div`
@@ -29,12 +30,11 @@ const Pagination: React.FC<PaginationProps> = ({
   totalItems,
   itemsPerPage,
   onPageChange,
+  currentPage,
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
     onPageChange(newPage);
   };
 
