@@ -38,4 +38,6 @@ public interface ReservationService {
 	List<ResponseShelterListDto> findShelterReservationsByMonths(Long shelterId, int months);
 
 	List<LocalDate> findReservationDates(Long loginUserId);
+
+	List<LocalDate> findShelterReservationDates(Long shelterId);
 }

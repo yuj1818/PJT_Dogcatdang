@@ -115,4 +115,16 @@ public class ReservationShelterController {
 		List<ResponseShelterApprovedDto> reservations = reservationService.findShelterReservationsByDate(shelterId, startDateTime, endDateTime);
 		return ResponseEntity.ok(reservations);
 	}
+
+	// 기관 회원의 승인된 예약이 있는 날의 날짜 리스트 반환
+	@Transactional
+	@GetMapping("/dates")
+	public ResponseEntity<List<LocalDate>> findShelterReservationDates(@RequestHeader("Authorization") String token) {
+
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long shelterId = jwtUtil.getUserId(token.substring(7));
+
+		List<LocalDate> dates = reservationService.findShelterReservationDates(shelterId);
+		return ResponseEntity.ok(dates);
+	}
 }
