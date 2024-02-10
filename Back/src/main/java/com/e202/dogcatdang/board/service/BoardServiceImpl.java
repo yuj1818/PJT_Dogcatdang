@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -216,5 +217,27 @@ public class BoardServiceImpl implements BoardService {
 
 			return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
 		};
+	}
+
+	// 인기글 가져오기
+	@Override
+	@Transactional
+	public List<ResponseBoardSummaryDto> getBestBoards(Long loginUserId) {
+		User loginUser = userRepository.findById(loginUserId).get();
+		// 인기순으로 내림차순 정렬 후 top 5 조회
+		List<Board> boardList= boardRepository.findTop5ByOrderByBoardLikeListDesc();
+		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
+
+		for (Board board : boardList) {
+			boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
+			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
+				.board(board)
+				.isLike(isLike)
+				.build();
+
+			boardDtoList.add(boardSummary);
+		}
+
+		return boardDtoList;
 	}
 }

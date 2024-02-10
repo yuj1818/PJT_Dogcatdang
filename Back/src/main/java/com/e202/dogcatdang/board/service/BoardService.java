@@ -3,6 +3,8 @@ package com.e202.dogcatdang.board.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
@@ -25,4 +27,6 @@ public interface BoardService {
 	ResponseDto unLike(Long loginUserId, Long boardId);
 
 	List<ResponseBoardSummaryDto> searchBoards(Long loginUserId, RequestBoardSearchDto searchDto);
+
+	List<ResponseBoardSummaryDto> getBestBoards(Long loginUserId);
 }
