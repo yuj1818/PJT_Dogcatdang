@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
@@ -200,45 +198,59 @@ public class AnimalServiceImpl implements AnimalService {
 		return reservations.size();
 	}
 
+	// 보호 동물 검색 - 다중 쿼리 이용
+	@Transactional
+	public List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto, Long userId) {
+		// 람다식을 이용해 Specification 구현체 정의 - 동물 검색 조건에 따라 엔티티를 필터링하는 역할
+		Specification<Animal> specification = (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			if (searchDto.getAnimalType() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
+			}
+
+			if (searchDto.getBreed() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+			}
+
+			if (searchDto.getRescuelocation() != null) {
+				// 일부 일치 검색을 위해 like 사용 -> keyword에 "%" 를 함께 적어야 함!!
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescuelocation() + "%"));
+			}
+
+			if (searchDto.getGender() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
+			}
+
+			if (searchDto.getUserNickName() != null) {
+				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickName() + "%"));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+
+		// 현재 로그인한 유저 정보 가져오기 -> isLike, adoptionApplicantCount에 사용
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NoSuchElementException("해당 Id의 회원이 없습니다"));
+
+		// 검색 결과 가져오기
+		List<Animal> animals = animalRepository.findAll(specification);
 
 
+		// 검색 결과를 ResponseAnimalListDto로 변환하여 반환
+		List<ResponseAnimalListDto> animalDtoList = animals.stream()
+			.map(animal -> {
+				int adoptionApplicantCount = getAdoptions(animal); // 채택 신청자 수 가져오기
+				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user); // 사용자가 해당 동물을 좋아하는지 여부 확인
+				return ResponseAnimalListDto.builder()
+					.animal(animal)
+					.adoptionApplicantCount(adoptionApplicantCount)
+					.isLike(isLike)
+					.build();
+			})
+			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
 
-	// 복수 조건의 검색
-	// public List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto) {
-	// 	Specification<Animal> specification = (root, query, criteriaBuilder) -> {
-	// 		List<Predicate> predicates = new ArrayList<>();
-	//
-	// 		if (searchDto.getAnimalType() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
-	// 		}
-	//
-	// 		if (searchDto.getBreed() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
-	// 		}
-	//
-	// 		if (searchDto.getRescuelocation() != null) {
-	// 			// 일부 일치 검색을 위해 like 사용
-	// 			predicates.add(criteriaBuilder.like(root.get("rescueLocation"), searchDto.getRescuelocation()));
-	// 		}
-	//
-	// 		if (searchDto.getGender() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
-	// 		}
-	//
-	// 		if (searchDto.getUserNickname() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.join("user").get("nickname"), searchDto.getUserNickname()));
-	// 		}
-	//
-	// 		return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-	// 	};
-	//
-	// 	// 검색 결과 가져오기
-	// 	List<Animal> animals = animalRepository.findAll(specification);
-	//
-	// 	// 검색 결과를 ResponseAnimalListDto로 변환하여 반환
-	// 	return animals.stream()
-	// 		.map(ResponseAnimalListDto::new)
-	// 		.collect(Collectors.toList());
-	// }
+		return animalDtoList;
+	}
 }
 

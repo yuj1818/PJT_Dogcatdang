@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
+import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
+import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.animal.service.AnimalLikeService;
@@ -113,7 +115,7 @@ public class AnimalController {
 
 	// 동물에 대한 좋아요 취소
 	@DeleteMapping("/{animalId}/likes")
-	public ResponseEntity<String> unlikeAnimal(@PathVariable Long animalId,  @RequestHeader("Authorization") String token) {
+	public ResponseEntity<String> unlikeAnimal(@PathVariable Long animalId, @RequestHeader("Authorization") String token) {
 		// 현재 로그인한 사용자 정보 가져오기
 		Long userId = jwtUtil.getUserId(token.substring(7));
 
@@ -129,7 +131,6 @@ public class AnimalController {
 	public ResponseEntity<Map<String, Boolean>> isAnimalLikedByCurrentUser(
 		@PathVariable Long animalId,
 		@RequestHeader("Authorization") String token) {
-
 
 		// 동물 정보 가져오기
 		Animal animal = animalService.getAnimalById(animalId);
@@ -149,10 +150,14 @@ public class AnimalController {
 	}
 
 	// 여러 조건에 맞는 동물 검색
-	// @PostMapping("/filter")
-	// public ResponseEntity<List<ResponseAnimalListDto>> filterAnimals(@RequestBody RequestAnimalSearchDto searchDto) {
-	// 	List<ResponseAnimalListDto> searchResult = animalService.searchAnimals(searchDto);
-	// 	return new ResponseEntity<>(searchResult, HttpStatus.OK);
-	// }
+	@PostMapping("/filter")
+	public ResponseEntity<List<ResponseAnimalListDto>> filterAnimals( @RequestHeader("Authorization") String token, @RequestBody RequestAnimalSearchDto searchDto) {
+
+		// 현재 로그인한 사용자 정보 가져오기
+		Long userId = jwtUtil.getUserId(token.substring(7));
+
+		List<ResponseAnimalListDto> searchResult = animalService.searchAnimals(searchDto, userId);
+		return new ResponseEntity<>(searchResult, HttpStatus.OK);
+	}
 
 }

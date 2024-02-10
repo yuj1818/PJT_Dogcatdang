@@ -25,5 +25,5 @@ public interface AnimalService {
 
 	List<ResponseStreamingAnimalDto> findAnimals(Long userId);
 
-	// List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto);
+	List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto, Long userId);
 }
