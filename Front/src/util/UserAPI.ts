@@ -2,7 +2,7 @@ import API from "./axios";
 import { Cookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const URL = "/api/user";
+const URL = "/api/users";
 
 const cookie = new Cookies();
 
