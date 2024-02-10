@@ -17,7 +17,7 @@ export const resizeFile = async (file: File) =>
     );
   });
 
-export const getPresignedURL = async (filename: string) => {
+const getPresignedURL = async (filename: string) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
@@ -32,7 +32,7 @@ export const getPresignedURL = async (filename: string) => {
   return response.data.url as string;
 };
 
-export const getFileName = (nickname: string) => {
+const getFileName = (nickname: string) => {
   const date = new Date();
   const year = date.getFullYear().toString().slice(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
