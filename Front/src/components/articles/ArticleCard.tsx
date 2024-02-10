@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { ArticleInterface } from "./ArticleInterface";
+import { ArticleListInterface } from "./ArticleInterface";
 import styled from "styled-components";
 
 const CardStyle = styled.div<{ $itemsPerRow: number }>`
@@ -13,7 +13,7 @@ const CardStyle = styled.div<{ $itemsPerRow: number }>`
 `;
 
 const ArticleCard: React.FC<{
-  article: ArticleInterface;
+  article: ArticleListInterface;
 }> = (props) => {
   const { boardId, title, thumbnailImgUrl, userName } = props.article;
   return (

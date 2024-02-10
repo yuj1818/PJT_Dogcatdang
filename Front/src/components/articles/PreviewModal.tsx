@@ -46,6 +46,8 @@ const Preview: React.FC<articlePreviewModal> = ({
         title={title}
         content={DOMPurify.sanitize(String(content))}
         nickname={nickname}
+        like={false}
+        likeCnt={0}
       />
       <ButtonLayout>
         <Button className="object-cover" onClick={closeModal}>
