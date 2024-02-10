@@ -45,14 +45,28 @@ public class JoinService {
 
         User data = new User();
         data.setUsername(username);
-        data.setPassword(bCryptPasswordEncoder.encode(password));
-        //data.setRole("ROLE_ADMIN");
+        //data.setUsername(joinDTO.getProviderId());
+        if(password != null){
+            data.setPassword(bCryptPasswordEncoder.encode(password));
+        }else{
+            data.setPassword("1234");
+        }
+
         data.setRole(role);
-        data.setEmail(email);
+        if(role != null){
+            data.setRole(role);
+        }else{
+            data.setRole("ROLE_USER");
+        }
+        if(email != null){
+            data.setEmail(email);
+        }else{
+            data.setEmail("imseee@naver.com");
+        }
+
         data.setAddress(address);
         data.setNickname(nickname);
         data.setPhone(phone);
-
 
         userRepository.save(data);
 
