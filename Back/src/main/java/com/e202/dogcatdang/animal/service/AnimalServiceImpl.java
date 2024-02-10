@@ -266,8 +266,8 @@ public class AnimalServiceImpl implements AnimalService {
 				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
 			}
 
-			if (searchDto.getUserNickName() != null) {
-				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickName() + "%"));
+			if (searchDto.getUserNickname() != null) {
+				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickname() + "%"));
 			}
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

@@ -10,5 +10,5 @@ public class RequestAnimalSearchDto {
 	private String breed;
 	private String rescuelocation;
 	private String gender;
-	private String userNickName;
+	private String userNickname;
 }
