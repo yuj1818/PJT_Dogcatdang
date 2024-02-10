@@ -2,7 +2,6 @@ package com.e202.dogcatdang.animal.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
-import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.animal.service.AnimalLikeService;
@@ -149,7 +147,7 @@ public class AnimalController {
 		return ResponseEntity.ok(response);
 	}
 
-	// 여러 조건에 맞는 동물 검색
+	// 조건에 맞는 보호 동물 검색
 	@PostMapping("/filter")
 	public ResponseEntity<ResponseAnimalPageDto> filterAnimals(@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "8") int recordSize, @RequestHeader("Authorization") String token, @RequestBody RequestAnimalSearchDto searchDto) {

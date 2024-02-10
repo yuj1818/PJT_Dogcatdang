@@ -187,7 +187,6 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	// 동물에게 들어온 방문 예약 중 승인된 것들 세기
-
 	public int getAdoptions(Animal animal) {
 		Long animalId = animal.getAnimalId();
 
@@ -200,6 +199,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 	// 보호 동물 검색 페이징 처리
 	@Transactional
+	@Override
 	public ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
@@ -210,7 +210,13 @@ public class AnimalServiceImpl implements AnimalService {
 		// 3. AnimalRepository를 사용하여 검색된 동물 데이터를 페이징하여 가져옴
 		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
 
-		// 4. 페이징된 동물 데이터를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		// 4. 페이징 정보 가져오기
+		int totalPages = animalPage.getTotalPages();
+		long totalElements = animalPage.getTotalElements();
+		boolean hasNextPage = animalPage.hasNext();
+		boolean hasPreviousPage = animalPage.hasPrevious();
+
+		// 5. 페이징된 동물 데이터를 ResponseAnimalListDto로 변환하여 리스트에 담기
 		List<ResponseAnimalListDto> animalDtoList = animalPage.getContent().stream()
 			.map(animal -> {
 				int adoptionApplicantCount = getAdoptions(animal); // 채택 신청자 수 가져오기
@@ -222,12 +228,6 @@ public class AnimalServiceImpl implements AnimalService {
 					.build();
 			})
 			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
-
-		// 5. 페이징 정보 가져오기
-		int totalPages = animalPage.getTotalPages();
-		long totalElements = animalPage.getTotalElements();
-		boolean hasNextPage = animalPage.hasNext();
-		boolean hasPreviousPage = animalPage.hasPrevious();
 
 		// 6. ResponseAnimalPageDto 생성
 		return ResponseAnimalPageDto.builder()
@@ -249,7 +249,7 @@ public class AnimalServiceImpl implements AnimalService {
 			// State 필드가 '보호중'인 동물만을 찾도록 함
 			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
 
-			// 검색 조건에 따라 Predicate 추가
+			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
 			if (searchDto.getAnimalType() != null) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
@@ -258,8 +258,8 @@ public class AnimalServiceImpl implements AnimalService {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getRescuelocation() != null) {
-				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescuelocation() + "%"));
+			if (searchDto.getRescueLocation() != null) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescueLocation() + "%"));
 			}
 
 			if (searchDto.getGender() != null) {

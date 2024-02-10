@@ -1,14 +1,13 @@
-package com.e202.dogcatdang.animal.dto;
+package com.e202.dogcatdang.lostanimal.dto;
 
 import com.e202.dogcatdang.enums.AnimalType;
 
 import lombok.Getter;
 
 @Getter
-public class RequestAnimalSearchDto {
+public class RequestLostAnimalSearchDto {
 	private AnimalType animalType;
 	private String breed;
-	private String rescueLocation;
+	private String lostLocation;
 	private String gender;
-	private String userNickname;
 }
