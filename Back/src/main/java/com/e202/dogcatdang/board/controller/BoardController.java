@@ -121,7 +121,7 @@ public class BoardController {
 	public ResponseEntity<List<ResponseBoardSummaryDto>> filterBoards(@RequestHeader("Authorization") String token, @RequestBody
 		RequestBoardSearchDto searchDto) {
 
-		Long loginUserId = jwtUtil.getUserId(token.substring(7));;
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
 		List<ResponseBoardSummaryDto> searchResult = boardService.searchBoards(loginUserId, searchDto);
 		if (searchResult.isEmpty()) {
@@ -131,4 +131,13 @@ public class BoardController {
 		}
 	}
 
+	// 인기 게시글 - 좋아요가 많은 5개의 게시글 반환
+	@GetMapping("/best")
+	public ResponseEntity<List<ResponseBoardSummaryDto>> getBestBoards(@RequestHeader("Authorization") String token) {
+
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+		List<ResponseBoardSummaryDto> boardSummaryList = boardService.getBestBoards(loginUserId);
+
+		return ResponseEntity.ok(boardSummaryList);
+	}
 }
