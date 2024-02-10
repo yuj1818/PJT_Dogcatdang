@@ -151,12 +151,14 @@ public class AnimalController {
 
 	// 여러 조건에 맞는 동물 검색
 	@PostMapping("/filter")
-	public ResponseEntity<List<ResponseAnimalListDto>> filterAnimals( @RequestHeader("Authorization") String token, @RequestBody RequestAnimalSearchDto searchDto) {
+	public ResponseEntity<ResponseAnimalPageDto> filterAnimals(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "8") int recordSize, @RequestHeader("Authorization") String token, @RequestBody RequestAnimalSearchDto searchDto) {
 
 		// 현재 로그인한 사용자 정보 가져오기
 		Long userId = jwtUtil.getUserId(token.substring(7));
+		User user = userService.findById(userId);
 
-		List<ResponseAnimalListDto> searchResult = animalService.searchAnimals(searchDto, userId);
+		ResponseAnimalPageDto searchResult = animalService.searchAnimals(page, recordSize, searchDto, user);
 		return new ResponseEntity<>(searchResult, HttpStatus.OK);
 	}
 

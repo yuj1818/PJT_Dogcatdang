@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import java.util.stream.Collectors;
 
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -198,16 +198,58 @@ public class AnimalServiceImpl implements AnimalService {
 		return reservations.size();
 	}
 
-	// 보호 동물 검색 - 다중 쿼리 이용
+	// 보호 동물 검색 페이징 처리
 	@Transactional
-	public List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto, Long userId) {
-		// 람다식을 이용해 Specification 구현체 정의 - 동물 검색 조건에 따라 엔티티를 필터링하는 역할
-		Specification<Animal> specification = (root, query, criteriaBuilder) -> {
+	public ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user) {
+		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		// 2. 검색 조건에 따라 동물 데이터를 조회
+		Specification<Animal> specification = createSpecification(searchDto);
+
+		// 3. AnimalRepository를 사용하여 검색된 동물 데이터를 페이징하여 가져옴
+		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
+
+		// 4. 페이징된 동물 데이터를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseAnimalListDto> animalDtoList = animalPage.getContent().stream()
+			.map(animal -> {
+				int adoptionApplicantCount = getAdoptions(animal); // 채택 신청자 수 가져오기
+				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user); // 사용자가 해당 동물을 좋아하는지 여부 확인
+				return ResponseAnimalListDto.builder()
+					.animal(animal)
+					.adoptionApplicantCount(adoptionApplicantCount)
+					.isLike(isLike)
+					.build();
+			})
+			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
+
+		// 5. 페이징 정보 가져오기
+		int totalPages = animalPage.getTotalPages();
+		long totalElements = animalPage.getTotalElements();
+		boolean hasNextPage = animalPage.hasNext();
+		boolean hasPreviousPage = animalPage.hasPrevious();
+
+		// 6. ResponseAnimalPageDto 생성
+		return ResponseAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(totalPages)
+			.currentPage(page)
+			.totalElements(totalElements)
+			.hasNextPage(hasNextPage)
+			.hasPreviousPage(hasPreviousPage)
+			.build();
+	}
+
+	// 보호 동물 검색 - 다중 쿼리 이용
+	// 검색 조건에 따라 Specification 생성
+	private Specification<Animal> createSpecification(RequestAnimalSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 
-			// 상태가 '보호중'인 동물만을 찾도록 함
+			// State 필드가 '보호중'인 동물만을 찾도록 함
 			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
 
+			// 검색 조건에 따라 Predicate 추가
 			if (searchDto.getAnimalType() != null) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
@@ -217,7 +259,6 @@ public class AnimalServiceImpl implements AnimalService {
 			}
 
 			if (searchDto.getRescuelocation() != null) {
-				// 일부 일치 검색을 위해 like 사용 -> keyword에 "%" 를 함께 적어야 함!!
 				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescuelocation() + "%"));
 			}
 
@@ -231,29 +272,6 @@ public class AnimalServiceImpl implements AnimalService {
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 		};
-
-		// 현재 로그인한 유저 정보 가져오기 -> isLike, adoptionApplicantCount에 사용
-		User user = userRepository.findById(userId)
-			.orElseThrow(() -> new NoSuchElementException("해당 Id의 회원이 없습니다"));
-
-		// 검색 결과 가져오기
-		List<Animal> animals = animalRepository.findAll(specification);
-
-
-		// 검색 결과를 ResponseAnimalListDto로 변환하여 반환
-		List<ResponseAnimalListDto> animalDtoList = animals.stream()
-			.map(animal -> {
-				int adoptionApplicantCount = getAdoptions(animal); // 채택 신청자 수 가져오기
-				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user); // 사용자가 해당 동물을 좋아하는지 여부 확인
-				return ResponseAnimalListDto.builder()
-					.animal(animal)
-					.adoptionApplicantCount(adoptionApplicantCount)
-					.isLike(isLike)
-					.build();
-			})
-			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
-
-		return animalDtoList;
 	}
 }
 

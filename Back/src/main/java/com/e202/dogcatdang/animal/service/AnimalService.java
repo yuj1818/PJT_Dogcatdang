@@ -10,6 +10,7 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
 
 public interface AnimalService {
@@ -25,5 +26,5 @@ public interface AnimalService {
 
 	List<ResponseStreamingAnimalDto> findAnimals(Long userId);
 
-	List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto, Long userId);
+	ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user);
 }
