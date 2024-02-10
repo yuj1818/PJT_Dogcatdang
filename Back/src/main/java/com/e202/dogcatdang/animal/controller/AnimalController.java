@@ -157,7 +157,11 @@ public class AnimalController {
 		User user = userService.findById(userId);
 
 		ResponseAnimalPageDto searchResult = animalService.searchAnimals(page, recordSize, searchDto, user);
-		return new ResponseEntity<>(searchResult, HttpStatus.OK);
+		if (searchResult.getAnimalDtoList().isEmpty()) {
+			return ResponseEntity.noContent().build(); // 검색 결과가 없을 때
+		} else {
+			return ResponseEntity.ok(searchResult); // 검색 결과가 있을 때
+		}
 	}
 
 }
