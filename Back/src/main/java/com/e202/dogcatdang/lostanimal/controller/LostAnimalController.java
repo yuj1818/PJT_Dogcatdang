@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
+import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalSearchDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalPageDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
@@ -86,5 +87,18 @@ public class LostAnimalController {
 
 		LostAnimal animal = lostAnimalService.update(lostAnimalId, requestLostAnimalDto);
 		return ResponseEntity.ok(animal.getLostAnimalId());
+	}
+
+	// 조건에 맞는 실종 동물 검색
+	@PostMapping("/filter")
+	public ResponseEntity<ResponseLostAnimalPageDto> filterLostAnimals(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "8") int recordSize, @RequestBody RequestLostAnimalSearchDto searchDto) {
+
+		ResponseLostAnimalPageDto searchResult = lostAnimalService.searchAnimals(page, recordSize, searchDto);
+		if (searchResult.getLostAnimalDtoList().isEmpty()) {
+			return ResponseEntity.noContent().build(); // 검색 결과가 없을 때
+		} else {
+			return ResponseEntity.ok(searchResult); // 검색 결과가 있을 때
+		}
 	}
 }

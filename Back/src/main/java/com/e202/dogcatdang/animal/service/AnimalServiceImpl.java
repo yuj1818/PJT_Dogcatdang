@@ -10,13 +10,11 @@ import java.util.Optional;
 
 import java.util.stream.Collectors;
 
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
@@ -189,7 +187,6 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	// 동물에게 들어온 방문 예약 중 승인된 것들 세기
-
 	public int getAdoptions(Animal animal) {
 		Long animalId = animal.getAnimalId();
 
@@ -200,45 +197,81 @@ public class AnimalServiceImpl implements AnimalService {
 		return reservations.size();
 	}
 
+	// 보호 동물 검색 페이징 처리
+	@Transactional
+	@Override
+	public ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user) {
+		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
+		// 2. 검색 조건에 따라 동물 데이터를 조회
+		Specification<Animal> specification = createSpecification(searchDto);
 
+		// 3. AnimalRepository를 사용하여 검색된 동물 데이터를 페이징하여 가져옴
+		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
 
-	// 복수 조건의 검색
-	// public List<ResponseAnimalListDto> searchAnimals(RequestAnimalSearchDto searchDto) {
-	// 	Specification<Animal> specification = (root, query, criteriaBuilder) -> {
-	// 		List<Predicate> predicates = new ArrayList<>();
-	//
-	// 		if (searchDto.getAnimalType() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
-	// 		}
-	//
-	// 		if (searchDto.getBreed() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
-	// 		}
-	//
-	// 		if (searchDto.getRescuelocation() != null) {
-	// 			// 일부 일치 검색을 위해 like 사용
-	// 			predicates.add(criteriaBuilder.like(root.get("rescueLocation"), searchDto.getRescuelocation()));
-	// 		}
-	//
-	// 		if (searchDto.getGender() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
-	// 		}
-	//
-	// 		if (searchDto.getUserNickname() != null) {
-	// 			predicates.add(criteriaBuilder.equal(root.join("user").get("nickname"), searchDto.getUserNickname()));
-	// 		}
-	//
-	// 		return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-	// 	};
-	//
-	// 	// 검색 결과 가져오기
-	// 	List<Animal> animals = animalRepository.findAll(specification);
-	//
-	// 	// 검색 결과를 ResponseAnimalListDto로 변환하여 반환
-	// 	return animals.stream()
-	// 		.map(ResponseAnimalListDto::new)
-	// 		.collect(Collectors.toList());
-	// }
+		// 4. 페이징 정보 가져오기
+		int totalPages = animalPage.getTotalPages();
+		long totalElements = animalPage.getTotalElements();
+		boolean hasNextPage = animalPage.hasNext();
+		boolean hasPreviousPage = animalPage.hasPrevious();
+
+		// 5. 페이징된 동물 데이터를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseAnimalListDto> animalDtoList = animalPage.getContent().stream()
+			.map(animal -> {
+				int adoptionApplicantCount = getAdoptions(animal); // 채택 신청자 수 가져오기
+				boolean isLike = animalLikeRepository.existsByAnimalAndUser(animal, user); // 사용자가 해당 동물을 좋아하는지 여부 확인
+				return ResponseAnimalListDto.builder()
+					.animal(animal)
+					.adoptionApplicantCount(adoptionApplicantCount)
+					.isLike(isLike)
+					.build();
+			})
+			.collect(Collectors.toList()); // 스트림 결과를 리스트로 만들기
+
+		// 6. ResponseAnimalPageDto 생성
+		return ResponseAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(totalPages)
+			.currentPage(page)
+			.totalElements(totalElements)
+			.hasNextPage(hasNextPage)
+			.hasPreviousPage(hasPreviousPage)
+			.build();
+	}
+
+	// 보호 동물 검색 - 다중 쿼리 이용
+	// 검색 조건에 따라 Specification 생성
+	private Specification<Animal> createSpecification(RequestAnimalSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			// State 필드가 '보호중'인 동물만을 찾도록 함
+			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
+
+			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
+			if (searchDto.getAnimalType() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
+			}
+
+			if (searchDto.getBreed() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+			}
+
+			if (searchDto.getRescueLocation() != null) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescueLocation() + "%"));
+			}
+
+			if (searchDto.getGender() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
+			}
+
+			if (searchDto.getUserNickname() != null) {
+				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickname() + "%"));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
 }
 

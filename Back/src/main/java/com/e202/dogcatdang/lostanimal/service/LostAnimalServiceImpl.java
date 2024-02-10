@@ -1,6 +1,7 @@
 package com.e202.dogcatdang.lostanimal.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,14 @@ import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.LostAnimalRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalDto;
+import com.e202.dogcatdang.lostanimal.dto.RequestLostAnimalSearchDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalListDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseLostAnimalPageDto;
 import com.e202.dogcatdang.lostanimal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -127,5 +130,71 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 			request.getFeature(),request.getState(), request.getImgUrl());
 
 		return animal;
+	}
+
+	// 실종 동물 검색 페이징 처리
+	@Override
+	@Transactional
+	public ResponseLostAnimalPageDto searchAnimals(int page, int recordSize, RequestLostAnimalSearchDto searchDto) {
+		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		// 2. 검색 조건에 따라 동물 데이터(엔티티) 조회
+		Specification<LostAnimal> specification = createSpecification(searchDto);
+
+		// 3. LostAnimalRepository를 사용하여 검색된 동물 데이터를 페이징하여 가져옴
+		Page<LostAnimal> pagedResult = lostAnimalRepository.findAll(specification, pageRequest);
+
+		// 4. 페이징 정보 가져오기
+		int totalPages = pagedResult.getTotalPages();
+		long totalElements = pagedResult.getTotalElements();
+		boolean hasNextPage = pagedResult.hasNext();
+		boolean hasPreviousPage = pagedResult.hasPrevious();
+
+		// 5. Animal 엔터티를 ResponseAnimalListDto로 변환하여 리스트에 담기
+		List<ResponseLostAnimalListDto> animalDtoList = pagedResult.getContent().stream()
+			.map(animal -> ResponseLostAnimalListDto.builder()
+				.animal(animal)
+				.build())
+			.collect(Collectors.toList());
+
+		return ResponseLostAnimalPageDto.builder()
+			.lostAnimalDtoList(animalDtoList)
+			.totalPages(totalPages)
+			.currentPage(page)
+			.totalElements(totalElements)
+			.hasNextPage(hasNextPage)
+			.hasPreviousPage(hasPreviousPage)
+			.build();
+	}
+
+	// 실종 동물 검색 - 다중 쿼리 이용
+	// 검색 조건에 따라 Specification 생성
+	private Specification<LostAnimal> createSpecification(RequestLostAnimalSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			// State 필드가 '실종'인 동물만을 찾도록 함
+			predicates.add(criteriaBuilder.equal(root.get("state"), LostAnimal.State.실종));
+
+			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
+			if (searchDto.getAnimalType() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
+			}
+
+			if (searchDto.getBreed() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+			}
+
+			if (searchDto.getLostLocation() != null) {
+				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getLostLocation() + "%" ));
+			}
+
+			if (searchDto.getGender() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
 	}
 }
