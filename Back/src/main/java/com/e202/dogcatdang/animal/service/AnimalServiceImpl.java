@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,8 +94,8 @@ public class AnimalServiceImpl implements AnimalService {
 		List<Animal> protectedAnimals = animalRepository.findByState(Animal.State.보호중);
 
 		// 3. 페이징 처리를 위해 서브리스트를 구함
-		// 	sublist는 list의 부분을 반환하며 정렬 순서 보장 x
-		// 	정렬을 다시 해주어야 한다
+		// -> page 객체를 안 쓴 이유, 위의 '보호중' 동물을 찾을 때 jpa 기본 제공 메서드 쓰기 위해서
+		// 	sublist는 list의 부분을 반환하며 정렬 순서를 보장하지 않기에 정렬을 따로 해줘야 한다
 		protectedAnimals.sort(Comparator.comparing(Animal::getAnimalId).reversed());
 
 		int startIdx = pageRequest.getPageNumber() * pageRequest.getPageSize();
@@ -137,9 +138,6 @@ public class AnimalServiceImpl implements AnimalService {
 			.hasPreviousPage(hasPreviousPage)
 			.build();
 	}
-
-
-
 
 	/*특정한 동물 데이터 수정*/
 	@Transactional
@@ -202,7 +200,7 @@ public class AnimalServiceImpl implements AnimalService {
 	@Override
 	public ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
-		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize, Sort.by(Sort.Direction.DESC, "animalId"));
 
 		// 2. 검색 조건에 따라 동물 데이터를 조회
 		Specification<Animal> specification = createSpecification(searchDto);
