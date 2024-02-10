@@ -33,8 +33,8 @@ const AllMessage = styled.div`
 `;
 
 interface ChatProps {
-  onForeceLeave?: (subscriber: Subscriber) => void;
-  subscribers: Subscriber[];
+  // onForeceLeave?: (subscriber: Subscriber) => void;
+  // subscribers: Subscriber[];
   session: Session;
 }
 
@@ -43,9 +43,18 @@ interface Message {
   content: string;
 }
 
+const isMessage = (obj: any): obj is Message => {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "nickname" in obj &&
+    "content" in obj
+  );
+};
+
 const Chat: React.FC<ChatProps> = ({ session }) => {
   const [message, setMessage] = useState("");
-  const [allMessage, setAllMessage] = useState<Message[]>([]);
+  const [allMessage, setAllMessage] = useState<(Message | string)[]>([]);
   const messageDiv = useRef<HTMLDivElement>(null);
   const { nickname } = getUserInfo();
 
@@ -89,7 +98,11 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
           content: message || "",
         },
       ]);
-      console.log(event);
+    });
+    // 입장 메세지 받기
+    session.on("signal:enter", (event) => {
+      const message = event.data;
+      setAllMessage((prev) => [...prev, message!]);
     });
   }, []);
 
@@ -98,8 +111,9 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
       <AllMessage ref={messageDiv}>
         {allMessage.map((element, idx) => (
           <p key={idx}>
-            {element.nickname}: {element.content}
-            {/* <button onClick={() => {onForeceLeave(element)}}>강퇴</button> */}
+            {isMessage(element)
+              ? `${element.nickname}: ${element.content}`
+              : /* <button onClick={() => {onForeceLeave(element)}}>강퇴</button> */ element}
           </p>
         ))}
       </AllMessage>

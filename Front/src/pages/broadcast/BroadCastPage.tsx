@@ -26,9 +26,9 @@ const BroadCastPage = () => {
   const leaveSession = useCallback(() => {
     if (session) {
       session.signal({
-        data: "닉네임님이 퇴장하였습니다.",
+        data: `${getUserInfo().nickname}님이 퇴장하였습니다.`,
         to: [],
-        type: "signal:my-chat",
+        type: "signal:enter",
       });
 
       session.disconnect();
@@ -156,7 +156,7 @@ const BroadCastPage = () => {
           session.signal({
             data: `${username}님이 입장하였습니다.`,
             to: [],
-            type: "signal:chat",
+            type: "signal:enter",
           });
         });
       });

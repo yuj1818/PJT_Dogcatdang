@@ -13,7 +13,7 @@ const VideoContainer = styled.div`
   background-color: #121212;
 `;
 
-const FullscreenButtonContainer = styled.button`
+const FullscreenButtonContainer = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
