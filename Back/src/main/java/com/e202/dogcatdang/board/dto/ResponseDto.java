@@ -11,6 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ResponseIdDto {
+public class ResponseDto {
 	Long boardId;
 }
