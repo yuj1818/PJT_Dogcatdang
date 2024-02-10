@@ -27,33 +27,22 @@ function AnimalFormPage() {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
-  // const [age, setAge] = React.useState<string>("");
-  // const [weight, setWeight] = React.useState<string>("");
   const [rescueDate, setRescueDate] = useState("");
   const [isNeuter, setIsNeuter] = useState(false);
   const [feature, setFeature] = useState("");
 
-  const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCity(event.target.value);
-  };
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
-  const handleDistrict = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDistrict(event.target.value);
-  };
-  const handleDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailInfo(e.target.value);
-  };
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
-  const handleBreed = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setBreed(e.target.value);
-  };
-
-  const handleRescueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRescueDate(e.target.value);
-  };
-
-  const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsNeuter(e.target.checked);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage((reader.result as string) || null);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,47 +72,32 @@ function AnimalFormPage() {
     navigate("/save-animals");
   };
 
-  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setSelectedImage((reader.result as string) || null);
-      };
-
-      reader.readAsDataURL(file);
-    }
+    const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCity(event.target.value);
   };
 
-  // 함수: 입력된 값이 숫자인지 확인
-  // const isNumericInput = (key: string): boolean => {
-  //   return (
-  //     (key >= "0" && key <= "9") ||
-  //     key === "Backspace" ||
-  //     key === "Tab" ||
-  //     key === "ArrowLeft" ||
-  //     key === "ArrowRight" ||
-  //     key === "Delete" ||
-  //     key === "."
-  //   );
-  // };
+  const handleDistrict = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDistrict(event.target.value);
+  };
+  const handleDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailInfo(e.target.value);
+  };
 
-  // 함수: 입력값이 숫자가 아닌 경우 이벤트 취소
-  // const handleNumericInput = (
-  //   e: React.KeyboardEvent<HTMLInputElement>,
-  //   setValue: React.Dispatch<React.SetStateAction<string>>
-  // ): void => {
-  //   const inputKey = e.key;
-  //   if (!isNumericInput(inputKey)) {
-  //     e.preventDefault();
-  //   } else {
-  //     setValue(e.currentTarget.value);
-  //   }
-  // };
+  const handleBreed = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setBreed(e.target.value);
+  };
+
+  const handleRescueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRescueDate(e.target.value);
+  };
+
+  const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsNeuter(e.target.checked);
+  };
+
+
+
   return (
     <>
       <h1 style={{ fontSize: "2em", fontWeight: "bold" }}>보호 동물 등록</h1>

@@ -56,10 +56,10 @@ const router = createBrowserRouter([
     path: "/signin",
     element: <SignInPage />,
   },
-  {
-    path: "/about",
-    element: <AboutDogCatDang />,
-  },
+  // {
+  //   path: "/about",
+  //   element: <AboutDogCatDang />,
+  // },
   {
     path: "/",
     element: <NavBar />,
@@ -77,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: "test",
         element: <AnimalMatching />,
+      },
+      {
+        path: "/about",
+        element: <AboutDogCatDang />,
       },
       {
         path: "mung",
