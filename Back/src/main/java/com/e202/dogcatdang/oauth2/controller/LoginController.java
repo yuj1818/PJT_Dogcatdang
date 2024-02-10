@@ -4,8 +4,11 @@ import com.amazonaws.services.ec2.model.UserData;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.oauth2.dto.CustomOAuth2User;
-import com.e202.dogcatdang.oauth2.dto.OauthUserDTO;
+
 import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
+
+import com.e202.dogcatdang.user.Service.JoinService;
+import com.e202.dogcatdang.user.dto.JoinDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +26,21 @@ import java.util.Map;
 public class LoginController {
 
     private final UserRepository userRepository;
-
     private final CustomOAuth2UserService customOAuth2UserService;
-    public LoginController(UserRepository userRepository, CustomOAuth2UserService customOAuth2UserService) {
+    private final JoinService joinService;
+
+
+    public LoginController(UserRepository userRepository, CustomOAuth2UserService customOAuth2UserService, JoinService joinService) {
         this.userRepository = userRepository;
         this.customOAuth2UserService = customOAuth2UserService;
+        this.joinService = joinService;
     }
 
-    @PostMapping("/oauth2/oLogin")
-    public void loginPage(){
-        System.out.println("oLogin되는겨?");
-
+    @PostMapping("/oauth2/join")
+    public ResponseEntity<String> joinUser(@RequestBody JoinDTO joinDTO) {
+        joinService.joinUser(joinDTO);
+        return ResponseEntity.ok("User joined successfully");
     }
-
 
 
     @PostMapping("/login/oauth2/code/google")
@@ -44,13 +49,26 @@ public class LoginController {
     }
 
 
-    @PostMapping("/oauth2/join")
-    public void joinPage(){
-        System.out.println("join되는겨?");
+//    @PostMapping("/oauth2/join")
+//    public ResponseEntity<?> joinPage(@RequestBody OauthUserDTO oauthUserDTO) {
+//        try {
+//            joinOauthService.joinUser(oauthUserDTO);
+//            return ResponseEntity.ok().body("회원가입 성공");
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("회원가입 실패: " + e.getMessage());
+//        }
+//    }
 
 
-    }
 
+//
+//    @PostMapping("/oauth2/join")
+//    public ResponseEntity<?> join(@RequestBody JoinDTO joinDTO) {
+//
+//            joinService.joinUser(joinDTO);
+//            return ResponseEntity.ok().body("회원가입 성공");
+//
+//    }
 
 //
 //    @GetMapping("/oauth2/failure")
