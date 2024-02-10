@@ -17,6 +17,11 @@ export const resizeFile = async (file: File) =>
     );
   });
 
+const isURL = (str: string) => {
+  var urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return urlPattern.test(str);
+};
+
 const getPresignedURL = async (filename: string) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
@@ -88,13 +93,18 @@ export const imageHandler = async (data: string, nickname: string) => {
   const imageURLs = await Promise.all(
     Array.from(imageTags).map(async (imgTag) => {
       const filename = getFileName(nickname);
-      const uploadURL = await getPresignedURL(filename);
 
-      const base64ImgData = imgTag.getAttribute("src")!.split(",")[1];
+      const imgSrc = imgTag.getAttribute("src");
+
+      if (isURL(imgSrc!)) {
+        return imgSrc?.split("/")[3];
+      }
+      const base64ImgData = imgSrc?.split(",")[1];
       const file = await resizeFile(
         base64toFile(base64ImgData!, filename, "image/jpeg")
       );
 
+      const uploadURL = await getPresignedURL(filename);
       try {
         const response = await axios.put(uploadURL, file, {
           headers: {

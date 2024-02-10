@@ -1,5 +1,5 @@
 import { Cookies } from "react-cookie";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
@@ -215,17 +215,42 @@ export const requestComment = async ({
   }
 };
 
-// export const getUploadURL = async (filename: string) => {
-//   const cookie = new Cookies();
-//   const token = cookie.get("U_ID");
+interface RequestLikeInterface {
+  boardId: string | undefined;
+  like: boolean;
+}
 
-//   const URL = "api/images/presigned/upload";
-//   const response = await API.get(URL, {
-//     method: "GET",
-//     params: { filename },
-//     headers: {
-//       Authorization: token,
-//     },
-//   });
-//   return response.data.url as string;
-// };
+export const requestLike = async ({ boardId, like }: RequestLikeInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+  const URL = `api/boards/${boardId}/likes`;
+  let response;
+  try {
+    if (like) {
+      response = await API.delete(URL, {
+        method: "DELTE",
+        headers: {
+          Authorization: token,
+        },
+      });
+    } else {
+      response = await API.post(
+        URL,
+        {},
+        {
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    }
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    const err = new Error();
+    err.message = "인터넷 연결을 확인하시고 나중에 다시 시도해 주세요";
+    err.name = "인터넷이 불안정합니다.";
+    throw err;
+  }
+};
