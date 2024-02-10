@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
+import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseDto;
@@ -113,6 +114,21 @@ public class BoardController {
 
 
 		return ResponseEntity.ok(boardService.unLike(loginUserId, boardId));
+	}
+
+	// 조건에 맞는 게시글 검색 : 제목 + 내용 안에 keyword가 있으면 검색 됨
+	@PostMapping("/filter")
+	public ResponseEntity<List<ResponseBoardSummaryDto>> filterBoards(@RequestHeader("Authorization") String token, @RequestBody
+		RequestBoardSearchDto searchDto) {
+
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));;
+
+		List<ResponseBoardSummaryDto> searchResult = boardService.searchBoards(loginUserId, searchDto);
+		if (searchResult.isEmpty()) {
+			return ResponseEntity.noContent().build(); // 검색 결과가 없을 때
+		} else {
+			return ResponseEntity.ok(searchResult); // 검색 결과가 있을 때
+		}
 	}
 
 }
