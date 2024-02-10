@@ -3,12 +3,20 @@ package com.e202.dogcatdang.user.controller;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.user.Service.JoinService;
 import com.e202.dogcatdang.user.Service.UserProfileService;
+import com.e202.dogcatdang.user.dto.CustomUserDetails;
 import com.e202.dogcatdang.user.dto.JoinDTO;
+import com.e202.dogcatdang.user.dto.LoginRequestDTO;
 import com.e202.dogcatdang.user.dto.UserProfileDTO;
+import com.e202.dogcatdang.user.jwt.JWTUtil;
 import jakarta.persistence.Id;
+import org.hibernate.mapping.Join;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToUrl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,19 +30,52 @@ import java.util.NoSuchElementException;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
 
     private final JoinService joinService;
     private final UserProfileService userProfileService;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
+
+
 
 
     // 생성자 주입 방식으로 JoinService 주입
-    public UserController(JoinService joinService, UserProfileService userProfileService) {
+    public UserController(JoinService joinService, UserProfileService userProfileService, AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.joinService = joinService;
         this.userProfileService = userProfileService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
+//
+//    @PostMapping("login")
+//    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestdto) {
+//        System.out.println("api/users/login 안으로?");
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        loginRequestdto.getUsername(),
+//                        loginRequestdto.getPassword()
+//                )
+//        );
+//        System.out.println("api/users/login 안으로?");
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//
+//        String jwt = jwtUtil.createJwt(
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getAuthorities().iterator().next().getAuthority(),
+//                userDetails.getNickname(),
+//                10_000_000L // 토큰 만료 시간 설정
+//        );
+//
+//        //
+//        return ResponseEntity.ok().header("Authorization", "Bearer " + jwt)
+//                .body("Token: " + jwt);
+//    }
+
 
 
     @PostMapping("/join") //회원가입

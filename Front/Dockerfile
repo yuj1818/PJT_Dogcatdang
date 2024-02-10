@@ -12,7 +12,7 @@ VOLUME [ "/etc/letsencrypt:/etc/letsencrypt" ]
 COPY dist/ .
 
 # 환경 변수 설정 (필요에 따라 변경 가능)
-# ENV REACT_APP_API_URL=https://api.example.com
+ENV VITE_IS_PRODUCTION=production
 
 EXPOSE 80
 
