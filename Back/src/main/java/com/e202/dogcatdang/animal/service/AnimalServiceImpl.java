@@ -94,8 +94,8 @@ public class AnimalServiceImpl implements AnimalService {
 		List<Animal> protectedAnimals = animalRepository.findByState(Animal.State.보호중);
 
 		// 3. 페이징 처리를 위해 서브리스트를 구함
-		// 	sublist는 list의 부분을 반환하며 정렬 순서 보장 x
-		// 	정렬을 다시 해주어야 한다
+		// -> page 객체를 안 쓴 이유, 위의 '보호중' 동물을 찾을 때 jpa 기본 제공 메서드 쓰기 위해서
+		// 	sublist는 list의 부분을 반환하며 정렬 순서를 보장하지 않기에 정렬을 따로 해줘야 한다
 		protectedAnimals.sort(Comparator.comparing(Animal::getAnimalId).reversed());
 
 		int startIdx = pageRequest.getPageNumber() * pageRequest.getPageSize();
@@ -138,9 +138,6 @@ public class AnimalServiceImpl implements AnimalService {
 			.hasPreviousPage(hasPreviousPage)
 			.build();
 	}
-
-
-
 
 	/*특정한 동물 데이터 수정*/
 	@Transactional

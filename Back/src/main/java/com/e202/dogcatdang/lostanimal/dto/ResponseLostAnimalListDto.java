@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResponseLostAnimalListDto {
 
-	private Long LostAnimalId;
+	private Long lostAnimalId;
 	private AnimalType animalType;
 	private String breed;
 	private String name;
@@ -35,7 +35,7 @@ public class ResponseLostAnimalListDto {
 	// Entity -> DTO
 	@Builder
 	public ResponseLostAnimalListDto(LostAnimal animal) {
-		this.LostAnimalId = animal.getLostAnimalId();
+		this.lostAnimalId = animal.getLostAnimalId();
 		this.animalType = animal.getAnimalType();
 		this.breed = animal.getBreed();
 		this.name = animal.getName();

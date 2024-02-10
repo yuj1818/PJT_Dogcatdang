@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.LostAnimalRepository;
@@ -81,6 +81,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 		List<LostAnimal> lostAnimals = lostAnimalRepository.findByState(LostAnimal.State.실종);
 
 		// 3. 페이징 처리를 위해 서브리스트를 구함
+		// -> page 객체를 안 쓴 이유, 위의 '보호중' 동물을 찾을 때 jpa 기본 제공 메서드 쓰기 위해서
 		lostAnimals.sort(Comparator.comparing(LostAnimal::getLostAnimalId).reversed());
 		int startIdx = pageRequest.getPageNumber() * pageRequest.getPageSize();
 		int endIdx = Math.min((startIdx + pageRequest.getPageSize()), lostAnimals.size());
@@ -100,7 +101,6 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 			.collect(Collectors.toList());
 
 		// AnimalService의 findAll 메서드 내에서 ResponseAnimalPageDto 생성 부분
-
 		return ResponseLostAnimalPageDto.builder()
 			.lostAnimalDtoList(animalDtoList)
 			.totalPages(totalPages)
@@ -137,7 +137,7 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 	@Transactional
 	public ResponseLostAnimalPageDto searchAnimals(int page, int recordSize, RequestLostAnimalSearchDto searchDto) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
-		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize, Sort.by(Sort.Direction.DESC, "lostAnimalId"));
 
 		// 2. 검색 조건에 따라 동물 데이터(엔티티) 조회
 		Specification<LostAnimal> specification = createSpecification(searchDto);
