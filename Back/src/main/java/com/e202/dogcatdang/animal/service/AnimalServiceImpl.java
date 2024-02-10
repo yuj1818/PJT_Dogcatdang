@@ -205,6 +205,9 @@ public class AnimalServiceImpl implements AnimalService {
 		Specification<Animal> specification = (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
 
+			// 상태가 '보호중'인 동물만을 찾도록 함
+			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
+
 			if (searchDto.getAnimalType() != null) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
