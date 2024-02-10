@@ -3,7 +3,6 @@ package com.e202.dogcatdang.board.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
-import com.e202.dogcatdang.board.dto.ResponseIdDto;
+import com.e202.dogcatdang.board.dto.ResponseDto;
 import com.e202.dogcatdang.board.service.BoardService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -36,7 +35,7 @@ public class BoardController {
 	private final JWTUtil jwtUtil;
 
 	@PostMapping("")
-	public ResponseEntity<ResponseIdDto> write(@RequestHeader("Authorization") String token,@RequestBody RequestBoardDto requestBoardDto) throws IOException {
+	public ResponseEntity<ResponseDto> write(@RequestHeader("Authorization") String token,@RequestBody RequestBoardDto requestBoardDto) throws IOException {
 
 
 		//근황 글 작성
@@ -45,8 +44,8 @@ public class BoardController {
 		System.out.println("requestBoardDto = " + requestBoardDto);
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
-		ResponseIdDto responseIdDto = boardService.save(loginUserId, requestBoardDto);
-		return ResponseEntity.ok(responseIdDto);
+		ResponseDto responseDto = boardService.save(loginUserId, requestBoardDto);
+		return ResponseEntity.ok(responseDto);
 	}
 
 	/* 게시글 목록 조회
@@ -79,13 +78,13 @@ public class BoardController {
 	*
 	* */
 	@PutMapping("/{boardId}")
-	public ResponseEntity<ResponseIdDto> update(@RequestHeader("Authorization") String token,@PathVariable Long boardId, @RequestBody RequestBoardDto requestBoardDto) throws
+	public ResponseEntity<ResponseDto> update(@RequestHeader("Authorization") String token,@PathVariable Long boardId, @RequestBody RequestBoardDto requestBoardDto) throws
 		IOException {
 
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
-		ResponseIdDto responseIdDto = boardService.update(loginUserId, boardId, requestBoardDto);
+		ResponseDto responseDto = boardService.update(loginUserId, boardId, requestBoardDto);
 
-		return ResponseEntity.ok(responseIdDto);
+		return ResponseEntity.ok(responseDto);
 
 	}
 
@@ -93,13 +92,27 @@ public class BoardController {
 	*
 	* */
 	@DeleteMapping("/{boardId}")
-	public ResponseEntity<ResponseIdDto> delete(@RequestHeader("Authorization") String token,@PathVariable Long boardId) {
+	public ResponseEntity<ResponseDto> delete(@RequestHeader("Authorization") String token,@PathVariable Long boardId) {
 
-		Long loginUserId = jwtUtil.getUserId(token.substring(7));
-		;
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));;
 
 		return ResponseEntity.ok(boardService.delete(loginUserId, boardId));
 	}
 
+	@PostMapping("/{boardId}/likes")
+	public ResponseEntity<ResponseDto> like(@RequestHeader("Authorization") String token, @PathVariable Long boardId) {
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));;
+
+
+		return ResponseEntity.ok(boardService.like(loginUserId, boardId));
+	}
+
+	@DeleteMapping("/{boardId}/likes")
+	public ResponseEntity<ResponseDto> unLike(@RequestHeader("Authorization") String token, @PathVariable Long boardId) {
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));;
+
+
+		return ResponseEntity.ok(boardService.unLike(loginUserId, boardId));
+	}
 
 }
