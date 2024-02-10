@@ -58,10 +58,9 @@ const BroadCastPage = () => {
 
   const getToken = useCallback(async (): Promise<string> => {
     const createToken = async (sessionIds: string): Promise<string> => {
-      const data = JSON.stringify({});
       const response = await axios.post(
         `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-        data,
+        "{}",
         {
           headers: {
             Authorization: `Basic ${btoa(
@@ -126,7 +125,6 @@ const BroadCastPage = () => {
     session.on("streamCreated", (event) => {
       const newSubscriber = session.subscribe(event.stream, undefined);
       setSubscriber(newSubscriber);
-      console.log(newSubscriber);
     });
 
     const isOrg = org();

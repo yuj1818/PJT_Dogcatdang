@@ -1,4 +1,4 @@
-import { Session, Subscriber } from "openvidu-browser";
+import { Session } from "openvidu-browser";
 import React, { useEffect, useRef, useState } from "react";
 import { getUserInfo } from "../../util/uitl";
 import styled from "styled-components";
