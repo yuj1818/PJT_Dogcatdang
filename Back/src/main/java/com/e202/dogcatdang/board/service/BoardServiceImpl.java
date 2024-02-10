@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
+import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseDto;
@@ -19,6 +21,8 @@ import com.e202.dogcatdang.db.repository.BoardRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.exception.InvalidLikeException;
 import com.e202.dogcatdang.exception.InvalidUserException;
+
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -169,5 +173,48 @@ public class BoardServiceImpl implements BoardService {
 		boardLikeRepository.delete(boardLike);
 
 		return new ResponseDto(savedId);
+	}
+
+	// 조건에 맞는 게시글 검색
+	@Override
+	@Transactional
+	public List<ResponseBoardSummaryDto> searchBoards(Long loginUserId, RequestBoardSearchDto searchDto) {
+		// 1. 검색 조건에 따라 게시글(엔티티) 조회
+		Specification<Board> specification = createSpecification(searchDto);
+
+		List<Board> boardList = boardRepository.findAll(specification);
+
+		// 2. Entity를 DTO로 변환
+		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
+		for (Board board : boardList) {
+			boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
+			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
+				.board(board)
+				.isLike(isLike)
+				.build();
+
+			boardDtoList.add(boardSummary);
+		}
+
+		return boardDtoList;
+	}
+
+	// 게시글 검색 - 제목 + 내용 안에서 검색
+	private Specification<Board> createSpecification(RequestBoardSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			// 검색 조건에 따라 Predicate 추가 (Or 조건으로 검색)
+			if (searchDto.getKeyword() != null) {
+				predicates.add(criteriaBuilder.like(root.get("title"), "%" +searchDto.getKeyword() + "%" ));
+				predicates.add(criteriaBuilder.like(root.get("content"), "%" +searchDto.getKeyword() + "%" ));
+			}
+
+			// 중복 제거 및 내림차순 정렬
+			query.orderBy(criteriaBuilder.desc(root.get("id")));
+			query.distinct(true);
+
+			return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+		};
 	}
 }
