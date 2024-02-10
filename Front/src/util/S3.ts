@@ -17,7 +17,12 @@ export const resizeFile = async (file: File) =>
     );
   });
 
-export const getPresignedURL = async (filename: string) => {
+const isURL = (str: string) => {
+  var urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return urlPattern.test(str);
+};
+
+const getPresignedURL = async (filename: string) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
@@ -32,7 +37,7 @@ export const getPresignedURL = async (filename: string) => {
   return response.data.url as string;
 };
 
-export const getFileName = (nickname: string) => {
+const getFileName = (nickname: string) => {
   const date = new Date();
   const year = date.getFullYear().toString().slice(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -88,13 +93,18 @@ export const imageHandler = async (data: string, nickname: string) => {
   const imageURLs = await Promise.all(
     Array.from(imageTags).map(async (imgTag) => {
       const filename = getFileName(nickname);
-      const uploadURL = await getPresignedURL(filename);
 
-      const base64ImgData = imgTag.getAttribute("src")!.split(",")[1];
+      const imgSrc = imgTag.getAttribute("src");
+
+      if (isURL(imgSrc!)) {
+        return imgSrc?.split("/")[3];
+      }
+      const base64ImgData = imgSrc?.split(",")[1];
       const file = await resizeFile(
         base64toFile(base64ImgData!, filename, "image/jpeg")
       );
 
+      const uploadURL = await getPresignedURL(filename);
       try {
         const response = await axios.put(uploadURL, file, {
           headers: {
@@ -118,6 +128,7 @@ export const imageHandler = async (data: string, nickname: string) => {
       "src",
       `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
     );
+    imageTags[i].setAttribute("loading", "lazy");
   }
 
   const thumnailImgURL = firstImgTag?.getAttribute("src") ?? null;

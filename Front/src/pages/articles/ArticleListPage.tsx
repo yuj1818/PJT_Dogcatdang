@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { useQuery, QueryFunctionContext } from "@tanstack/react-query";
+import {
+  useQuery,
+  QueryFunctionContext,
+  useMutation,
+} from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
 import ArticleList from "../../components/articles/ArticleList";
 import Pagination from "../../components/common/Pagination";
 import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle } from "../../util/articleAPI";
+import { requestArticle, requestSearchArticle } from "../../util/articleAPI";
 import { LoadingOrError } from "./LoadingOrError";
 import { retryFn } from "../../util/tanstackQuery";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/common/Button";
 import styled from "styled-components";
 
@@ -20,7 +24,7 @@ const ArticleListPage: React.FC = () => {
   const navigate = useNavigate();
   const { searchKey } = useParams();
   const { page } = useParams();
-  const [currentPage, setCurrentPage] = useState(parseInt(page ?? "1"));
+  const currentPage = parseInt(page!);
   const itemsPerPage = 12;
   const [content, setContent] = useState(<></>);
   const { data, isLoading, isError, error } = useQuery<
@@ -40,67 +44,59 @@ const ArticleListPage: React.FC = () => {
     retryDelay: 300,
   });
 
+  const { mutate, isError: isSearchError } = useMutation({
+    mutationFn: requestSearchArticle,
+    onSuccess: (data) => {
+      setContent(
+        <ArticleList data={data} itemsPerPage={itemsPerPage} currentPage={1} />
+      );
+    },
+    onError: (error) => {
+      <LoadingOrError
+        isLoading={false}
+        isError={isSearchError}
+        error={error}
+      />;
+    },
+  });
+
   const handlewriteButton = () => {
     navigate("/articles/new");
   };
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
     navigate(`/articles/${newPage}`);
   };
 
   const submitHandler = (searchword: string) => {
-    const searchResult = data!.filter((article) =>
-      article.title.includes(searchword)
-    );
-
-    setContent(
-      <ArticleList
-        data={searchResult}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-      ></ArticleList>
-    );
-
-    navigate(`/articles/search/title=${searchword}`);
+    navigate(`/articles/search/${searchword}`);
   };
 
   useEffect(() => {
-    if (searchKey) {
-      return;
+    if (searchKey?.trim()) {
+      mutate({ keyword: searchKey });
     }
     if (isError || isLoading) {
       setContent(
-        <>
-          <LoadingOrError
-            isLoading={isLoading}
-            isError={isError}
-            error={error}
-          />
-        </>
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       );
     }
 
     if (data) {
       setContent(
-        <>
-          {/* <h2>인기글</h2>
-      <ArticleListStyle $itemsPerRow={5}>
-        <PopularArticles articles={articles?.slice(0, 5)} />
-      </ArticleListStyle> */}
-          <ArticleList
-            data={data}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-          />
-        </>
+        <ArticleList
+          data={data}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+        />
       );
     }
-  }, [data, searchKey, currentPage]);
+  }, [searchKey, isError, isLoading, data]);
 
   return (
     <>
       <HeadContainer>
+        {/* 인기글 */}
         <TextSearch onSubmit={submitHandler} text="입양 후 이야기">
           {" "}
         </TextSearch>
@@ -109,9 +105,6 @@ const ArticleListPage: React.FC = () => {
         </Button>
       </HeadContainer>
       {content}
-      <div className="flex">
-        <Link to="/articles/new" className="ml-auto"></Link>
-      </div>
       {data && (
         <Pagination
           totalItems={data!.length}

@@ -32,7 +32,7 @@ const Line = styled.span`
 `;
 
 export const SearchGlasses = () => (
-  <StyledReadingGlasses type="submit">
+  <StyledReadingGlasses type="submit" aria-label="검색">
     <Circle />
     <Line />
   </StyledReadingGlasses>

@@ -13,7 +13,7 @@ const VideoContainer = styled.div`
   background-color: #121212;
 `;
 
-const FullscreenButtonContainer = styled.button`
+const FullscreenButtonContainer = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
@@ -45,7 +45,6 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showControls, setShowControls] = useState(false);
   const [volume, setVolume] = useState(1);
-  const [pipActive, setPipActive] = useState(false);
   let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const handleFullscreen = () => {
@@ -82,14 +81,10 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const togglePictureInPicture = () => {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
-      console.log(pipActive);
-      setPipActive(false);
     } else {
       videoRef.current
         ?.requestPictureInPicture()
-        .then(() => {
-          setPipActive(true);
-        })
+        .then(() => {})
         .catch((error) => {
           console.error("Error entering PiP mode:", error);
         });
