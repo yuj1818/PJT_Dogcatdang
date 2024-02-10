@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -202,7 +203,7 @@ public class AnimalServiceImpl implements AnimalService {
 	@Override
 	public ResponseAnimalPageDto searchAnimals(int page, int recordSize, RequestAnimalSearchDto searchDto, User user) {
 		// 1. 현재 페이지와 한 페이지당 보여줄 동물 데이터의 개수를 기반으로 PageRequest 객체 생성
-		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize, Sort.by(Sort.Direction.DESC, "animalId"));
 
 		// 2. 검색 조건에 따라 동물 데이터를 조회
 		Specification<Animal> specification = createSpecification(searchDto);
