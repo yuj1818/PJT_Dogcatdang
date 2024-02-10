@@ -22,13 +22,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
-
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         super.setAuthenticationManager(authenticationManager);
         super.setFilterProcessesUrl("/api/users/login"); // 로그인 처리 경로 설정
+        // 기타 초기화 코드...
+
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
+
+//    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+//
+//        this.authenticationManager = authenticationManager;
+//        this.jwtUtil = jwtUtil;
+//    }
 
 //
 //    @Override

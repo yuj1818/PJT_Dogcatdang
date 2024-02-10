@@ -49,32 +49,32 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
-
-    @PostMapping("login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestdto) {
-        System.out.println("api/users/login 안으로?");
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestdto.getUsername(),
-                        loginRequestdto.getPassword()
-                )
-        );
-        System.out.println("api/users/login 안으로?");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        String jwt = jwtUtil.createJwt(
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getAuthorities().iterator().next().getAuthority(),
-                userDetails.getNickname(),
-                10_000_000L // 토큰 만료 시간 설정
-        );
-
-        //
-        return ResponseEntity.ok().header("Authorization", "Bearer " + jwt)
-                .body("Token: " + jwt);
-    }
+//
+//    @PostMapping("login")
+//    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestdto) {
+//        System.out.println("api/users/login 안으로?");
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        loginRequestdto.getUsername(),
+//                        loginRequestdto.getPassword()
+//                )
+//        );
+//        System.out.println("api/users/login 안으로?");
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//
+//        String jwt = jwtUtil.createJwt(
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getAuthorities().iterator().next().getAuthority(),
+//                userDetails.getNickname(),
+//                10_000_000L // 토큰 만료 시간 설정
+//        );
+//
+//        //
+//        return ResponseEntity.ok().header("Authorization", "Bearer " + jwt)
+//                .body("Token: " + jwt);
+//    }
 
 
 
