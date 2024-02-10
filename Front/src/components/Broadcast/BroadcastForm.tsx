@@ -9,6 +9,7 @@ import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
 import { resizeFile } from "../../util/S3";
 import AnimalList from "./AnimalList";
+import { encrypt } from "./simpleEncrypt";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
@@ -45,7 +46,6 @@ const Form: React.FC<FormProps> = ({
   const [file, setFile] = useState<File>();
 
   useEffect(() => {
-    const { username } = getUserInfo();
     if (params.broadcastId) {
       sessionIdChangeHandler(params.broadcastId);
     } else if (!params.broadcastId) {
@@ -56,6 +56,8 @@ const Form: React.FC<FormProps> = ({
         sessionIdChangeHandler(newSessionId);
         joinSession();
       } else {
+        const { username } = getUserInfo();
+        const encryptedUsername = encrypt(username);
         const today = new Date();
 
         const year = String(today.getFullYear()).slice(-2);
@@ -64,7 +66,7 @@ const Form: React.FC<FormProps> = ({
         const ranmdeNum = Math.ceil(Math.random() * 1000);
         const numericFormat = `${year}${month}${day}${ranmdeNum}`;
 
-        newSessionId = `${username}${numericFormat}`;
+        newSessionId = `${encryptedUsername}${numericFormat}`;
         sessionIdChangeHandler(newSessionId);
       }
     }

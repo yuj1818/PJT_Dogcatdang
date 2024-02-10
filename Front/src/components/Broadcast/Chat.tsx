@@ -1,7 +1,7 @@
 import { Session } from "openvidu-browser";
 import React, { useEffect, useRef, useState } from "react";
-import { getUserInfo } from "../../util/uitl";
 import styled from "styled-components";
+import { getUserInfo } from "../../util/uitl";
 import { Contour, FormContainer, Input } from "../common/Design";
 import { Button } from "../common/Button";
 
