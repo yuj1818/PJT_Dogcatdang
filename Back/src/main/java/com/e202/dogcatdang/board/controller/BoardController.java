@@ -53,9 +53,11 @@ public class BoardController {
 	 * 게시글을 리스트로 불러옴, 썸네일 이미지가 있다면 이미지도 함께 불러옴
 	 */
 	@GetMapping("")
-	public ResponseEntity<List<ResponseBoardSummaryDto>> findAll() {
+	public ResponseEntity<List<ResponseBoardSummaryDto>> findAll(@RequestHeader("Authorization") String token) {
+		// 로그인한 사용자의 id -> header에서 가져옴
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
-		List<ResponseBoardSummaryDto> boardSummaryList = boardService.findAll();
+		List<ResponseBoardSummaryDto> boardSummaryList = boardService.findAll(loginUserId);
 
 		return ResponseEntity.ok(boardSummaryList);
 	}
@@ -64,9 +66,10 @@ public class BoardController {
 	 *  게시글 하나를 불러옴.
 	 */
 	@GetMapping("/{boardId}")
-	public ResponseEntity<ResponseBoardDto> find(@PathVariable Long boardId) {
+	public ResponseEntity<ResponseBoardDto> find(@RequestHeader("Authorization") String token,@PathVariable Long boardId) {
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
-		ResponseBoardDto responseBoardDto = boardService.findById(boardId);
+		ResponseBoardDto responseBoardDto = boardService.findById(loginUserId, boardId);
 
 		return ResponseEntity.ok(responseBoardDto);
 	}

@@ -2,21 +2,17 @@ package com.e202.dogcatdang.board.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
-import com.e202.dogcatdang.board.dto.RequestImageDto;
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseIdDto;
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.User;
-import com.e202.dogcatdang.db.repository.BoardImageRepository;
+import com.e202.dogcatdang.db.repository.BoardLikeRepository;
 import com.e202.dogcatdang.db.repository.BoardRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.exception.InvalidUserException;
@@ -29,8 +25,8 @@ import lombok.AllArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 
 	private final BoardRepository boardRepository;
-	private final BoardImageRepository boardImageRepository;
 	private final UserRepository userRepository;
+	private final BoardLikeRepository boardLikeRepository;
 
 	@Override
 	public ResponseIdDto save(Long loginUserId, RequestBoardDto requestBoardDto) throws IOException {
@@ -42,27 +38,21 @@ public class BoardServiceImpl implements BoardService {
 		Board board = requestBoardDto.toEntity(loginUser);
 		Long savedId = boardRepository.save(board).getBoardId();
 
-		if (!requestBoardDto.getImageList().isEmpty()) {
-			Board curBoard = boardRepository.findById(savedId).get();
-			for (RequestImageDto boardImage : requestBoardDto.getImageList()) {
-				byte[] imageBytes = Base64.decodeBase64(boardImage.getBase64Image());
-				String key = UUID.randomUUID().toString();
-				System.out.println(Arrays.toString(imageBytes));
-			}
-		}
 		return new ResponseIdDto(savedId);
 	}
 
 	@Override
 	@Transactional
-	public List<ResponseBoardSummaryDto> findAll() {
+	public List<ResponseBoardSummaryDto> findAll(Long loginUserId) {
+		User loginUser = userRepository.findById(loginUserId).get();
 
 		List<Board> boardList = boardRepository.findAll();
 		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
-
 		for (Board board : boardList) {
+			boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
 			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
 				.board(board)
+				.isLike(isLike)
 				.build();
 
 			boardDtoList.add(boardSummary);
@@ -73,12 +63,15 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public ResponseBoardDto findById(Long boardId) {
+	public ResponseBoardDto findById(Long loginUserId, Long boardId) {
 
 		Board board = boardRepository.findById(boardId).get();
+		User loginUser = userRepository.findById(loginUserId).get();
+		boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
 
 		return ResponseBoardDto.builder()
 			.board(board)
+			.isLike(isLike)
 			.build();
 	}
 
@@ -98,13 +91,7 @@ public class BoardServiceImpl implements BoardService {
 			if(requestBoardDto.getTitle()!=null){
 				board.updateTitle(requestBoardDto.getTitle());
 			}
-			if (!requestBoardDto.getImageList().isEmpty()) {
-				for (RequestImageDto boardImage : requestBoardDto.getImageList()) {
-					byte[] imageBytes = Base64.decodeBase64(boardImage.getBase64Image());
-					String key = UUID.randomUUID().toString();
-					System.out.println(Arrays.toString(imageBytes));
-				}
-			}
+
 			Long savedId = boardRepository.save(board).getBoardId();
 
 			return new ResponseIdDto(savedId);

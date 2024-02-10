@@ -11,9 +11,9 @@ import com.e202.dogcatdang.board.dto.ResponseIdDto;
 public interface BoardService {
 	ResponseIdDto save(Long loginUserId, RequestBoardDto requestBoardDto) throws IOException;
 
-	List<ResponseBoardSummaryDto> findAll();
+	List<ResponseBoardSummaryDto> findAll(Long loginUserId);
 
-	ResponseBoardDto findById(Long boardId);
+	ResponseBoardDto findById(Long loginUserId, Long boardId);
 
 	ResponseIdDto update(Long loginUserId, Long boardId,RequestBoardDto requestBoardDto) throws IOException;
 
