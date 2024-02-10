@@ -100,7 +100,7 @@ const ArticleDetail: React.FC = () => {
           />
           {id === data!.userId && (
             <>
-              <Button $background="#ff0000" onClick={handleDelte}>
+              <Button background="#ff0000" onClick={handleDelte}>
                 삭제하기
               </Button>
 

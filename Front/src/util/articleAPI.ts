@@ -1,5 +1,5 @@
 import { Cookies } from "react-cookie";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import API from "./axios";
 
 import {
