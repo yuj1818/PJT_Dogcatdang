@@ -39,4 +39,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	// 기관에게 들어온 승인된 모든 예약 정보 가져오기
 	@Query("SELECT r FROM Reservation r " + "JOIN r.animal a " + "JOIN a.user u " + "WHERE u.id = :userId " + "AND r.state = :state")
 	List<Reservation> findShelterReservations(@Param("userId") Long shelterId, @Param("state") Reservation.State state);
+
+	// 방문 상태와 동물 등록한 유저 id로 현재 방문 예약이 승인된 동물의 수 계산
+	Integer countByStateAndAnimal_User_Id(Reservation.State state, Long shelterId);
 }

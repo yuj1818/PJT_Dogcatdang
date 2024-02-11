@@ -23,6 +23,7 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalCountDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.db.entity.User;
@@ -270,6 +271,26 @@ public class AnimalServiceImpl implements AnimalService {
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
 		};
+	}
+
+	// 기관의 보호동물 관리 숫자 가져오기
+	@Override
+	public ResponseShelterAnimalCountDto countAnimals(Long shelterId) {
+		// 기관이 등록한 전체 동물 수
+		Integer totalAnimals = animalRepository.countByUser_Id(shelterId);
+
+		// 입양 예정인 동물의 수 (방문 예약이 확정된 동물의 수)
+		Integer adoptionSchedules = reservationRepository.countByStateAndAnimal_User_Id(Reservation.State.승인, shelterId);
+
+		// 현재 보호 중인 동물의 수
+		Integer protectedAnimals = animalRepository.countByStateAndUser_Id(Animal.State.보호중, shelterId);
+
+		// ResponseShelterAnimalCountDto 객체 생성
+		return ResponseShelterAnimalCountDto.builder()
+			.totalAnimals(totalAnimals)
+			.adoptionSchedules(adoptionSchedules)
+			.protectedAnimals(protectedAnimals)
+			.build();
 	}
 }
 

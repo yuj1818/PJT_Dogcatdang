@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.Reservation;
 
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long>, JpaSpecificationExecutor<Animal> {
@@ -32,5 +33,9 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, JpaSpecif
 	// userId와 state가 일치하는 모든 animal 정보 가져오기
 	List<Animal> findByUserIdAndState(Long userId, Animal.State state);
 
-	// List<Animal> findAll(Specification<Animal> specification);
+	// 현재 로그인한 회원(기관)의 아이디로 등록된 동물 수 계산
+	Integer countByUser_Id(Long shelterId);
+
+	// 현재 로그인한 회원(기관)과 동물 보호 상태로 동물 수 계산
+	Integer countByStateAndUser_Id(Animal.State state, Long shelterId);
 }
