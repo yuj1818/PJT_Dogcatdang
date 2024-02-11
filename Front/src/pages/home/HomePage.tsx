@@ -1,12 +1,9 @@
-import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
-import { retryFn } from "../../util/tanstackQuery";
-import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle } from "../../util/articleAPI";
-import ArticleList from "../../components/articles/ArticleList";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
+
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/common/Button";
+import { PopularArticles } from "../articles/ArticleListPage";
 
 const Container = styled.div`
   display: flex;
@@ -24,18 +21,6 @@ const Title = tw.h2`
   text-3xl font-bold mb-4 border-b-2 border-amber-300 pb-2
 `;
 const MainPage: React.FC = () => {
-  const { data } = useQuery<ArticleInterface[], Error, ArticleInterface[]>({
-    queryKey: ["articleList"],
-    queryFn: async ({
-      signal,
-    }: QueryFunctionContext): Promise<ArticleInterface[]> => {
-      const result = await requestArticle({ signal });
-      return result as ArticleInterface[];
-    },
-    staleTime: 5 * 1000,
-    retry: retryFn,
-    retryDelay: 100,
-  });
   return (
     <Container>
       <Title>
@@ -45,14 +30,18 @@ const MainPage: React.FC = () => {
         </NavLink>
       </Title>
       <Title>
-        함께해서 행복해요 - 근황 게시글
+        함께해서 행복해요 - 인기 근황 게시글
         <NavLink to="/articles/1">
           <MoreButton>더 보러 가기</MoreButton>
         </NavLink>
       </Title>
-
-      {data && <ArticleList data={data} itemsPerPage={4} currentPage={1} />}
-      <Title>가족이 되어 주세요</Title>
+      <PopularArticles />
+      <Title>
+        가족이 되어 주세요
+        <NavLink to="/save-animals">
+          <MoreButton>더 보러 가기</MoreButton>
+        </NavLink>
+      </Title>
     </Container>
   );
 };

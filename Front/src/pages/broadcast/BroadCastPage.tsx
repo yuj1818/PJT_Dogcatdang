@@ -14,7 +14,7 @@ import { getUserInfo } from "../../util/uitl";
 const OPENVIDU_SERVER_URL = "http://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const BroadCastPage = () => {
+const BroadCastPage: React.FC = () => {
   const [session, setSession] = useState<OVSession | undefined>(undefined);
   const [sessionId, setSessionId] = useState("");
   const [subscriber, setSubscriber] = useState<Subscriber | undefined>(

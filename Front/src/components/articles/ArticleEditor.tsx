@@ -2,12 +2,11 @@ import { ChangeEvent, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 
 import { queryClient } from "../../util/tanstackQuery";
 import { requestArticle } from "../../util/articleAPI";
-import { LoadingOrError } from "../../pages/articles/LoadingOrError";
+import { LoadingOrError } from "../common/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";
@@ -36,8 +35,8 @@ const MODULES = {
   toolbar: {
     container: [
       [{ header: [1, 2, 3, 4, false] }],
-      [{ color: [] }, { align: [] }],
-      ["bold", "italic", "underline", "strike"],
+      [{ align: [] }],
+      [{ color: [] }, "bold", "italic", "underline", "strike"],
       ["link", "image"],
     ],
     handlers: {},
@@ -55,7 +54,7 @@ class BlockImage extends CustomImage {
     const node = super.create(value);
     node.setAttribute(
       "style",
-      "display: block; max-width: 100%; height: auto;"
+      "display: block; max-width: 100%; height: auto; margin: 0 auto;"
     );
     return node;
   }
@@ -190,7 +189,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
               handleSubmitArticle(true);
             }}
           >
-            제출
+            저장
           </Button>
         </div>
       )}

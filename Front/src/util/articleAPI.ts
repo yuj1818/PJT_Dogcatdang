@@ -2,11 +2,12 @@ import { Cookies } from "react-cookie";
 import { AxiosError } from "axios";
 import API from "./axios";
 
-import {
-  ArticleInterface,
-  CommentInterface,
-} from "../components/articles/ArticleInterface";
+import { CommentInterface } from "../components/articles/ArticleInterface";
 import { imageHandler } from "./S3";
+
+const err = new Error();
+err.name = "네트워크 에러";
+err.message = "인터넷 연결을 확인하여 주세요";
 
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
@@ -251,9 +252,6 @@ export const requestLike = async ({ boardId, like }: RequestLikeInterface) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    const err = new Error();
-    err.message = "인터넷 연결을 확인하시고 나중에 다시 시도해 주세요";
-    err.name = "인터넷이 불안정합니다.";
     throw err;
   }
 };
@@ -280,8 +278,33 @@ export const requestSearchArticle = async ({
         },
       }
     );
-    return respone.data as ArticleInterface[];
+    return respone.data;
   } catch (error) {
-    throw error;
+    throw err;
+  }
+};
+
+interface RequestPopularInterface {
+  signal: AbortSignal;
+}
+
+export const requestPopular = async ({ signal }: RequestPopularInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+  const URL = "api/boards/best";
+
+  try {
+    const respone = await API.get(URL, {
+      signal,
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return respone.data;
+  } catch (error) {
+    console.log(error);
+    throw err;
   }
 };

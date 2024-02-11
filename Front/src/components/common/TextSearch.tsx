@@ -49,7 +49,7 @@ const TextSearch: React.FC<TesxtSearchProps> = ({
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const searchWord = searchRef.current?.value.trim();
-    if (searchWord !== undefined) {
+    if (searchWord) {
       onSubmit(searchWord);
     }
   };
