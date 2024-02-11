@@ -21,7 +21,7 @@ public class ResponseAnimalListDto {
 	private String breed;
 	private int age;
 	private String gender;
-	private Boolean isNeuter;
+	private String isNeuter;
 	private Animal.State state;
 	private LocalDate rescueDate;
 	private String rescueLocation;

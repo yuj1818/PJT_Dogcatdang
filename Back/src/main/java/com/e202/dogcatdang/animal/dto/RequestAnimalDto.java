@@ -29,7 +29,7 @@ public class RequestAnimalDto {
 	private Integer weight;
 	private LocalDate rescueDate;
 	private String rescueLocation;
-	private Boolean isNeuter;
+	private String isNeuter;
 	private String gender;
 	private String feature;
 	private Animal.State state;
