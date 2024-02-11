@@ -63,7 +63,12 @@ const MainPage: React.FC = () => {
           itemsPerLine={4}
         />
       )}
-      <Title>가족이 되어 주세요</Title>
+      <Title>
+        가족이 되어 주세요
+        <NavLink to="/save-animals">
+          <MoreButton>더 보러 가기</MoreButton>
+        </NavLink>
+      </Title>
     </Container>
   );
 };

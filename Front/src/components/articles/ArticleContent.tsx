@@ -60,13 +60,12 @@ const ArticleContent: React.FC<ArticleDetailInterface> = ({
         <Nickname>{nickname}</Nickname>
       </HeadContainer>
       <Line />
-      <ContentContainer></ContentContainer>
-      <div
-        className="leading-relaxed"
+      <ContentContainer
+        className="ql-container quill"
         dangerouslySetInnerHTML={{
           __html: content,
         }}
-      ></div>
+      />
       <Likes like={like} likeCnt={likeCnt} />
     </Container>
   );

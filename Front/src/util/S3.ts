@@ -93,7 +93,6 @@ export const imageHandler = async (data: string, nickname: string) => {
   const imageURLs = await Promise.all(
     Array.from(imageTags).map(async (imgTag) => {
       const filename = getFileName(nickname);
-
       const imgSrc = imgTag.getAttribute("src");
 
       if (isURL(imgSrc!)) {
@@ -103,15 +102,14 @@ export const imageHandler = async (data: string, nickname: string) => {
       const file = await resizeFile(
         base64toFile(base64ImgData!, filename, "image/jpeg")
       );
-
       const uploadURL = await getPresignedURL(filename);
+
       try {
-        const response = await axios.put(uploadURL, file, {
+        axios.put(uploadURL, file, {
           headers: {
             "Content-Type": file.type,
           },
         });
-        console.log("성공", response);
         return filename;
       } catch (error) {
         console.log("이미지 업로드 실패", error);

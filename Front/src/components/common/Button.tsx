@@ -10,6 +10,8 @@ interface buttonInterface {
   $paddingX?: number;
   $paddingY?: number;
   $fontFamily?: string;
+  $marginLeft?: number;
+  $background?: string;
 }
 
 export const Button = styled.button<buttonInterface>`
@@ -41,6 +43,9 @@ export const Button = styled.button<buttonInterface>`
     props.$marginTop === 0 || props.$marginTop
       ? `${props.$marginTop}rem`
       : "auto"};
+  margin-left: ${(props) =>
+    props.$marginLeft === undefined ? "auto" : `${props.$marginLeft}rem`};
+  background-color: ${(props) => props.$background || "#FF8331"};
   font-family: ${(props) => props.$fontFamily || "Pretendard-600"};
 
   &:hover {

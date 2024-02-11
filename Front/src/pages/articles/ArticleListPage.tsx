@@ -172,7 +172,6 @@ const PopularArticles: React.FC = ({}) => {
       <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
     );
   }
-  console.log(data);
 
   if (data) {
     content = (

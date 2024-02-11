@@ -100,11 +100,13 @@ const ArticleDetail: React.FC = () => {
           />
           {id === data!.userId && (
             <>
-              <Button background="#ff0000" onClick={handleDelte}>
+              <Button onClick={handleDelte} $background="#ff1111e4">
                 삭제하기
               </Button>
 
-              <Button onClick={handleModificaion}>수정하기</Button>
+              <Button onClick={handleModificaion} $marginLeft={0.2}>
+                수정하기
+              </Button>
             </>
           )}
         </>
