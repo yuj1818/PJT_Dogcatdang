@@ -1,7 +1,7 @@
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { retryFn } from "../../util/tanstackQuery";
 import { ArticleListInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle } from "../../util/articleAPI";
+import { requestArticle, requestPopular } from "../../util/articleAPI";
 import ArticleList from "../../components/articles/ArticleList";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
@@ -29,11 +29,11 @@ const MainPage: React.FC = () => {
     Error,
     ArticleListInterface[]
   >({
-    queryKey: ["articleList"],
+    queryKey: ["articleList", "popular"],
     queryFn: async ({
       signal,
     }: QueryFunctionContext): Promise<ArticleListInterface[]> => {
-      const result = await requestArticle({ signal });
+      const result = await requestPopular({ signal });
       return result as ArticleListInterface[];
     },
     staleTime: 5 * 1000,
@@ -49,13 +49,20 @@ const MainPage: React.FC = () => {
         </NavLink>
       </Title>
       <Title>
-        함께해서 행복해요 - 근황 게시글
+        함께해서 행복해요 - 인기 근황 게시글
         <NavLink to="/articles/1">
           <MoreButton>더 보러 가기</MoreButton>
         </NavLink>
       </Title>
 
-      {data && <ArticleList data={data} itemsPerPage={4} currentPage={1} />}
+      {data && (
+        <ArticleList
+          data={data}
+          itemsPerPage={4}
+          currentPage={1}
+          itemsPerLine={4}
+        />
+      )}
       <Title>가족이 되어 주세요</Title>
     </Container>
   );
