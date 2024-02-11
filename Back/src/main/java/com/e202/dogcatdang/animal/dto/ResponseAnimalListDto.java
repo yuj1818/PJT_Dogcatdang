@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 public class ResponseAnimalListDto {
 
 	private Long animalId;
-	private AnimalType animalType;
+	private String animalType;
 	private String breed;
 	private int age;
-	private Gender gender;
+	private String gender;
 	private Boolean isNeuter;
 	private Animal.State state;
 	private LocalDate rescueDate;
