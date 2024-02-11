@@ -8,6 +8,7 @@ import { useEffect, useState, Fragment } from "react";
 import { Title } from '../../components/common/Title';
 import { getReservationDates, getReservations } from '../../util/VisitAPI';
 import ScheduleCard from '../../components/visits/ScheduleCard';
+import { isOrg as org } from '../users/SignInPage';
 
 const Schedule = styled.div`
   width: 50%;
@@ -109,10 +110,14 @@ export interface reservationData {
   reservationTime: string;
   shelterName: string;
   state: string | null;
+  name: string;
+  phone: string;
+  visitor: number;
+  code: string;
 }
 
 function VisitManagementPage() {
-  // const isOrg = org();
+  const isOrg = org();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [reservations, setReservations] = useState<reservationData[]>([]);
   const [reservationDates, setReservatoinDates] = useState<string[]>([]);
@@ -122,7 +127,7 @@ function VisitManagementPage() {
   };
 
   const getReservationData = async() => {
-    const response = await getReservations(moment(selectedDate).format("YYYY-MM-DD"));
+    const response = await getReservations(moment(selectedDate).format("YYYY-MM-DD"), isOrg);
     setReservations(response);
   };
 

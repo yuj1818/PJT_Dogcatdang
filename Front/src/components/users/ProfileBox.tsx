@@ -86,8 +86,8 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                     <>
                       <StyledButton>입양 절차 설정</StyledButton>
                       <StyledButton>방송 일정 관리</StyledButton>
-                      <StyledButton>방문 신청 관리</StyledButton>
-                      <StyledButton>방문 예약 관리</StyledButton>
+                      <StyledButton onClick={() => navigate('/visit/list')}>방문 신청 관리</StyledButton>
+                      <StyledButton onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</StyledButton>
                     </>
                     :
                     <>
