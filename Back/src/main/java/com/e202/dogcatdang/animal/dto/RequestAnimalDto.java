@@ -23,14 +23,14 @@ import lombok.ToString;
 @ToString
 public class RequestAnimalDto {
 
-	private AnimalType animalType;
+	private String animalType;
 	private String breed;
 	private Integer age;
 	private Integer weight;
 	private LocalDate rescueDate;
 	private String rescueLocation;
 	private Boolean isNeuter;
-	private Gender gender;
+	private String gender;
 	private String feature;
 	private Animal.State state;
 	private String imgUrl;
@@ -45,10 +45,10 @@ public class RequestAnimalDto {
 
 	// 입력한 animalType에 맞는 breed인지 확인하는 기능
 	public boolean isValid() {
-		if (animalType == AnimalType.강아지) {
+		if (animalType.equals("강아지")) {
 			return Arrays.stream(DogBreed.values())
 				.anyMatch(b -> b.name().equals(breed));
-		} else if (animalType == AnimalType.고양이) {
+		} else if (animalType.equals("고양이")) {
 			return Arrays.stream(CatBreed.values())
 				.anyMatch(b -> b.name().equals(breed));
 		} else {

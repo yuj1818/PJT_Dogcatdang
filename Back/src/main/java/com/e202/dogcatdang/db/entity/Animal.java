@@ -37,14 +37,13 @@ public class Animal {
 	@Column(name = "animal_id")
 	private Long animalId;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "animal_type", nullable = false)
-	private AnimalType animalType;
+	private String animalType;
 
-	@Column(name = "breed", length = 200, nullable = false)
+	@Column(name = "breed", length = 200)
 	private String breed;
 
-	@Column(name = "age", nullable = false)
+	@Column(name = "age")
 	private Integer age;
 
 	@Column(name = "weight")
@@ -60,11 +59,11 @@ public class Animal {
 	@Column(name = "is_neuter" , nullable = true, columnDefinition = "TINYINT(1)")
 	private Boolean isNeuter;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", nullable = false)
-	private Gender gender;
 
-	@Column(name = "feature")
+	@Column(name = "gender", nullable = false)
+	private String gender;
+
+	@Column(name = "feature",columnDefinition = "text")
 	private String feature;
 
 	@Enumerated(EnumType.STRING)
@@ -103,8 +102,8 @@ public class Animal {
 	// Builder 클래스 추가
 	// DTO -> Entity 만드는데 사용
 	@Builder
-	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
+	public Animal(Long animalId, String animalType, String breed, Integer age, Integer weight,
+		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, String gender, String feature,
 		State state, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
@@ -124,8 +123,8 @@ public class Animal {
 
 	// 엔티티 정보 수정(갱신)
 	// null이 아닌 값만 수정한다
-	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
+	public void update(String animalType, String breed, Integer age, Integer weight,
+		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, String gender, String feature,
 		State state, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;
