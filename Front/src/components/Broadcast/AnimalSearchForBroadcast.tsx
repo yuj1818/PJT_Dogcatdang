@@ -7,7 +7,7 @@ import { CallAnimal, callAnimal } from "../../util/broadcastAPI";
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../util/uitl";
 import { retryFn } from "../../util/tanstackQuery";
-import { LoadingOrError } from "../../pages/articles/LoadingOrError";
+import { LoadingOrError } from "../common/LoadingOrError";
 
 interface CardInterface {
   selected: boolean;

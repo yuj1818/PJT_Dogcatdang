@@ -7,7 +7,7 @@ import {
 
 import { requestArticle } from "../../util/articleAPI";
 import { ArticleDetailInterface } from "../../components/articles/ArticleInterface";
-import { LoadingOrError } from "./LoadingOrError";
+import { LoadingOrError } from "../../components/common/LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Button";

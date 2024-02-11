@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { FormContainer, Input } from "../../common/Design";
 import { Button } from "../../common/Button";
 import { useMutation } from "@tanstack/react-query";
@@ -12,7 +12,12 @@ interface Props {
   onDelete?: () => void;
 }
 
-const CommentForm = ({ boardId, edit, commentId, onDelete }: Props) => {
+const CommentForm: React.FC<Props> = ({
+  boardId,
+  edit,
+  commentId,
+  onDelete,
+}) => {
   const [comment, setComment] = useState("");
 
   const { mutate, isPending } = useMutation({
