@@ -130,9 +130,9 @@ function SignInPage() {
             </div>
           </SignInForm>
           <div className="flex gap-2">
-            <a href="http://localhost:8084/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
+            <a href="http://localhost:8443/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
 
-            <a href="http://localhost:8084/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
+            <a href="http://localhost:8443/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
             
           </div>
         </div>

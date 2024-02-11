@@ -80,6 +80,7 @@ public class UserController {
 
     @PostMapping("/join") //회원가입
     public ResponseEntity<String> joinUser(@RequestBody JoinDTO joinDTO) {
+        System.out.println("회원가입 완료");
         joinService.joinUser(joinDTO);
         return ResponseEntity.ok("User joined successfully");
     }
