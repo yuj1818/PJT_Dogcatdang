@@ -149,7 +149,7 @@ const ArticleListPage: React.FC = () => {
 
 export default ArticleListPage;
 
-const PopularArticles: React.FC = ({}) => {
+export const PopularArticles: React.FC = ({}) => {
   const { data, isLoading, isError, error } = useQuery<
     ArticleListInterface[],
     Error,

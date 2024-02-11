@@ -1,12 +1,9 @@
-import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
-import { retryFn } from "../../util/tanstackQuery";
-import { ArticleListInterface } from "../../components/articles/ArticleInterface";
-import { requestArticle, requestPopular } from "../../util/articleAPI";
-import ArticleList from "../../components/articles/ArticleList";
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
+
 import { NavLink } from "react-router-dom";
 import { Button } from "../../components/common/Button";
+import { PopularArticles } from "../articles/ArticleListPage";
 
 const Container = styled.div`
   display: flex;
@@ -24,22 +21,6 @@ const Title = tw.h2`
   text-3xl font-bold mb-4 border-b-2 border-amber-300 pb-2
 `;
 const MainPage: React.FC = () => {
-  const { data } = useQuery<
-    ArticleListInterface[],
-    Error,
-    ArticleListInterface[]
-  >({
-    queryKey: ["articleList", "popular"],
-    queryFn: async ({
-      signal,
-    }: QueryFunctionContext): Promise<ArticleListInterface[]> => {
-      const result = await requestPopular({ signal });
-      return result as ArticleListInterface[];
-    },
-    staleTime: 5 * 1000,
-    retry: retryFn,
-    retryDelay: 100,
-  });
   return (
     <Container>
       <Title>
@@ -54,15 +35,7 @@ const MainPage: React.FC = () => {
           <MoreButton>더 보러 가기</MoreButton>
         </NavLink>
       </Title>
-
-      {data && (
-        <ArticleList
-          data={data}
-          itemsPerPage={4}
-          currentPage={1}
-          itemsPerLine={4}
-        />
-      )}
+      <PopularArticles />
       <Title>
         가족이 되어 주세요
         <NavLink to="/save-animals">
