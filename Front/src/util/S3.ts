@@ -135,3 +135,37 @@ export const imageHandler = async (data: string, nickname: string) => {
 
   return [tempDivAsString, thumnailImgURL] as string[];
 };
+
+interface RequestS3 {
+  name: string;
+  file: File;
+}
+
+export const requestS3 = async ({ name, file }: RequestS3) => {
+  const fileName = getFileName(name);
+  const [uploadURLResult, resizedFileResult] = await Promise.allSettled([
+    getPresignedURL(fileName),
+    resizeFile(file),
+  ]);
+
+  if (
+    uploadURLResult.status === "fulfilled" &&
+    resizedFileResult.status === "fulfilled"
+  ) {
+    const uploadURL = uploadURLResult.value;
+    const resizedFile = resizedFileResult.value;
+
+    axios.put(uploadURL, resizedFile, {
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+    return `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`;
+  } else {
+    console.error(
+      "One or both promises failed:",
+      uploadURLResult,
+      resizedFileResult
+    );
+  }
+};
