@@ -20,6 +20,7 @@ interface LostAnimalDetail {
   userNickname: string;
   lostAnimalId: number;
   userId: number;
+  imgUrl: string;
 }
 
 function LostAnimalDetailPage() {
@@ -73,7 +74,7 @@ function LostAnimalDetailPage() {
         <div className="flex" style={{ padding: "1rem" }}>
           <Leftside>
             <img
-              src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
+              src={lostanimalDetail?.imgUrl}
               alt="강아지"
               style={{
                 width: "350px",

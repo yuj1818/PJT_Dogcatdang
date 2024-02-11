@@ -66,7 +66,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [shelterName, setShelterName] = useState("");
   const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
   // const [currentPage, setCurrentPage] = useState(1);
-  const genderInput = ["전체", "남", "여"];
+  const genderInput = ["전체", "암컷", "수컷"];
   // console.log(filteredAnimalData)
 
   const transformedDogInput = dogInput.map((dog) => ({

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 
 export interface LostAnimal {
   lostAnimalId: number;
@@ -45,14 +44,14 @@ function LostAnimalCard(props: LostAnimalCardProps) {
     <Card>
       <div onClick={gotoDetailPage}>
         <img
-          src="src/assets/Dandie.jpg"
-          alt="rkdkdwl"
+          src={props.animals.imgUrl}
+          alt="animals"
           style={{
             border: "1px solid #ccc",
             display: "block",
             margin: "0 auto",
-            maxWidth: "90%",
-            maxHeight: "70%",
+            maxWidth: "150px",
+            maxHeight: "100px",
           }}
         ></img>
         <strong>{props.animals.name}</strong>

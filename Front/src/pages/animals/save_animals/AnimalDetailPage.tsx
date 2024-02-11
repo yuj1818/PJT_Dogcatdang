@@ -17,6 +17,7 @@ interface AnimalDetail {
   weight: string;
   userNickname: string;
   userId: number;
+  imgUrl: string;
 }
 
 function AnimalDetailPage() {
@@ -72,7 +73,7 @@ function AnimalDetailPage() {
         <div className="flex" style={{ padding: "1rem" }}>
           <Leftside>
             <img
-              src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
+              src={animalDetail?.imgUrl}
               alt="강아지"
               style={{
                 width: "350px",
