@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
+import com.e202.dogcatdang.board.dto.ResponseBoardBestDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseDto;
@@ -28,5 +29,5 @@ public interface BoardService {
 
 	List<ResponseBoardSummaryDto> searchBoards(Long loginUserId, RequestBoardSearchDto searchDto);
 
-	List<ResponseBoardSummaryDto> getBestBoards(Long loginUserId);
+	List<ResponseBoardBestDto> getBestBoards();
 }
