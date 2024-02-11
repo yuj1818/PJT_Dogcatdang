@@ -3,8 +3,6 @@ package com.e202.dogcatdang.animal.dto;
 import java.time.LocalDate;
 
 import com.e202.dogcatdang.db.entity.Animal;
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

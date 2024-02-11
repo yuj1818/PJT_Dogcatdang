@@ -3,7 +3,6 @@ package com.e202.dogcatdang.reservation.dto;
 import java.time.LocalDateTime;
 
 import com.e202.dogcatdang.db.entity.Reservation;
-import com.e202.dogcatdang.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

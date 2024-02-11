@@ -2,10 +2,6 @@ package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
 
-
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,9 +27,8 @@ public class LostAnimal {
 	@Column(name = "lost_animal_id")
 	private Long lostAnimalId;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "animal_type", nullable = false)
-	private AnimalType animalType;
+	private String  animalType;
 
 	@Column(name = "name")
 	private String name;
@@ -53,11 +48,8 @@ public class LostAnimal {
 	@Column(name = "lost_location", length = 200, nullable = false)
 	private String lostLocation;
 
-
-	@Enumerated(EnumType.STRING)
 	@Column(name = "gender", nullable = false)
-	private Gender gender;
-
+	private String gender;
 
 	@Column(name = "feature")
 	private String feature;
@@ -79,8 +71,8 @@ public class LostAnimal {
 		this.lostLocation = lostLocation;
 	}
 
-	public void update(AnimalType animalType, String name, String breed, Integer age, Integer weight,
-		LocalDate lostDate, String lostLocation, Gender gender, String feature, State state,
+	public void update(String animalType, String name, String breed, Integer age, Integer weight,
+		LocalDate lostDate, String lostLocation, String gender, String feature, State state,
 		String imgUrl) {
 		if (animalType != null) {
 			this.animalType = animalType;
@@ -138,8 +130,8 @@ public class LostAnimal {
 	// Builder 클래스 추가
 	// DTO -> Entity 만드는데 사용
 	@Builder
-	public LostAnimal(Long lostAnimalId, String name, AnimalType animalType, String breed, Integer age, Integer weight,
-		LocalDate lostDate, String lostLocation, Gender gender, String feature,
+	public LostAnimal(Long lostAnimalId, String name, String animalType, String breed, Integer age, Integer weight,
+		LocalDate lostDate, String lostLocation, String gender, String feature,
 		LostAnimal.State state, String imgUrl, User user) {
 		this.lostAnimalId = lostAnimalId;
 		this.name = name;
