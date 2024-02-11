@@ -9,7 +9,6 @@ import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Cookies } from "react-cookie";
-import {AnimalType} from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
 
 interface StyledButtonProps {
   $isOrg: boolean;

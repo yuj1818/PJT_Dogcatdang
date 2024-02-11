@@ -12,7 +12,6 @@ import {
 import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 import { Cookies } from "react-cookie";
 import { search } from "../../../util/SaveAPI";
-import SaveAnimalCard from "./SaveAnimalCard";
 
 export interface AnimalType {
   animalId: number;
@@ -64,7 +63,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
   // const [currentPage, setCurrentPage] = useState(1);
   const genderInput = ["전체", "암컷", "수컷"];
   // console.log(filteredAnimalData)
@@ -101,17 +100,17 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   };
   const cookie = new Cookies();
 
-  const filterData = (data: any) => {
-    console.log(data);
-    const filteredData = data.filter((item: any) => {
-      return (
-        (animalType === "" || item.animalType === animalType) &&
-        (breed === "" || item.breed === breed) &&
-        (gender === "" || item.gender === gender));
-    });
+  // const filterData = (data: any) => {
+  //   console.log(data);
+  //   const filteredData = data.filter((item: any) => {
+  //     return (
+  //       (animalType === "" || item.animalType === animalType) &&
+  //       (breed === "" || item.breed === breed) &&
+  //       (gender === "" || item.gender === gender));
+  //   });
 
-    return filteredData;
-  };
+  //   return filteredData;
+  // };
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -139,6 +138,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   }
 
 
+  console.log(animals)
   return (
     <div className="container">
       <img
@@ -275,9 +275,9 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
           </button>
         </div>
       </form>
-      {filteredAnimalData.map((animal, index) => (
+      {/* {filteredAnimalData.map((animal, index) => (
           <SaveAnimalCard key={index} animals={animal} />
-        ))}
+        ))} */}
 
     </div>
 
