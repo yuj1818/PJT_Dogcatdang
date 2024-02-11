@@ -17,20 +17,13 @@ export interface RegistrationData {
   imgUrl: string;
 }
 
-export const search = (data: RegistrationData) => {
-  console.log(data);
-  return API.get("/api/animals", {
-    method: "GET",
-  })
-    .then((res) => {
-      // console.log("Response:", res);
-      return res;
-    })
-    .catch((err) => {
-      console.error("Error:", err);
-      return err.response;
-    });
-};
+export interface FilterData {
+  animalType: string;
+  breed: string;
+  rescueLocation: string;
+  gender: string;
+  userNickname: string;
+}
 
 export const regist = (data: RegistrationData, token: string) => {
   console.log(token);
@@ -70,4 +63,28 @@ export const saveUpdate = (
       console.error("Error:", err);
       return err.response;
     });
+};
+
+
+
+export const search = (data: FilterData, token: string) => {
+  console.log(data);
+  return API.post("/api/animals/filter", data, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+  .then((res) => {
+    console.log("Response:", res);
+    return res.data;
+  })
+  .catch((err) => {
+    if (err.response && err.response.status === 204) {
+      return 
+    } else {
+      console.error("Error filtered data:", err);
+      throw err;
+    }
+  });
 };
