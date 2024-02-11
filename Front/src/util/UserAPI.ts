@@ -64,7 +64,8 @@ export interface editedInfoDataWithPassword extends editedInfoData {
 
 export const signIn = (data: signInData) => {
 
-  return API.post(URL + "/login", data)
+
+  return API.post(URL+ "/login", data)
 
     .then((res) => {
       const token = res.headers["authorization"];

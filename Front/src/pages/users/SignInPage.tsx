@@ -136,14 +136,14 @@ function SignInPage() {
             
           </div>
         </div>
-      </FormBox>
+      </FormBox>  
     </div>
   );
 }
 
 export default SignInPage;
 
-export const isOrg = () =>
+export const isOrg = () =>  
   JSON.parse(localStorage.getItem("userInfo") || "{}").role === "ROLE_SHELTER";
 export const isUser = () =>
   JSON.parse(localStorage.getItem("userInfo") || "{}")?.id ? true : false;
