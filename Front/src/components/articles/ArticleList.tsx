@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import ArticleCard from "./ArticleCard";
-import { ArticleInterface } from "./ArticleInterface";
+import { ArticleListInterface } from "./ArticleInterface";
 
 const ArticleListStyle = styled.div`
   display: flex;
@@ -19,11 +19,14 @@ const ArticleListStyle = styled.div`
   }
 `;
 
-const ArticleList: React.FC<{
-  data: ArticleInterface[];
+interface Props {
+  data: ArticleListInterface[];
   itemsPerPage: number;
   currentPage: number;
-}> = ({ data, itemsPerPage, currentPage }) => {
+}
+
+const ArticleList: React.FC<Props> = ({ data, itemsPerPage, currentPage }) => {
+  console.log(data);
   return (
     <>
       <ArticleListStyle>

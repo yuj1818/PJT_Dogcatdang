@@ -7,7 +7,7 @@ import DOMPurify from "dompurify";
 
 import { queryClient } from "../../util/tanstackQuery";
 import { requestArticle } from "../../util/articleAPI";
-import { LoadingOrError } from "../../pages/articles/LoadingOrError";
+import { LoadingOrError } from "../common/LoadingOrError";
 import PreviewModal from "./PreviewModal";
 import AlertModal from "../common/AlertModal";
 import tw from "tailwind-styled-components";

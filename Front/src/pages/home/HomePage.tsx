@@ -1,6 +1,6 @@
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { retryFn } from "../../util/tanstackQuery";
-import { ArticleInterface } from "../../components/articles/ArticleInterface";
+import { ArticleListInterface } from "../../components/articles/ArticleInterface";
 import { requestArticle } from "../../util/articleAPI";
 import ArticleList from "../../components/articles/ArticleList";
 import styled from "styled-components";
@@ -24,13 +24,17 @@ const Title = tw.h2`
   text-3xl font-bold mb-4 border-b-2 border-amber-300 pb-2
 `;
 const MainPage: React.FC = () => {
-  const { data } = useQuery<ArticleInterface[], Error, ArticleInterface[]>({
+  const { data } = useQuery<
+    ArticleListInterface[],
+    Error,
+    ArticleListInterface[]
+  >({
     queryKey: ["articleList"],
     queryFn: async ({
       signal,
-    }: QueryFunctionContext): Promise<ArticleInterface[]> => {
+    }: QueryFunctionContext): Promise<ArticleListInterface[]> => {
       const result = await requestArticle({ signal });
-      return result as ArticleInterface[];
+      return result as ArticleListInterface[];
     },
     staleTime: 5 * 1000,
     retry: retryFn,

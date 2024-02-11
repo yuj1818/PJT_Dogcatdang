@@ -37,6 +37,7 @@ import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
 import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
+import { articleLoader } from "./pages/articles/articleLoader.ts";
 
 const router = createBrowserRouter([
   // {
@@ -133,13 +134,7 @@ const router = createBrowserRouter([
       },
       {
         path: "articles/",
-        loader: ({ request }) => {
-          const url = request.url.split("/");
-          if (url.length === 4 || url[4] === "") {
-            return redirect("/articles/1");
-          }
-          return null;
-        },
+        loader: articleLoader,
         element: <Outlet />,
         children: [
           {

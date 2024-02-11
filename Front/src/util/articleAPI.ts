@@ -2,10 +2,7 @@ import { Cookies } from "react-cookie";
 import { AxiosError } from "axios";
 import API from "./axios";
 
-import {
-  ArticleInterface,
-  CommentInterface,
-} from "../components/articles/ArticleInterface";
+import { CommentInterface } from "../components/articles/ArticleInterface";
 import { imageHandler } from "./S3";
 
 export const handleAxiosError = (error: AxiosError) => {
@@ -280,7 +277,7 @@ export const requestSearchArticle = async ({
         },
       }
     );
-    return respone.data as ArticleInterface[];
+    return respone.data;
   } catch (error) {
     throw error;
   }
