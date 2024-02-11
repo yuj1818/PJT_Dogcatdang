@@ -110,7 +110,7 @@ export const imageHandler = async (data: string, nickname: string) => {
               "Content-Type": file.value.type,
             },
           });
-          return filename;
+          return `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${filename}`;
         } catch (error) {
           console.log("이미지 업로드 실패", error);
           const err = new Error();
@@ -131,10 +131,7 @@ export const imageHandler = async (data: string, nickname: string) => {
   );
 
   for (let i = 0; i < imageURLs.length; i++) {
-    imageTags[i].setAttribute(
-      "src",
-      `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
-    );
+    imageTags[i].setAttribute("src", `${imageURLs[i]}`);
     imageTags[i].setAttribute("loading", "lazy");
   }
 
