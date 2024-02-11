@@ -84,7 +84,7 @@ const NavTitle = styled.ul`
 `;
 
 // -----------NavBar-----------------------------------------------
-const NavBar = () => {
+const NavBar: React.FC = () => {
   // const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
   const [nickname, setNickname] = useState("");

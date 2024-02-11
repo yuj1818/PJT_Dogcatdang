@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
+import com.e202.dogcatdang.board.dto.ResponseBoardBestDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseDto;
@@ -133,10 +134,9 @@ public class BoardController {
 
 	// 인기 게시글 - 좋아요가 많은 5개의 게시글 반환
 	@GetMapping("/best")
-	public ResponseEntity<List<ResponseBoardSummaryDto>> getBestBoards(@RequestHeader("Authorization") String token) {
+	public ResponseEntity<List<ResponseBoardBestDto>> getBestBoards() {
 
-		Long loginUserId = jwtUtil.getUserId(token.substring(7));
-		List<ResponseBoardSummaryDto> boardSummaryList = boardService.getBestBoards(loginUserId);
+		List<ResponseBoardBestDto> boardSummaryList = boardService.getBestBoards();
 
 		return ResponseEntity.ok(boardSummaryList);
 	}

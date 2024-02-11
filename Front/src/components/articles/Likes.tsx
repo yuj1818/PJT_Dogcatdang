@@ -44,7 +44,7 @@ const Likes: React.FC<props> = ({ like, likeCnt }) => {
   const { mutate } = useMutation({
     mutationFn: requestLike,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articleList", boardId] });
+      queryClient.invalidateQueries({ queryKey: ["articleList"] });
     },
   });
 

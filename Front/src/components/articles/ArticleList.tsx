@@ -1,15 +1,19 @@
 import styled from "styled-components";
 
 import ArticleCard from "./ArticleCard";
-import { ArticleInterface } from "./ArticleInterface";
+import { ArticleListInterface } from "./ArticleInterface";
 
-const ArticleListStyle = styled.div`
+interface Style {
+  $perLine: number;
+}
+
+const ArticleListStyle = styled.div<Style>`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 
   & > div {
-    flex: 0 0 calc(25% - 2%);
+    flex: 0 0 calc(100% / ${(props) => props.$perLine} - 2%);
     box-sizing: border-box;
     margin: 1%;
   }
@@ -19,14 +23,22 @@ const ArticleListStyle = styled.div`
   }
 `;
 
-const ArticleList: React.FC<{
-  data: ArticleInterface[];
+interface Props {
+  data: ArticleListInterface[];
   itemsPerPage: number;
   currentPage: number;
-}> = ({ data, itemsPerPage, currentPage }) => {
+  itemsPerLine: number;
+}
+
+const ArticleList: React.FC<Props> = ({
+  data,
+  itemsPerPage,
+  currentPage,
+  itemsPerLine,
+}) => {
   return (
     <>
-      <ArticleListStyle>
+      <ArticleListStyle $perLine={itemsPerLine}>
         {data
           .slice(
             (currentPage - 1) * itemsPerPage,

@@ -7,7 +7,7 @@ import {
 
 import { requestArticle } from "../../util/articleAPI";
 import { ArticleDetailInterface } from "../../components/articles/ArticleInterface";
-import { LoadingOrError } from "./LoadingOrError";
+import { LoadingOrError } from "../../components/common/LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Button";
@@ -100,11 +100,13 @@ const ArticleDetail: React.FC = () => {
           />
           {id === data!.userId && (
             <>
-              <Button background="#ff0000" onClick={handleDelte}>
+              <Button onClick={handleDelte} $background="#ff1111e4">
                 삭제하기
               </Button>
 
-              <Button onClick={handleModificaion}>수정하기</Button>
+              <Button onClick={handleModificaion} $marginLeft={0.2}>
+                수정하기
+              </Button>
             </>
           )}
         </>

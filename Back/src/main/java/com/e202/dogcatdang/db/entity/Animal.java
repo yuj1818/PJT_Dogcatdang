@@ -1,12 +1,8 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
-
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 // import jakarta.validation.constraints.NotNull;
 // 	ㄴ build.gradle에 의존성 추가 필요: implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -56,8 +51,8 @@ public class Animal {
 	private String rescueLocation;
 
 	@ColumnDefault("NULL")
-	@Column(name = "is_neuter" , nullable = true, columnDefinition = "TINYINT(1)")
-	private Boolean isNeuter;
+	@Column(name = "is_neuter" )
+	private String isNeuter;
 
 
 	@Column(name = "gender", nullable = false)
@@ -103,7 +98,7 @@ public class Animal {
 	// DTO -> Entity 만드는데 사용
 	@Builder
 	public Animal(Long animalId, String animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, String gender, String feature,
+		LocalDate rescueDate, String rescueLocation, String isNeuter, String gender, String feature,
 		State state, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
@@ -124,7 +119,7 @@ public class Animal {
 	// 엔티티 정보 수정(갱신)
 	// null이 아닌 값만 수정한다
 	public void update(String animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, String gender, String feature,
+		LocalDate rescueDate, String rescueLocation, String isNeuter, String gender, String feature,
 		State state, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;

@@ -2,8 +2,12 @@ package com.e202.dogcatdang.board.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.board.dto.RequestBoardDto;
 import com.e202.dogcatdang.board.dto.RequestBoardSearchDto;
+import com.e202.dogcatdang.board.dto.ResponseBoardBestDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardDto;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.dto.ResponseDto;
@@ -222,22 +227,16 @@ public class BoardServiceImpl implements BoardService {
 	// 인기글 가져오기
 	@Override
 	@Transactional
-	public List<ResponseBoardSummaryDto> getBestBoards(Long loginUserId) {
-		User loginUser = userRepository.findById(loginUserId).get();
+	public List<ResponseBoardBestDto> getBestBoards() {
 		// 인기순으로 내림차순 정렬 후 top 5 조회
-		List<Board> boardList= boardRepository.findTop5ByOrderByBoardLikeListDesc();
-		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
+		Pageable pageable = PageRequest.of(0, 5); // 상위 5개의 페이지 요청
+		List<ResponseBoardBestDto> boardList= boardRepository.findTop5ByOrderByLikeCntDesc(pageable);
+		System.out.println("boardList = " + boardList);
 
-		for (Board board : boardList) {
-			boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
-			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
-				.board(board)
-				.isLike(isLike)
-				.build();
 
-			boardDtoList.add(boardSummary);
-		}
+		// boardList를 좋아요 개수가 많은 순으로 내림차순으로 정렬
+		boardList.sort(Comparator.comparing(ResponseBoardBestDto::getLikeCnt).reversed());
 
-		return boardDtoList;
+		return boardList;
 	}
 }

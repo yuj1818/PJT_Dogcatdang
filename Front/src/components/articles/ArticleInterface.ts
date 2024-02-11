@@ -21,8 +21,9 @@ export interface ArticleDetailInterface {
 export interface ArticleListInterface {
   boardId: number;
   title: string;
-  userName: string;
+  nickname: string;
   thumbnailImgUrl: string;
+  likeCnt: number;
 }
 
 export interface CommentInterface {
