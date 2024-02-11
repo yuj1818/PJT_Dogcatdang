@@ -1,12 +1,8 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
-
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 // import jakarta.validation.constraints.NotNull;
 // 	ㄴ build.gradle에 의존성 추가 필요: implementation 'org.springframework.boot:spring-boot-starter-validation'

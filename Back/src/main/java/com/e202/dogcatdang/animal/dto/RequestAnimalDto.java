@@ -5,10 +5,8 @@ import java.util.Arrays;
 
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.User;
-import com.e202.dogcatdang.enums.AnimalType;
 import com.e202.dogcatdang.enums.CatBreed;
 import com.e202.dogcatdang.enums.DogBreed;
-import com.e202.dogcatdang.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

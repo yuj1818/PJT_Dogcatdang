@@ -3,8 +3,6 @@ package com.e202.dogcatdang.lostanimal.dto;
 import java.time.LocalDate;
 
 import com.e202.dogcatdang.db.entity.LostAnimal;
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +17,12 @@ import lombok.ToString;
 @ToString
 public class ResponseLostAnimalDto {
 
-	private AnimalType animalType;
+	private String animalType;
 	private String breed;
 	private String name;
-	private int age;
-	private Gender gender;
-	private int weight;
+	private Integer age;
+	private String gender;
+	private Integer weight;
 	private String lostLocation;
 	private LocalDate lostDate;
 	private String feature;
