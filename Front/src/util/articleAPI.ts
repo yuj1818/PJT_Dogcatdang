@@ -47,7 +47,7 @@ export const requestArticle = async ({
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
   const URL = "api/boards";
-  let thumnailImgURL = "";
+  let thumbnailImgUrl = "";
   let response;
   if (data) {
     if (!data.title.trim()) {
@@ -69,7 +69,7 @@ export const requestArticle = async ({
       nickname!
     );
     data.content = imgTagProcessed;
-    thumnailImgURL = imgURL;
+    thumbnailImgUrl = imgURL;
   }
 
   try {
@@ -87,7 +87,7 @@ export const requestArticle = async ({
         // 등록
         response = await API.post(
           URL,
-          { ...data, thumnailImgURL },
+          { ...data, thumbnailImgUrl },
           {
             signal,
             method: "POST",
@@ -99,7 +99,7 @@ export const requestArticle = async ({
       } else {
         response = await API.post(
           `${URL}/temporary`,
-          { ...data, thumnailImgURL },
+          { ...data, thumbnailImgUrl },
           {
             signal,
             method: "POST",
@@ -113,7 +113,7 @@ export const requestArticle = async ({
       // 수정
       response = await API.put(
         URL + "/" + data!.boardId!,
-        { ...data, thumnailImgURL },
+        { ...data, thumbnailImgUrl },
         {
           signal,
           method: "PUT",

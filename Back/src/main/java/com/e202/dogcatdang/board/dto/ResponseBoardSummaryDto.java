@@ -15,7 +15,7 @@ public class ResponseBoardSummaryDto {
 	private Long boardId;
 	private String title;
 	private String content;
-	private String thumbNailImgUrl;
+	private String thumbnailImgUrl;
 	private String nickname;
 	private boolean isLike;
 	private Integer likeCnt;
@@ -27,7 +27,7 @@ public class ResponseBoardSummaryDto {
 		this.content = board.getContent();
 		this.isLike = isLike;
 		this.likeCnt = board.getBoardLikeList().size();
-
+		this.thumbnailImgUrl = board.getThumbnailImgUrl();
 
 		//실제 유저 연결해야함
 		this.nickname = board.getUser().getNickname();
