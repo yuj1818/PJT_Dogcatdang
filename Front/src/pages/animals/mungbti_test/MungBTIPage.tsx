@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import BTI from "../../../assets/MungBTI.png"
 
 const CenteredImage = styled.img`
   display: block;
@@ -21,7 +22,7 @@ function MungBTIPage() {
   }
   return (
     <CenteredLink href="/test" onClick={gotoMung}>
-      <CenteredImage src="src/assets/MungBTI.png" alt="test" />
+      <CenteredImage src={BTI} alt="test" />
     </CenteredLink>
   )
 }

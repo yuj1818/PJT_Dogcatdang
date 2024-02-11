@@ -60,7 +60,6 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
         {end && <p>방송이 종료되었습니다.</p>}
         <Chat
           // onForeceLeave={handleForcedLeave}
-          subscribers={subscribers}
           session={session}
         />
       </Container>

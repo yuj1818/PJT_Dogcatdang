@@ -34,7 +34,7 @@ const CommentList = ({ boardId }: Props) => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-  console.log(data);
+
   return (
     <Container>
       {(isLoading || isError) && (

@@ -2,7 +2,6 @@ package com.e202.dogcatdang.animal.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
+import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
@@ -113,7 +113,7 @@ public class AnimalController {
 
 	// 동물에 대한 좋아요 취소
 	@DeleteMapping("/{animalId}/likes")
-	public ResponseEntity<String> unlikeAnimal(@PathVariable Long animalId,  @RequestHeader("Authorization") String token) {
+	public ResponseEntity<String> unlikeAnimal(@PathVariable Long animalId, @RequestHeader("Authorization") String token) {
 		// 현재 로그인한 사용자 정보 가져오기
 		Long userId = jwtUtil.getUserId(token.substring(7));
 
@@ -129,7 +129,6 @@ public class AnimalController {
 	public ResponseEntity<Map<String, Boolean>> isAnimalLikedByCurrentUser(
 		@PathVariable Long animalId,
 		@RequestHeader("Authorization") String token) {
-
 
 		// 동물 정보 가져오기
 		Animal animal = animalService.getAnimalById(animalId);
@@ -148,11 +147,21 @@ public class AnimalController {
 		return ResponseEntity.ok(response);
 	}
 
-	// 여러 조건에 맞는 동물 검색
-	// @PostMapping("/filter")
-	// public ResponseEntity<List<ResponseAnimalListDto>> filterAnimals(@RequestBody RequestAnimalSearchDto searchDto) {
-	// 	List<ResponseAnimalListDto> searchResult = animalService.searchAnimals(searchDto);
-	// 	return new ResponseEntity<>(searchResult, HttpStatus.OK);
-	// }
+	// 조건에 맞는 보호 동물 검색
+	@PostMapping("/filter")
+	public ResponseEntity<ResponseAnimalPageDto> filterAnimals(@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "8") int recordSize, @RequestHeader("Authorization") String token, @RequestBody RequestAnimalSearchDto searchDto) {
+
+		// 현재 로그인한 사용자 정보 가져오기
+		Long userId = jwtUtil.getUserId(token.substring(7));
+		User user = userService.findById(userId);
+
+		ResponseAnimalPageDto searchResult = animalService.searchAnimals(page, recordSize, searchDto, user);
+		if (searchResult.getAnimalDtoList().isEmpty()) {
+			return ResponseEntity.noContent().build(); // 검색 결과가 없을 때
+		} else {
+			return ResponseEntity.ok(searchResult); // 검색 결과가 있을 때
+		}
+	}
 
 }

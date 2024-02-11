@@ -44,8 +44,6 @@ const MainPage: React.FC = () => {
           <MoreButton>더 보러 가기</MoreButton>
         </NavLink>
       </Title>
-      <Title>함께 지키는 펫티켓</Title>
-
       <Title>
         함께해서 행복해요 - 근황 게시글
         <NavLink to="/articles/1">

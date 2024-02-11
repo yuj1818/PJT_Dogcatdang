@@ -23,10 +23,6 @@ public class RequestBoardDto {
 	private String title;
 	private String content;
 	private boolean isSaved;
-
-
-	private List<RequestImageDto> imageList = new ArrayList<>();
-
 	@Builder
 	public RequestBoardDto(Board board) {
 		this.boardId = board.getBoardId();

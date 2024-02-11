@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.e202.dogcatdang.db.entity.Board;
-import com.e202.dogcatdang.db.entity.BoardImage;
 import com.e202.dogcatdang.db.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -22,20 +21,18 @@ public class ResponseBoardDto {
 	private Long boardId;
 	private String title;
 	private String content;
-	private List<ResponseImageDto> imageList = new ArrayList<>();
+	private Long userId;
 	private String nickname;
+	private boolean isLike;
+	private Integer likeCnt;
 	@Builder
-	public ResponseBoardDto(Board board) {
+	public ResponseBoardDto(Board board, boolean isLike) {
 		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
-
-		for (BoardImage image : board.getImageList()) {
-			ResponseImageDto responseImageDto = ResponseImageDto.builder()
-				.boardImage(image)
-				.build();
-			imageList.add(responseImageDto);
-		}
+		this.userId = board.getUser().getId();
+		this.likeCnt = board.getBoardLikeList().size();
+		this.isLike = isLike;
 		this.nickname = board.getUser().getNickname();
 	}
 

@@ -10,7 +10,7 @@ const Leftside = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  margin-left: 10%;
+  margin-left: auto 0;
   margin-bottom: 10px;
   margin-top: 5px;
 `;
@@ -21,7 +21,6 @@ const Rightside = styled.div`
   align-items: center;
 
   margin: 0 auto;
-  margin-top: 100px;
 `;
 
 const Outer = styled.div`
@@ -42,10 +41,11 @@ const Page2 = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   font-size: 50px;
   white-space: pre-line;
+
 `;
 const Page3 = styled.div`
   height: 100vh;
@@ -75,8 +75,8 @@ const Button = styled.button`
 const LeftinLeftside = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  height:600px;
+  justify-content: start;
+  height:500px;
 `
 
 function AboutDogCatDang() {
@@ -240,7 +240,7 @@ function AboutDogCatDang() {
             바로가기
           </Button>
           </div>
-          <div style={{textAlign:'center'}}>
+          <div style={{textAlign:'center' , justifyContent: "start"}}>
           <div>멍 BTI</div>
           <div style={{ fontSize: "20px" }}>
             나와 비슷한 동물의 성격을 알아보세요 !

@@ -56,8 +56,6 @@ export const saveUpdate = (
   token: string,
   animalID: string
 ) => {
-  console.log(token);
-  console.log(data);
   return API.put(`/api/animals/${animalID}`, data, {
     method: "PUT",
     headers: {
