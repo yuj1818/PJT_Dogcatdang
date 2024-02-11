@@ -38,4 +38,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, JpaSpecif
 
 	// 현재 로그인한 회원(기관)과 동물 보호 상태로 동물 수 계산
 	Integer countByStateAndUser_Id(Animal.State state, Long shelterId);
+
+	// 현재 로그인한 회원(기관)의 전체 동물 데이터를 페이징해 가져오기
+	Page<Animal> findByUser_Id(Long shelterId, PageRequest pageRequest);
 }

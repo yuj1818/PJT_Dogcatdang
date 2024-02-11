@@ -24,6 +24,8 @@ import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
 import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalCountDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalPageDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.db.entity.User;
@@ -274,6 +276,7 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	// 기관의 보호동물 관리 숫자 가져오기
+	@Transactional
 	@Override
 	public ResponseShelterAnimalCountDto countAnimals(Long shelterId) {
 		// 기관이 등록한 전체 동물 수
@@ -290,6 +293,28 @@ public class AnimalServiceImpl implements AnimalService {
 			.totalAnimals(totalAnimals)
 			.adoptionSchedules(adoptionSchedules)
 			.protectedAnimals(protectedAnimals)
+			.build();
+	}
+
+	// 기관의 보호 동물 전체 목록 조회
+	@Transactional
+	@Override
+	public ResponseShelterAnimalPageDto findShelterAnimal(int page, int recordSize, Long shelterId) {
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		Page<Animal> animalPage = animalRepository.findByUser_Id(shelterId, pageRequest);
+
+		List<ResponseShelterAnimalDto> animalDtoList = animalPage.getContent().stream()
+			.map(ResponseShelterAnimalDto::new)
+			.collect(Collectors.toList());
+
+		return ResponseShelterAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(animalPage.getTotalPages())
+			.currentPage(page)
+			.totalElements(animalPage.getTotalElements())
+			.hasNextPage(animalPage.hasNext())
+			.hasPreviousPage(animalPage.hasPrevious())
 			.build();
 	}
 }
