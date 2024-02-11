@@ -10,6 +10,7 @@ import {
 } from "../../../components/animalinfo/Input";
 import { RegistForm } from "../../../components/animalinfo/style";
 import { Input, Select } from "../../../components/animalinfo/style";
+import { requestS3 } from "../../../util/S3";
 
 function LostAnimalFormPage() {
   const navigate = useNavigate();
@@ -19,7 +20,6 @@ function LostAnimalFormPage() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [detailInfo, setDetailInfo] = useState("");
   const [state, setState] = useState("");
-  const [imgName, setImgName] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
@@ -49,7 +49,6 @@ function LostAnimalFormPage() {
       gender: gender,
       feature: feature,
       state: state,
-      imgName: imgName,
       imgUrl: imgUrl,
     };
 
@@ -79,17 +78,29 @@ function LostAnimalFormPage() {
 
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
     if (file) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
         setSelectedImage((reader.result as string) || null);
       };
-
       reader.readAsDataURL(file);
+      try {
+        const uploadedImageUrl = await requestS3({
+          name: file.name.replace(/\.[^/.]+$/, ''), 
+          file: file,
+        })
+        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        console.log("URL:", uploadedImageUrl);
+        if (uploadedImageUrl) {
+          setImgUrl(uploadedImageUrl);
+        } else {
+          console.error("Error: Uploaded image URL is undefined");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 
@@ -105,7 +116,6 @@ function LostAnimalFormPage() {
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
-                // marginBottom:'20px'
               }}
             >
               <div>
@@ -191,26 +201,6 @@ function LostAnimalFormPage() {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-              </div>
-              <div>
-                <label>
-                  이미지이름 :
-                  <input
-                    type="text"
-                    value={imgName}
-                    onChange={(e) => setImgName(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  이미지URL :
-                  <input
-                    type="text"
-                    value={imgUrl}
-                    onChange={(e) => setImgUrl(e.target.value)}
-                  />
-                </label>
               </div>
 
               <div className="flex flex-col gap-1">

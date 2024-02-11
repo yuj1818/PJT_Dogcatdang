@@ -14,7 +14,7 @@ import { getUserInfo } from "../../util/uitl";
 const OPENVIDU_SERVER_URL = "http://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const BroadCastPage = () => {
+const BroadCastPage: React.FC = () => {
   const [session, setSession] = useState<OVSession | undefined>(undefined);
   const [sessionId, setSessionId] = useState("");
   const [subscriber, setSubscriber] = useState<Subscriber | undefined>(
@@ -26,9 +26,9 @@ const BroadCastPage = () => {
   const leaveSession = useCallback(() => {
     if (session) {
       session.signal({
-        data: "닉네임님이 퇴장하였습니다.",
+        data: `${getUserInfo().nickname}님이 퇴장하였습니다.`,
         to: [],
-        type: "signal:my-chat",
+        type: "signal:enter",
       });
 
       session.disconnect();
@@ -58,10 +58,9 @@ const BroadCastPage = () => {
 
   const getToken = useCallback(async (): Promise<string> => {
     const createToken = async (sessionIds: string): Promise<string> => {
-      const data = JSON.stringify({});
       const response = await axios.post(
         `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
-        data,
+        "{}",
         {
           headers: {
             Authorization: `Basic ${btoa(
@@ -126,7 +125,6 @@ const BroadCastPage = () => {
     session.on("streamCreated", (event) => {
       const newSubscriber = session.subscribe(event.stream, undefined);
       setSubscriber(newSubscriber);
-      console.log(newSubscriber);
     });
 
     const isOrg = org();
@@ -156,7 +154,7 @@ const BroadCastPage = () => {
           session.signal({
             data: `${username}님이 입장하였습니다.`,
             to: [],
-            type: "signal:chat",
+            type: "signal:enter",
           });
         });
       });

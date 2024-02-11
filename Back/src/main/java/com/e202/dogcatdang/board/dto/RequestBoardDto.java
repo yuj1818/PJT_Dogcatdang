@@ -1,10 +1,5 @@
 package com.e202.dogcatdang.board.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.e202.dogcatdang.db.entity.Board;
 import com.e202.dogcatdang.db.entity.User;
 
@@ -23,16 +18,14 @@ public class RequestBoardDto {
 	private String title;
 	private String content;
 	private boolean isSaved;
-
-
-	private List<RequestImageDto> imageList = new ArrayList<>();
-
+	private String thumbnailImgUrl;
 	@Builder
 	public RequestBoardDto(Board board) {
 		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
 		this.isSaved = board.isSaved();
+		this.thumbnailImgUrl = board.getThumbnailImgUrl();
 	}
 
 	public Board toEntity(User user) {
@@ -42,6 +35,7 @@ public class RequestBoardDto {
 			.title(title)
 			.content(content)
 			.isSaved(isSaved)
+			.thumbnailImgUrl(thumbnailImgUrl)
 			.build();
 	}
 }

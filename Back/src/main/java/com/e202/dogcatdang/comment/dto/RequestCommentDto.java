@@ -3,7 +3,6 @@ package com.e202.dogcatdang.comment.dto;
 import java.time.LocalDateTime;
 
 import com.e202.dogcatdang.db.entity.Board;
-import com.e202.dogcatdang.db.entity.BoardImage;
 import com.e202.dogcatdang.db.entity.Comment;
 import com.e202.dogcatdang.db.entity.User;
 

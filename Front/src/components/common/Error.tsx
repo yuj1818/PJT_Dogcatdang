@@ -1,8 +1,11 @@
 import styled from "styled-components";
 
 import logo from "../../assets/main-logo-big.png";
+import { ReactNode } from "react";
+import { Button } from "./Button";
+import { NavLink } from "react-router-dom";
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -48,15 +51,13 @@ const CenteredImage = styled.img`
   z-index: 9000;
 `;
 
-export default function ErrorBlock({
-  title,
-  message,
-}: {
+const ErrorBlock: React.FC<{
   title?: string;
   message?: string;
-}) {
+  children?: ReactNode;
+}> = ({ title, message, children }) => {
   return (
-    <Wrapper>
+    <Container>
       <CenteredImage src={logo} alt="" />
       <ErrorBlockStyle>
         <ErrorBlockIcon>!</ErrorBlockIcon>
@@ -68,6 +69,15 @@ export default function ErrorBlock({
           </ErrorBlockParagraph>
         </div>
       </ErrorBlockStyle>
-    </Wrapper>
+      {children ? (
+        <>{children}</>
+      ) : (
+        <NavLink to="/">
+          <Button background="black">메인 화면으로 가기</Button>
+        </NavLink>
+      )}
+    </Container>
   );
-}
+};
+
+export default ErrorBlock;

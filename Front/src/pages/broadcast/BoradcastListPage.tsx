@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import TextSearch from "../../components/common/TextSearch";
 import { Button } from "../../components/common/Button";
 import { isOrg } from "../users/SignInPage";
 import { NavLink } from "react-router-dom";
 
-const BoradcastListPage = () => {
+const BoradcastListPage: React.FC = () => {
   const [searchWord, serSearchWorld] = useState("");
   const hadnleSubmit = (inputSearchWord: string) => {
     console.log(searchWord);

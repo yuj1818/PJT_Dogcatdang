@@ -6,26 +6,30 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+
 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //기본키
 
-    @Column(name = "username" , nullable = false, unique = true)
+    @Column(name = "username" , nullable = false ,unique = true)
     private String username;
 
-    @Column(name = "password" , nullable = false)
+
+
+    @Column(name = "password", nullable = true )
     private String password;
 
-    @Column(name = "role" , nullable = false)
+    @Column(name = "role" )
     private String role;
 
-    @Column(name = "email" , nullable = false, unique = true)
+    @Column(name = "email" , nullable = false ,  unique = true)
     private String email;
 
     @Column(name = "nickname" , nullable = false, unique = true)
@@ -56,7 +60,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AnimalLike> animalLikes = new ArrayList<>(); // User와 AnimalLike 사이의 1:N 관계
-
 
 
 }

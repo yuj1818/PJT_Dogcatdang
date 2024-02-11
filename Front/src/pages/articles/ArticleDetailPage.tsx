@@ -6,32 +6,33 @@ import {
 } from "@tanstack/react-query";
 
 import { requestArticle } from "../../util/articleAPI";
-import { ArticleInterface } from "../../components/articles/ArticleInterface";
-import { LoadingOrError } from "./LoadingOrError";
+import { ArticleDetailInterface } from "../../components/articles/ArticleInterface";
+import { LoadingOrError } from "../../components/common/LoadingOrError";
 import { queryClient, retryFn } from "../../util/tanstackQuery";
 import ArticleContent from "../../components/articles/ArticleContent";
 import { Button } from "../../components/common/Button";
 import { getUserInfo } from "../../util/uitl";
-import { lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 const ArticleEditor = lazy(
   () => import("../../components/articles/ArticleEditor")
 );
 import CommentList from "../../components/articles/comments/CommentList";
 import CommentForm from "../../components/articles/comments/CommentForm";
+import { LoadingIndicator } from "../../components/common/Icons";
 
 const ArticleDetail: React.FC = () => {
   const params = useParams();
   const { boardId } = params;
   const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery<
-    ArticleInterface,
+    ArticleDetailInterface,
     Error,
-    ArticleInterface
+    ArticleDetailInterface
   >({
     queryKey: ["articleList", boardId],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const result = await requestArticle({ signal, boardId });
-      return result as ArticleInterface;
+      return result as ArticleDetailInterface;
     },
     staleTime: 15 * 1000,
     retry: retryFn,
@@ -93,21 +94,29 @@ const ArticleDetail: React.FC = () => {
           <ArticleContent
             title={data.title}
             content={data.content}
-            nickname={data.userName}
+            nickname={data.nickname}
+            like={data.like}
+            likeCnt={data.likeCnt}
           />
-          {id === data.userId && (
+          {id === data!.userId && (
             <>
-              <Button background="#da5454" onClick={handleDelte}>
+              <Button onClick={handleDelte} $background="#ff1111e4">
                 삭제하기
               </Button>
 
-              <Button onClick={handleModificaion}>수정하기</Button>
+              <Button onClick={handleModificaion} $marginLeft={0.2}>
+                수정하기
+              </Button>
             </>
           )}
         </>
       );
     } else {
-      content = <ArticleEditor {...data} />;
+      content = (
+        <Suspense fallback={<LoadingIndicator />}>
+          <ArticleEditor {...data} />
+        </Suspense>
+      );
     }
   }
 

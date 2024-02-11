@@ -12,9 +12,11 @@ public class JoinDTO {
     //private int code;
     private String email;
     private String role;
-    private String address ;
+    private String address;
     private String phone;
     private String nickname;
+//    private String metaEmail;
+//    private String providerId;
 
 
 

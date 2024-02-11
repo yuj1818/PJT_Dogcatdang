@@ -17,7 +17,12 @@ export const resizeFile = async (file: File) =>
     );
   });
 
-export const getPresignedURL = async (filename: string) => {
+const isURL = (str: string) => {
+  var urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return urlPattern.test(str);
+};
+
+const getPresignedURL = async (filename: string) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
@@ -32,7 +37,7 @@ export const getPresignedURL = async (filename: string) => {
   return response.data.url as string;
 };
 
-export const getFileName = (nickname: string) => {
+const getFileName = (nickname: string) => {
   const date = new Date();
   const year = date.getFullYear().toString().slice(-2);
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -88,20 +93,23 @@ export const imageHandler = async (data: string, nickname: string) => {
   const imageURLs = await Promise.all(
     Array.from(imageTags).map(async (imgTag) => {
       const filename = getFileName(nickname);
-      const uploadURL = await getPresignedURL(filename);
+      const imgSrc = imgTag.getAttribute("src");
 
-      const base64ImgData = imgTag.getAttribute("src")!.split(",")[1];
+      if (isURL(imgSrc!)) {
+        return imgSrc?.split("/")[3];
+      }
+      const base64ImgData = imgSrc?.split(",")[1];
       const file = await resizeFile(
         base64toFile(base64ImgData!, filename, "image/jpeg")
       );
+      const uploadURL = await getPresignedURL(filename);
 
       try {
-        const response = await axios.put(uploadURL, file, {
+        axios.put(uploadURL, file, {
           headers: {
             "Content-Type": file.type,
           },
         });
-        console.log("성공", response);
         return filename;
       } catch (error) {
         console.log("이미지 업로드 실패", error);
@@ -118,6 +126,7 @@ export const imageHandler = async (data: string, nickname: string) => {
       "src",
       `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
     );
+    imageTags[i].setAttribute("loading", "lazy");
   }
 
   const thumnailImgURL = firstImgTag?.getAttribute("src") ?? null;
@@ -125,4 +134,38 @@ export const imageHandler = async (data: string, nickname: string) => {
   const tempDivAsString = tempDiv.innerHTML;
 
   return [tempDivAsString, thumnailImgURL] as string[];
+};
+
+interface RequestS3 {
+  name: string;
+  file: File;
+}
+
+export const requestS3 = async ({ name, file }: RequestS3) => {
+  const fileName = getFileName(name);
+  const [uploadURLResult, resizedFileResult] = await Promise.allSettled([
+    getPresignedURL(fileName),
+    resizeFile(file),
+  ]);
+
+  if (
+    uploadURLResult.status === "fulfilled" &&
+    resizedFileResult.status === "fulfilled"
+  ) {
+    const uploadURL = uploadURLResult.value;
+    const resizedFile = resizedFileResult.value;
+
+    axios.put(uploadURL, resizedFile, {
+      headers: {
+        "Content-Type": file.type,
+      },
+    });
+    return `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`;
+  } else {
+    console.error(
+      "One or both promises failed:",
+      uploadURLResult,
+      resizedFileResult
+    );
+  }
 };

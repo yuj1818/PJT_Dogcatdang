@@ -1,12 +1,22 @@
-import Error from "../../components/common/Error";
-import { LoadingIndicator } from "../../components/common/Icons";
+import { ReactNode } from "react";
+import Error from "./Error";
+import { LoadingIndicator } from "./Icons";
 
-export const LoadingOrError: React.FC<{
+interface Props {
   isLoading: boolean;
   isError?: boolean;
   error?: { name: string; message: string } | null;
   size?: number;
-}> = ({ isLoading, isError, error, size }) => {
+  children?: ReactNode;
+}
+
+export const LoadingOrError: React.FC<Props> = ({
+  isLoading,
+  isError,
+  error,
+  size,
+  children,
+}) => {
   let content;
 
   if (isLoading) {
@@ -23,7 +33,9 @@ export const LoadingOrError: React.FC<{
         <Error
           title={error!.name || "An error occured"}
           message={error!.message || "네트워크 연결을 확인해 주세요"}
-        ></Error>
+        >
+          {children}
+        </Error>
       </>
     );
   }

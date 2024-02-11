@@ -1,12 +1,8 @@
 package com.e202.dogcatdang.db.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
-
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 // import jakarta.validation.constraints.NotNull;
 // 	ㄴ build.gradle에 의존성 추가 필요: implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -37,14 +32,13 @@ public class Animal {
 	@Column(name = "animal_id")
 	private Long animalId;
 
-	@Enumerated(EnumType.STRING)
 	@Column(name = "animal_type", nullable = false)
-	private AnimalType animalType;
+	private String animalType;
 
-	@Column(name = "breed", length = 200, nullable = false)
+	@Column(name = "breed", length = 200)
 	private String breed;
 
-	@Column(name = "age", nullable = false)
+	@Column(name = "age")
 	private Integer age;
 
 	@Column(name = "weight")
@@ -57,14 +51,14 @@ public class Animal {
 	private String rescueLocation;
 
 	@ColumnDefault("NULL")
-	@Column(name = "is_neuter" , nullable = true, columnDefinition = "TINYINT(1)")
-	private Boolean isNeuter;
+	@Column(name = "is_neuter" )
+	private String isNeuter;
 
-	@Enumerated(EnumType.STRING)
+
 	@Column(name = "gender", nullable = false)
-	private Gender gender;
+	private String gender;
 
-	@Column(name = "feature")
+	@Column(name = "feature",columnDefinition = "text")
 	private String feature;
 
 	@Enumerated(EnumType.STRING)
@@ -103,8 +97,8 @@ public class Animal {
 	// Builder 클래스 추가
 	// DTO -> Entity 만드는데 사용
 	@Builder
-	public Animal(Long animalId, AnimalType animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
+	public Animal(Long animalId, String animalType, String breed, Integer age, Integer weight,
+		LocalDate rescueDate, String rescueLocation, String isNeuter, String gender, String feature,
 		State state, String imgUrl, String code, User user) {
 		this.animalId = animalId;
 		this.animalType = animalType;
@@ -124,8 +118,8 @@ public class Animal {
 
 	// 엔티티 정보 수정(갱신)
 	// null이 아닌 값만 수정한다
-	public void update(AnimalType animalType, String breed, Integer age, Integer weight,
-		LocalDate rescueDate, String rescueLocation, Boolean isNeuter, Gender gender, String feature,
+	public void update(String animalType, String breed, Integer age, Integer weight,
+		LocalDate rescueDate, String rescueLocation, String isNeuter, String gender, String feature,
 		State state, String imgUrl, String code) {
 		if (animalType != null) {
 			this.animalType = animalType;

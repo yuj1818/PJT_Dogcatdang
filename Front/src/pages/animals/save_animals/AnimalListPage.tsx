@@ -44,6 +44,7 @@ function AnimalListPage() {
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(1);
+
   const itemsPerPage = 8;
   const navigate = useNavigate();
   const isOrg = org();
@@ -58,8 +59,6 @@ function AnimalListPage() {
         const res = await API.get(`/api/animals?page=${currentPage}`, {
           headers,
         });
-        // console.log("실행:", res.data.animalDtoList);
-        // console.log("실행:", res.data.currentPage);
         console.log(res.data.animalDtoList);
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);

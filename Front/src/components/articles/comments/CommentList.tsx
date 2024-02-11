@@ -1,7 +1,7 @@
 import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { requestComment } from "../../../util/articleAPI";
 import { retryFn } from "../../../util/tanstackQuery";
-import { LoadingOrError } from "../../../pages/articles/LoadingOrError";
+import { LoadingOrError } from "../../common/LoadingOrError";
 import { CommentInterface } from "../ArticleInterface";
 import Comment from "./Comment";
 import tw from "tailwind-styled-components";
@@ -15,7 +15,7 @@ interface Props {
   boardId: string;
 }
 
-const CommentList = ({ boardId }: Props) => {
+const CommentList: React.FC<Props> = ({ boardId }) => {
   const { id } = getUserInfo();
   const { data, isLoading, isError, error } = useQuery<
     CommentInterface[],
@@ -34,7 +34,7 @@ const CommentList = ({ boardId }: Props) => {
     staleTime: 15 * 1000,
     retry: retryFn,
   });
-  console.log(data);
+
   return (
     <Container>
       {(isLoading || isError) && (

@@ -7,7 +7,7 @@ import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
 import { logout } from "../../util/UserAPI";
-import logo from "../../assets/main-logo-big.png";
+import logo from "../../assets/main-logo.webp";
 
 // -----------Styled Component-----------------------------------------------
 const Color = styled.div`
@@ -41,17 +41,12 @@ const FlexColumnContainer = styled.div`
   align-items: flex-end;
 `;
 
-const StyledUl = styled.ul`
+const StyledDiv = styled.span`
   list-style: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-
-  ul {
-    font-weight: bold;
-    position: relative;
-  }
 
   p,
   a,
@@ -69,14 +64,14 @@ const OutLet = tw.div`
   mx-4 sm:mx-60 relative
 `;
 
-const NavTitle = styled.div`
+const NavTitle = styled.ul`
   list-style: none;
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100%;
 
-  ul {
+  li {
     flex-grow: 1;
     text-align: center;
     padding: 15px 0px;
@@ -89,7 +84,7 @@ const NavTitle = styled.div`
 `;
 
 // -----------NavBar-----------------------------------------------
-const NavBar = () => {
+const NavBar: React.FC = () => {
   // const [isNoti, setIsNoti] = useState(false);
   const isOrg = org();
   const [nickname, setNickname] = useState("");
@@ -110,47 +105,72 @@ const NavBar = () => {
 
   const navTitles = isOrg ? (
     <NavTitle>
-      <ul>
-        <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/save-animals">보호 동물</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/broadcast/list">보호 동물 방송</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/lost-animals">실종 동물</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/visit-application-mangement">
+      <li>
+        <StyledNavLink to="/about" aria-label="독캣당 소개">
+          독캣당 소개
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/save-animals" aria-label="보호 동물">
+          보호 동물
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/broadcast/list" aria-label="보호 동물 방송">
+          보호 동물 방송
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/lost-animals" aria-label="실종 동물">
+          실종 동물
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink
+          to="/visit-application-mangement"
+          aria-label="방문 일정 보기"
+        >
           방문 일정 보기
         </StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/articles/1">후기 게시판</StyledNavLink>
-      </ul>
+      </li>
+      <li>
+        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
+          후기 게시판
+        </StyledNavLink>
+      </li>
     </NavTitle>
   ) : (
     <NavTitle>
-      <ul>
-        <StyledNavLink to="/about">독캣당 소개</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/save-animals">보호 동물</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/broadcast/list">방송 시청</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/lost-animals">실종 동물</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/articles/1">후기 게시판</StyledNavLink>
-      </ul>
-      <ul>
-        <StyledNavLink to="/mung">멍BTI</StyledNavLink>
-      </ul>
+      <li>
+        <StyledNavLink to="/about" aria-label="독캣당 소개">
+          독캣당 소개
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/save-animals" aria-label="보호 동물">
+          보호 동물
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/broadcast/list" aria-label="방송 시청">
+          방송 시청
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/lost-animals" aria-label="실종 동물">
+          실종 동물
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
+          후기 게시판
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/mung" aria-label="멍BTI">
+          멍BTI
+        </StyledNavLink>
+      </li>
     </NavTitle>
   );
 
@@ -165,10 +185,15 @@ const NavBar = () => {
       <Color style={{ marginBottom: "2rem" }}>
         <NavBarContainer>
           <StyledNavLink to="/">
-            <IMG src={logo} alt="메인화면으로" className="w-40 min-w-40" />
+            <IMG
+              src={logo}
+              alt="메인화면으로"
+              className="w-40 min-w-40"
+              loading="lazy"
+            />
           </StyledNavLink>
           <FlexColumnContainer>
-            <StyledUl>
+            <StyledDiv>
               {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
               <StyledNavLink to={`profile/${userId}`}>
                 {nickname}님
@@ -177,7 +202,7 @@ const NavBar = () => {
                 <Bell isNoti={false} />
               </StyledNavLink>
               <button onClick={onClickLogout}>로그아웃</button>
-            </StyledUl>
+            </StyledDiv>
 
             {navTitles}
           </FlexColumnContainer>

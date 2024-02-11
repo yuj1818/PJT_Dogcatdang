@@ -22,11 +22,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
-
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+        super.setAuthenticationManager(authenticationManager);
+        super.setFilterProcessesUrl("/api/users/login"); // 로그인 처리 경로 설정
+        // 기타 초기화 코드...
+
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
+
+//    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+//
+//        this.authenticationManager = authenticationManager;
+//        this.jwtUtil = jwtUtil;
+//    }
 
 //
 //    @Override
@@ -76,7 +85,7 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
 
         String role = auth.getAuthority();
 
-        String token= jwtUtil.createJwt(id,username,role,nickname,10_000_000L);
+        String token= jwtUtil.createJwt(id,username,role,nickname,86400000L);
 
         //key , 암호화 방식(끝에 꼭 한칸 띄우기) ,
         response.addHeader("Authorization","Bearer " + token);

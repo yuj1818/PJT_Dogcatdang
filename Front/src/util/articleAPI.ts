@@ -5,6 +5,10 @@ import API from "./axios";
 import { CommentInterface } from "../components/articles/ArticleInterface";
 import { imageHandler } from "./S3";
 
+const err = new Error();
+err.name = "네트워크 에러";
+err.message = "인터넷 연결을 확인하여 주세요";
+
 export const handleAxiosError = (error: AxiosError) => {
   if (error.response) {
     // 2XX번이 아닌 상태 코드를 받았다.
@@ -43,7 +47,7 @@ export const requestArticle = async ({
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
   const URL = "api/boards";
-  let thumnailImgURL = "";
+  let thumbnailImgUrl = "";
   let response;
   if (data) {
     if (!data.title.trim()) {
@@ -65,7 +69,7 @@ export const requestArticle = async ({
       nickname!
     );
     data.content = imgTagProcessed;
-    thumnailImgURL = imgURL;
+    thumbnailImgUrl = imgURL;
   }
 
   try {
@@ -83,7 +87,7 @@ export const requestArticle = async ({
         // 등록
         response = await API.post(
           URL,
-          { ...data, thumnailImgURL },
+          { ...data, thumbnailImgUrl },
           {
             signal,
             method: "POST",
@@ -95,7 +99,7 @@ export const requestArticle = async ({
       } else {
         response = await API.post(
           `${URL}/temporary`,
-          { ...data, thumnailImgURL },
+          { ...data, thumbnailImgUrl },
           {
             signal,
             method: "POST",
@@ -109,7 +113,7 @@ export const requestArticle = async ({
       // 수정
       response = await API.put(
         URL + "/" + data!.boardId!,
-        { ...data, thumnailImgURL },
+        { ...data, thumbnailImgUrl },
         {
           signal,
           method: "PUT",
@@ -215,17 +219,92 @@ export const requestComment = async ({
   }
 };
 
-// export const getUploadURL = async (filename: string) => {
-//   const cookie = new Cookies();
-//   const token = cookie.get("U_ID");
+interface RequestLikeInterface {
+  boardId: string | undefined;
+  like: boolean;
+}
 
-//   const URL = "api/images/presigned/upload";
-//   const response = await API.get(URL, {
-//     method: "GET",
-//     params: { filename },
-//     headers: {
-//       Authorization: token,
-//     },
-//   });
-//   return response.data.url as string;
-// };
+export const requestLike = async ({ boardId, like }: RequestLikeInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+  const URL = `api/boards/${boardId}/likes`;
+  let response;
+  try {
+    if (like) {
+      response = await API.delete(URL, {
+        method: "DELTE",
+        headers: {
+          Authorization: token,
+        },
+      });
+    } else {
+      response = await API.post(
+        URL,
+        {},
+        {
+          method: "POST",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    }
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw err;
+  }
+};
+
+interface RequestSearchArticleInterface {
+  keyword: string;
+}
+
+export const requestSearchArticle = async ({
+  keyword,
+}: RequestSearchArticleInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+  const URL = "api/boards/filter";
+
+  try {
+    const respone = await API.post(
+      URL,
+      { keyword },
+      {
+        method: "POST",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return respone.data;
+  } catch (error) {
+    throw err;
+  }
+};
+
+interface RequestPopularInterface {
+  signal: AbortSignal;
+}
+
+export const requestPopular = async ({ signal }: RequestPopularInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+  const URL = "api/boards/best";
+
+  try {
+    const respone = await API.get(URL, {
+      signal,
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return respone.data;
+  } catch (error) {
+    console.log(error);
+    throw err;
+  }
+};

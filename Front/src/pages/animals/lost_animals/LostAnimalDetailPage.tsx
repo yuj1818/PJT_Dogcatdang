@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../../../util/axios";
 import { Container, Top, Leftside, Rightside } from "../StyleDetail";
+import { isOrg as org } from "../../users/SignInPage";
+import { Button } from "../../../components/common/Button";
 
 interface LostAnimalDetail {
   animalType: string;
@@ -17,12 +19,18 @@ interface LostAnimalDetail {
   feature: string;
   userNickname: string;
   lostAnimalId: number;
+  userId: number;
+  imgUrl: string;
 }
 
 function LostAnimalDetailPage() {
   const { animalID } = useParams();
+  const isOrg = org();
   const [lostanimalDetail, setLostAnimalDetail] =
     useState<LostAnimalDetail | null>(null);
+  const userInfoString = localStorage.getItem('userInfo') ?? '';
+  const userInfo = JSON.parse(userInfoString);
+  const userId = userInfo.id
 
   console.log("lostanimalID", animalID);
 
@@ -66,7 +74,7 @@ function LostAnimalDetailPage() {
         <div className="flex" style={{ padding: "1rem" }}>
           <Leftside>
             <img
-              src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png"
+              src={lostanimalDetail?.imgUrl}
               alt="강아지"
               style={{
                 width: "350px",
@@ -134,19 +142,20 @@ function LostAnimalDetailPage() {
         >
           전체 글 목록
         </button>
-        <button
-          style={{
-            background: "#FF8331",
-            padding: "0.5rem",
-            color: "white",
-            borderRadius: "5px",
-            width: "80px",
-            marginLeft: "10px",
-          }}
-          onClick={handleUpdate}
-        >
-          수정
-        </button>
+
+
+        {
+          (!isOrg && userId === lostanimalDetail?.userId) ?
+            <Button
+              $paddingX={1}
+              $paddingY={0.5}
+              onClick={handleUpdate}
+            >
+              수정
+            </Button>
+            :
+            null
+        }
       </div>
     </>
   );

@@ -3,8 +3,6 @@ package com.e202.dogcatdang.animal.dto;
 import java.time.LocalDate;
 
 import com.e202.dogcatdang.db.entity.Animal;
-import com.e202.dogcatdang.enums.AnimalType;
-import com.e202.dogcatdang.enums.Gender;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +17,12 @@ import lombok.ToString;
 @ToString
 public class ResponseAnimalDto {
 
-	private AnimalType animalType;
+	private String animalType;
 	private String breed;
-	private int age;
-	private Gender gender;
-	private Boolean isNeuter;
-	private int weight;
+	private Integer age;
+	private String gender;
+	private String isNeuter;
+	private Integer weight;
 	private String rescueLocation;
 	private LocalDate rescueDate;
 	private String feature;
@@ -39,10 +37,11 @@ public class ResponseAnimalDto {
 	public ResponseAnimalDto(Animal animal, int adoptionApplicantCount) {
 		this.animalType = animal.getAnimalType();
 		this.breed = animal.getBreed();
-		this.age = animal.getAge();
+		this.age = animal.getAge()!=null?animal.getAge():0;
 		this.gender = animal.getGender();
 		this.isNeuter = animal.getIsNeuter();
-		this.weight = animal.getWeight();
+		this.weight = animal.getWeight()!=null?animal.getWeight():0;
+
 		this.rescueLocation = animal.getRescueLocation();
 		this.rescueDate = animal.getRescueDate();
 		this.feature = animal.getFeature();

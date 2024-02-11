@@ -1,10 +1,6 @@
 package com.e202.dogcatdang.board.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.e202.dogcatdang.db.entity.Board;
-import com.e202.dogcatdang.db.entity.BoardImage;
 import com.e202.dogcatdang.db.entity.User;
 
 import lombok.Builder;
@@ -19,23 +15,19 @@ public class ResponseBoardSummaryDto {
 	private Long boardId;
 	private String title;
 	private String content;
-	private String thumbNailImgUrl;
+	private String thumbnailImgUrl;
 	private String nickname;
+	private boolean isLike;
+	private Integer likeCnt;
 
 	@Builder
-	public ResponseBoardSummaryDto(Board board) {
+	public ResponseBoardSummaryDto(Board board, boolean isLike) {
 		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.content = board.getContent();
-
-		for (BoardImage image : board.getImageList()) {
-			ResponseImageDto responseImageDto = ResponseImageDto.builder()
-				.boardImage(image)
-				.build();
-			if (image.isThumbnail()) {
-				this.thumbNailImgUrl = image.getImgUrl();
-			}
-		}
+		this.isLike = isLike;
+		this.likeCnt = board.getBoardLikeList().size();
+		this.thumbnailImgUrl = board.getThumbnailImgUrl();
 
 		//실제 유저 연결해야함
 		this.nickname = board.getUser().getNickname();

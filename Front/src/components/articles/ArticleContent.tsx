@@ -1,14 +1,10 @@
 import styled from "styled-components";
 import tw from "tailwind-styled-components";
-
-interface ArticleContentInterface {
-  title: string;
-  content: string;
-  nickname: string;
-}
+import { ArticleDetailInterface } from "./ArticleInterface";
+import Likes from "./Likes";
 
 const Container = tw.div`
-  max-w p-6 bg-white shadow-md rounded-md
+  max-w p-6 bg-white shadow-md rounded-md"
 `;
 
 const Title = tw.h2`
@@ -29,6 +25,12 @@ const LineStyle = styled.div`
   }
 `;
 
+const ContentContainer = styled.div`
+  img {
+    margin: 0 auto;
+  }
+`;
+
 const Nickname = styled.span``;
 
 const HeadContainer = styled.div`
@@ -44,10 +46,12 @@ const Line = () => {
   );
 };
 
-const ArticleContent: React.FC<ArticleContentInterface> = ({
+const ArticleContent: React.FC<ArticleDetailInterface> = ({
   title,
   content,
   nickname,
+  like,
+  likeCnt,
 }) => {
   return (
     <Container>
@@ -56,12 +60,13 @@ const ArticleContent: React.FC<ArticleContentInterface> = ({
         <Nickname>{nickname}</Nickname>
       </HeadContainer>
       <Line />
-      <div
-        className="leading-relaxed"
+      <ContentContainer
+        className="ql-container quill"
         dangerouslySetInnerHTML={{
           __html: content,
         }}
-      ></div>
+      />
+      <Likes like={like} likeCnt={likeCnt} />
     </Container>
   );
 };

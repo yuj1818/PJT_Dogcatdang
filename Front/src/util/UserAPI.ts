@@ -2,7 +2,7 @@ import API from "./axios";
 import { Cookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
-const URL = "/api/user";
+const URL = "/api/users";
 
 const cookie = new Cookies();
 
@@ -63,7 +63,10 @@ export interface editedInfoDataWithPassword extends editedInfoData {
 }
 
 export const signIn = (data: signInData) => {
-  return API.post("/login", data)
+
+
+  return API.post(URL+ "/login", data)
+
     .then((res) => {
       const token = res.headers["authorization"];
       cookie.set("U_ID", token);
@@ -144,7 +147,7 @@ export const editUserInfo = (
 };
 
 export const oauthSignUp = (data: oauthSignUpData) => {
-  return API.post('/oauth2/join', data)
+  return API.post('/api/oauth2/join', data)
     .then((res) => {
       return res;
     })

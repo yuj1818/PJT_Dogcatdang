@@ -111,12 +111,15 @@
 package com.e202.dogcatdang.user.config;
 
 //import com.e202.dogcatdang.oauth2.handler.CustomOAuth2FailureHandler;
+import com.e202.dogcatdang.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
 import com.e202.dogcatdang.user.jwt.JWTFilter;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 import com.e202.dogcatdang.user.jwt.LoginFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -137,18 +140,21 @@ import java.util.Collections;
 @EnableWebSecurity
 //@RequiredArgsConstructor
 public class SecurityConfig {
-
+    @Value("${spring.cors.allowed-origins}")
+    private String allowedOrigins;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
     private final AuthenticationFailureHandler customAuthenticationFailureHandler;
 
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, AuthenticationFailureHandler customAuthenticationFailureHandler) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, AuthenticationFailureHandler customAuthenticationFailureHandler, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
     }
 
     @Bean
@@ -171,7 +177,7 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         //프론트엔드 서버 허용
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedOrigins(Collections.singletonList(allowedOrigins));
 
 
                         configuration.setAllowedMethods(Collections.singletonList("*"));
@@ -200,6 +206,7 @@ public class SecurityConfig {
                         userInfoEndpointConfig.userService(customOAuth2UserService)
                 )
                 .failureHandler(customAuthenticationFailureHandler)
+                .successHandler(oAuth2AuthenticationSuccessHandler)
         );
 
         // JWT 필터 설정
@@ -214,7 +221,10 @@ public class SecurityConfig {
         // 경로별 인가 설정
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/user", "/api/user/join", "api/animals", "api/animals/*").permitAll()
+                .requestMatchers("/api/users/login").permitAll()
                 .requestMatchers("/api/user/admin").hasRole("ADMIN")
+
+
                 .anyRequest().permitAll()
         );
 
