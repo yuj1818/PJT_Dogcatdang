@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
+import com.e202.dogcatdang.animal.dto.RequestShelterSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
@@ -306,7 +307,7 @@ public class AnimalServiceImpl implements AnimalService {
 
 		List<ResponseShelterAnimalDto> animalDtoList = animalPage.getContent().stream()
 			.map(ResponseShelterAnimalDto::new)
-			.collect(Collectors.toList());
+			.toList();
 
 		return ResponseShelterAnimalPageDto.builder()
 			.animalDtoList(animalDtoList)
@@ -316,6 +317,53 @@ public class AnimalServiceImpl implements AnimalService {
 			.hasNextPage(animalPage.hasNext())
 			.hasPreviousPage(animalPage.hasPrevious())
 			.build();
+	}
+
+	// 기관 내 보호동물 검색 페이징 처리
+	@Transactional
+	@Override
+	public ResponseShelterAnimalPageDto searchShelterAnimals(int page, int recordSize,
+		RequestShelterSearchDto searchDto, Long shelterId) {
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		Specification<Animal> specification = createShelterSpecification(searchDto);
+
+		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
+
+		List<ResponseShelterAnimalDto> animalDtoList = animalPage.getContent().stream()
+			.map(ResponseShelterAnimalDto::new)
+			.toList();
+
+		return ResponseShelterAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(animalPage.getTotalPages())
+			.currentPage(page)
+			.totalElements(animalPage.getTotalElements())
+			.hasNextPage(animalPage.hasNext())
+			.hasPreviousPage(animalPage.hasPrevious())
+			.build();
+	}
+
+	// 기관 내 보호 동물 검색
+	private Specification<Animal> createShelterSpecification(RequestShelterSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			// 검색 조건: 보호 현황, 품종, 코드
+			if (searchDto.getState() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("state"), searchDto.getState()));
+			}
+
+			if (searchDto.getBreed() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+			}
+
+			if (searchDto.getCode() != null) {
+				predicates.add(criteriaBuilder.like(root.get("code"), "%" + searchDto.getCode() + "%" ));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
 	}
 }
 
