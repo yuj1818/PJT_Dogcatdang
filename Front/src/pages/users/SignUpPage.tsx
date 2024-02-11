@@ -292,7 +292,7 @@ function SignUpPage() {
             <div className="box">
               <label className="item" htmlFor="username">ID</label>
               <input className="input" type="text" id="username" name="username" onChange={handleUsername} required />
-              <Button onClick={onClickCheckUsername}>중복확인</Button>
+              <Button onClick={onClickCheckUsername} $marginLeft={0}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
@@ -303,7 +303,7 @@ function SignUpPage() {
             <div className="box">
               <label className="item" htmlFor="nickname">{ isOrg ? '기관명' : '닉네임' }</label>
               <input className="input" type="text" id="nickname" name="nickname" onChange={handleNickname} required />
-              <Button onClick={onClickCheckNickname}>중복확인</Button>
+              <Button onClick={onClickCheckNickname} $marginLeft={0}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
@@ -328,7 +328,7 @@ function SignUpPage() {
             <div className="box">
               <label className="item" htmlFor="email">이메일</label>
               <input className="input" type="email" id="email" name="email" onChange={handleEmail} required />
-              <Button onClick={onClickCheckEmail}>중복확인</Button>
+              <Button onClick={onClickCheckEmail} $marginLeft={0}>중복확인</Button>
             </div>
             <div className="box">
               <div className="item"></div>
@@ -347,7 +347,7 @@ function SignUpPage() {
           <div className="box">
             <div className="item"></div>
             <div className="button-box">
-              <Button onClick={onSubmit}>회원가입</Button>
+              <Button onClick={onSubmit} $marginLeft={0}>회원가입</Button>
             </div>
           </div>
         </SignUpForm>
