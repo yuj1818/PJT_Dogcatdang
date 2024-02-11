@@ -47,6 +47,8 @@ public class Board {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	private String thumbnailImgUrl;
+
 	@OneToMany(mappedBy = "board")
 	@Builder.Default
 	private List<BoardLike> boardLikeList = new ArrayList<>();
