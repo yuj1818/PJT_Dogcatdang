@@ -19,10 +19,10 @@ import lombok.ToString;
 @ToString
 public class ResponseAnimalDto {
 
-	private AnimalType animalType;
+	private String animalType;
 	private String breed;
 	private int age;
-	private Gender gender;
+	private String gender;
 	private Boolean isNeuter;
 	private int weight;
 	private String rescueLocation;
