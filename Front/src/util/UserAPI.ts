@@ -144,7 +144,7 @@ export const editUserInfo = (
 };
 
 export const oauthSignUp = (data: oauthSignUpData) => {
-  return API.post('/oauth2/join', data)
+  return API.post('/api/oauth2/join', data)
     .then((res) => {
       return res;
     })

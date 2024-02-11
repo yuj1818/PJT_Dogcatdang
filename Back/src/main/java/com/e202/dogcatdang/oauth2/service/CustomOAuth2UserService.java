@@ -47,7 +47,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         OAuth2Response oAuth2Response = null;
 
-       // CustomOAuth2User customOAuth2User = null;
 
         //받는 데이터 규격이 달라서 놔눠야댐.
 
@@ -83,6 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         System.out.println("여긴 들어오니?");
         System.out.println(username);
 
+        System.out.println("email : " + email);
         //이미 있는 아이디 인지 확인
         Optional<User> existData = userRepository.findByEmail(email);
         //User existData = userRepository.findByEmail(email);
@@ -93,7 +93,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 //        String jwt = userRequest.getAccessToken().getTokenValue();
 //        String sub = (String) oAuth2User.getAttribute("sub");
-        if(existData == null){
+        if(existData.isEmpty()){
             //회원가입 하러가
             System.out.println("회원가입 하러가");
 
@@ -107,6 +107,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //            role = existData.getRole();
 //            existData.setEmail(oAuth2Response.getEmail());
 //            userRepository.save(existData);
+
 
         }
 

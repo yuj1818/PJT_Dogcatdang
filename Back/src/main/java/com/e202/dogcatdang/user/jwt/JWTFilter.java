@@ -54,23 +54,26 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(token);
-        String role = jwtUtil.getRole(token);
+//        //토큰에서 username과 role 획득
+//        String username = jwtUtil.getUsername(token);
+//        String role = jwtUtil.getRole(token);
+//        //String email = jwtUtil.getEmail(token);
+//
+//
+//        //user를 생성하여 값 set
+//        User user = new User();
+//        user.setUsername(username);
+//        user.setPassword("temppassword");
+//        user.setRole(role);
+//
+//        //UserDetails에 회원 정보 객체 담기
+//        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+//
+//        //스프링 시큐리티 인증 토큰 생성
+//        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+//        //세션에 사용자 등록
+//        SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        //user를 생성하여 값 set
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword("temppassword");
-        user.setRole(role);
-
-        //UserDetails에 회원 정보 객체 담기
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
-
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
     }
