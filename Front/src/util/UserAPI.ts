@@ -150,5 +150,13 @@ export const oauthSignUp = (data: oauthSignUpData) => {
   return API.post('/api/oauth2/join', data)
     .then((res) => {
       return res;
-    })
-}
+    });
+};
+
+export const getToken = () => {
+  return API.get('/oauth2/token')
+    .then((res) => {
+      cookie.set("U_ID", res.data.token);
+      return
+    });
+};

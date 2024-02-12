@@ -39,6 +39,7 @@ import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
+import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignInPage />,
+  },
+  {
+    path: "/oauth-success",
+    element: <OauthTokenPage />
   },
   // {
   //   path: "/about",
