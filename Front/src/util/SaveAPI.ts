@@ -1,5 +1,8 @@
 import API from "./axios";
+import { Cookies } from "react-cookie";
 // const URL = "/animals";
+
+const cookie = new Cookies();
 
 export interface RegistrationData {
   animalType: string;
@@ -20,9 +23,16 @@ export interface RegistrationData {
 export interface FilterData {
   animalType: string;
   breed: string;
-  rescueLocation: string;
+  selectedCity: string;
+  selectedDistrict: string;
   gender: string;
   userNickname: string;
+}
+
+export interface searchingData {
+  code: string | null;
+  breed: string | null;
+  state: string | null;
 }
 
 export const regist = (data: RegistrationData, token: string) => {
@@ -36,7 +46,11 @@ export const regist = (data: RegistrationData, token: string) => {
   })
     .then((res) => {
       console.log("Response:", res);
-      return res;
+      const animalList = res.data.animalDtoList;
+      if (animalList === undefined) {
+        throw new Error("return 값이 없습니다");
+      }
+      return animalList;
     })
     .catch((err) => {
       console.error("Error:", err);
@@ -69,15 +83,14 @@ export const saveUpdate = (
 
 export const search = (data: FilterData, token: string) => {
   console.log(data);
-  return API.post("/api/animals/filter", data, {
-    method: "POST",
+  return API.post("api/animals/filter", data, {
     headers: {
       Authorization: token,
     },
   })
   .then((res) => {
-    console.log("Response:", res);
-    return res.data;
+    console.log("Response:", res.data.animalDtoList);
+    return res.data.animalDtoList;
   })
   .catch((err) => {
     if (err.response && err.response.status === 204) {
@@ -87,4 +100,43 @@ export const search = (data: FilterData, token: string) => {
       throw err;
     }
   });
+};
+
+export const getNumberOfAnimals = () => {
+  return API.get("/api/shelter/animals/count", {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    })
+};
+
+export const getAnimalData = (page: number) => {
+  return API.get("/api/shelter/animals", {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    },
+    params: {
+      page
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const searchAnimalData = (data: searchingData) => {
+  return API.post("/api/shelter/animals/filter", data, {
+    method: "POST",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res;
+    });
 };
