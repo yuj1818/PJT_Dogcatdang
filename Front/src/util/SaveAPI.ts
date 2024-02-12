@@ -1,5 +1,8 @@
 import API from "./axios";
+import { Cookies } from "react-cookie";
 // const URL = "/animals";
+
+const cookie = new Cookies();
 
 export interface RegistrationData {
   animalType: string;
@@ -87,4 +90,31 @@ export const search = (data: FilterData, token: string) => {
       throw err;
     }
   });
+};
+
+export const getNumberOfAnimals = () => {
+  return API.get("/api/shelter/animals/count", {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    })
+};
+
+export const getAnimalData = (page: number) => {
+  return API.get("/api/shelter/animals", {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    },
+    params: {
+      page
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
 };

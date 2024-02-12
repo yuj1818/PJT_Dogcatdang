@@ -154,7 +154,7 @@ export const oauthSignUp = (data: oauthSignUpData) => {
 };
 
 export const getToken = () => {
-  return API.get('/oauth2/token')
+  return API.get('api/oauth2/token')
     .then((res) => {
       cookie.set("U_ID", res.data.token);
       return

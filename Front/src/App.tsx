@@ -40,6 +40,7 @@ import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
+import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
       {
         path: "save-animals/:animalID",
         element: <AnimalDetailPage />,
+      },
+      {
+        path: "save-animals/management",
+        element: <SavedAnimalManagementPage />
       },
       {
         path: "registration",
