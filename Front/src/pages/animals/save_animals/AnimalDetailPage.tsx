@@ -101,7 +101,7 @@ function AnimalDetailPage() {
             </div>
             <div className="flex">
               <p>성별 : </p>
-              {animalDetail?.gender === "남" ? "남아" : "여아"}
+              {animalDetail?.gender}
             </div>
             <div className="flex">
               <p>체중 : </p>
@@ -132,14 +132,18 @@ function AnimalDetailPage() {
         </div>
       </Container>
       <div className="flex justify-between">
-        <Button
-          background="black"
-          $paddingX={1}
-          $paddingY={0.5}
+      <button
+          style={{
+            background: "black",
+            padding: "0.5rem",
+            color: "white",
+            borderRadius: "5px",
+            width: "110px",
+          }}
           onClick={handleBack}
         >
           전체 글 목록
-        </Button>
+        </button>
         {
           isOrg ?
             (userId === animalDetail?.userId ?

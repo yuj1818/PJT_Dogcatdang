@@ -78,11 +78,14 @@ function SaveAnimalCard(props: AnimalCardProps) {
         <div style={{ fontSize: "10px" }}>
           보호 기관 : {props.animals.userNickname}
         </div>
-        {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <img
           src={props.animals.imgUrl}
           alt="이미지 등록"
-          style={{ border: "1px solid #ccc" }}
+          style={{
+            border: "1px solid #ccc",
+            width: "100%",
+            height: "120px",
+          }}
         ></img>
 
         <div>
