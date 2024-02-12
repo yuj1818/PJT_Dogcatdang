@@ -8,6 +8,7 @@ import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
 import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo.webp";
+import { getUserInfo } from "../../util/uitl";
 
 // -----------Styled Component-----------------------------------------------
 const Color = styled.div`
@@ -127,7 +128,7 @@ const NavBar: React.FC = () => {
       </li>
       <li>
         <StyledNavLink
-          to="/visit-application-mangement"
+          to={`/visit/${getUserInfo().id}`}
           aria-label="방문 일정 보기"
         >
           방문 일정 보기

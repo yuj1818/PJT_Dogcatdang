@@ -126,7 +126,7 @@ function SignInPage() {
               <span className="menu">Password 찾기</span>
             </div>
             <div className="button-box flex justify-center">
-              <Button>로그인</Button>
+              <Button $marginLeft={0}>로그인</Button>
             </div>
           </SignInForm>
           <div className="flex gap-2">
