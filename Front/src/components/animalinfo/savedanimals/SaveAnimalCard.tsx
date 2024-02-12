@@ -80,8 +80,8 @@ function SaveAnimalCard(props: AnimalCardProps) {
         </div>
         {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <img
-          src="src/assets/dog.jpg"
-          alt="rkdkdwl"
+          src={props.animals.imgUrl}
+          alt="이미지 등록"
           style={{ border: "1px solid #ccc" }}
         ></img>
 

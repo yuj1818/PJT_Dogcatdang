@@ -10,9 +10,12 @@ import {
   countryInput,
 } from "../../../components/animalinfo/Input";
 import { Input, Select as Select1 } from "../../../components/animalinfo/style";
+import { Cookies } from "react-cookie";
+import { search } from "../../../util/SaveAPI";
 
-type AnimalType = {
+export interface AnimalType {
   animalId: number;
+  code: string;
   animalType: string;
   breed: string;
   age: string;
@@ -25,8 +28,11 @@ type AnimalType = {
   gender: string;
   feature: string;
   state: string;
-  imgName: string;
   imgUrl: string;
+  userNickname: string;
+  like: boolean;
+  rescueLocation: string;
+  adoptionApplicantCount: number;
 };
 
 const AnimalButton = styled.button<{ selected: boolean }>`
@@ -47,6 +53,7 @@ const AnimalButton = styled.button<{ selected: boolean }>`
 
 type SaveAnimalSearchProps = {
   animals: AnimalType[];
+
 };
 
 function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
@@ -56,9 +63,10 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-  console.log(filteredAnimalData);
-  const genderInput = ["전체", "남", "여"];
+  // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  // const [currentPage, setCurrentPage] = useState(1);
+  const genderInput = ["전체", "암컷", "수컷"];
+  // console.log(filteredAnimalData)
 
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
@@ -90,22 +98,47 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   ) => {
     setShelterName(event.target.value);
   };
+  const cookie = new Cookies();
 
-  const handleSearch = () => {
-    // 필터링을 위한 로직을 추가
-    const filteredData = animals.filter((animal) => {
-      return (
-        (animalType === "" || animal.animalType === animalType) &&
-        (breed === "" || animal.breed === breed) &&
-        // (region === "" || animal.rescueLocation === combinedLocation) &&
-        (gender === "" || animal.gender === gender)
+  // const filterData = (data: any) => {
+  //   console.log(data);
+  //   const filteredData = data.filter((item: any) => {
+  //     return (
+  //       (animalType === "" || item.animalType === animalType) &&
+  //       (breed === "" || item.breed === breed) &&
+  //       (gender === "" || item.gender === gender));
+  //   });
 
-        //&& (shelterName === "" || animal.shelterName.includes(shelterName))
-      );
-    });
-    setFilteredAnimalData(filteredData);
-  };
+  //   return filteredData;
+  // };
 
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const token = cookie.get("U_ID");
+    // console.log(token);
+    
+
+    const data = {
+      animalType: animalType,
+      breed: breed,
+      rescueLocation: region + " " +  country,
+      gender: gender,
+      userNickname: shelterName,
+    }
+    try {
+      const responseData = await search(data, token);
+      console.log(responseData);
+      // const filteredData = filterData(responseData)
+      // setFilteredAnimalData(filteredData)
+
+
+    } catch (error) {
+      console.error("Error filtered data:", error);
+    }
+  }
+
+
+  console.log(animals)
   return (
     <div className="container">
       <img
@@ -119,21 +152,23 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
           height: "70px",
         }}
       ></img>
-      <div className="button-group">
-        <AnimalButton
-          selected={animalType === "고양이"}
-          onClick={() => handleAnimalType("강아지")}
-        >
-          강아지
-        </AnimalButton>
-        <AnimalButton
-          selected={animalType === "강아지"}
-          onClick={() => handleAnimalType("고양이")}
-        >
-          고양이
-        </AnimalButton>
-      </div>
-      <form className="search-form">
+      <form className="search-form" onSubmit={handleSearch}>
+        <div className="button-group">
+          <AnimalButton
+            selected={animalType === "고양이"}
+            onClick={() => handleAnimalType("강아지")}
+            name="animalType"
+          >
+            강아지
+          </AnimalButton>
+          <AnimalButton
+            selected={animalType === "강아지"}
+            onClick={() => handleAnimalType("고양이")}
+            name="animalType"
+          >
+            고양이
+          </AnimalButton>
+        </div>
         <div className="form-group">
           <Select
             name="breed"
@@ -234,19 +269,18 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
         <div className="form-group">
           <button
             className="search-button"
-            type="button"
-            onClick={handleSearch}
+            type="submit"
           >
             검색
           </button>
         </div>
       </form>
+      {/* {filteredAnimalData.map((animal, index) => (
+          <SaveAnimalCard key={index} animals={animal} />
+        ))} */}
+
     </div>
-    // {/* <ListStyle $itemsPerRow={4}>
-    //{filteredAnimalData.map((animal) => (
-    //<SaveAnimalCard key={animal.animalId} animals={animal} />
-    //))}
-    //</ListStyle> */}
+
   );
 }
 
