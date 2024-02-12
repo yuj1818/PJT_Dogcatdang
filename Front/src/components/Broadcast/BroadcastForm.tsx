@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
+import styled from "styled-components";
 
 import { isOrg } from "../../pages/users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
@@ -10,7 +11,6 @@ import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
 import { resizeFile } from "../../util/S3";
 import AnimalList from "./AnimalList";
 import { encrypt } from "./simpleEncrypt";
-import styled from "styled-components";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
