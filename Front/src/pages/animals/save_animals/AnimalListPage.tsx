@@ -14,7 +14,7 @@ interface StyledButtonProps {
   $isOrg: boolean;
 }
 
-const ListStyle = styled.div<{ $itemsPerRow: number }>`
+export const ListStyle = styled.div<{ $itemsPerRow: number }>`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -44,6 +44,7 @@ function AnimalListPage() {
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(1);
+  
 
   const itemsPerPage = 8;
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ function AnimalListPage() {
         const res = await API.get(`/api/animals?page=${currentPage}`, {
           headers,
         });
-        console.log(res.data.animalDtoList);
+        // console.log(res.data.animalDtoList);
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);
         setTotalElements(res.data.totalElements);
@@ -91,6 +92,7 @@ function AnimalListPage() {
           <SaveAnimalCard key={animal.animalId} animals={animal} />
         ))}
       </ListStyle>
+
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}

@@ -97,7 +97,7 @@ function AnimalDetailPage() {
             </div>
             <div className="flex">
               <p>성별 : </p>
-              {animalDetail?.gender === "남" ? "남아" : "여아"}
+              {animalDetail?.gender}
             </div>
             <div className="flex">
               <p>체중 : </p>

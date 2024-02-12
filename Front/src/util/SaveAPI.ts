@@ -20,7 +20,8 @@ export interface RegistrationData {
 export interface FilterData {
   animalType: string;
   breed: string;
-  rescueLocation: string;
+  region: string;
+  country: string;
   gender: string;
   userNickname: string;
 }
@@ -69,8 +70,7 @@ export const saveUpdate = (
 
 export const search = (data: FilterData, token: string) => {
   console.log(data);
-  return API.post("/api/animals/filter", data, {
-    method: "POST",
+  return API.post("api/animals/filter", data, {
     headers: {
       Authorization: token,
     },

@@ -11,7 +11,10 @@ import {
 } from "../../../components/animalinfo/Input";
 import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 import { Cookies } from "react-cookie";
-import { search } from "../../../util/SaveAPI";
+import { search, FilterData } from "../../../util/SaveAPI";
+import SaveAnimalCard from "./SaveAnimalCard";
+import { ListStyle } from "../../../pages/animals/save_animals/AnimalListPage"
+
 
 export interface AnimalType {
   animalId: number;
@@ -63,10 +66,9 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
   // const [currentPage, setCurrentPage] = useState(1);
   const genderInput = ["전체", "암컷", "수컷"];
-  // console.log(filteredAnimalData)
 
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
@@ -100,36 +102,48 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
   };
   const cookie = new Cookies();
 
-  // const filterData = (data: any) => {
-  //   console.log(data);
-  //   const filteredData = data.filter((item: any) => {
-  //     return (
-  //       (animalType === "" || item.animalType === animalType) &&
-  //       (breed === "" || item.breed === breed) &&
-  //       (gender === "" || item.gender === gender));
-  //   });
+  const filterData = (data: any) => {
+    if (!Array.isArray(data)) {
+      console.error("Data is not an array.");
+      return [];
+    }
 
-  //   return filteredData;
-  // };
+    const filteredData = data.filter((item: any) => {
+      const normalizedBreed = breed.replace(/\s+/g, "_");
+      // 만약 영어로 검색할수도있으니
+      const shelterNameLowerCase = shelterName.toLowerCase();
+      return (
+        (animalType === "" || item.animalType === animalType) &&
+        (breed === "" || item.breed === normalizedBreed) &&
+        (gender === "" || item.gender === gender) &&
+        (shelterName === "" || item.userNickname.toLowerCase().includes(shelterNameLowerCase)) &&
+        (region === "" || item.region === region) &&
+        (country === "" || item.country === country)  
+      );
+    });
 
+    return filteredData;
+  };
+
+  console.log(filteredAnimalData)
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-    // console.log(token);
-    
 
-    const data = {
-      animalType: animalType,
-      breed: breed,
-      rescueLocation: region + " " +  country,
-      gender: gender,
-      userNickname: shelterName,
-    }
+    const data: FilterData = {
+      animalType: animalType !== undefined ? animalType : "",
+      breed: breed !== undefined ? breed : "",
+      region: region !== undefined ? region : "",
+      country: country !== undefined ? country : "",
+      gender: gender !== undefined ? gender : "",
+      userNickname: shelterName !== undefined ? shelterName : "",
+    };
+
     try {
       const responseData = await search(data, token);
       console.log(responseData);
-      // const filteredData = filterData(responseData)
-      // setFilteredAnimalData(filteredData)
+      const filteredData = filterData(animals)
+      setFilteredAnimalData(filteredData)
 
 
     } catch (error) {
@@ -137,8 +151,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     }
   }
 
-
-  console.log(animals)
   return (
     <div className="container">
       <img
@@ -275,12 +287,13 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
           </button>
         </div>
       </form>
-      {/* {filteredAnimalData.map((animal, index) => (
-          <SaveAnimalCard key={index} animals={animal} />
-        ))} */}
 
+      <ListStyle $itemsPerRow={10}>
+        {filteredAnimalData.map((animal: AnimalType) => (
+          <SaveAnimalCard key={animal.animalId} animals={animal} />
+        ))}
+      </ListStyle>
     </div>
-
   );
 }
 

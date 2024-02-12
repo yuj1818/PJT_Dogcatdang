@@ -211,17 +211,6 @@ function AnimalFormPage() {
                 </div>
               </div>
 
-              {/* <div>
-                <label>
-                  이미지URL :
-                  <input
-                    type="text"
-                    value={imgUrl}
-                    onChange={(e) => setImgUrl(e.target.value)}
-                  />
-                </label>
-              </div> */}
-
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">성별</label>
@@ -233,8 +222,8 @@ function AnimalFormPage() {
                     <option value="" disabled hidden>
                       성별 선택
                     </option>
-                    <option value="남">남</option>
-                    <option value="여">여</option>
+                    <option value="수컷">수컷</option>
+                    <option value="암컷">암컷</option>
                   </Select>
                 </div>
               </div>
