@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amazonaws.Response;
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.streaming.dto.RequestStreamingDto;
+import com.e202.dogcatdang.streaming.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.streaming.dto.ResponseDto;
 import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
+import com.e202.dogcatdang.streaming.dto.ResponseStreamingDto;
 import com.e202.dogcatdang.streaming.service.StreamingService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 
@@ -48,6 +50,27 @@ public class StreamingController {
 
 		ResponseDto responseDto = streamingService.startStreaming(loginUserId, requestStreamingDto);
 		return ResponseEntity.ok(responseDto);
+	}
+
+	@GetMapping("/")
+	public ResponseEntity<List<ResponseStreamingDto>> find(){
+
+		List<ResponseStreamingDto> streamingDtoList = streamingService.find();
+		return ResponseEntity.ok(streamingDtoList);
+	}
+
+	@GetMapping("/{streamingId}/detail")
+	public ResponseEntity<ResponseStreamingDto> findByStreamingId(@PathVariable Long streamingId) {
+
+		ResponseStreamingDto streamingDto = streamingService.findByStreamingId(streamingId);
+		return ResponseEntity.ok(streamingDto);
+	}
+
+	@GetMapping("/{streamingId}/animals")
+	public ResponseEntity<List<ResponseAnimalDto>> getAnimalList(@PathVariable Long streamingId) {
+
+		List<ResponseAnimalDto> animalDtoList = streamingService.getAnimalList(streamingId);
+		return ResponseEntity.ok(animalDtoList);
 	}
 
 }

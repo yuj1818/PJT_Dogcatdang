@@ -36,6 +36,7 @@ public class RequestStreamingDto {
 			.description(description)
 			.startTime(LocalDateTime.now())
 			.animalList(animalEntityList)
+			.thumbnailImgUrl(thumbnailImgUrl)
 			.user(user)
 			.build();
 	}
