@@ -115,24 +115,28 @@ function AnimalDetailPage() {
               <p>발견위치 : </p>
               {animalDetail?.rescueLocation}
             </div>
+            <p style={{marginTop: "10px"}}>특징</p>
             <div
               className="flex"
               style={{
                 background: "rgb(255,150,27, 0.1)",
                 borderRadius: "5px",
                 padding: "15px",
-                marginTop: "15px",
-                width: "370px",
+                marginTop: "5px",
+                width: "80%",
+                height: "auto",
               }}
             >
-              <p>특징 : </p>
-              {animalDetail?.feature}
+
+              <div>
+                {animalDetail?.feature}
+              </div>
             </div>
           </Rightside>
         </div>
       </Container>
       <div className="flex justify-between">
-      <button
+        <button
           style={{
             background: "black",
             padding: "0.5rem",
