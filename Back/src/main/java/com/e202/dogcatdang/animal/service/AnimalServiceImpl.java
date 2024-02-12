@@ -260,8 +260,12 @@ public class AnimalServiceImpl implements AnimalService {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getRescueLocation() != null) {
-				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescueLocation() + "%"));
+			if (searchDto.getSelectedCity() != null) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedCity() + "%"));
+			}
+
+			if (searchDto.getSelectedDistrict() != null) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedDistrict() + "%"));
 			}
 
 			if (searchDto.getGender() != null) {

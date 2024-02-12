@@ -186,8 +186,12 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getLostLocation() != null) {
-				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getLostLocation() + "%" ));
+			if (searchDto.getSelectedCity() != null) {
+				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getSelectedCity() + "%" ));
+			}
+
+			if (searchDto.getSelectedDistrict() != null) {
+				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getSelectedDistrict() + "%" ));
 			}
 
 			if (searchDto.getGender() != null) {

@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.e202.dogcatdang.db.entity.Reservation;
-import com.e202.dogcatdang.reservation.dto.ResponseShelterListDto;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
