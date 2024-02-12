@@ -16,12 +16,24 @@ export interface RegistrationData {
   imgUrl: string;
 }
 
-export const lost_search = (data: RegistrationData) => {
+export interface LostFilterData {
+  animalType: string;
+  breed: string;
+  selectedCity: string;
+  selectedDistrict: string;
+  gender: string;
+}
+
+export const lost_search = (data: LostFilterData, token: string) => {
   console.log(data);
-  return API.get("/api/lost-animals")
+  return API.post("/api/lost-animals/filter", data, {
+    headers: {
+      Authorization: token,
+    },
+  })
     .then((res) => {
-      console.log("Response:", res);
-      return res;
+      console.log("Response:", res.data.lostAnimalDtoList);
+      return res.data.lostAnimalDtoList;
     })
     .catch((err) => {
       console.error("Error:", err);

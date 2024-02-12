@@ -23,7 +23,8 @@ export interface RegistrationData {
 export interface FilterData {
   animalType: string;
   breed: string;
-  rescueLocation: string;
+  selectedCity: string;
+  selectedDistrict: string;
   gender: string;
   userNickname: string;
 }
@@ -45,7 +46,11 @@ export const regist = (data: RegistrationData, token: string) => {
   })
     .then((res) => {
       console.log("Response:", res);
-      return res;
+      const animalList = res.data.animalDtoList;
+      if (animalList === undefined) {
+        throw new Error("return 값이 없습니다");
+      }
+      return animalList;
     })
     .catch((err) => {
       console.error("Error:", err);
@@ -78,15 +83,14 @@ export const saveUpdate = (
 
 export const search = (data: FilterData, token: string) => {
   console.log(data);
-  return API.post("/api/animals/filter", data, {
-    method: "POST",
+  return API.post("api/animals/filter", data, {
     headers: {
       Authorization: token,
     },
   })
   .then((res) => {
-    console.log("Response:", res);
-    return res.data;
+    console.log("Response:", res.data.animalDtoList);
+    return res.data.animalDtoList;
   })
   .catch((err) => {
     if (err.response && err.response.status === 204) {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users/profiles")
+@RequestMapping("/api/users/profiles/details")
 public class UserLikeAnimalController {
     @Autowired
     private MyPageService myPageService;
@@ -24,6 +24,7 @@ public class UserLikeAnimalController {
     //유저의 관심동물 불러오기
     @GetMapping("/liked-animals")
     public ResponseEntity<List<Animal>> getLikedAnimals(@RequestHeader("Authorization") String token) {
+        System.out.println("liked-animals");
         if (!token.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -42,6 +43,7 @@ public class UserLikeAnimalController {
     //기관회원 마이페이지 (보호중일 동물 리스트 가져오기)
     @GetMapping("/protected-animals")
     public ResponseEntity<List<Animal>> getProtectedAnimals(@RequestHeader("Authorization") String token) {
+        System.out.println("protected-animals");
         if (!token.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -54,6 +56,7 @@ public class UserLikeAnimalController {
     // 특정 동물의 상세 정보 조회
     @GetMapping("/{animalId}")
     public ResponseEntity<Animal> getAnimalDetail(@PathVariable Long animalId) {
+        System.out.println("상세조회 동물");
         try {
             Animal animal = myPageService.findAnimalById(animalId);
             return ResponseEntity.ok(animal);

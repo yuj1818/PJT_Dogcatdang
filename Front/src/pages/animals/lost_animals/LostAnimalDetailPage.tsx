@@ -113,17 +113,17 @@ function LostAnimalDetailPage() {
               <p>실종위치 : </p>
               {lostanimalDetail?.lostLocation}
             </div>
+            <p style={{marginTop: "10px"}}>특징</p>
             <div
               className="flex"
               style={{
                 background: "rgb(255,150,27, 0.1)",
                 borderRadius: "5px",
                 padding: "15px",
-                marginTop: "15px",
+                marginTop: "5px",
                 width: "370px",
               }}
             >
-              <p>특징 : </p>
               {lostanimalDetail?.feature}
             </div>
           </Rightside>

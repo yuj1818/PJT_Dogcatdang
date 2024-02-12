@@ -45,6 +45,7 @@ public class JWTUtil {
     //Successful 통해 데이터를 받음
     //토큰 생성
     public String createJwt(Long id, String username, String role, String nickname, Long expiredMs) {
+        System.out.println("createJwt 내부");
         return Jwts.builder()
                 .claim("id" , id)
                 .claim("username", username)

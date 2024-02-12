@@ -47,8 +47,8 @@ function AnimalFormPage() {
           name: file.name.replace(/\.[^/.]+$/, ''), 
           file: file,
         })
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
-        console.log("URL:", uploadedImageUrl);
+        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        // console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {
@@ -125,7 +125,6 @@ function AnimalFormPage() {
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
-                // marginBottom:'20px'
               }}
             >
               <div>
@@ -211,17 +210,6 @@ function AnimalFormPage() {
                 </div>
               </div>
 
-              {/* <div>
-                <label>
-                  이미지URL :
-                  <input
-                    type="text"
-                    value={imgUrl}
-                    onChange={(e) => setImgUrl(e.target.value)}
-                  />
-                </label>
-              </div> */}
-
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">성별</label>
@@ -233,8 +221,8 @@ function AnimalFormPage() {
                     <option value="" disabled hidden>
                       성별 선택
                     </option>
-                    <option value="남">남</option>
-                    <option value="여">여</option>
+                    <option value="수컷">수컷</option>
+                    <option value="암컷">암컷</option>
                   </Select>
                 </div>
               </div>
@@ -247,7 +235,6 @@ function AnimalFormPage() {
                     type="text"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    // onKeyPress={(e) => handleNumericInput(e, setAge)}
                   />
                 </div>
               </div>
@@ -260,7 +247,6 @@ function AnimalFormPage() {
                     type="number"
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
-                    // onKeyPress={(e) => handleNumericInput(e, setWeight)}
                   />
                 </div>
               </div>

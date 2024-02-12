@@ -29,13 +29,18 @@ interface AnimalCardProps {
   animals: SaveAnimal;
 }
 
-const Card = styled.div`
+export const Card = styled.div`
   background-color: rgb(255, 255, 255);
   border: 1px solid #ccc;
   padding: 5px 20px 15px 20px;
   position: relative;
   box-shadow: 2px 2px 2px rgb(45, 45, 45, 0.4);
   border-radius: 10px;
+  transition: box-shadow 0.3s ease; 
+
+  &:hover {
+    box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const Adoption = styled.div`
@@ -78,11 +83,14 @@ function SaveAnimalCard(props: AnimalCardProps) {
         <div style={{ fontSize: "10px" }}>
           보호 기관 : {props.animals.userNickname}
         </div>
-        {/* <img className="img" src={ 'images/img'+ (props.num + 1) +'.jpg' } /> */}
         <img
           src={props.animals.imgUrl}
           alt="이미지 등록"
-          style={{ border: "1px solid #ccc" }}
+          style={{
+            border: "1px solid #ccc",
+            width: "100%",
+            height: "120px",
+          }}
         ></img>
 
         <div>

@@ -212,8 +212,8 @@ function AnimalUpdatePage() {
                     <option value="" disabled hidden>
                       성별 선택
                     </option>
-                    <option value="남">남</option>
-                    <option value="여">여</option>
+                    <option value="수컷">수컷</option>
+                    <option value="암컷">암컷</option>
                   </Select>
                 </div>
               </div>
