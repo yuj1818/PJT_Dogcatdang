@@ -287,7 +287,7 @@ public class AnimalServiceImpl implements AnimalService {
 		Integer totalAnimals = animalRepository.countByUser_Id(shelterId);
 
 		// 입양 예정인 동물의 수 (방문 예약이 확정된 동물의 수)
-		Integer adoptionSchedules = reservationRepository.countByStateAndAnimal_User_Id(Reservation.State.승인, shelterId);
+		Integer adoptionSchedules = reservationRepository.countDistinctAnimalByStateAndAnimal_User_Id(Reservation.State.승인, shelterId);
 
 		// 현재 보호 중인 동물의 수
 		Integer protectedAnimals = animalRepository.countByStateAndUser_Id(Animal.State.보호중, shelterId);
