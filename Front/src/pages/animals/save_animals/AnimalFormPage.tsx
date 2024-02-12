@@ -47,8 +47,8 @@ function AnimalFormPage() {
           name: file.name.replace(/\.[^/.]+$/, ''), 
           file: file,
         })
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
-        console.log("URL:", uploadedImageUrl);
+        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        // console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {
@@ -125,7 +125,6 @@ function AnimalFormPage() {
               style={{
                 flexDirection: "column",
                 justifyContent: "center",
-                // marginBottom:'20px'
               }}
             >
               <div>
@@ -236,7 +235,6 @@ function AnimalFormPage() {
                     type="text"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    // onKeyPress={(e) => handleNumericInput(e, setAge)}
                   />
                 </div>
               </div>
@@ -249,7 +247,6 @@ function AnimalFormPage() {
                     type="number"
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
-                    // onKeyPress={(e) => handleNumericInput(e, setWeight)}
                   />
                 </div>
               </div>

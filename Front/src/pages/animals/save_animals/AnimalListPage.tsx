@@ -6,7 +6,7 @@ import SaveAnimalCard, {
   SaveAnimal,
 } from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
 import { isOrg as org } from "../../../pages/users/SignInPage";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Cookies } from "react-cookie";
 
@@ -44,12 +44,13 @@ function AnimalListPage() {
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(1);
-  
+  const [searchedData, setSearchedData] = useState([]);
 
   const itemsPerPage = 8;
   const navigate = useNavigate();
   const isOrg = org();
-
+  const { state } = useLocation();
+  
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -60,16 +61,23 @@ function AnimalListPage() {
         const res = await API.get(`/api/animals?page=${currentPage}`, {
           headers,
         });
-        // console.log(res.data.animalDtoList);
+
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);
         setTotalElements(res.data.totalElements);
+
+        // 검색 조건이 있는 경우에만 searchedData에 데이터 설정
+        if (state) {
+          setSearchedData(state);
+        } else {
+          setSearchedData([]);
+        }
       } catch (err) {
         console.error("Error:", err);
       }
     };
     searchData();
-  }, [currentPage, token]);
+  }, [currentPage, state]);
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -80,7 +88,7 @@ function AnimalListPage() {
 
   return (
     <div>
-      <SaveAnimalSearch animals={animalData} />
+      <SaveAnimalSearch />
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <StyledButton $isOrg={isOrg} onClick={handleRegistration}>
           동물 등록
@@ -88,11 +96,14 @@ function AnimalListPage() {
       </div>
 
       <ListStyle $itemsPerRow={10}>
-        {animalData.map((animal: SaveAnimal) => (
-          <SaveAnimalCard key={animal.animalId} animals={animal} />
-        ))}
+        {searchedData.length > 0
+          ? searchedData.map((animal: SaveAnimal) => (
+              <SaveAnimalCard key={animal.animalId} animals={animal} />
+            ))
+          : animalData.map((animal: SaveAnimal) => (
+              <SaveAnimalCard key={animal.animalId} animals={animal} />
+            ))}
       </ListStyle>
-
       <Pagination
         totalItems={totalElements}
         itemsPerPage={itemsPerPage}

@@ -48,10 +48,8 @@ function LostAnimalCard(props: LostAnimalCardProps) {
           alt="animals"
           style={{
             border: "1px solid #ccc",
-            display: "block",
-            margin: "0 auto",
-            maxWidth: "150px",
-            maxHeight: "100px",
+            width: "100%",
+            height: "120px",
           }}
         ></img>
         <strong>{props.animals.name}</strong>

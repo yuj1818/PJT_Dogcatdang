@@ -12,9 +12,7 @@ import {
 import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 import { Cookies } from "react-cookie";
 import { search, FilterData } from "../../../util/SaveAPI";
-import SaveAnimalCard from "./SaveAnimalCard";
-import { ListStyle } from "../../../pages/animals/save_animals/AnimalListPage"
-
+import { useNavigate } from "react-router-dom";
 
 export interface AnimalType {
   animalId: number;
@@ -54,19 +52,15 @@ const AnimalButton = styled.button<{ selected: boolean }>`
     `};
 `;
 
-type SaveAnimalSearchProps = {
-  animals: AnimalType[];
 
-};
-
-function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
+function SaveAnimalSearch() {
   const [animalType, setAnimalType] = useState("강아지");
   const [region, setRegion] = useState("");
   const [breed, setBreed] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
+  // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
   // const [currentPage, setCurrentPage] = useState(1);
   const genderInput = ["전체", "암컷", "수컷"];
 
@@ -101,51 +95,26 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
     setShelterName(event.target.value);
   };
   const cookie = new Cookies();
+  const navigate = useNavigate()
 
-  const filterData = (data: any) => {
-    if (!Array.isArray(data)) {
-      console.error("Data is not an array.");
-      return [];
-    }
 
-    const filteredData = data.filter((item: any) => {
-      const normalizedBreed = breed.replace(/\s+/g, "_");
-      // 만약 영어로 검색할수도있으니
-      const shelterNameLowerCase = shelterName.toLowerCase();
-      return (
-        (animalType === "" || item.animalType === animalType) &&
-        (breed === "" || item.breed === normalizedBreed) &&
-        (gender === "" || item.gender === gender) &&
-        (shelterName === "" || item.userNickname.toLowerCase().includes(shelterNameLowerCase)) &&
-        (region === "" || item.region === region) &&
-        (country === "" || item.country === country)  
-      );
-    });
-
-    return filteredData;
-  };
-
-  console.log(filteredAnimalData)
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-
+    // const rescueLocation: string = region + " " + country
     const data: FilterData = {
       animalType: animalType !== undefined ? animalType : "",
-      breed: breed !== undefined ? breed : "",
-      region: region !== undefined ? region : "",
-      country: country !== undefined ? country : "",
+      breed: breed !== undefined ? breed.replace(/\s/g, "_") : "",
+      selectedCity: region !== undefined ? region : "",
+      selectedDistrict: country !== undefined ? country : "",
       gender: gender !== undefined ? gender : "",
       userNickname: shelterName !== undefined ? shelterName : "",
     };
 
     try {
       const responseData = await search(data, token);
-      console.log(responseData);
-      const filteredData = filterData(animals)
-      setFilteredAnimalData(filteredData)
-
-
+      // console.log(responseData);
+      navigate(`/save-animals`, { state: responseData });
     } catch (error) {
       console.error("Error filtered data:", error);
     }
@@ -170,6 +139,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
             selected={animalType === "고양이"}
             onClick={() => handleAnimalType("강아지")}
             name="animalType"
+            type="button"
           >
             강아지
           </AnimalButton>
@@ -177,6 +147,7 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
             selected={animalType === "강아지"}
             onClick={() => handleAnimalType("고양이")}
             name="animalType"
+            type="button"
           >
             고양이
           </AnimalButton>
@@ -287,12 +258,6 @@ function SaveAnimalSearch({ animals }: SaveAnimalSearchProps) {
           </button>
         </div>
       </form>
-
-      <ListStyle $itemsPerRow={10}>
-        {filteredAnimalData.map((animal: AnimalType) => (
-          <SaveAnimalCard key={animal.animalId} animals={animal} />
-        ))}
-      </ListStyle>
     </div>
   );
 }

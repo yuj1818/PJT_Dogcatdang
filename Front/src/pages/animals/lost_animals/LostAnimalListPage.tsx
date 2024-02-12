@@ -4,10 +4,11 @@ import API from "../../../util/axios";
 import LostAnimalCard, {
   LostAnimal,
 } from "../../../components/animalinfo/lostanimals/LostAnimalCard";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { isOrg as org } from "../../../pages/users/SignInPage";
 import Pagination from "../../../components/common/Pagination";
 import styled from "styled-components";
+import { Cookies } from "react-cookie";
 
 const ListStyle = styled.div<{ $itemsPerRow: number }>`
   width: 100%;
@@ -38,29 +39,39 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 function LostAnimalListPage() {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
   const [lostAnimalData, setLostAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(1);
-
+  const [searchedData, setSearchedData] = useState([]);
+  const { state } = useLocation();
   const navigate = useNavigate();
   const isOrg = org();
 
   useEffect(() => {
     const searchData = async () => {
       try {
-        const res = await API.get(`/api/lost-animals?page=${currentPage}`);
-        console.log("실행:", res.data.lostAnimalDtoList);
-        console.log("현재페이지:", res.data.currentPage);
-        console.log("총:", res.data.totalElements);
+        const headers = {
+          Authorization: token,
+        };
+        const res = await API.get(`/api/lost-animals?page=${currentPage}`, {
+          headers
+        });
         setLostAnimalData(res.data.lostAnimalDtoList);
         setCurrentPage(res.data.currentPage);
         setTotalElements(res.data.totalElements);
+        if (state) {
+          setSearchedData(state);
+        } else {
+          setSearchedData([]);
+        }
       } catch (err) {
         console.error("Error:", err);
       }
     };
     searchData();
-  }, [currentPage]);
+  }, [currentPage, state]);
   const handleRegistration = () => {
     navigate("/lost-registration");
   };
@@ -72,16 +83,22 @@ function LostAnimalListPage() {
   const itemsPerPage = 8;
   return (
     <>
-      <LostAnimalSearch animals={lostAnimalData} />
+      <LostAnimalSearch />
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <StyledButton isOrg={isOrg} onClick={handleRegistration}>
           동물 등록
         </StyledButton>
       </div>
       <ListStyle $itemsPerRow={10}>
-        {lostAnimalData.map((animal: LostAnimal) => (
-          <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
-        ))}
+
+        {searchedData.length > 0
+          ? searchedData.map((animal: LostAnimal) => (
+            <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
+          ))
+          : lostAnimalData.map((animal: LostAnimal) => (
+            <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
+          ))}
+
       </ListStyle>
       <Pagination
         totalItems={totalElements}

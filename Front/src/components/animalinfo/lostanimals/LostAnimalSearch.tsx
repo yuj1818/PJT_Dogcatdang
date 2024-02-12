@@ -10,37 +10,36 @@ import {
   countryInput,
 } from "../../../components/animalinfo/Input";
 import { Select as Select1 } from "../../../components/animalinfo/style";
+import { LostFilterData, lost_search } from "../../../util/LostAPI";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
-interface LostAnimalType {
-  animalId: number;
-  animalType: string;
-  breed: string;
-  age: string;
-  weight: string;
-  lostDate: string;
-  selectedCity: string;
-  selectedDistrict: string;
-  detailInfo: string;
-  name: string;
-  gender: string;
-  feature: string;
-  state: string;
-  imgName: string;
-  imgUrl: string;
-}
+// interface LostAnimalType {
+//   animalId: number;
+//   animalType: string;
+//   breed: string;
+//   age: string;
+//   weight: string;
+//   lostDate: string;
+//   selectedCity: string;
+//   selectedDistrict: string;
+//   detailInfo: string;
+//   name: string;
+//   gender: string;
+//   feature: string;
+//   state: string;
+//   imgName: string;
+//   imgUrl: string;
+// }
 
-type LostAnimalSearchProps = {
-  animals: LostAnimalType[];
-};
-
-function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
+function LostAnimalSearch() {
   const [animalType, setAnimalType] = useState("강아지");
   const [breed, setBreed] = useState("");
   const [region, setRegion] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
-  const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-  console.log(filteredAnimalData);
+  const cookie = new Cookies();
+  const navigate = useNavigate()
 
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
@@ -50,7 +49,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     value: cat,
     label: cat,
   }));
-  const genderInput = ["전체", "남", "여"];
+  const genderInput = ["전체", "암컷", "수컷"];
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
@@ -68,20 +67,25 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
     setGender(event.target.value);
   };
 
-  const handleSearch = () => {
-    const combinedLocation = region + " " + country;
-    console.log(combinedLocation);
-    // 필터링을 위한 로직을 추가
-    const filteredData = animals.filter((animal) => {
-      return (
-        (animalType === "" || animal.animalType === animalType) &&
-        (breed === "" || animal.breed === breed) &&
-        (gender === "" || animal.gender === gender)
-      );
-    });
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const token = cookie.get("U_ID");
+    const data: LostFilterData = {
+      animalType: animalType !== undefined ? animalType : "",
+      breed: breed !== undefined ? breed.replace(/\s/g, "_") : "",
+      selectedCity: region !== undefined ? region : "",
+      selectedDistrict: country !== undefined ? country : "",
+      gender: gender !== undefined ? gender : "",
+    };
 
-    setFilteredAnimalData(filteredData);
-  };
+    try {
+      const responseData = await lost_search(data, token);
+      console.log(responseData);
+      navigate(`/lost-animals`, { state: responseData });
+    } catch (error) {
+      console.error("Error filtered data:", error);
+    }
+  }
 
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
@@ -112,21 +116,23 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
           height: "70px",
         }}
       ></img>
-      <div className="button-group">
-        <AnimalButton
-          selected={animalType === "고양이"}
-          onClick={() => handleAnimalType("강아지")}
-        >
-          강아지
-        </AnimalButton>
-        <AnimalButton
-          selected={animalType === "강아지"}
-          onClick={() => handleAnimalType("고양이")}
-        >
-          고양이
-        </AnimalButton>
-      </div>
-      <form className="search-form">
+      <form className="search-form" onSubmit={handleSearch}>
+        <div className="button-group">
+          <AnimalButton
+            selected={animalType === "고양이"}
+            onClick={() => handleAnimalType("강아지")}
+            type="button"
+          >
+            강아지
+          </AnimalButton>
+          <AnimalButton
+            selected={animalType === "강아지"}
+            onClick={() => handleAnimalType("고양이")}
+            type="button"
+          >
+            고양이
+          </AnimalButton>
+        </div>
         <div className="form-group">
           <Select
             name="breed"
@@ -216,8 +222,7 @@ function LostAnimalSearch({ animals }: LostAnimalSearchProps) {
         <div className="form-group">
           <button
             className="search-button"
-            type="button"
-            onClick={handleSearch}
+            type="submit"
           >
             검색
           </button>
