@@ -32,5 +32,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>, JpaSpecif
 	// userId와 state가 일치하는 모든 animal 정보 가져오기
 	List<Animal> findByUserIdAndState(Long userId, Animal.State state);
 
+
+
 	// List<Animal> findAll(Specification<Animal> specification);
 }

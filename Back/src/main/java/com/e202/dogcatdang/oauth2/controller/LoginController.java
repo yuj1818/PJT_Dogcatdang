@@ -62,8 +62,8 @@ public class LoginController {
         String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 86400000L); // 1일 만료
 
         return ResponseEntity.ok().body(Map.of("token", token));
-
     }
+
     @PostMapping("/join")
     public ResponseEntity<String> joinUser(@RequestBody JoinDTO joinDTO) {
         joinService.joinUser(joinDTO);
