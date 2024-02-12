@@ -96,7 +96,7 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         } else {
           navigate("/articles/1");
         }
-      }, 100);
+      }, 50);
     },
     onError: () => {
       setAlertModalIsOpen(true);
