@@ -90,11 +90,13 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
     mutationFn: requestArticle,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articleList"] });
-      if (boardId) {
-        navigate(`/articles/detail/${boardId}`);
-      } else {
-        navigate("/articles/1");
-      }
+      setTimeout(() => {
+        if (boardId) {
+          navigate(`/articles/detail/${boardId}`);
+        } else {
+          navigate("/articles/1");
+        }
+      }, 100);
     },
     onError: () => {
       setAlertModalIsOpen(true);

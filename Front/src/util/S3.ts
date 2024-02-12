@@ -96,7 +96,7 @@ export const imageHandler = async (data: string, nickname: string) => {
       const imgSrc = imgTag.getAttribute("src");
 
       if (isURL(imgSrc!)) {
-        return imgSrc?.split("/")[3];
+        return imgSrc;
       }
       const base64ImgData = imgSrc?.split(",")[1];
       const [file, uploadURL] = await Promise.allSettled([
