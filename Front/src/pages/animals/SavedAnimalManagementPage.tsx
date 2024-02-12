@@ -32,6 +32,11 @@ const ListBox = styled.div`
   .ag-header-cell-label{
     justify-content: center;
   }
+  .ag-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `
 
 function SavedAnimalManagementPage() {

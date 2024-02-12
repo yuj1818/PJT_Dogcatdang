@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getUserInfo, infoData } from "../../util/UserAPI";
 import ProfileBox from "../../components/users/ProfileBox";
 import ProfileEditModal from "../../components/users/ProfileEditModal";
@@ -8,6 +8,7 @@ import { Button } from "../../components/common/Button";
 
 function ProfilePage() {
   const params = useParams();
+  const navigate = useNavigate();
 
   const [isMine, setIsMine] = useState(false);
   const [isOrg, setIsOrg] = useState(false);
@@ -49,7 +50,7 @@ function ProfilePage() {
         isOrg ? 
         <div className="flex gap-1 items-center">
           <h4>{userInfo?.nickname}에서 보호 중인 동물</h4>
-          { isMine && <Button $marginTop={0} $paddingX={.3} $paddingY={.1} $fontSize={.75} $fontFamily="Pretendard-400" background="black">보호 동물 관리</Button> }
+          { isMine && <Button onClick={() => navigate('/save-animals/management')} $marginTop={0} $paddingX={.3} $paddingY={.1} $fontSize={.75} $fontFamily="Pretendard-400" background="black">보호 동물 관리</Button> }
         </div>
         :
         <div>

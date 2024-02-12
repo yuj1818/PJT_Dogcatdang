@@ -28,6 +28,12 @@ export interface FilterData {
   userNickname: string;
 }
 
+export interface searchingData {
+  code: string | null;
+  breed: string | null;
+  state: string | null;
+}
+
 export const regist = (data: RegistrationData, token: string) => {
   console.log(token);
   console.log(data);
@@ -116,5 +122,17 @@ export const getAnimalData = (page: number) => {
   })
     .then((res) => {
       return res.data;
+    });
+};
+
+export const searchAnimalData = (data: searchingData) => {
+  return API.post("/api/shelter/animals/filter", data, {
+    method: "POST",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res;
     });
 };
