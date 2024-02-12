@@ -38,6 +38,7 @@ import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 import { articleLoader } from "./pages/articles/articleLoader.ts";
+import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -196,6 +197,10 @@ const router = createBrowserRouter([
             path: ":userId",
             element: <VisitManagementPage />,
           },
+          {
+            path: "list",
+            element: <VisitReservationListPage />
+          }
         ],
       },
     ],

@@ -25,6 +25,7 @@ public class ResponseBoardDto {
 	private String nickname;
 	private boolean isLike;
 	private Integer likeCnt;
+	private String thumbnailImgUrl;
 	@Builder
 	public ResponseBoardDto(Board board, boolean isLike) {
 		this.boardId = board.getBoardId();
@@ -34,6 +35,7 @@ public class ResponseBoardDto {
 		this.likeCnt = board.getBoardLikeList().size();
 		this.isLike = isLike;
 		this.nickname = board.getUser().getNickname();
+		this.thumbnailImgUrl = board.getThumbnailImgUrl();
 	}
 
 	public Board toEntity(User user) {
@@ -42,7 +44,9 @@ public class ResponseBoardDto {
 			.boardId(boardId)
 			.title(title)
 			.content(content)
+			.thumbnailImgUrl(thumbnailImgUrl)
 			.user(user)
 			.build();
 	}
+
 }

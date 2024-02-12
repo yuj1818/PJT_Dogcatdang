@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdoptionInfoModal from "../../components/visits/AdoptionInfoModal";
 import { Title, SubTitle } from "../../components/common/Title";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getUserInfo } from "../../util/UserAPI";
 import { makeReservation } from "../../util/VisitAPI";
 import styled from "styled-components";
@@ -13,7 +13,10 @@ interface shelterData {
 }
 
 const ReservationFormBox = styled.div`
-  width: 65%;
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   .md-font {
     font-size: 1.3rem;
     font-family: 'Pretendard-500';
@@ -25,14 +28,23 @@ const ReservationForm = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 
   .item {
     display: flex;
     align-items: center;
+    width: 100%;
   }
 
   label {
     width: 6rem;
+  }
+
+  input {
+    flex-grow: 1;
+    border-radius: 10px;
+    box-shadow: 0 3.5px 3.5px lightgrey;
+    padding: .2rem .5rem;
   }
 `
 
@@ -63,6 +75,8 @@ const ReservationBox = styled.div`
 function VisitReservationPage() {
   const params = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [shelterInfo, setShelterInfo] = useState<shelterData>();
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [name, setName] = useState('');
@@ -131,7 +145,7 @@ function VisitReservationPage() {
         <div>
           <div className="flex items-center gap-2">  
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
-            <Button background="black" $fontSize={.8} $marginTop={0}>지도보기</Button>
+            <Button background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
           </div>
           <p>{shelterInfo?.address}</p>
         </div>
@@ -159,12 +173,17 @@ function VisitReservationPage() {
                 <label htmlFor="visitor">방문 인원</label>
                 <input  type="text" name="visitor" id="visitor" onChange={handleVisitor} required />
               </div>
-              <Button $paddingX={1}>등록</Button>
+              <div className="item">
+                <label htmlFor=""></label>
+                <div className="flex w-full justify-center">
+                  <Button $paddingX={1} $marginLeft={0}>등록</Button>
+                </div>
+              </div>
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
             <div className="img-circle">
-              <img className="img" src="https://www.fitpetmall.com/wp-content/uploads/2023/10/image-14.png" alt="" />
+              <img className="img" src={location.state.imgUrl} alt="" />
             </div>
           </div>
         </ReservationBox>

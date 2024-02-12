@@ -19,10 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.animal.dto.RequestAnimalDto;
 import com.e202.dogcatdang.animal.dto.RequestAnimalSearchDto;
+import com.e202.dogcatdang.animal.dto.RequestShelterSearchDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalListDto;
 import com.e202.dogcatdang.animal.dto.ResponseAnimalPageDto;
 import com.e202.dogcatdang.animal.dto.ResponseSavedIdDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalCountDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalDto;
+import com.e202.dogcatdang.animal.dto.ResponseShelterAnimalPageDto;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.db.entity.User;
@@ -246,26 +250,119 @@ public class AnimalServiceImpl implements AnimalService {
 
 			// State 필드가 '보호중'인 동물만을 찾도록 함
 			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
-
 			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
-			if (searchDto.getAnimalType() != null) {
+			if (searchDto.getAnimalType() != null && !searchDto.getAnimalType().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
 
-			if (searchDto.getBreed() != null) {
+			if (searchDto.getBreed() != null && !searchDto.getBreed().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getRescueLocation() != null) {
-				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getRescueLocation() + "%"));
+			if (searchDto.getSelectedCity() != null && !searchDto.getSelectedCity().isEmpty()) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedCity() + "%"));
 			}
 
-			if (searchDto.getGender() != null) {
+			if (searchDto.getSelectedDistrict() != null && !searchDto.getSelectedDistrict().isEmpty()) {
+				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedDistrict() + "%"));
+			}
+
+			if (searchDto.getGender() != null && !searchDto.getGender().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
 			}
 
-			if (searchDto.getUserNickname() != null) {
+			if (searchDto.getUserNickname() != null && !searchDto.getUserNickname().isEmpty()) {
 				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickname() + "%"));
+			}
+
+			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		};
+	}
+
+	// 기관의 보호동물 관리 숫자 가져오기
+	@Transactional
+	@Override
+	public ResponseShelterAnimalCountDto countAnimals(Long shelterId) {
+		// 기관이 등록한 전체 동물 수
+		Integer totalAnimals = animalRepository.countByUser_Id(shelterId);
+
+		// 입양 예정인 동물의 수 (방문 예약이 확정된 동물의 수)
+		Integer adoptionSchedules = reservationRepository.countByStateAndAnimal_User_Id(Reservation.State.승인, shelterId);
+
+		// 현재 보호 중인 동물의 수
+		Integer protectedAnimals = animalRepository.countByStateAndUser_Id(Animal.State.보호중, shelterId);
+
+		// ResponseShelterAnimalCountDto 객체 생성
+		return ResponseShelterAnimalCountDto.builder()
+			.totalAnimals(totalAnimals)
+			.adoptionSchedules(adoptionSchedules)
+			.protectedAnimals(protectedAnimals)
+			.build();
+	}
+
+	// 기관의 보호 동물 전체 목록 조회
+	@Transactional
+	@Override
+	public ResponseShelterAnimalPageDto findShelterAnimal(int page, int recordSize, Long shelterId) {
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		Page<Animal> animalPage = animalRepository.findByUser_Id(shelterId, pageRequest);
+
+		List<ResponseShelterAnimalDto> animalDtoList = animalPage.getContent().stream()
+			.map(ResponseShelterAnimalDto::new)
+			.toList();
+
+		return ResponseShelterAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(animalPage.getTotalPages())
+			.currentPage(page)
+			.totalElements(animalPage.getTotalElements())
+			.hasNextPage(animalPage.hasNext())
+			.hasPreviousPage(animalPage.hasPrevious())
+			.build();
+	}
+
+	// 기관 내 보호동물 검색 페이징 처리
+	@Transactional
+	@Override
+	public ResponseShelterAnimalPageDto searchShelterAnimals(int page, int recordSize,
+		RequestShelterSearchDto searchDto, Long shelterId) {
+		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
+
+		Specification<Animal> specification = createShelterSpecification(searchDto);
+
+		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
+
+		List<ResponseShelterAnimalDto> animalDtoList = animalPage.getContent().stream()
+			.map(ResponseShelterAnimalDto::new)
+			.toList();
+
+		return ResponseShelterAnimalPageDto.builder()
+			.animalDtoList(animalDtoList)
+			.totalPages(animalPage.getTotalPages())
+			.currentPage(page)
+			.totalElements(animalPage.getTotalElements())
+			.hasNextPage(animalPage.hasNext())
+			.hasPreviousPage(animalPage.hasPrevious())
+			.build();
+	}
+
+	// 기관 내 보호 동물 검색
+	private Specification<Animal> createShelterSpecification(RequestShelterSearchDto searchDto) {
+		return (root, query, criteriaBuilder) -> {
+			List<Predicate> predicates = new ArrayList<>();
+
+			// 검색 조건: 보호 현황, 품종, 코드
+			if (searchDto.getState() != null) {
+				predicates.add(criteriaBuilder.equal(root.get("state"), searchDto.getState()));
+			}
+
+			if (searchDto.getBreed() != null && !searchDto.getBreed().isEmpty()) {
+				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
+			}
+
+			if (searchDto.getCode() != null && !searchDto.getCode().isEmpty()) {
+				predicates.add(criteriaBuilder.like(root.get("code"), "%" + searchDto.getCode() + "%" ));
 			}
 
 			return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

@@ -78,9 +78,6 @@ public class Animal {
 	private User user;
 
 
-	// 동물에게 들어온 방문 예약 신청 수를 count해 등록 -> 필드보다 메서드로 필요할 때마다 계산해주는 게 나을듯..?
-	// private Integer adoptionApplicantCount;
-
 	// 외부에서 rescueLocation 값을 받아와 저장하기 위해 setter 설정
 	// Lombok으로 자동 생성 시, JPA Dirty Checking이 잘 동작 안 할 수 있기에
 	// @Setter 대신 set method 만들어서 사용

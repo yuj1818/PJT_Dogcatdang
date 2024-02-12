@@ -91,6 +91,23 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUser(@RequestHeader("Authorization") String token) {
+        // JWT 토큰을 검증하여 유효한 사용자인지 확인
+        Long id = jwtUtil.getUserId(token);
+        if (id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT token");
+        }
+
+        // 유효한 사용자라면 해당 사용자를 삭제
+        try {
+            userProfileService.deleteUser(id); // 회원 삭제 메소드 호출
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user");
+        }
+    }
+
     @GetMapping("") //테스트 메인페이지
     public String mainP() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

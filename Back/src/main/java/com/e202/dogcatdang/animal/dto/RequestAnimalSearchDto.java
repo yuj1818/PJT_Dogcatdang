@@ -6,7 +6,9 @@ import lombok.Getter;
 public class RequestAnimalSearchDto {
 	private String  animalType;
 	private String breed;
-	private String rescueLocation;
+	// rescuelocation을 위해 입력받는 위치 정보들
+	private String selectedCity;
+	private String selectedDistrict;
 	private String gender;
 	private String userNickname;
 }

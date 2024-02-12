@@ -51,7 +51,11 @@ function AnimalDetailPage() {
   };
 
   const handleVisit = () => {
-    navigate(`/visit/${animalDetail?.userId}/${animalID}`);
+    navigate(`/visit/${animalDetail?.userId}/${animalID}`, {
+      state: {
+        imgUrl: `${animalDetail?.imgUrl}`
+      }
+    });
   };
 
   return (
