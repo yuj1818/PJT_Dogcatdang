@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { Card } from "../savedanimals/SaveAnimalCard";
 
 export interface LostAnimal {
   lostAnimalId: number;
@@ -23,15 +23,6 @@ export interface LostAnimal {
 interface LostAnimalCardProps {
   animals: LostAnimal;
 }
-
-const Card = styled.div`
-  background-color: rgb(255, 255, 255);
-  border: 1px solid #ccc;
-  padding: 5px 20px 15px 20px;
-  position: relative;
-  box-shadow: 2px 2px 2px rgb(45, 45, 45, 0.4);
-  border-radius: 10px;
-`;
 
 function LostAnimalCard(props: LostAnimalCardProps) {
   const navigate = useNavigate();
