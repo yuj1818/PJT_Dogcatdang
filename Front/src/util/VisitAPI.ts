@@ -39,8 +39,8 @@ export const getReservations = (date: string, isOrg: boolean) => {
     });
 };
 
-export const getReservationDates = () => {
-  return API.get(URL + '/dates', {
+export const getReservationDates = (isOrg: boolean) => {
+  return API.get(`${isOrg ? URL_ORG : URL}` + '/dates', {
     method: "GET",
     headers: {
       Authorization: cookie.get("U_ID"),
