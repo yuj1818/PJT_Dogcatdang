@@ -250,29 +250,28 @@ public class AnimalServiceImpl implements AnimalService {
 
 			// State 필드가 '보호중'인 동물만을 찾도록 함
 			predicates.add(criteriaBuilder.equal(root.get("state"), Animal.State.보호중));
-
 			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
-			if (searchDto.getAnimalType() != null) {
+			if (searchDto.getAnimalType() != null && !searchDto.getAnimalType().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
 
-			if (searchDto.getBreed() != null) {
+			if (searchDto.getBreed() != null && !searchDto.getBreed().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getSelectedCity() != null) {
+			if (searchDto.getSelectedCity() != null && !searchDto.getSelectedCity().isEmpty()) {
 				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedCity() + "%"));
 			}
 
-			if (searchDto.getSelectedDistrict() != null) {
+			if (searchDto.getSelectedDistrict() != null && !searchDto.getSelectedDistrict().isEmpty()) {
 				predicates.add(criteriaBuilder.like(root.get("rescueLocation"), "%" + searchDto.getSelectedDistrict() + "%"));
 			}
 
-			if (searchDto.getGender() != null) {
+			if (searchDto.getGender() != null && !searchDto.getGender().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
 			}
 
-			if (searchDto.getUserNickname() != null) {
+			if (searchDto.getUserNickname() != null && !searchDto.getUserNickname().isEmpty()) {
 				predicates.add(criteriaBuilder.like(root.join("user").get("nickname"), "%" + searchDto.getUserNickname() + "%"));
 			}
 
@@ -358,11 +357,11 @@ public class AnimalServiceImpl implements AnimalService {
 				predicates.add(criteriaBuilder.equal(root.get("state"), searchDto.getState()));
 			}
 
-			if (searchDto.getBreed() != null) {
+			if (searchDto.getBreed() != null && !searchDto.getBreed().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getCode() != null) {
+			if (searchDto.getCode() != null && !searchDto.getCode().isEmpty()) {
 				predicates.add(criteriaBuilder.like(root.get("code"), "%" + searchDto.getCode() + "%" ));
 			}
 
