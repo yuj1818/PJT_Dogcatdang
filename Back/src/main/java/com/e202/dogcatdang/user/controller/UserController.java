@@ -164,6 +164,25 @@ public class UserController {
         }
     }
 
+    @GetMapping("/profiles")
+    public ResponseEntity<UserProfileDTO> getUserProfile(@RequestHeader("Authorization") String token) {
+        System.out.println("/api/users/profies/userId getMapping");
+        if (!token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String jwt = token.substring(7);
+        Long userId = jwtUtil.getUserId(jwt); // 예외 처리 생략
+
+        try {
+            UserProfileDTO userProfileDTO;
+            userProfileDTO = userProfileService.getUserProfile(userId);
+            return ResponseEntity.ok(userProfileDTO);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 //
 //    //유저 조회
 //    @GetMapping("/profiles/{userId}")
@@ -189,20 +208,22 @@ public class UserController {
 //    }
 
     //유저 조회
-    @GetMapping("/profiles/{userId}")
-    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("userId") Long userId) {
-        try {
-            UserProfileDTO userProfileDTO;
-            userProfileDTO = userProfileService.getUserProfile(userId);
-            return ResponseEntity.ok(userProfileDTO);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/profiles/{userId}")
+//    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("userId") Long userId) {
+//        System.out.println("/api/users/profies/userId getMapping");
+//        try {
+//            UserProfileDTO userProfileDTO;
+//            userProfileDTO = userProfileService.getUserProfile(userId);
+//            return ResponseEntity.ok(userProfileDTO);
+//        } catch (NoSuchElementException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     // 유저 정보 수정
     @PutMapping("/profiles/{userId}")
     public ResponseEntity<?> updateUserProfile(@PathVariable("userId") Long userId, @RequestBody UserProfileDTO userProfileDTO) {
+        System.out.println("put profiles/userId");
         try {
             // 업데이트된 유저 정보를 받아서 반환
             User updatedUser = userProfileService.updateUserProfile(userId, userProfileDTO);
