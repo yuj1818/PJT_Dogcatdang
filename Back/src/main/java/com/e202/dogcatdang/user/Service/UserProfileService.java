@@ -21,6 +21,7 @@ public class UserProfileService {
     }
 
     public UserProfileDTO getUserProfile(Long userId) {
+        System.out.println("잘 호출하니 getUserProfile service");
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
