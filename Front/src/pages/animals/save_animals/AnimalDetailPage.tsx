@@ -5,6 +5,7 @@ import { Container, Top, Leftside, Rightside } from "../StyleDetail";
 import { isOrg as org } from "../../users/SignInPage";
 import { Button } from "../../../components/common/Button";
 import { Cookies } from "react-cookie";
+import LikeButton from "../../../components/animalinfo/LikeButton";
 
 interface AnimalDetail {
   animalType: string;
@@ -31,6 +32,10 @@ function AnimalDetailPage() {
   const userInfo = JSON.parse(userInfoString);
   const userId = userInfo.id;
   const cookie = new Cookies();
+  const [liked, setLiked] = useState(animalDetail?.like);
+  const handleToggleLike = () => {
+    setLiked(!liked);
+  };
 
   useEffect(() => {
     const apiUrl = `api/animals/${animalID}`;
@@ -45,7 +50,7 @@ function AnimalDetailPage() {
         setAnimalDetail(res.data);
       })
       .catch((error) => console.error("Error:", error));
-  }, [animalID]);
+  }, [animalID, liked]);
 
   const navigate = useNavigate();
 
@@ -79,6 +84,7 @@ function AnimalDetailPage() {
         >
           <Top>
             <h1>상세정보</h1>
+            <h1>입양희망자 : {animalDetail?.adoptionApplicantCount}</h1>
           </Top>
         </div>
         <div className="flex" style={{ padding: "1rem" }}>
@@ -138,6 +144,19 @@ function AnimalDetailPage() {
               <div>{animalDetail?.feature}</div>
             </div>
           </Rightside>
+          <div
+            style={{
+              position: "absolute",
+              right: "2%",
+              bottom: "4%",
+            }}
+          >
+            <LikeButton
+              animalId={parseInt(animalID as string, 10)}
+              isActive={animalDetail?.like}
+              onToggle={handleToggleLike}
+            ></LikeButton>
+          </div>
         </div>
       </Container>
       <div className="flex justify-between">

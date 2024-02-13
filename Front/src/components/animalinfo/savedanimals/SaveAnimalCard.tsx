@@ -43,7 +43,7 @@ export const Card = styled.div`
   }
 `;
 
-const Adoption = styled.div`
+export const Adoption = styled.div`
   font-size: 8px;
   background-color: #ff8331;
   color: white;
