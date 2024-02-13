@@ -123,4 +123,31 @@ public class NotificationService {
                 .isRead(notification.isRead())
                 .build();
     }
+
+    //알림 삭제 (한개)
+    @Transactional
+    public void deleteNotification(Long notificationId, Long userId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+
+        // 사용자 ID 검증: 요청한 사용자가 쪽지의 수신자인지 확인
+        if (!notification.getReceiver().getId().equals(userId)) {
+            throw new RuntimeException("Unauthorized attempt to delete notification");
+        }
+
+        notificationRepository.deleteById(notificationId);
+    }
+
+
+    //쪽지 여러개 삭제
+    @Transactional
+    public void deleteNotifications(List<Long> notificationIds, Long userId) {
+        List<Notification> notificationsToDelete = notificationRepository.findAllById(notificationIds);
+        for (Notification notification : notificationsToDelete) {
+            if (!notification.getReceiver().getId().equals(userId)) {
+                throw new RuntimeException("Unauthorized attempt to delete notification");
+            }
+        }
+        notificationRepository.deleteAll(notificationsToDelete);
+    }
 }

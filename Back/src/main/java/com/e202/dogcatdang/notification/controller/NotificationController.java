@@ -55,4 +55,29 @@ public class NotificationController {
         return ResponseEntity.ok(notificationDetails);
     }
 
+    @DeleteMapping("/delete/{notificationId}")
+    public ResponseEntity<?> deleteNotification(@RequestHeader("Authorization") String token,
+                                                   @PathVariable("notificationId") Long notificationId) {
+        // "Bearer " 접두사를 제거한 후 토큰에서 userId 추출
+        String authToken = token.substring(7);
+        Long userId = jwtUtil.getUserId(authToken);
+
+        // 삭제 서비스 메소드 호출
+        notificationService.deleteNotification(notificationId, userId);
+        System.out.println(notificationId + "번 쪽지 삭제 완료");
+        return ResponseEntity.ok().build();
+    }
+
+    //쪽지 리스트 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteNotifications(@RequestHeader("Authorization") String token,
+                                                    @RequestBody List<Long> notificationIds) {
+        String authToken = token.substring(7);
+        Long userId = jwtUtil.getUserId(authToken);
+
+        notificationService.deleteNotifications(notificationIds, userId);
+        System.out.println("쪽지 리스트 삭제");
+        return ResponseEntity.ok().build();
+    }
+
 }
