@@ -12,10 +12,12 @@ interface buttonInterface {
   $fontFamily?: string;
   $marginLeft?: number;
   $background?: string;
+  $border?: string;
+  $selected?: boolean;
 }
 
 export const Button = styled.button<buttonInterface>`
-  border: none;
+  border: ${(props) => props.$border || "none"};
   border-radius: 5px;
   background-color: ${(props) => props.background || "#FF8331"};
   color: ${(props) => props.color || "white"};
@@ -47,6 +49,7 @@ export const Button = styled.button<buttonInterface>`
     props.$marginLeft === undefined ? "auto" : `${props.$marginLeft}rem`};
   background-color: ${(props) => props.$background || "#FF8331"};
   font-family: ${(props) => props.$fontFamily || "Pretendard-600"};
+  opacity: ${(props) => props.$selected === undefined ? 'none' : props.$selected ? 'none' : '0.6' };
 
   &:hover {
     box-shadow: 3.5px 3.5px 3.5px lightgrey;

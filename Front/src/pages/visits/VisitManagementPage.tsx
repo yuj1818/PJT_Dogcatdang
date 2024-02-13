@@ -132,7 +132,7 @@ function VisitManagementPage() {
   };
 
   const getReservationSchedules = async() => {
-    const response = await getReservationDates();
+    const response = await getReservationDates(isOrg);
     console.log(response);
     setReservatoinDates(response);
   }

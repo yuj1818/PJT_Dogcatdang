@@ -35,25 +35,32 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
     }
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//Controller 로 코드 옮기기 (jwt 발급)
-        String email = "";
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof CustomOAuth2User) {
-            email = ((CustomOAuth2User) principal).getEmail();
-        }
-//         사용자 정보 조회 및 JWT 토큰 생성 로직
-//         이메일을 기반으로 사용자 정보 조회 및 JWT 토큰 생성
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " ));
-        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 86400000L); // 1일 만료
-
-
-        // JWT를 쿠키에 저장하는 대신, 인증 성공 정보 페이지로 리디렉션
-        String targetUrl = "http://localhost:5173/oauth-success";
+        // 리다이렉션할 프론트엔드 URL 설정
+        String targetUrl = "http://localhost:5173/oauth-success"; // 프론트엔드에서 처리할 경로
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
+//    @Override
+//    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+////Controller 로 코드 옮기기 (jwt 발급)
+//        System.out.println("success 핸들러 들오냐?");
+//        String email = "";
+//        Object principal = authentication.getPrincipal();
+//        if (principal instanceof CustomOAuth2User) {
+//            email = ((CustomOAuth2User) principal).getEmail();
+//        }
+////         사용자 정보 조회 및 JWT 토큰 생성 로직
+////         이메일을 기반으로 사용자 정보 조회 및 JWT 토큰 생성
+//        Optional<User> userOptional = userRepository.findByEmail(email);
+//        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " ));
+//        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 86400000L); // 1일 만료
+//
+//        // JWT를 쿠키에 저장하는 대신, 인증 성공 정보 페이지로 리디렉션
+//        String targetUrl = "http://localhost:5173/oauth-success";
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+//    }
 //
 //@Override
 //public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
