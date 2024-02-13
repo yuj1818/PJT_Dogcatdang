@@ -9,7 +9,7 @@ pipeline {
             steps{
                 withCredentials([file(credentialsId: 'env', variable: 'configFile')]){
                     script{
-                        sh "cp $configFile Frong/env"
+                        sh "cp $configFile Frong/.env"
                     }
                 }
                 // withCredentials([file(credentialsId: 'key-store', variable: 'keyFile')]){
