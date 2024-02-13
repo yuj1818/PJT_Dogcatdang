@@ -17,7 +17,10 @@ import com.e202.dogcatdang.db.repository.StreamingAnimalRepository;
 import com.e202.dogcatdang.db.repository.StreamingRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.streaming.dto.RequestStreamingDto;
+import com.e202.dogcatdang.streaming.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.streaming.dto.ResponseDto;
+import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
+import com.e202.dogcatdang.streaming.dto.ResponseStreamingDto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -35,13 +38,53 @@ public class StreamingServiceImpl implements StreamingService{
 		User loginUser = userRepository.findById(loginUserId).get();
 
 		List<StreamingAnimal> animalList = new ArrayList<>();
-		for(Long id : requestStreamingDto.getAnimalList()){
+		for(Long id : requestStreamingDto.getAnimalInfo()){
 			animalList.add(streamingAnimalRepository.findByAnimalAnimalId(id));
 		}
 
 
 		Streaming streaming = requestStreamingDto.toEntity(loginUser, animalList);
 		streamingRepository.save(streaming);
-		return new ResponseDto();
+		return new ResponseDto(200L, "성공");
+	}
+
+	@Override
+	public List<ResponseStreamingDto> find() {
+
+		List<ResponseStreamingDto> streamingDtoList = new ArrayList<>();
+		List<Streaming> streamingList = streamingRepository.findAll();
+		for (Streaming streaming : streamingList) {
+			streamingDtoList.add(ResponseStreamingDto.builder()
+				.streaming(streaming)
+				.build());
+		}
+
+		return streamingDtoList;
+	}
+
+	@Override
+	public ResponseStreamingDto findByStreamingId(Long streamingId) {
+
+		Streaming streaming = streamingRepository.findById(streamingId).get();
+
+
+		ResponseStreamingDto streamingDto = ResponseStreamingDto.builder()
+			.streaming(streaming)
+			.build();
+
+		return streamingDto;
+	}
+
+	@Override
+	public List<ResponseAnimalDto> getAnimalList(Long streamingId) {
+
+		Streaming streaming = streamingRepository.findById(streamingId).get();
+		List<ResponseAnimalDto> animalDtoList = new ArrayList<>();
+
+		for (StreamingAnimal streamingAnimal : streaming.getAnimalList()) {
+			animalDtoList.add(ResponseAnimalDto.builder().streamingAnimal(streamingAnimal).build());
+		}
+
+		return animalDtoList;
 	}
 }

@@ -45,6 +45,9 @@ public class Streaming {
 	@Column(name = "start_time")
 	private LocalDateTime startTime;
 
+	@Column(name = "thumbnail_url")
+	private String thumbnailImgUrl;
+
 	// 1명의 user는 여러 개의 방송을 등록할 수 있다.
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")

@@ -11,9 +11,6 @@ VOLUME [ "/etc/letsencrypt:/etc/letsencrypt" ]
 # 소스 코드를 작업 디렉토리로 복사
 COPY dist/ .
 
-# 환경 변수 설정 (필요에 따라 변경 가능)
-ENV VITE_IS_PRODUCTION=production
-
 EXPOSE 80
 
 # 앱 실행 (production 환경)
