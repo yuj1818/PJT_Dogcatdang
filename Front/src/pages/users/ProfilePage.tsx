@@ -5,6 +5,7 @@ import ProfileBox from "../../components/users/ProfileBox";
 import ProfileEditModal from "../../components/users/ProfileEditModal";
 import { Title } from "../../components/common/Title";
 import { Button } from "../../components/common/Button";
+import { SubTitle } from "../../components/common/Title";
 
 function ProfilePage() {
   const params = useParams();
@@ -60,9 +61,8 @@ function ProfilePage() {
         :
         <div>
           <div className="flex gap-3">
-            <h4>관심 동물</h4>
-            <h4>입양 근황</h4>
-            <h4>입양 신청 내역</h4>
+            <SubTitle>관심 동물</SubTitle>
+            <SubTitle>입양 근황</SubTitle>
           </div>
         </div>
       }
