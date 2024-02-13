@@ -10,6 +10,8 @@ import BroadcastForm from "../../components/Broadcast/BroadcastForm";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
+import { broadcastEnd } from "../../util/broadcastAPI";
+import { decrypt } from "../../components/Broadcast/simpleEncrypt";
 
 const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443/openvidu/api";
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
@@ -38,7 +40,14 @@ const BroadCastPage: React.FC = () => {
       setSubscriber(undefined);
       setPublisher(undefined);
     }
-  }, [session]);
+
+    if (
+      sessionId &&
+      decrypt(sessionId.slice(0, -9)) === getUserInfo().username
+    ) {
+      broadcastEnd({ sessionId });
+    }
+  }, [session, sessionId]);
 
   useEffect(() => {
     window.addEventListener("beforeunload", leaveSession);
