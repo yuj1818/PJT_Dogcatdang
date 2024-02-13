@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class JoinService {
@@ -22,6 +23,7 @@ public class JoinService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    @Transactional
     public void joinUser(JoinDTO joinDTO) {
         String username = joinDTO.getUsername();
         String password = joinDTO.getPassword();
@@ -72,14 +74,17 @@ public class JoinService {
 
     }
 
+    @Transactional
     public boolean isUsernameDuplicate(String username) {
         return userRepository.existsByUsername(username);
     }
 
+    @Transactional
     public boolean isEmailDuplicate(String email) {
         return userRepository.existsByEmail(email);
     }
 
+    @Transactional
     public boolean isNicknameDuplicate(String nickname) {
         return userRepository.existsByNickname(nickname);
     }
