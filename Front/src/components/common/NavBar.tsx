@@ -98,8 +98,6 @@ const NavBar: React.FC = () => {
   const onClickLogout = async () => {
     const response = await logout();
     if (response.status === 200) {
-      cookie.remove("U_ID");
-      localStorage.removeItem("userInfo");
       navigate("/landing");
     }
   };
