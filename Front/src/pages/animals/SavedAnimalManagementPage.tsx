@@ -8,7 +8,7 @@ const Board = styled.div`
   justify-content: space-around;
 
   .bold {
-    font-family: 'Pretendard-700';
+    font-family: 'SUITE-Bold';
   }
 
   .bg-font {
