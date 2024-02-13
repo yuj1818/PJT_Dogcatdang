@@ -43,14 +43,13 @@ function AnimalListPage() {
   const token = cookie.get("U_ID");
   const [animalData, setAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalElements, setTotalElements] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchedData, setSearchedData] = useState([]);
 
-  const itemsPerPage = 8;
   const navigate = useNavigate();
   const isOrg = org();
   const { state } = useLocation();
-  
+
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -64,7 +63,7 @@ function AnimalListPage() {
 
         setAnimalData(res.data.animalDtoList);
         setCurrentPage(res.data.currentPage);
-        setTotalElements(res.data.totalElements);
+        setTotalPages(res.data.totalPages);
 
         // 검색 조건이 있는 경우에만 searchedData에 데이터 설정
         if (state) {
@@ -105,8 +104,7 @@ function AnimalListPage() {
             ))}
       </ListStyle>
       <Pagination
-        totalItems={totalElements}
-        itemsPerPage={itemsPerPage}
+        totalPages={totalPages}
         onPageChange={handlePageChange}
         currentPage={currentPage}
       />
