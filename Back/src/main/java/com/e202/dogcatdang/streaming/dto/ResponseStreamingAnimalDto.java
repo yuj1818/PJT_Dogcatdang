@@ -25,6 +25,5 @@ public class ResponseStreamingAnimalDto {
 		this.breed = animal.getBreed();
 		this.age = animal.getAge();
 		this.imgUrl = animal.getImgUrl();
-
 	}
 }

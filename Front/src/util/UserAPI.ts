@@ -20,7 +20,6 @@ export interface signUpData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
 }
 
@@ -42,7 +41,6 @@ export interface infoData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
   bio: string;
 }
@@ -52,7 +50,6 @@ export interface editedInfoData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
   bio: string;
 }

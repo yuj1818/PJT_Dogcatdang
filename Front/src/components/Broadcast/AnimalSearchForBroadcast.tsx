@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 
 import { Input } from "../common/Design";
 import { Label } from "./BroadcastForm";
 import { CallAnimal, callAnimal } from "../../util/broadcastAPI";
-import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { getUserInfo } from "../../util/uitl";
 import { retryFn } from "../../util/tanstackQuery";
 import { LoadingOrError } from "../common/LoadingOrError";
@@ -69,9 +69,11 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   const handleSearch = (query: string) => {
     let filteredData: CallAnimal[];
     if (query.trim()) {
-      filteredData = data!.filter(
-        (item) => item.code.includes(query) || item.breed.includes(query)
-      );
+      filteredData = data!
+        .filter(
+          (item) => item.code.includes(query) || item.breed.includes(query)
+        )
+        .slice(0, 5);
     } else {
       filteredData = [];
     }

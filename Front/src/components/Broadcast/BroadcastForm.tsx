@@ -1,16 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
+import styled from "styled-components";
 
 import { isOrg } from "../../pages/users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
 import { Button, Input, Contour, TextArea } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
-import { resizeFile } from "../../util/S3";
+import { requestS3, resizeFile } from "../../util/S3";
 import AnimalList from "./AnimalList";
 import { encrypt } from "./simpleEncrypt";
-import styled from "styled-components";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
@@ -54,6 +54,7 @@ const Form: React.FC<FormProps> = ({
   useEffect(() => {
     if (params.broadcastId) {
       sessionIdChangeHandler(params.broadcastId);
+      joinSession();
     } else if (!params.broadcastId) {
       let newSessionId: string;
 
@@ -69,7 +70,7 @@ const Form: React.FC<FormProps> = ({
         const year = String(today.getFullYear()).slice(-2);
         const month = String(today.getMonth() + 1).padStart(2, "0");
         const day = String(today.getDate()).padStart(2, "0");
-        const ranmdeNum = Math.ceil(Math.random() * 1000);
+        const ranmdeNum = Math.ceil(Math.random() * 10000);
         const numericFormat = `${year}${month}${day}${ranmdeNum}`;
 
         newSessionId = `${encryptedUsername}${numericFormat}`;
@@ -89,19 +90,20 @@ const Form: React.FC<FormProps> = ({
     if (isOrg()) {
       if (
         !title.trim() ||
-        !description.trim()
-        // || selectedAnimal.length === 0
+        !description.trim() ||
+        selectedAnimal.length === 0 ||
+        !file
       ) {
         setError("내용을 모두 입력하세요");
         return null;
       }
+
       // 서버 등록 요청
+      const thumbnailImgUrl = await requestS3({
+        name: title.slice(0, 10),
+        file: file!,
+      });
       const animalIds = selectedAnimal.map((element) => element.animalId);
-      console.log(selectedAnimal);
-      console.log(sessionId);
-      console.log(title);
-      console.log(description);
-      console.log(file);
       // 요청 보낼 데이터들
 
       const data = {
@@ -109,6 +111,7 @@ const Form: React.FC<FormProps> = ({
         title,
         description,
         sessionId,
+        thumbnailImgUrl,
       };
       await requestBroadCast({ data });
     }

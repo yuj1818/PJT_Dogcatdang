@@ -2,17 +2,23 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
 import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
+import Footer from "./Footer";
 
 // -----------Styled Component-----------------------------------------------
+const Container = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Color = styled.div`
-  background-color: #fff;
+  // background-color: #fff;
 `;
 
 const IMG = tw.img`
@@ -25,6 +31,7 @@ const NavBarContainer = styled.div`
   align-items: center;
   white-space: nowrap;
   margin-right: 10rem;
+  
 
   @media screen and (max-width: 1024px) {
     .container {
@@ -59,10 +66,26 @@ const StyledDiv = styled.span`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
+  padding: 0 1rem;
+  margin: 10px 0;
+  font-size: 1.2rem;
+
+  &.active {
+    font-weight: bold;
+  }
 `;
 
-const OutLet = tw.div`
-  mx-4 sm:mx-60 relative
+const OutLet = styled.div`
+  position: relative;
+  min-width: "700px";
+  flex: 1;
+
+  margin-left: 1rem;
+  margin-right: 1rem;
+  @media (min-width: 640px) {
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
 `;
 
 const NavTitle = styled.ul`
@@ -79,7 +102,7 @@ const NavTitle = styled.ul`
     width: 100%;
     height: 100%;
   }
-  ul:hover {
+  li:hover {
     box-shadow: 0 -3px 0 0 #f9d29b inset;
   }
 `;
@@ -93,13 +116,9 @@ const NavBar: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const cookie = new Cookies();
-
   const onClickLogout = async () => {
     const response = await logout();
     if (response.status === 200) {
-      cookie.remove("U_ID");
-      localStorage.removeItem("userInfo");
       navigate("/landing");
     }
   };
@@ -135,8 +154,8 @@ const NavBar: React.FC = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
-          후기 게시판
+        <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
+        입양 후 이야기
         </StyledNavLink>
       </li>
     </NavTitle>
@@ -163,8 +182,8 @@ const NavBar: React.FC = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
-          후기 게시판
+        <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
+        입양 후 이야기
         </StyledNavLink>
       </li>
       <li>
@@ -182,7 +201,7 @@ const NavBar: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <Container>
       <Color style={{ marginBottom: "2rem" }}>
         <NavBarContainer>
           <StyledNavLink to="/">
@@ -209,10 +228,11 @@ const NavBar: React.FC = () => {
           </FlexColumnContainer>
         </NavBarContainer>
       </Color>
-      <OutLet style={{ minWidth: "700px" }}>
+      <OutLet>
         <Outlet />
       </OutLet>
-    </>
+      <Footer />
+    </Container>
   );
 };
 

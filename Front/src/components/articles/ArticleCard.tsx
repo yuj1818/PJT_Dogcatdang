@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { ArticleListInterface } from "./ArticleInterface";
 import styled from "styled-components";
 
-const CardStyle = styled.div`
+export const CardStyle = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -11,12 +11,22 @@ const CardStyle = styled.div`
   margin: 0.2rem;
   text-align: center;
   width: 100%;
+  overflow: hidden;
 `;
 
-const NicknameAndLikeCnt = styled.div`
+const NicknameAndLikeCntContainer = styled.div`
   display: flex;
   justify-content: space-around;
   width: 100%;
+  overflow: hidden;
+`;
+
+const NicknameAndLikeCnt = styled.p`
+  white-space: nowrap;
+`;
+
+const Img = styled.img`
+  object-fit: contain;
 `;
 
 const ArticleCard: React.FC<{
@@ -24,22 +34,26 @@ const ArticleCard: React.FC<{
 }> = (props) => {
   const { boardId, title, thumbnailImgUrl, nickname, likeCnt } = props.article;
   return (
-    <CardStyle className="max-w-md mx-auto bg-white rounded-md overflow-hidden shadow-md my-4">
+    <CardStyle className="max-w-md mx-auto bg-white rounded-md shadow-md my-4">
       <NavLink
         to={`/articles/detail/${boardId}`}
         style={{ width: "100%" }}
         className="block h-full"
       >
-        <img
+        <Img
           className="w-full h-40 object-cover object-center"
           src={thumbnailImgUrl}
           alt="thumnail"
         />
         <h4 className="text-xl font-bold mb-2">{title}</h4>
-        <NicknameAndLikeCnt>
-          <span className="text-gray-700">작성자: {nickname}</span>
-          <span>좋아요: {likeCnt}</span>
-        </NicknameAndLikeCnt>
+        <NicknameAndLikeCntContainer>
+          <NicknameAndLikeCnt className="text-gray-700 overflow-hidden">
+            작성자: {nickname}
+          </NicknameAndLikeCnt>
+          <NicknameAndLikeCnt className="text-gray-700 overflow-hidden">
+            좋아요: {likeCnt}
+          </NicknameAndLikeCnt>
+        </NicknameAndLikeCntContainer>
       </NavLink>
     </CardStyle>
   );
