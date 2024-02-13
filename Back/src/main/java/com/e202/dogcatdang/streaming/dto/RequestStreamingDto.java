@@ -1,6 +1,7 @@
 package com.e202.dogcatdang.streaming.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.e202.dogcatdang.db.entity.Animal;
@@ -21,7 +22,7 @@ public class RequestStreamingDto {
 
 	private String title;
 	private String description;
-	private List<Long> animalList;
+	private List<Long> animalInfo;
 
 	private String sessionId;
 

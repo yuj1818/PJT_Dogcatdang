@@ -43,7 +43,7 @@ public class StreamingController {
 		return ResponseEntity.ok(animalDtoList);
 	}
 
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<ResponseDto> startStreaming(@RequestHeader("Authorization") String token, @RequestBody
 		RequestStreamingDto requestStreamingDto){
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
@@ -52,7 +52,7 @@ public class StreamingController {
 		return ResponseEntity.ok(responseDto);
 	}
 
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<List<ResponseStreamingDto>> find(){
 
 		List<ResponseStreamingDto> streamingDtoList = streamingService.find();

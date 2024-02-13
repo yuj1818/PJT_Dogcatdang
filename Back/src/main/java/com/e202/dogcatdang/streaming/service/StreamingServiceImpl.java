@@ -38,14 +38,14 @@ public class StreamingServiceImpl implements StreamingService{
 		User loginUser = userRepository.findById(loginUserId).get();
 
 		List<StreamingAnimal> animalList = new ArrayList<>();
-		for(Long id : requestStreamingDto.getAnimalList()){
+		for(Long id : requestStreamingDto.getAnimalInfo()){
 			animalList.add(streamingAnimalRepository.findByAnimalAnimalId(id));
 		}
 
 
 		Streaming streaming = requestStreamingDto.toEntity(loginUser, animalList);
 		streamingRepository.save(streaming);
-		return new ResponseDto();
+		return new ResponseDto(200L, "성공");
 	}
 
 	@Override
