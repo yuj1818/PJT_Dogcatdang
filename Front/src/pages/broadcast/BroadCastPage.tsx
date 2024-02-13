@@ -10,10 +10,9 @@ import BroadcastForm from "../../components/Broadcast/BroadcastForm";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
-import { URL, isProduction } from "../../util/axios";
 
-const OPENVIDU_SERVER_URL = isProduction ? URL : "http://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443";
+const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 const BroadCastPage: React.FC = () => {
   const [session, setSession] = useState<OVSession | undefined>(undefined);
@@ -60,13 +59,11 @@ const BroadCastPage: React.FC = () => {
   const getToken = useCallback(async (): Promise<string> => {
     const createToken = async (sessionIds: string): Promise<string> => {
       const response = await axios.post(
-        `${OPENVIDU_SERVER_URL}/api/sessions/${sessionIds}/connection`,
+        `${OPENVIDU_SERVER_URL}/sessions/${sessionIds}/connection`,
         "{}",
         {
           headers: {
-            Authorization: `Basic ${btoa(
-              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
+            Authorization: `Basic ${btoa(OPENVIDU_SERVER_SECRET)}`,
             "Content-Type": "application/json",
             withCredentials: true,
           },
@@ -79,13 +76,11 @@ const BroadCastPage: React.FC = () => {
       try {
         const data = JSON.stringify({ customSessionId: sessionIds });
         const response = await axios.post(
-          `${OPENVIDU_SERVER_URL}/api/sessions`,
+          `${OPENVIDU_SERVER_URL}/sessions`,
           data,
           {
             headers: {
-              Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
+              Authorization: `Basic ${btoa(OPENVIDU_SERVER_SECRET)}`,
               "Content-Type": "application/json",
               withCredentials: true,
             },
