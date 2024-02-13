@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    environment{
+        dockerImage = ''
+    }
+
+    stages {
+         stage('Build'){
+            steps{
+                nodejs(nodeJSInstallationName: 'nodejs') {
+                    dir("./Front"){
+                        sh "npm install"
+                        sh "npm run build -- --mode production"
+                    }
+                }
+            }
+        }
+        stage("Build Image"){
+            steps{
+                dir("./Front"){
+                    script{
+                        dockerImage = docker.build("dogcatdang/frontend"+":$BUILD_NUMBER")
+                      }
+                }
+            }
+        }
+        // stage('Push image') {
+        //     steps{
+        //         script{
+        //             echo "=================== push image ================="
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+        //                 dockerImage.push("${env.BUILD_NUMBER}")
+        //                 dockerImage.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
+        stage('stop prev conatiner'){
+            steps {
+                script {
+                    try {
+                        sh 'docker stop dogcatdang_frontend'
+                        sh 'docker rm dogcatdang_frontend'
+                    } catch (e) {
+                        echo 'no prev container'
+                    }
+                }
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                script {
+                    // 이미지를 기반으로 컨테이너 실행
+                    dockerImage.run("-p 9080:80 --name dogcatdang_frontend -d")
+                }
+            }
+        }
+        stage('Cleaning up'){
+            steps{
+                sh "docker rmi dogcatdang/frontend:$BUILD_NUMBER"
+                sh "docker rmi registry.hub.docker.com/dogcatdang/frontend:$BUILD_NUMBER"
+            }
+        }
+
+      
+    }
+}

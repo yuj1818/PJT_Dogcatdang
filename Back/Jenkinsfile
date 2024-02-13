@@ -1,0 +1,82 @@
+pipeline {
+    agent any
+    tools{
+        gradle 'gradle'
+    }
+    environment{
+        dockerImage = ''
+    }
+
+    stages {
+        stage('secret.yml download'){
+            steps{
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]){
+                    script{
+                        sh "cp $configFile Back/src/main/resources/application-secret.yml"
+                    }
+                }
+                // withCredentials([file(credentialsId: 'key-store', variable: 'keyFile')]){
+                //     script{
+                //         sh "cp $keyFile Back/keystore.p12"
+                //     }
+                // }
+            }
+        }
+        stage('Build'){
+            steps{
+                dir("./Back"){
+                    sh "chmod +x gradlew"
+                    sh "gradle wrapper"
+                    sh "./gradlew clean build"
+                }
+            }
+        }
+        stage("Build Image"){
+            steps{
+                dir("./Back"){
+                    script{
+                        dockerImage = docker.build("dogcatdang/backend"+":$BUILD_NUMBER")
+                      }
+                }
+            }
+        }
+        // stage('Push image') {
+        //     steps{
+        //         script{
+        //             docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+        //                 dockerImage.push("${env.BUILD_NUMBER}")
+        //                 dockerImage.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
+         stage('stop prev container'){
+            steps {
+                script {
+                    try {
+                        sh 'docker stop dogcatdang_backend'
+                        sh 'docker rm dogcatdang_backend'
+                    } catch (e) {
+                        echo 'no prev container'
+                    }
+                }
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                script {
+                    // 이미지를 기반으로 컨테이너 실행
+                    dockerImage.run("-p 9090:9090 --name dogcatdang_backend -d")
+                }
+            }
+        }
+        stage('Cleaning up'){
+            steps{
+                sh "docker rmi dogcatdang/backend:$BUILD_NUMBER"
+                sh "docker rmi registry.hub.docker.com/dogcatdang/backend:$BUILD_NUMBER"
+
+            }
+        }
+    }
+}
