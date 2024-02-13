@@ -82,11 +82,12 @@ interface BroadcastListInterface {
   signal: AbortSignal;
 }
 
-interface broadcastInfo {
+export interface broadcastInfo {
   title: string;
   orgNickname: string;
   sessionId: string;
   thumbnailImgUrl: string;
+  streamingId: number;
 }
 
 export const broadcastList = async ({ signal }: BroadcastListInterface) => {
