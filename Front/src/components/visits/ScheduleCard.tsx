@@ -88,9 +88,9 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
       {
         !isOrg && 
         <div className="flex flex-col gap-1 items-center justify-center">
-          <p className="sm-font">{reservation.state}</p>
+          <p className="sm-font me-2">{reservation.state}</p>
           {
-            reservation.state === '대기중' &&
+            reservation.state === '대기중' || !reservation.state &&
             <Button onClick={onClickCancel} background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
               취소
             </Button>

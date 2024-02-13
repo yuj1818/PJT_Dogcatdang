@@ -4,6 +4,8 @@ import KakaoMap from "./KakaoMap";
 import { useNavigate } from "react-router-dom";
 import defaultProfile from "../../assets/defaultProfile.png";
 import { Button } from "../common/Button";
+import { useEffect, useState } from "react";
+import { RecentSeenData } from "../../pages/animals/save_animals/AnimalDetailPage";
 
 const StyledBox = styled.div`
   border-radius: 15px;
@@ -34,24 +36,34 @@ const StyledBox = styled.div`
     font-size: 20px;
     font-weight: 600;
   }
-`
 
-const StyledButton = styled.button `
-  color: white;
-  background-color: black;
-  border-radius: 5px;
-  padding: .1rem .3rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
-`
+  .animal-image-circle {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 6rem;
+    height: 6rem;
+    margin-right: -.5rem;
+  }
+`;
 
-const Spacer = styled.div`
+const RecentSeenAnimals = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: .8;
+  flex-direction: column;
+  gap: 1rem;
+
+  .content-title {
+    font-family: 'SUITE-Bold';
+  }
 `
 
 const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, isModalOpen:boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
   
   const navigate = useNavigate();
+
+  const [recentSeen, setRecentSeen] = useState([]);
 
   const onClickEditBtn = () => {
     props.openModal((prev) => !prev);
@@ -59,7 +71,11 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
 
   const goVisitManagement = () => {
     navigate(`/visit/${props.userInfo?.id}`);
-  }
+  };
+
+  useEffect(() => {
+    setRecentSeen(JSON.parse(localStorage.getItem("recentSeen") || "[]"));
+  }, [])
 
   return (
     <>
@@ -116,7 +132,25 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
             }
           </div>
         </div>
-        { props.isOrg && !props.isModalOpen ? <KakaoMap address={props.userInfo?.address || ""} /> : <Spacer />}
+        { props.isOrg && !props.isModalOpen ? 
+          <KakaoMap address={props.userInfo?.address || ""} /> 
+          : 
+          <RecentSeenAnimals>
+            <p className="content-title">최근 본 보호 동물</p>
+            <div className="flex">
+              {
+                recentSeen && recentSeen.map((info: RecentSeenData) => (
+                  <div 
+                    className="animal-image-circle"
+                    onClick={() => navigate(`/save-animals/${info.animalId}`)}
+                  >
+                    <img className="profile-image" src={info.imgUrl} alt="" />
+                  </div>
+                ))
+              }
+            </div>
+          </RecentSeenAnimals>
+        }
       </StyledBox>
     </>
   )

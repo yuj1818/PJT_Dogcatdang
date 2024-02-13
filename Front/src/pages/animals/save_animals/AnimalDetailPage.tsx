@@ -24,6 +24,11 @@ interface AnimalDetail {
   like: boolean;
 }
 
+export interface RecentSeenData {
+  animalId: string;
+  imgUrl: string;
+}
+
 function AnimalDetailPage() {
   const { animalID } = useParams();
   const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
@@ -48,6 +53,15 @@ function AnimalDetailPage() {
       .then((res) => {
         console.log(res.data);
         setAnimalDetail(res.data);
+        const recentSeen = JSON.parse(localStorage.getItem("recentSeen") || "[]");
+        if (recentSeen.find((el: RecentSeenData) => el.animalId === animalID)) {
+          return
+        }
+        if (recentSeen.length === 3) {
+          recentSeen.shift();
+        }
+        recentSeen.push({animalId: animalID, imgUrl: res.data.imgUrl});
+        localStorage.setItem("recentSeen", JSON.stringify(recentSeen));
       })
       .catch((error) => console.error("Error:", error));
   }, [animalID, liked]);
