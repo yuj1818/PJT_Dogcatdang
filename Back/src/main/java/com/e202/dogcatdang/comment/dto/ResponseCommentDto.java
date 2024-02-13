@@ -20,8 +20,8 @@ public class ResponseCommentDto {
 	private LocalDateTime createTime;
 	private String nickname;
 	private Long parentId;
+	private Long userId;
 
-	//a
 	@Builder
 	public ResponseCommentDto(Comment comment) {
 		this.commentId = comment.getCommentId();
@@ -30,8 +30,8 @@ public class ResponseCommentDto {
 		this.nickname = comment.getUser().getNickname();
 		if (comment.getParent() != null) {
 			this.parentId = comment.getParent().getCommentId();
-
 		}
+		this.userId = comment.getUser().getId();
 	}
 
 }

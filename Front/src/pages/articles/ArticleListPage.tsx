@@ -137,8 +137,7 @@ const ArticleListPage: React.FC = () => {
       {content}
       {data && (
         <Pagination
-          totalItems={data!.length}
-          itemsPerPage={itemsPerPage}
+          totalPages={Math.ceil(data!.length / itemsPerPage)}
           onPageChange={handlePageChange}
           currentPage={currentPage}
         />
@@ -148,6 +147,16 @@ const ArticleListPage: React.FC = () => {
 };
 
 export default ArticleListPage;
+
+const PTag = styled.p`
+  flex: 1 0 auto;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0;
+  line-height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+`;
 
 export const PopularArticles: React.FC = ({}) => {
   const { data, isLoading, isError, error } = useQuery<
@@ -183,5 +192,10 @@ export const PopularArticles: React.FC = ({}) => {
       />
     );
   }
-  return <>{content}</>;
+  return (
+    <>
+      <PTag>인기 게시글</PTag>
+      {content}
+    </>
+  );
 };
