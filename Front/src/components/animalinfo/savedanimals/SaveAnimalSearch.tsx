@@ -74,23 +74,18 @@ function SaveAnimalSearch() {
     value: cat,
     label: cat,
   }));
-  // const transformedRegionInput = regionInput.map((rg) => ({
-  //   value: rg,
-  //   label: rg,
-  // }));
+  const transformedRegionInput = regionInput.map((rg) => ({
+    value: rg,
+    label: rg,
+  }));
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
   };
 
-  const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRegion(event.target.value);
-  };
-
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
   };
-
   const handleGenderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setGender(event.target.value);
   };
@@ -165,11 +160,11 @@ function SaveAnimalSearch() {
                   value={
                     animalType === "강아지"
                       ? transformedDogInput.find(
-                          (option) => option.value === breed
-                        )
+                        (option) => option.value === breed
+                      )
                       : transformedCatInput.find(
-                          (option) => option.value === breed
-                        )
+                        (option) => option.value === breed
+                      )
                   }
                   options={
                     animalType === "강아지"
@@ -193,22 +188,29 @@ function SaveAnimalSearch() {
                 />
               </div>
               <div className="form-group">
-                <Select1
+                <Select
                   name="region"
                   id="region"
-                  value={region}
-                  onChange={handleRegionChange}
-                  className="custom-input"
-                >
-                  <option value="" disabled hidden>
-                    시/도 선택
-                  </option>
-                  {regionInput.map((pr) => (
-                    <option key={pr} value={pr}>
-                      {pr}
-                    </option>
-                  ))}
-                </Select1>
+                  value={
+                    transformedRegionInput.find((option) => option.value === region)
+                  }
+                  options={regionInput.map((pr) => ({
+                    value: pr,
+                    label: pr,
+                  }))}
+                  onChange={(selectedOption) => setRegion(selectedOption?.value || "")}
+                  placeholder="시/도 선택"
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      border: "1px solid #d5967b",
+                      padding: "8px",
+                      borderRadius: "10px",
+                      width: "160px",
+                      height: "60px",
+                    }),
+                  }}
+                />
               </div>
               <div className="form-group">
                 <Select1
@@ -232,10 +234,7 @@ function SaveAnimalSearch() {
                 </Select1>
               </div>
               <div className="form-group">
-                <option value="" disabled hidden>
-                  성별
-                </option>
-                <Select1
+              <Select1
                   name="gender"
                   id="gender"
                   value={gender}
