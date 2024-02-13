@@ -3,6 +3,7 @@ import { infoData } from "../../util/UserAPI";
 import KakaoMap from "./KakaoMap";
 import { useNavigate } from "react-router-dom";
 import defaultProfile from "../../assets/defaultProfile.png";
+import { Button } from "../common/Button";
 
 const StyledBox = styled.div`
   border-radius: 15px;
@@ -19,8 +20,8 @@ const StyledBox = styled.div`
   .profile-image-circle {
     border-radius: 50%;
     overflow: hidden;
-    width: 100px;
-    height: 100px;
+    width: 7rem;
+    height: 7rem;
   }
 
   .profile-image {
@@ -70,7 +71,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
           <div className="flex flex-col gap-2">
             <div className="flex gap-1">
               <p className="nickname">{props.userInfo?.nickname}</p>
-              <div>{props.isMine ? <StyledButton onClick={onClickEditBtn}>정보 수정</StyledButton> : null}</div>
+              <div>{props.isMine ? <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={onClickEditBtn}>정보 수정</Button> : null}</div>
             </div>
           
             {
@@ -85,15 +86,15 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   {
                     props.isMine ?
                     <>
-                      <StyledButton>입양 절차 설정</StyledButton>
-                      <StyledButton>방송 일정 관리</StyledButton>
-                      <StyledButton onClick={() => navigate('/visit/list')}>방문 신청 관리</StyledButton>
-                      <StyledButton onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</StyledButton>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 설정</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>방송 일정 관리</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate('/visit/list')}>방문 신청 관리</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</Button>
                     </>
                     :
                     <>
-                      <StyledButton>입양 절차 확인</StyledButton>
-                      <StyledButton>1:1 문의</StyledButton>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 확인</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>1:1 문의</Button>
                     </>
                   }
                 </div>
@@ -105,7 +106,11 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   <p>소개글: {props.userInfo?.bio || "없음"}</p>
                 </div>
                 <div>
-                  {props.isMine ? <StyledButton onClick={goVisitManagement}>방문 일정</StyledButton> : null }
+                  {props.isMine ? 
+                    <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={goVisitManagement}>방문 일정</Button>
+                    : 
+                    <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>쪽지 보내기</Button> 
+                  }
                 </div>
               </>
             }
