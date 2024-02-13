@@ -7,23 +7,18 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.e202.dogcatdang.board.service.BoardServiceImpl;
-import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.db.entity.Streaming;
 import com.e202.dogcatdang.db.entity.StreamingAnimal;
 import com.e202.dogcatdang.db.entity.User;
-import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.StreamingAnimalRepository;
 import com.e202.dogcatdang.db.repository.StreamingRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.streaming.dto.RequestStreamingDto;
 import com.e202.dogcatdang.streaming.dto.ResponseAnimalDto;
 import com.e202.dogcatdang.streaming.dto.ResponseDto;
-import com.e202.dogcatdang.streaming.dto.ResponseStreamingAnimalDto;
 import com.e202.dogcatdang.streaming.dto.ResponseStreamingDto;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -86,5 +81,21 @@ public class StreamingServiceImpl implements StreamingService{
 		}
 
 		return animalDtoList;
+	}
+
+	@Override
+	public ResponseDto delete(Long loginUserId, Long streamingId) {
+
+
+
+		Streaming streaming = streamingRepository.findById(streamingId).get();
+
+		if(streaming.getUser().getId()!=loginUserId){
+			return new ResponseDto(403L, "유효하지 않은 요청입니다.");
+		}
+
+		streamingRepository.delete(streaming);
+
+		return new ResponseDto(200L,"성공");
 	}
 }
