@@ -1,6 +1,8 @@
 package com.e202.dogcatdang.mypage.controller;
 
 
+import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
+import com.e202.dogcatdang.board.service.BoardServiceImpl;
 import com.e202.dogcatdang.db.entity.Animal;
 import com.e202.dogcatdang.mypage.service.MyPageService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
@@ -15,11 +17,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users/profiles/details")
 public class UserLikeAnimalController {
-    @Autowired
-    private MyPageService myPageService;
 
-    @Autowired
-    private JWTUtil jwtUtil; // JWT 토큰 처리를 위한 컴포넌트 (구현 필요)
+    private final MyPageService myPageService;
+
+
+    private final JWTUtil jwtUtil; // JWT 토큰 처리를 위한 컴포넌트 (구현 필요)
+
+    private final BoardServiceImpl boardService;
+
+    public UserLikeAnimalController(MyPageService myPageService, JWTUtil jwtUtil, BoardServiceImpl boardService) {
+        this.myPageService = myPageService;
+        this.jwtUtil = jwtUtil;
+        this.boardService = boardService;
+    }
 
     //유저의 관심동물 불러오기
     @GetMapping("/liked-animals")
@@ -55,7 +65,7 @@ public class UserLikeAnimalController {
     }
     // 특정 동물의 상세 정보 조회
     @GetMapping("/{animalId}")
-    public ResponseEntity<Animal> getAnimalDetail(@PathVariable Long animalId) {
+    public ResponseEntity<Animal> getAnimalDetail(@PathVariable("animalId") Long animalId) {
         System.out.println("상세조회 동물");
         try {
             Animal animal = myPageService.findAnimalById(animalId);
@@ -65,8 +75,25 @@ public class UserLikeAnimalController {
         }
     }
 
-//    @GetMapping("/posts")
-//    public ResponseEntity<>
+    @GetMapping("/posts")
+    public ResponseEntity<List<ResponseBoardSummaryDto>> getPosts(@RequestHeader("Authorization") String token){
+        System.out.println("/posts");
+        if (!token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String jwt = token.substring(7);
+        Long userId = jwtUtil.getUserId(jwt); // 예외 처리 생략
+
+        System.out.println("userId : " + userId);
+
+
+
+        List<ResponseBoardSummaryDto> posts = boardService.findAllByLoginUser(userId);
+        return ResponseEntity.ok(posts);
+    }
+
+
+
 
 
 }
