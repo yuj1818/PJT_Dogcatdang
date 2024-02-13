@@ -7,7 +7,7 @@ export const Title = styled.p`
 
 export const SubTitle = styled.p`
   font-size: 1.5rem;
-  font-family: 'SUITE-Bold';
+  font-family: 'SUITE-SemiBold';
 `
 
 export const Bold = styled.p`

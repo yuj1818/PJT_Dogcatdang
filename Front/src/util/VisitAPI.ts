@@ -6,7 +6,7 @@ const URL_ORG = "/api/shelter/reservations"
 const cookie = new Cookies();
 
 interface reservationData {
-  reservationTime: Date;
+  reservationTime: string;
   name: string;
   phone: string;
   visitor: number;
