@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Select from "react-select";
-import SearchImg from "../../../assets/Search.png";
 import "../search.css";
 import {
   dogInput,
@@ -26,7 +25,7 @@ export interface AnimalType {
   selectedCity: string;
   selectedDistrict: string;
   detailInfo: string;
-  isNeuter: boolean;
+  isNeuter: string;
   gender: string;
   feature: string;
   state: string;
@@ -64,9 +63,7 @@ function SaveAnimalSearch() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const isSearch = true;
-  // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
-  // const [currentPage, setCurrentPage] = useState(1);
+  const [isSearch, setIsSearch] = useState(false);
   const genderInput = ["전체", "암컷", "수컷"];
 
   const transformedDogInput = dogInput.map((dog) => ({
@@ -118,6 +115,9 @@ function SaveAnimalSearch() {
     try {
       const responseData = await search(data, token);
       // console.log(responseData);
+      if (responseData !== undefined) {
+        setIsSearch(true);
+      }
       navigate(`/save-animals`, { state: { responseData, isSearch } });
     } catch (error) {
       console.error("Error filtered data:", error);
@@ -131,17 +131,6 @@ function SaveAnimalSearch() {
         <hr className="border-black" />
       </div>
       <div className="container">
-        <img
-          src={SearchImg}
-          alt="search"
-          style={{
-            position: "absolute",
-            right: 90,
-            top: 0,
-            width: "70px",
-            height: "70px",
-          }}
-        ></img>
         <form className="search-form" onSubmit={handleSearch}>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div>

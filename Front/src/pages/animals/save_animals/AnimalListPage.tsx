@@ -49,7 +49,7 @@ function AnimalListPage() {
   const navigate = useNavigate();
   const isOrg = org();
   const { state } = useLocation();
-
+  // console.log(state.isSearch);
   useEffect(() => {
     const searchData = async () => {
       try {
@@ -66,8 +66,8 @@ function AnimalListPage() {
         setTotalPages(res.data.totalPages);
 
         // 검색 조건이 있는 경우에만 searchedData에 데이터 설정
-        if (state) {
-          setSearchedData(state);
+        if (state?.responseData) {
+          setSearchedData(state.responseData);
         } else {
           setSearchedData([]);
         }

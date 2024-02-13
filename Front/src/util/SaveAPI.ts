@@ -13,7 +13,7 @@ export interface RegistrationData {
   selectedCity: string;
   selectedDistrict: string;
   detailInfo: string;
-  isNeuter: boolean;
+  isNeuter: string;
   gender: string;
   feature: string;
   state: string;
@@ -79,8 +79,6 @@ export const saveUpdate = (
     });
 };
 
-
-
 export const search = (data: FilterData, token: string) => {
   console.log(data);
   return API.post("api/animals/filter", data, {
@@ -88,18 +86,18 @@ export const search = (data: FilterData, token: string) => {
       Authorization: token,
     },
   })
-  .then((res) => {
-    console.log("Response:", res.data.animalDtoList);
-    return res.data.animalDtoList;
-  })
-  .catch((err) => {
-    if (err.response && err.response.status === 204) {
-      return 
-    } else {
-      console.error("Error filtered data:", err);
-      throw err;
-    }
-  });
+    .then((res) => {
+      console.log("Response:", res.data.animalDtoList);
+      return res.data.animalDtoList;
+    })
+    .catch((err) => {
+      if (err.response && err.response.status === 204) {
+        return;
+      } else {
+        console.error("Error filtered data:", err);
+        throw err;
+      }
+    });
 };
 
 export const getNumberOfAnimals = () => {
@@ -107,11 +105,10 @@ export const getNumberOfAnimals = () => {
     method: "GET",
     headers: {
       Authorization: cookie.get("U_ID"),
-    }
-  })
-    .then((res) => {
-      return res.data;
-    })
+    },
+  }).then((res) => {
+    return res.data;
+  });
 };
 
 export const getAnimalData = (page: number) => {
@@ -121,12 +118,11 @@ export const getAnimalData = (page: number) => {
       Authorization: cookie.get("U_ID"),
     },
     params: {
-      page
-    }
-  })
-    .then((res) => {
-      return res.data;
-    });
+      page,
+    },
+  }).then((res) => {
+    return res.data;
+  });
 };
 
 export const searchAnimalData = (data: searchingData) => {
@@ -134,9 +130,8 @@ export const searchAnimalData = (data: searchingData) => {
     method: "POST",
     headers: {
       Authorization: cookie.get("U_ID"),
-    }
-  })
-    .then((res) => {
-      return res;
-    });
+    },
+  }).then((res) => {
+    return res;
+  });
 };

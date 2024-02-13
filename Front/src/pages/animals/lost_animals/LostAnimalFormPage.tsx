@@ -27,7 +27,7 @@ function LostAnimalFormPage() {
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
-  const [rescueDate, setRescueDate] = useState("");
+  const [lostDate, setLostDate] = useState("");
   const [name, setName] = useState("");
   const [feature, setFeature] = useState("");
 
@@ -41,7 +41,7 @@ function LostAnimalFormPage() {
       breed: breed,
       age: age,
       weight: weight,
-      lostDate: rescueDate,
+      lostDate: lostDate,
       selectedCity: selectedCity,
       selectedDistrict: selectedDistrict,
       detailInfo: detailInfo,
@@ -73,12 +73,14 @@ function LostAnimalFormPage() {
   };
 
   const handleRescueDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRescueDate(e.target.value);
+    setLostDate(e.target.value);
   };
 
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -88,10 +90,10 @@ function LostAnimalFormPage() {
       reader.readAsDataURL(file);
       try {
         const uploadedImageUrl = await requestS3({
-          name: file.name.replace(/\.[^/.]+$/, ''), 
+          name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
-        })
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        });
+        console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
         console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
@@ -301,11 +303,11 @@ function LostAnimalFormPage() {
 
               <div className="flex flex-col gap-1">
                 <div className="box">
-                  <label className="item">발견일자</label>
+                  <label className="item">실종일자</label>
                   <Input
                     className="input"
                     type="date"
-                    value={rescueDate}
+                    value={lostDate}
                     onChange={handleRescueDate}
                   />
                 </div>

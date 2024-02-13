@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import styled, { css } from "styled-components";
-import SearchImg from "../../../assets/Search.png";
 import "../search.css";
 import {
   dogInput,
@@ -92,17 +91,6 @@ function LostAnimalSearch() {
         <hr className="border-black" />
       </div>
       <div className="container">
-        <img
-          src={SearchImg}
-          alt="search"
-          style={{
-            position: "absolute",
-            right: 200,
-            top: 0,
-            width: "70px",
-            height: "70px",
-          }}
-        ></img>
         <form className="search-form" onSubmit={handleSearch}>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div>
