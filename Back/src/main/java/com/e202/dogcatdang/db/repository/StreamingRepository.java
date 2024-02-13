@@ -10,4 +10,5 @@ import com.e202.dogcatdang.db.entity.Streaming;
 @Repository
 public interface StreamingRepository extends JpaRepository<Streaming, Long> {
 
+	Streaming findBySessionId(String sessionId);
 }

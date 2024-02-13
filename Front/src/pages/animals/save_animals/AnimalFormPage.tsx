@@ -29,12 +29,14 @@ function AnimalFormPage() {
   const [age, setAge] = useState("");
   const [weight, setWeight] = useState("");
   const [rescueDate, setRescueDate] = useState("");
-  const [isNeuter, setIsNeuter] = useState(false);
+  const [isNeuter, setIsNeuter] = useState("");
   const [feature, setFeature] = useState("");
 
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -44,11 +46,9 @@ function AnimalFormPage() {
       reader.readAsDataURL(file);
       try {
         const uploadedImageUrl = await requestS3({
-          name: file.name.replace(/\.[^/.]+$/, ''), 
+          name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
-        })
-        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
-        // console.log("URL:", uploadedImageUrl);
+        });
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {
@@ -87,8 +87,7 @@ function AnimalFormPage() {
     navigate("/save-animals");
   };
 
-
-    const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
   };
 
@@ -107,11 +106,9 @@ function AnimalFormPage() {
     setRescueDate(e.target.value);
   };
 
-  const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsNeuter(e.target.checked);
+  const handleIsNeuter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIsNeuter(e.target.value);
   };
-
-
 
   return (
     <>
@@ -321,12 +318,18 @@ function AnimalFormPage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">중성화 여부</label>
-                  <Input
-                    type="checkbox"
-                    name="isNeutered"
-                    checked={isNeuter}
+                  <Select
+                    className="input"
+                    value={isNeuter}
                     onChange={handleIsNeuter}
-                  />
+                  >
+                    <option value="" disabled hidden>
+                      중성화 여부
+                    </option>
+                    <option value="예">완료</option>
+                    <option value="아니오">미완료</option>
+                    <option value="미상">미상</option>
+                  </Select>
                 </div>
               </div>
               <div className="flex flex-col gap-1">
