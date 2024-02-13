@@ -25,6 +25,7 @@ const NavBarContainer = styled.div`
   align-items: center;
   white-space: nowrap;
   margin-right: 10rem;
+  
 
   @media screen and (max-width: 1024px) {
     .container {
@@ -59,6 +60,14 @@ const StyledDiv = styled.span`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
+  // padding: 0 1rem;
+  // margin: 10px 0;
+
+  // &.active {
+  //   font-weight: bold;
+  //   text-decoration: underline;
+  //   text-underline-offset: 0.3em;
+  // }
 `;
 
 const OutLet = tw.div`
@@ -135,8 +144,8 @@ const NavBar: React.FC = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
-          후기 게시판
+        <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
+        입양 후 이야기
         </StyledNavLink>
       </li>
     </NavTitle>
@@ -163,8 +172,8 @@ const NavBar: React.FC = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/articles/1" aria-label="후기 게시판">
-          후기 게시판
+        <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
+        입양 후 이야기
         </StyledNavLink>
       </li>
       <li>
