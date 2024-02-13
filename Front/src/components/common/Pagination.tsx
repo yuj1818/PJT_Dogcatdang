@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 interface PaginationProps {
-  totalItems: number;
-  itemsPerPage: number;
+  totalPages: number;
   onPageChange: (newPage: number) => void;
   currentPage: number;
 }
@@ -26,13 +25,10 @@ const PaginationButton = styled.button`
 `;
 
 const Pagination: React.FC<PaginationProps> = ({
-  totalItems,
-  itemsPerPage,
+  totalPages,
   onPageChange,
   currentPage,
 }) => {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   const handlePageChange = (newPage: number) => {
     onPageChange(newPage);
   };
