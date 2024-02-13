@@ -22,7 +22,7 @@ public interface AnimalService {
 
 	ResponseAnimalPageDto findAllAnimals(int page, int recordSize, String token);
 
-	ResponseAnimalDto findById(Long animalId);
+	ResponseAnimalDto findById(Long animalId, Long userId);
 
 	Animal update(Long animalId, RequestAnimalDto requestAnimalDto) throws IOException;
 

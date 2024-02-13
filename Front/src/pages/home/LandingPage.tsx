@@ -91,8 +91,8 @@ const Landing = styled.div`
   }
 
   .service-intro {
-    margin-left: 9rem;
-    font-family: 'Poppins';
+    margin-left: 10rem;
+    font-family: 'SUITE-Medium';
     font-style: normal;
     font-weight: 500;
     font-size: 35px;
