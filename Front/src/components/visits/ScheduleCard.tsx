@@ -1,4 +1,5 @@
 import { reservationData } from "../../pages/visits/VisitManagementPage";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import moment from "moment";
 import { Button } from "../common/Button";
@@ -43,6 +44,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
 }) => {
 
   const isOrg = org();
+  const navigate = useNavigate();
 
   const onClickCancel = async() => {
     await cancelReservation(reservation.reservationId);
@@ -50,7 +52,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
   };
 
   return (
-    <Card>
+    <Card onClick={() => navigate(`/save-animals/${reservation.animalId}`)}>
       <div className="circle">
         <img
           className="animal-img"
