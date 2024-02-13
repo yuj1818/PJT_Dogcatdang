@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -238,5 +239,31 @@ public class BoardServiceImpl implements BoardService {
 		boardList.sort(Comparator.comparing(ResponseBoardBestDto::getLikeCnt).reversed());
 
 		return boardList;
+	}
+
+	@Override
+	@Transactional
+	public List<ResponseBoardSummaryDto> findAllByLoginUser(Long loginUserId) {
+		// 로그인한 사용자 정보를 가져옵니다.
+		User loginUser = userRepository.findById(loginUserId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+		// 로그인한 사용자가 작성한 게시글만 가져옵니다.
+		List<Board> boardList = boardRepository.findByUser(loginUser);
+
+		// 각 게시글에 대한 요약 정보를 담을 리스트를 초기화합니다.
+		List<ResponseBoardSummaryDto> boardDtoList = new ArrayList<>();
+
+		// 각 게시글에 대해 반복하면서 요약 정보를 생성합니다.
+		for (Board board : boardList) {
+			boolean isLike = boardLikeRepository.existsByBoardBoardIdAndUserId(board.getBoardId(), loginUserId);
+			ResponseBoardSummaryDto boardSummary = ResponseBoardSummaryDto.builder()
+					.board(board)
+					.isLike(isLike)
+					.build();
+
+			boardDtoList.add(boardSummary);
+		}
+		// 완성된 요약 정보를 반환합니다.
+		return boardDtoList;
 	}
 }

@@ -30,4 +30,6 @@ public interface BoardService {
 	List<ResponseBoardSummaryDto> searchBoards(Long loginUserId, RequestBoardSearchDto searchDto);
 
 	List<ResponseBoardBestDto> getBestBoards();
+
+	List<ResponseBoardSummaryDto> findAllByLoginUser(Long loginUserId);
 }
