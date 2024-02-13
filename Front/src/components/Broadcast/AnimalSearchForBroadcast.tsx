@@ -69,9 +69,11 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   const handleSearch = (query: string) => {
     let filteredData: CallAnimal[];
     if (query.trim()) {
-      filteredData = data!.filter(
-        (item) => item.code.includes(query) || item.breed.includes(query)
-      );
+      filteredData = data!
+        .filter(
+          (item) => item.code.includes(query) || item.breed.includes(query)
+        )
+        .slice(0, 5);
     } else {
       filteredData = [];
     }

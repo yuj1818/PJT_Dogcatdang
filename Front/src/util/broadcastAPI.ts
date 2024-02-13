@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { handleAxiosError } from "./articleAPI";
 import API from "./axios";
 import { Cookies } from "react-cookie";
+import { queryClient } from "./tanstackQuery";
 
 export interface AnimalInfo {
   id: number;
@@ -40,6 +41,7 @@ export const requestBroadCast = async ({
         Authorization: token,
       },
     });
+    console.log(response);
     return response.data;
   } catch (error) {
     handleAxiosError(error as AxiosError);
@@ -107,5 +109,28 @@ export const broadcastList = async ({ signal }: BroadcastListInterface) => {
   } catch (error) {
     handleAxiosError(error as AxiosError);
     return [];
+  }
+};
+
+interface BroadcastEndInterface {
+  sessionId: string;
+}
+
+export const broadcastEnd = async ({ sessionId }: BroadcastEndInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  console.log("여기");
+
+  try {
+    await API.delete(URL + "/" + sessionId, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    queryClient.invalidateQueries({ queryKey: ["broadcastList"] });
+  } catch (error) {
+    throw error;
   }
 };
