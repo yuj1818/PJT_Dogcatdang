@@ -56,6 +56,11 @@ public class RequestAnimalDto {
 
 	// DTO -> Entity (DB 저장용)
 	public Animal toEntity(User user) {
+		// 발견 날짜가 현재 날짜와 같거나 과거인지 확인
+		if (rescueDate != null && !rescueDate.isBefore(LocalDate.now().plusDays(1))) {
+			throw new IllegalArgumentException("발견 날짜는 현재 날짜와 같거나 과거여야 합니다.");
+		}
+
 		return Animal.builder()
 			.animalType(animalType)
 			.breed(breed)
