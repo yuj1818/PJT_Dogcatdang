@@ -86,11 +86,11 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
-	public ResponseDto delete(Long loginUserId, Long streamingId) {
+	public ResponseDto delete(Long loginUserId, String sessionId) {
 
 
 
-		Streaming streaming = streamingRepository.findById(streamingId).get();
+		Streaming streaming = streamingRepository.findBySessionId(sessionId);
 
 		if(streaming.getUser().getId()!=loginUserId){
 			return new ResponseDto(403L, "유효하지 않은 요청입니다.");
