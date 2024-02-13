@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Select from "react-select";
 import styled, { css } from "styled-components";
 import SearchImg from "../../../assets/Search.png";
-import "./search.css";
+import "../search.css";
 import {
   dogInput,
   catInput,
@@ -22,7 +22,7 @@ function LostAnimalSearch() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const cookie = new Cookies();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
@@ -68,7 +68,7 @@ function LostAnimalSearch() {
     } catch (error) {
       console.error("Error filtered data:", error);
     }
-  }
+  };
 
   const AnimalButton = styled.button<{ selected: boolean }>`
     background-color: #ff8331;
@@ -86,7 +86,6 @@ function LostAnimalSearch() {
   `;
 
   return (
-
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-3">
         <Title className="title">실종 동물 조회</Title>
@@ -105,7 +104,7 @@ function LostAnimalSearch() {
           }}
         ></img>
         <form className="search-form" onSubmit={handleSearch}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <div>
               <div className="button-group">
                 <AnimalButton
@@ -124,22 +123,28 @@ function LostAnimalSearch() {
                 </AnimalButton>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="form-group">
                 <Select
                   name="breed"
                   id="breed"
                   value={
                     animalType === "강아지"
-                      ? transformedDogInput.find((option) => option.value === breed)
-                      : transformedCatInput.find((option) => option.value === breed)
+                      ? transformedDogInput.find(
+                          (option) => option.value === breed
+                        )
+                      : transformedCatInput.find(
+                          (option) => option.value === breed
+                        )
                   }
                   options={
                     animalType === "강아지"
                       ? transformedDogInput
                       : transformedCatInput
                   }
-                  onChange={(selectedOption) => setBreed(selectedOption?.value || "")}
+                  onChange={(selectedOption) =>
+                    setBreed(selectedOption?.value || "")
+                  }
                   placeholder="품종"
                   styles={{
                     control: (provided) => ({
@@ -183,11 +188,13 @@ function LostAnimalSearch() {
                     시/구/군 선택
                   </option>
                   {countryInput[regionInput.indexOf(region)] &&
-                    countryInput[regionInput.indexOf(region)].map((ct, index) => (
-                      <option key={index} value={ct}>
-                        {ct}
-                      </option>
-                    ))}
+                    countryInput[regionInput.indexOf(region)].map(
+                      (ct, index) => (
+                        <option key={index} value={ct}>
+                          {ct}
+                        </option>
+                      )
+                    )}
                 </Select1>
               </div>
               <div className="form-group">
@@ -212,10 +219,7 @@ function LostAnimalSearch() {
                 </Select1>
               </div>
               <div className="form-group">
-                <button
-                  className="search-button"
-                  type="submit"
-                >
+                <button className="search-button" type="submit">
                   검색
                 </button>
               </div>

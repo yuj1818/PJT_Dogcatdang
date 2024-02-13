@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Select from "react-select";
 import SearchImg from "../../../assets/Search.png";
-import "./search.css";
+import "../search.css";
 import {
   dogInput,
   catInput,
@@ -35,7 +35,7 @@ export interface AnimalType {
   like: boolean;
   rescueLocation: string;
   adoptionApplicantCount: number;
-};
+}
 
 const AnimalButton = styled.button<{ selected: boolean }>`
   background-color: #ff8331;
@@ -50,8 +50,12 @@ const AnimalButton = styled.button<{ selected: boolean }>`
     css`
       opacity: 0.5;
     `};
-`;
 
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 0.8rem;
+  }
+`;
 
 function SaveAnimalSearch() {
   const [animalType, setAnimalType] = useState("강아지");
@@ -95,8 +99,7 @@ function SaveAnimalSearch() {
     setShelterName(event.target.value);
   };
   const cookie = new Cookies();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -118,7 +121,7 @@ function SaveAnimalSearch() {
     } catch (error) {
       console.error("Error filtered data:", error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -139,8 +142,7 @@ function SaveAnimalSearch() {
           }}
         ></img>
         <form className="search-form" onSubmit={handleSearch}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <div>
               <div className="button-group">
                 <AnimalButton
@@ -161,22 +163,28 @@ function SaveAnimalSearch() {
                 </AnimalButton>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="form-group">
                 <Select
                   name="breed"
                   id="breed"
                   value={
                     animalType === "강아지"
-                      ? transformedDogInput.find((option) => option.value === breed)
-                      : transformedCatInput.find((option) => option.value === breed)
+                      ? transformedDogInput.find(
+                          (option) => option.value === breed
+                        )
+                      : transformedCatInput.find(
+                          (option) => option.value === breed
+                        )
                   }
                   options={
                     animalType === "강아지"
                       ? transformedDogInput
                       : transformedCatInput
                   }
-                  onChange={(selectedOption) => setBreed(selectedOption?.value || "")}
+                  onChange={(selectedOption) =>
+                    setBreed(selectedOption?.value || "")
+                  }
                   placeholder="품종"
                   styles={{
                     control: (provided) => ({
@@ -220,11 +228,13 @@ function SaveAnimalSearch() {
                     시/구/군 선택
                   </option>
                   {countryInput[regionInput.indexOf(region)] &&
-                    countryInput[regionInput.indexOf(region)].map((ct, index) => (
-                      <option key={index} value={ct}>
-                        {ct}
-                      </option>
-                    ))}
+                    countryInput[regionInput.indexOf(region)].map(
+                      (ct, index) => (
+                        <option key={index} value={ct}>
+                          {ct}
+                        </option>
+                      )
+                    )}
                 </Select1>
               </div>
               <div className="form-group">
@@ -260,10 +270,7 @@ function SaveAnimalSearch() {
                 />
               </div>
               <div className="form-group">
-                <button
-                  className="search-button"
-                  type="submit"
-                >
+                <button className="search-button" type="submit">
                   검색
                 </button>
               </div>

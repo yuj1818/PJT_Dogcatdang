@@ -9,8 +9,15 @@ import tw from "tailwind-styled-components";
 import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
+import Footer from "./Footer";
 
 // -----------Styled Component-----------------------------------------------
+const Container = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Color = styled.div`
   background-color: #fff;
 `;
@@ -70,8 +77,17 @@ const StyledNavLink = styled(NavLink)`
   // }
 `;
 
-const OutLet = tw.div`
-  mx-4 sm:mx-60 relative
+const OutLet = styled.div`
+  position: relative;
+  min-width: "700px";
+  flex: 1;
+
+  margin-left: 1rem;
+  margin-right: 1rem;
+  @media (min-width: 640px) {
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
 `;
 
 const NavTitle = styled.ul`
@@ -88,7 +104,7 @@ const NavTitle = styled.ul`
     width: 100%;
     height: 100%;
   }
-  ul:hover {
+  li:hover {
     box-shadow: 0 -3px 0 0 #f9d29b inset;
   }
 `;
@@ -191,7 +207,7 @@ const NavBar: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <Container>
       <Color style={{ marginBottom: "2rem" }}>
         <NavBarContainer>
           <StyledNavLink to="/">
@@ -218,10 +234,11 @@ const NavBar: React.FC = () => {
           </FlexColumnContainer>
         </NavBarContainer>
       </Color>
-      <OutLet style={{ minWidth: "700px" }}>
+      <OutLet>
         <Outlet />
       </OutLet>
-    </>
+      <Footer />
+    </Container>
   );
 };
 
