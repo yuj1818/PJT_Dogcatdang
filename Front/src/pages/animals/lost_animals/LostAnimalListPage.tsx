@@ -43,7 +43,7 @@ function LostAnimalListPage() {
   const token = cookie.get("U_ID");
   const [lostAnimalData, setLostAnimalData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalElements, setTotalElements] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [searchedData, setSearchedData] = useState([]);
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -56,11 +56,11 @@ function LostAnimalListPage() {
           Authorization: token,
         };
         const res = await API.get(`/api/lost-animals?page=${currentPage}`, {
-          headers
+          headers,
         });
         setLostAnimalData(res.data.lostAnimalDtoList);
         setCurrentPage(res.data.currentPage);
-        setTotalElements(res.data.totalElements);
+        setTotalPages(res.data.totalPages);
         if (state) {
           setSearchedData(state);
         } else {
@@ -80,7 +80,6 @@ function LostAnimalListPage() {
     setCurrentPage(newPage);
   };
 
-  const itemsPerPage = 8;
   return (
     <>
       <LostAnimalSearch />
@@ -90,19 +89,16 @@ function LostAnimalListPage() {
         </StyledButton>
       </div>
       <ListStyle $itemsPerRow={10}>
-
         {searchedData.length > 0
           ? searchedData.map((animal: LostAnimal) => (
-            <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
-          ))
+              <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
+            ))
           : lostAnimalData.map((animal: LostAnimal) => (
-            <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
-          ))}
-
+              <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
+            ))}
       </ListStyle>
       <Pagination
-        totalItems={totalElements}
-        itemsPerPage={itemsPerPage}
+        totalPages={totalPages}
         onPageChange={handlePageChange}
         currentPage={currentPage}
       />

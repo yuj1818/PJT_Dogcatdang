@@ -5,6 +5,20 @@ pipeline {
     }
 
     stages {
+         stage('env download'){
+            steps{
+                withCredentials([file(credentialsId: 'env', variable: 'configFile')]){
+                    script{
+                        sh "cp $configFile Frong/env"
+                    }
+                }
+                // withCredentials([file(credentialsId: 'key-store', variable: 'keyFile')]){
+                //     script{
+                //         sh "cp $keyFile Back/keystore.p12"
+                //     }
+                // }
+            }
+        }
          stage('Build'){
             steps{
                 nodejs(nodeJSInstallationName: 'nodejs') {
