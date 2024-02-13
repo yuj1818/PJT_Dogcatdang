@@ -86,32 +86,32 @@ const Form: React.FC<FormProps> = ({
 
   const onSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isOrg()) {
-      if (
-        !title.trim() ||
-        !description.trim()
-        // || selectedAnimal.length === 0
-      ) {
-        setError("내용을 모두 입력하세요");
-        return null;
-      }
-      // 서버 등록 요청
-      const animalIds = selectedAnimal.map((element) => element.animalId);
-      console.log(selectedAnimal);
-      console.log(sessionId);
-      console.log(title);
-      console.log(description);
-      console.log(file);
-      // 요청 보낼 데이터들
+    // if (isOrg()) {
+    //   if (
+    //     !title.trim() ||
+    //     !description.trim()
+    //     // || selectedAnimal.length === 0
+    //   ) {
+    //     setError("내용을 모두 입력하세요");
+    //     return null;
+    //   }
+    //   // 서버 등록 요청
+    //   const animalIds = selectedAnimal.map((element) => element.animalId);
+    //   console.log(selectedAnimal);
+    //   console.log(sessionId);
+    //   console.log(title);
+    //   console.log(description);
+    //   console.log(file);
+    //   // 요청 보낼 데이터들
 
-      const data = {
-        animalInfo: animalIds,
-        title,
-        description,
-        sessionId,
-      };
-      await requestBroadCast({ data });
-    }
+    //   const data = {
+    //     animalInfo: animalIds,
+    //     title,
+    //     description,
+    //     sessionId,
+    //   };
+    //   await requestBroadCast({ data });
+    // }
 
     joinSession();
 
