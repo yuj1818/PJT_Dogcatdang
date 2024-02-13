@@ -72,8 +72,6 @@ const StyledNavLink = styled(NavLink)`
 
   &.active {
     font-weight: bold;
-    text-decoration: underline;
-    text-underline-offset: 0.3em;
   }
 `;
 
