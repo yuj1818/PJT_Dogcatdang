@@ -69,6 +69,7 @@ const StyledNavLink = styled(NavLink)`
   color: inherit;
   padding: 0 1rem;
   margin: 10px 0;
+  font-size: 1.2rem;
 
   &.active {
     font-weight: bold;
