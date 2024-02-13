@@ -74,11 +74,11 @@ public class StreamingController {
 		return ResponseEntity.ok(animalDtoList);
 	}
 
-	@DeleteMapping("/{streamingId}")
-	public ResponseEntity<ResponseDto> delete(@RequestHeader("Authorization") String token,@PathVariable Long streamingId) {
+	@DeleteMapping("/{sessionId}")
+	public ResponseEntity<ResponseDto> delete(@RequestHeader("Authorization") String token,@PathVariable String sessionId) {
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
-		return ResponseEntity.ok(streamingService.delete(loginUserId, streamingId));
+		return ResponseEntity.ok(streamingService.delete(loginUserId, sessionId));
 	}
 
 }

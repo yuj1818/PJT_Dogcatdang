@@ -12,7 +12,6 @@ import { RegistForm } from "../../../components/animalinfo/style";
 import { Input, Select } from "../../../components/animalinfo/style";
 import { requestS3 } from "../../../util/S3";
 
-
 function AnimalUpdatePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -32,10 +31,12 @@ function AnimalUpdatePage() {
   const [age, setAge] = useState(state.age || "");
   const [weight, setWeight] = useState(state.weight || "");
   const [rescueDate, setRescueDate] = useState(state.rescueDate || "");
-  const [isNeuter, setIsNeuter] = useState(state.isNeuter || false);
+  const [isNeuter, setIsNeuter] = useState(state.isNeuter || "");
   const [feature, setFeature] = useState(state.feature || "");
-  const [selectedImage, setSelectedImage] = useState<null | string>(state.imgUrl || null);
-  
+  const [selectedImage, setSelectedImage] = useState<null | string>(
+    state.imgUrl || null
+  );
+
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
   };
@@ -55,13 +56,12 @@ function AnimalUpdatePage() {
     setRescueDate(e.target.value);
   };
 
-  const handleIsNeuter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsNeuter(e.target.checked);
+  const handleIsNeuter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIsNeuter(e.target.value);
   };
 
   const cookie = new Cookies();
 
-  
   const handleUpdate = async (
     e: React.FormEvent<HTMLFormElement>,
     animalID: string
@@ -89,8 +89,9 @@ function AnimalUpdatePage() {
     navigate(`/save-animals/${animalID}`);
   };
 
-
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -100,10 +101,10 @@ function AnimalUpdatePage() {
       reader.readAsDataURL(file);
       try {
         const uploadedImageUrl = await requestS3({
-          name: file.name.replace(/\.[^/.]+$/, ''), 
+          name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
-        })
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        });
+        console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
         console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
@@ -307,12 +308,18 @@ function AnimalUpdatePage() {
               <div className="flex flex-col gap-1">
                 <div className="box">
                   <label className="item">중성화 여부</label>
-                  <Input
-                    type="checkbox"
-                    name="isNeutered"
-                    checked={isNeuter}
+                  <Select
+                    className="input"
+                    value={isNeuter}
                     onChange={handleIsNeuter}
-                  />
+                  >
+                    <option value="" disabled hidden>
+                      중성화 여부
+                    </option>
+                    <option value="예">완료</option>
+                    <option value="아니오">미완료</option>
+                    <option value="미상">미상</option>
+                  </Select>
                 </div>
               </div>
               <div className="flex flex-col gap-1">

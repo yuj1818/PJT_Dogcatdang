@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
@@ -19,7 +18,7 @@ const Container = styled.div`
 `;
 
 const Color = styled.div`
-  background-color: #fff;
+  // background-color: #fff;
 `;
 
 const IMG = tw.img`
@@ -67,14 +66,13 @@ const StyledDiv = styled.span`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
-  // padding: 0 1rem;
-  // margin: 10px 0;
+  padding: 0 1rem;
+  margin: 10px 0;
+  font-size: 1.2rem;
 
-  // &.active {
-  //   font-weight: bold;
-  //   text-decoration: underline;
-  //   text-underline-offset: 0.3em;
-  // }
+  &.active {
+    font-weight: bold;
+  }
 `;
 
 const OutLet = styled.div`
@@ -118,13 +116,9 @@ const NavBar: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const cookie = new Cookies();
-
   const onClickLogout = async () => {
     const response = await logout();
     if (response.status === 200) {
-      cookie.remove("U_ID");
-      localStorage.removeItem("userInfo");
       navigate("/landing");
     }
   };

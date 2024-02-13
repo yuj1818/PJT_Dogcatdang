@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../util/UserAPI";
 import paw from "../../assets/paw-prints.png";
 import logo from "../../assets/main-logo-big.png";
 
@@ -80,12 +82,12 @@ const Landing = styled.div`
 
   .service-name {
     margin-left: 6rem;
-    font-family: 'Poppins';
+    font-family: 'RixInooAriDuriR';
     font-style: normal;
-    font-weight: 800;
+    font-weight: 500;
     font-size: 140px;
     line-height: 151px;
-    color: #5E1E03;
+    color: #4D2F2A;
   }
 
   .service-intro {
@@ -148,13 +150,21 @@ function LandingPage() {
 
   const navigate = useNavigate();
 
+  const removeToken = async () => {
+    await logout();
+  };
+
+  useEffect(() => {
+    removeToken();
+  }, []);
+
   const goSignUp = () => {
     navigate('/signup');
-  }
+  };
 
   const goSignIn = () => {
     navigate('/signin');
-  }
+  };
 
   return (
     <Landing>
