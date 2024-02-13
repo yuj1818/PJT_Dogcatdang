@@ -11,7 +11,7 @@ import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
 
-const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443";
+const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443/openvidu/api";
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 const BroadCastPage: React.FC = () => {
@@ -57,6 +57,29 @@ const BroadCastPage: React.FC = () => {
   }, []);
 
   const getToken = useCallback(async (): Promise<string> => {
+    const createSession = async (sessionIds: string): Promise<string> => {
+      try {
+        const data = JSON.stringify({ customSessionId: sessionIds });
+        const response = await axios.post(
+          `${OPENVIDU_SERVER_URL}/sessions`,
+          data,
+          {
+            headers: {
+              Authorization: `Basic ${btoa(OPENVIDU_SERVER_SECRET)}`,
+              "Content-Type": "application/json",
+              withCredentials: true,
+            },
+          }
+        );
+        return (response.data as { id: string }).id;
+      } catch (error) {
+        const errorResponse = (error as AxiosError)?.response;
+        if (errorResponse?.status === 409) {
+          return sessionIds;
+        }
+        return "";
+      }
+    };
     const createToken = async (sessionIds: string): Promise<string> => {
       const response = await axios.post(
         `${OPENVIDU_SERVER_URL}/sessions/${sessionIds}/connection`,
@@ -72,35 +95,10 @@ const BroadCastPage: React.FC = () => {
       return response.data.token;
     };
 
-    const createSession = async (sessionIds: string): Promise<string> => {
-      try {
-        const data = JSON.stringify({ customSessionId: sessionIds });
-        const response = await axios.post(
-          `${OPENVIDU_SERVER_URL}/sessions`,
-          data,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(OPENVIDU_SERVER_SECRET)}`,
-              "Content-Type": "application/json",
-              withCredentials: true,
-            },
-          }
-        );
-
-        return (response.data as { id: string }).id;
-      } catch (error) {
-        const errorResponse = (error as AxiosError)?.response;
-        if (errorResponse?.status === 409) {
-          return sessionIds;
-        }
-        return "";
-      }
-    };
-
     try {
       const newSessionId = await createSession(sessionId);
       if (!newSessionId) {
-        throw Error;
+        throw Error("Failed to create session");
       }
       const token = await createToken(newSessionId);
       return token;
