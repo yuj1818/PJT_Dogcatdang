@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ResponseShelterApprovedDto {
 	private Long reservationId;
+	private Long animalId;
 	private String name;
 	private LocalDateTime reservationTime;
 	private String phone;
@@ -27,6 +28,7 @@ public class ResponseShelterApprovedDto {
 	// Entity -> DTO
 	public ResponseShelterApprovedDto(Reservation reservation) {
 		this.reservationId = reservation.getReservationId();
+		this.animalId = reservation.getAnimal().getAnimalId();
 		this.name = reservation.getName();
 		this.reservationTime = reservation.getReservationTime();
 		this.phone = reservation.getPhone();
