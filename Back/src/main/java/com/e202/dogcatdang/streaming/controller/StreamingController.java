@@ -3,6 +3,7 @@ package com.e202.dogcatdang.streaming.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +72,13 @@ public class StreamingController {
 
 		List<ResponseAnimalDto> animalDtoList = streamingService.getAnimalList(streamingId);
 		return ResponseEntity.ok(animalDtoList);
+	}
+
+	@DeleteMapping("/{streamingId}")
+	public ResponseEntity<ResponseDto> delete(@RequestHeader("Authorization") String token,@PathVariable Long streamingId) {
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		return ResponseEntity.ok(streamingService.delete(loginUserId, streamingId));
 	}
 
 }
