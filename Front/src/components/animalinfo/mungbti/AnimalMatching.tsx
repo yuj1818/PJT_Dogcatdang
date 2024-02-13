@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import refresh from "../../../assets/refresh.png";
 
 const ResultBox = styled.div`
   background-color: rgb(255, 255, 255);
@@ -25,7 +26,7 @@ const StyledButton = styled.button`
   padding: 2rem;
   border: 5px solid #ff8331;
   border-radius: 15px;
-  margin: 10px auto; 
+  margin: 10px auto;
   font-size: 20px;
   display: block;
 `;
@@ -506,7 +507,7 @@ function AnimalMatching() {
 
   const gotoRefresh = () => {
     navigate("/mung");
-  }
+  };
 
   const resetQuiz = () => {
     setScores([]);
@@ -550,7 +551,7 @@ function AnimalMatching() {
 
             <StyledResetButton onClick={resetQuiz}>
               <Rowdiv>
-                <RefreshImg src="src/assets/refresh.png" alt="refresh" />
+                <RefreshImg src={refresh} alt="refresh" />
                 다시하기
               </Rowdiv>
             </StyledResetButton>
