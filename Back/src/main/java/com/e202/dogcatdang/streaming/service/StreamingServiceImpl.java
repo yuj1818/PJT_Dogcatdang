@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.db.entity.Streaming;
 import com.e202.dogcatdang.db.entity.StreamingAnimal;
@@ -44,6 +45,7 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
+	@Transactional
 	public List<ResponseStreamingDto> find() {
 
 		List<ResponseStreamingDto> streamingDtoList = new ArrayList<>();
