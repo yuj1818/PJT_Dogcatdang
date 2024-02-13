@@ -7,8 +7,8 @@ export const resizeFile = async (file: File) =>
   new Promise<File>((res) => {
     Resizer.imageFileResizer(
       file, // target file
-      1000, // maxWidth
-      1000, // maxHeight
+      500, // maxWidth
+      500, // maxHeight
       "JPEG", // compressFormat : Can be either JPEG, PNG or WEBP.
       80, // quality : 0 and 100. Used for the JPEG compression
       0, // rotation

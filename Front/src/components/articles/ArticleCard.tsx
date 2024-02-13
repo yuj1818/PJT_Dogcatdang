@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { ArticleListInterface } from "./ArticleInterface";
 import styled from "styled-components";
 
-const CardStyle = styled.div`
+export const CardStyle = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
