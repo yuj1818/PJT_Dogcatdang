@@ -19,7 +19,7 @@ const ReservationFormBox = styled.div`
   gap: 1rem;
   .md-font {
     font-size: 1.3rem;
-    font-family: 'Pretendard-500';
+    font-family: 'SUITE-Medium';
   }
 `
 

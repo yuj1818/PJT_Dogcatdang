@@ -29,7 +29,7 @@ const Card = styled.div`
   }
 
   .bold {
-    font-family: "Pretendard-600";
+    font-family: "SUITE-SemiBold";
   }
 
   .sm-font {

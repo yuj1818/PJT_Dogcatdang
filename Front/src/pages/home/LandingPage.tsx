@@ -80,17 +80,17 @@ const Landing = styled.div`
 
   .service-name {
     margin-left: 6rem;
-    font-family: 'Poppins';
+    font-family: 'RixInooAriDuriR';
     font-style: normal;
-    font-weight: 800;
+    font-weight: 500;
     font-size: 140px;
     line-height: 151px;
     color: #5E1E03;
   }
 
   .service-intro {
-    margin-left: 9rem;
-    font-family: 'Poppins';
+    margin-left: 10rem;
+    font-family: 'SUITE-Medium';
     font-style: normal;
     font-weight: 500;
     font-size: 35px;

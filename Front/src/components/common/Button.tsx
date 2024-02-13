@@ -48,7 +48,7 @@ export const Button = styled.button<buttonInterface>`
   margin-left: ${(props) =>
     props.$marginLeft === undefined ? "auto" : `${props.$marginLeft}rem`};
   background-color: ${(props) => props.$background || "#FF8331"};
-  font-family: ${(props) => props.$fontFamily || "Pretendard-600"};
+  font-family: ${(props) => props.$fontFamily || "SUITE-SemiBold"};
   opacity: ${(props) => props.$selected === undefined ? 'none' : props.$selected ? 'none' : '0.6' };
 
   &:hover {
