@@ -329,7 +329,7 @@ public class AnimalServiceImpl implements AnimalService {
 		RequestShelterSearchDto searchDto, Long shelterId) {
 		PageRequest pageRequest = PageRequest.of(page - 1, recordSize);
 
-		Specification<Animal> specification = createShelterSpecification(searchDto);
+		Specification<Animal> specification = createShelterSpecification(searchDto, shelterId);
 
 		Page<Animal> animalPage = animalRepository.findAll(specification, pageRequest);
 
@@ -348,9 +348,12 @@ public class AnimalServiceImpl implements AnimalService {
 	}
 
 	// 기관 내 보호 동물 검색
-	private Specification<Animal> createShelterSpecification(RequestShelterSearchDto searchDto) {
+	private Specification<Animal> createShelterSpecification(RequestShelterSearchDto searchDto, Long shelterId) {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
+
+			// 현재 로그인한 기관의 동물 내에서만 찾도록 조건 추가
+			predicates.add(criteriaBuilder.equal(root.get("user").get("id"), shelterId));
 
 			// 검색 조건: 보호 현황, 품종, 코드
 			if (searchDto.getState() != null) {
