@@ -178,19 +178,23 @@ public class LostAnimalServiceImpl implements LostAnimalService {
 			predicates.add(criteriaBuilder.equal(root.get("state"), LostAnimal.State.실종));
 
 			// 검색 조건에 따라 Predicate 추가 (And 조건으로 들어감)
-			if (searchDto.getAnimalType() != null) {
+			if (searchDto.getAnimalType() != null && !searchDto.getAnimalType().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("animalType"), searchDto.getAnimalType()));
 			}
 
-			if (searchDto.getBreed() != null) {
+			if (searchDto.getBreed() != null && !searchDto.getBreed().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("breed"), searchDto.getBreed()));
 			}
 
-			if (searchDto.getLostLocation() != null) {
-				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getLostLocation() + "%" ));
+			if (searchDto.getSelectedCity() != null && !searchDto.getSelectedCity().isEmpty()) {
+				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getSelectedCity() + "%" ));
 			}
 
-			if (searchDto.getGender() != null) {
+			if (searchDto.getSelectedDistrict() != null && !searchDto.getSelectedDistrict().isEmpty()) {
+				predicates.add(criteriaBuilder.like(root.get("lostLocation"),"%" + searchDto.getSelectedDistrict() + "%" ));
+			}
+
+			if (searchDto.getGender() != null && !searchDto.getGender().isEmpty()) {
 				predicates.add(criteriaBuilder.equal(root.get("gender"), searchDto.getGender()));
 			}
 

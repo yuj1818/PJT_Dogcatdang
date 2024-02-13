@@ -3,6 +3,8 @@ package com.e202.dogcatdang.db.repository;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,6 +18,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Boolean existsByEmail(String email);
     Boolean existsByNickname(String nickname);
 
+    @Query("SELECT u.email FROM User u WHERE u.id = :id")
+    String findEmailById(@Param("id") Long id);
 
     User findByUsername(String username);
 

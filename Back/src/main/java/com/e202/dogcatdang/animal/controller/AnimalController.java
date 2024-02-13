@@ -124,7 +124,7 @@ public class AnimalController {
 		return ResponseEntity.ok(userId + "가" + animalId + "의 관심 동물 등록을 취소하였습니다.");
 	}
 
-	// 특정 동물에 대한 현재 로그인한 사용자의 좋아요 여부 확인(미구현)
+	// 특정 동물에 대한 현재 로그인한 사용자의 좋아요 여부 확인
 	@GetMapping("/{animalId}/likes")
 	public ResponseEntity<Map<String, Boolean>> isAnimalLikedByCurrentUser(
 		@PathVariable Long animalId,

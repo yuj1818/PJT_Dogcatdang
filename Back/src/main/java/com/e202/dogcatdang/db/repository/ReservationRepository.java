@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.e202.dogcatdang.db.entity.Reservation;
-import com.e202.dogcatdang.reservation.dto.ResponseShelterListDto;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -39,4 +38,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	// 기관에게 들어온 승인된 모든 예약 정보 가져오기
 	@Query("SELECT r FROM Reservation r " + "JOIN r.animal a " + "JOIN a.user u " + "WHERE u.id = :userId " + "AND r.state = :state")
 	List<Reservation> findShelterReservations(@Param("userId") Long shelterId, @Param("state") Reservation.State state);
+
+	// 방문 상태와 동물 등록한 유저 id로 현재 방문 예약이 승인된 동물의 수 계산
+	@Query("SELECT COUNT(DISTINCT r.animal.id) FROM Reservation r WHERE r.state = :state AND r.animal.user.id = :shelterId")
+	Integer countDistinctAnimalByStateAndAnimal_User_Id(@Param("state") Reservation.State state, @Param("shelterId") Long shelterId);
+
 }

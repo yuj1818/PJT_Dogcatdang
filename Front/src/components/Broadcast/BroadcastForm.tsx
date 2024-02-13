@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
+import styled from "styled-components";
 
 import { isOrg } from "../../pages/users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
@@ -17,6 +18,11 @@ const TextLength = tw.p`
 
 export const Label = tw.label`
   mt-3
+`;
+
+const SelectedAnimalConatainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const ImageUploadLabel = tw.label`
@@ -81,7 +87,11 @@ const Form: React.FC<FormProps> = ({
   const onSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isOrg()) {
-      if (!title.trim() || !description.trim()) {
+      if (
+        !title.trim() ||
+        !description.trim()
+        // || selectedAnimal.length === 0
+      ) {
         setError("내용을 모두 입력하세요");
         return null;
       }
@@ -180,14 +190,11 @@ const Form: React.FC<FormProps> = ({
               handleSelectedAnimal={handleSelectedAnimal}
               selectedData={selectedAnimal}
             />
-            {selectedAnimal.map((animal) => (
-              <li key={animal.animalId}>
-                code: {animal.code}
-                id: {animal.animalId}
-                imgURL: {animal.imgUrl}
-                age: {animal.age}
-              </li>
-            ))}
+            <SelectedAnimalConatainer>
+              {selectedAnimal.map((animal) => (
+                <AnimalCard key={animal.animalId} {...animal} />
+              ))}
+            </SelectedAnimalConatainer>
             {error}
             <Button type="submit">방송 시작하기</Button>
           </form>
@@ -206,3 +213,43 @@ const Form: React.FC<FormProps> = ({
 };
 
 export default Form;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 5px;
+
+  width: calc(33.33% - 10px);
+  @media (min-width: 1280px) {
+    width: calc(25% - 10px);
+  }
+
+  img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  div {
+    margin-left: 3px;
+  }
+`;
+
+const AnimalCard: React.FC<CallAnimal> = ({ code, age, imgUrl, breed }) => {
+  return (
+    <Container>
+      <img src={imgUrl} alt={"선택된 동물 코드" + code} />
+      <div>
+        <p>{code}</p>
+        <p>나이: {age}</p>
+        <p>품종: {breed}</p>
+      </div>
+    </Container>
+  );
+};

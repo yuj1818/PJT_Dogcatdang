@@ -96,36 +96,42 @@ export const imageHandler = async (data: string, nickname: string) => {
       const imgSrc = imgTag.getAttribute("src");
 
       if (isURL(imgSrc!)) {
-        return imgSrc?.split("/")[3];
+        return imgSrc;
       }
       const base64ImgData = imgSrc?.split(",")[1];
-      const file = await resizeFile(
-        base64toFile(base64ImgData!, filename, "image/jpeg")
-      );
-      const uploadURL = await getPresignedURL(filename);
-
-      try {
-        axios.put(uploadURL, file, {
-          headers: {
-            "Content-Type": file.type,
-          },
-        });
-        return filename;
-      } catch (error) {
-        console.log("이미지 업로드 실패", error);
-        const err = new Error();
-        err.message = "인터넷 연결을 다시 확인하여 주세요";
-        err.name = "게시글 업로드 실패";
-        throw err;
+      const [file, uploadURL] = await Promise.allSettled([
+        resizeFile(base64toFile(base64ImgData!, filename, "image/jpeg")),
+        getPresignedURL(filename),
+      ]);
+      if (file.status === "fulfilled" && uploadURL.status === "fulfilled") {
+        try {
+          axios.put(uploadURL.value, file.value, {
+            headers: {
+              "Content-Type": file.value.type,
+            },
+          });
+          return `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${filename}`;
+        } catch (error) {
+          console.log("이미지 업로드 실패", error);
+          const err = new Error();
+          err.message = "인터넷 연결을 다시 확인하여 주세요";
+          err.name = "게시글 업로드 실패";
+          throw err;
+        }
+      } else {
+        const error = new Error();
+        error.name = "이미지 처리중 에러가 발생하였습니다.";
+        error.message =
+          uploadURL.status === "rejected"
+            ? "업로드 요청 실패"
+            : "올바르지 않은 파일";
+        throw error;
       }
     })
   );
 
   for (let i = 0; i < imageURLs.length; i++) {
-    imageTags[i].setAttribute(
-      "src",
-      `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${imageURLs[i]}`
-    );
+    imageTags[i].setAttribute("src", `${imageURLs[i]}`);
     imageTags[i].setAttribute("loading", "lazy");
   }
 
@@ -152,20 +158,19 @@ export const requestS3 = async ({ name, file }: RequestS3) => {
     uploadURLResult.status === "fulfilled" &&
     resizedFileResult.status === "fulfilled"
   ) {
-    const uploadURL = uploadURLResult.value;
-    const resizedFile = resizedFileResult.value;
-
-    axios.put(uploadURL, resizedFile, {
+    axios.put(uploadURLResult.value, resizedFileResult.value, {
       headers: {
         "Content-Type": file.type,
       },
     });
     return `https://dogcatdang.s3.ap-northeast-2.amazonaws.com/${fileName}`;
   } else {
-    console.error(
-      "One or both promises failed:",
-      uploadURLResult,
-      resizedFileResult
-    );
+    const error = new Error();
+    error.name = "이미지 처리중 에러가 발생하였습니다.";
+    error.message =
+      uploadURLResult.status === "rejected"
+        ? "업로드 요청 실패"
+        : "올바르지 않은 파일";
+    throw error;
   }
 };

@@ -1,17 +1,13 @@
 import { useParams } from "react-router-dom";
 
-const AnimalList = () => {
+const AnimalList: React.FC = () => {
   const params = useParams();
   const sessionId = params["*"];
   console.log(sessionId);
 
-  // 방송 상세정보 요청
+  // 방송 연 동물 상세정보 요청
 
-  return (
-    <>
-      <div></div>
-    </>
-  );
+  return <></>;
 };
 
 export default AnimalList;

@@ -11,9 +11,7 @@ import ReactModal from "react-modal";
 import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
-const AnimalListPage = lazy(
-  () => import("./pages/animals/save_animals/AnimalListPage")
-);
+import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetailPage from "./pages/articles/ArticleDetailPage";
@@ -38,6 +36,9 @@ import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
 import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 import { articleLoader } from "./pages/articles/articleLoader.ts";
+import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
+import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
+import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 
 const router = createBrowserRouter([
   // {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <SignInPage />,
+  },
+  {
+    path: "/oauth-success",
+    element: <OauthTokenPage />,
   },
   // {
   //   path: "/about",
@@ -98,6 +103,10 @@ const router = createBrowserRouter([
       {
         path: "save-animals/:animalID",
         element: <AnimalDetailPage />,
+      },
+      {
+        path: "save-animals/management",
+        element: <SavedAnimalManagementPage />
       },
       {
         path: "registration",
@@ -195,6 +204,10 @@ const router = createBrowserRouter([
           {
             path: ":userId",
             element: <VisitManagementPage />,
+          },
+          {
+            path: "list",
+            element: <VisitReservationListPage />,
           },
         ],
       },

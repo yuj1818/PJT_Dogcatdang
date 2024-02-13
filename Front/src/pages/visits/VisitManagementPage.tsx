@@ -4,10 +4,11 @@ import 'react-calendar/dist/Calendar.css';
 import styled from "styled-components";
 import moment from 'moment';
 import 'moment/locale/ko';
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { Title } from '../../components/common/Title';
-import { getReservations } from '../../util/VisitAPI';
+import { getReservationDates, getReservations } from '../../util/VisitAPI';
 import ScheduleCard from '../../components/visits/ScheduleCard';
+import { isOrg as org } from '../users/SignInPage';
 
 const Schedule = styled.div`
   width: 50%;
@@ -58,6 +59,10 @@ const StyledCalendar = styled.div`
       color: black;
     }
 
+    .react-calendar__tile {
+      position: relative;
+    }
+
     .react-calendar__month-view__days__day--neighboringMonth {
       background: #F2F3F7;
       color: #A8A8A8;
@@ -83,7 +88,18 @@ const StyledCalendar = styled.div`
         text-decoration: none;
       }
     }
+
+    .dot {
+      border-radius: 50%;
+      width: .3rem;
+      height: .3rem;
+      background-color: #FF8331;
+    }
   }
+`
+
+const Spacer = styled.div`
+  height: .3rem;
 `
 
 export interface reservationData {
@@ -94,25 +110,40 @@ export interface reservationData {
   reservationTime: string;
   shelterName: string;
   state: string | null;
+  name: string;
+  phone: string;
+  visitor: number;
+  code: string;
 }
 
 function VisitManagementPage() {
-  // const isOrg = org();
+  const isOrg = org();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [reservations, setReservations] = useState<reservationData[]>([]);
+  const [reservationDates, setReservatoinDates] = useState<string[]>([]);
 
   const handleDateChange = (value: any) => {
     setSelectedDate(value);
   };
 
   const getReservationData = async() => {
-    const response = await getReservations(moment(selectedDate).format("YYYY-MM-DD"));
+    const response = await getReservations(moment(selectedDate).format("YYYY-MM-DD"), isOrg);
     setReservations(response);
   };
+
+  const getReservationSchedules = async() => {
+    const response = await getReservationDates(isOrg);
+    console.log(response);
+    setReservatoinDates(response);
+  }
 
   useEffect(() => {
     getReservationData();
   }, [selectedDate]);
+
+  useEffect(() => {
+    getReservationSchedules();
+  }, []);
 
   return (
     <div className="flex flex-col gap-8">
@@ -124,10 +155,10 @@ function VisitManagementPage() {
         <Schedule>
           {
             reservations.length ? reservations.map((reservation: reservationData, idx) => (
-              <>
-                <ScheduleCard key={reservation.reservationId} reservation={reservation} handleReservations={setReservations} />
+              <Fragment key={reservation.reservationId}>
+                <ScheduleCard reservation={reservation} handleReservations={setReservations} />
                 { idx !== reservations.length - 1 && <hr />}
-              </>
+              </Fragment>
             ))
             :
             <p>방문 일정이 없습니다</p>
@@ -137,6 +168,17 @@ function VisitManagementPage() {
           onChange={handleDateChange}
           value={selectedDate}
           formatDay={( _, date) => moment(date).format("D")}
+          tileContent={({ date }) => {
+            if (reservationDates.find(x => x === moment(date).format('YYYY-MM-DD'))) {
+              return (
+                <div className="flex justify-center items-center">
+                  <div className="dot"></div>
+                </div>
+              )
+            } else {
+              return <Spacer />
+            }
+          }}
         />
       </StyledCalendar>
     </div>

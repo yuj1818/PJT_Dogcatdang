@@ -3,11 +3,14 @@ import styled from "styled-components";
 import moment from "moment";
 import { Button } from "../common/Button";
 import { cancelReservation } from "../../util/VisitAPI";
+import { isOrg as org } from "../../pages/users/SignInPage";
+import { IoMdTime, IoMdPhonePortrait } from "react-icons/io";
 
 const Card = styled.div`
   display: flex;
   gap: 1rem;
   justify-content: space-between;
+  align-items: center;
 
   .circle {
     border-radius: 50%;
@@ -39,6 +42,8 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
   handleReservations
 }) => {
 
+  const isOrg = org();
+
   const onClickCancel = async() => {
     await cancelReservation(reservation.reservationId);
     handleReservations((prev: reservationData[]) => prev.filter((el: reservationData) => el.reservationId !== reservation.reservationId));
@@ -49,27 +54,45 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
       <div className="circle">
         <img
           className="animal-img"
-          src="https://images.dog.ceo/breeds/terrier-westhighland/n02098286_1591.jpg"
+          src={reservation.imgUrl}
           alt=""
         />
       </div>
       <div className="grow">
-        <p className="grey sm-font">{reservation.shelterName}</p>
+        <p className="sm-font bold">{isOrg ? reservation.code : reservation.shelterName}</p>
         <p className="bold">
-          {reservation.breed} · {reservation.age}살
+          {
+            isOrg ? 
+            `${reservation.name}님 ${reservation.visitor > 1 ? `외 ${reservation.visitor - 1}명` : ''}` 
+            :
+            `${reservation.breed} · ${reservation.age}살`
+          }
         </p>
-        <p className="grey sm-font">
+        <p className="grey sm-font flex items-center gap-1">
+          <IoMdTime />
           {moment(reservation.reservationTime).format(
             "YYYY년 MM월 DD일, HH:MM"
           )}
         </p>
+        { isOrg && 
+          <p className="grey sm-font flex items-center gap-1">
+            <IoMdPhonePortrait />
+            {reservation.phone}
+          </p>
+        }
       </div>
-      <div className="flex flex-col gap-1 items-center justify-center">
-        <p className="sm-font">{reservation.state || "방문 신청"}</p>
-        <Button onClick={onClickCancel} background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
-          취소
-        </Button>
-      </div>
+      {
+        !isOrg && 
+        <div className="flex flex-col gap-1 items-center justify-center">
+          <p className="sm-font">{reservation.state || "대기"}</p>
+          {
+            !reservation.state &&
+            <Button onClick={onClickCancel} background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
+              취소
+            </Button>
+          }
+        </div>
+      }
     </Card>
   );
 };

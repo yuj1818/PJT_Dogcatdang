@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class ResponseBoardBestDto {
 	private Long boardId;
 	private String title;
+	private String nickname;
 	private String thumbnailImgUrl;
 	private Integer likeCnt;
 
@@ -19,7 +20,7 @@ public class ResponseBoardBestDto {
 		this.boardId = board.getBoardId();
 		this.title = board.getTitle();
 		this.thumbnailImgUrl = board.getThumbnailImgUrl();
-
+		this.nickname = board.getUser().getNickname();
 		this.likeCnt = board.getBoardLikeList().size();
 	}
 
