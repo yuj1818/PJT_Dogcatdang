@@ -16,6 +16,7 @@ export interface BoadcastData {
   description: string;
   animalInfo: number[];
   sessionId: string;
+  thumbnailImgUrl: string;
 }
 
 interface RequestBroadCastInterface {
@@ -42,6 +43,7 @@ export const requestBroadCast = async ({
     return response.data;
   } catch (error) {
     handleAxiosError(error as AxiosError);
+    throw error;
   }
 };
 
@@ -61,7 +63,7 @@ export const callAnimal = async ({ signal }: Siganl) => {
   const token = cookie.get("U_ID");
 
   try {
-    const response = await API.get("api/streamings/animals", {
+    const response = await API.get(URL + "/animals", {
       signal,
       method: "GET",
       headers: {
@@ -70,6 +72,38 @@ export const callAnimal = async ({ signal }: Siganl) => {
     });
 
     return response.data as CallAnimal[];
+  } catch (error) {
+    handleAxiosError(error as AxiosError);
+    return [];
+  }
+};
+
+interface BroadcastListInterface {
+  signal: AbortSignal;
+}
+
+export interface broadcastInfo {
+  title: string;
+  orgNickname: string;
+  sessionId: string;
+  thumbnailImgUrl: string;
+  streamingId: number;
+}
+
+export const broadcastList = async ({ signal }: BroadcastListInterface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  try {
+    const response = await API.get(URL, {
+      signal,
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data as broadcastInfo[];
   } catch (error) {
     handleAxiosError(error as AxiosError);
     return [];
