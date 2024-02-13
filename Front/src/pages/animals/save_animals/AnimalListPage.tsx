@@ -50,6 +50,7 @@ function AnimalListPage() {
   const isOrg = org();
   const { state } = useLocation();
   // console.log(state.isSearch);
+
   useEffect(() => {
     const searchData = async () => {
       try {
