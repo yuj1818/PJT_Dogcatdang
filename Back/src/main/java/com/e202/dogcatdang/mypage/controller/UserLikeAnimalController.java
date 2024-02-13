@@ -65,4 +65,8 @@ public class UserLikeAnimalController {
         }
     }
 
+//    @GetMapping("/posts")
+//    public ResponseEntity<>
+
+
 }
