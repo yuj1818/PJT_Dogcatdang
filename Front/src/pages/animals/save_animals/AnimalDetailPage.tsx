@@ -4,6 +4,7 @@ import API from "../../../util/axios";
 import { Container, Top, Leftside, Rightside } from "../StyleDetail";
 import { isOrg as org } from "../../users/SignInPage";
 import { Button } from "../../../components/common/Button";
+import { Cookies } from "react-cookie";
 
 interface AnimalDetail {
   animalType: string;
@@ -18,21 +19,27 @@ interface AnimalDetail {
   userNickname: string;
   userId: number;
   imgUrl: string;
+  adoptionApplicantCount: number;
+  like: boolean;
 }
 
 function AnimalDetailPage() {
   const { animalID } = useParams();
   const [animalDetail, setAnimalDetail] = useState<AnimalDetail | null>(null);
   const isOrg = org();
-  const userInfoString = localStorage.getItem('userInfo') ?? '';
+  const userInfoString = localStorage.getItem("userInfo") ?? "";
   const userInfo = JSON.parse(userInfoString);
-  const userId = userInfo.id
-
+  const userId = userInfo.id;
+  const cookie = new Cookies();
 
   useEffect(() => {
     const apiUrl = `api/animals/${animalID}`;
+    const token = cookie.get("U_ID");
+    const headers = {
+      Authorization: token,
+    };
 
-    API.get(apiUrl)
+    API.get(apiUrl, { headers })
       .then((res) => {
         console.log(res.data);
         setAnimalDetail(res.data);
@@ -53,8 +60,8 @@ function AnimalDetailPage() {
   const handleVisit = () => {
     navigate(`/visit/${animalDetail?.userId}/${animalID}`, {
       state: {
-        imgUrl: `${animalDetail?.imgUrl}`
-      }
+        imgUrl: `${animalDetail?.imgUrl}`,
+      },
     });
   };
 
@@ -92,7 +99,8 @@ function AnimalDetailPage() {
             <div className="flex">
               {" "}
               <p style={{ fontSize: "25px" }}>
-                {animalDetail?.breed.replace(/_/g, " ")} | {animalDetail?.age} 살
+                {animalDetail?.breed.replace(/_/g, " ")} | {animalDetail?.age}{" "}
+                살
               </p>{" "}
             </div>
             <div className="flex">
@@ -115,7 +123,7 @@ function AnimalDetailPage() {
               <p>발견위치 : </p>
               {animalDetail?.rescueLocation}
             </div>
-            <p style={{marginTop: "10px"}}>특징</p>
+            <p style={{ marginTop: "10px" }}>특징</p>
             <div
               className="flex"
               style={{
@@ -127,10 +135,7 @@ function AnimalDetailPage() {
                 height: "auto",
               }}
             >
-
-              <div>
-                {animalDetail?.feature}
-              </div>
+              <div>{animalDetail?.feature}</div>
             </div>
           </Rightside>
         </div>
@@ -148,28 +153,17 @@ function AnimalDetailPage() {
         >
           전체 글 목록
         </button>
-        {
-          isOrg ?
-            (userId === animalDetail?.userId ?
-              <Button
-                $paddingX={1}
-                $paddingY={0.5}
-                onClick={handleUpdate}
-              >
-                수정
-              </Button>
-              :
-              null
-            )
-            :
-            <Button
-              $paddingX={1}
-              $paddingY={0.5}
-              onClick={handleVisit}
-            >
-              방문 예약
+        {isOrg ? (
+          userId === animalDetail?.userId ? (
+            <Button $paddingX={1} $paddingY={0.5} onClick={handleUpdate}>
+              수정
             </Button>
-        }
+          ) : null
+        ) : (
+          <Button $paddingX={1} $paddingY={0.5} onClick={handleVisit}>
+            방문 예약
+          </Button>
+        )}
       </div>
     </>
   );
