@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const Color = styled.div`
-  background-color: #fff;
+  // background-color: #fff;
 `;
 
 const IMG = tw.img`
@@ -67,14 +67,12 @@ const StyledDiv = styled.span`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
-  // padding: 0 1rem;
-  // margin: 10px 0;
+  padding: 0 1rem;
+  margin: 10px 0;
 
-  // &.active {
-  //   font-weight: bold;
-  //   text-decoration: underline;
-  //   text-underline-offset: 0.3em;
-  // }
+  &.active {
+    font-weight: bold;
+  }
 `;
 
 const OutLet = styled.div`
