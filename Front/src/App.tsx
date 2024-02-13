@@ -11,9 +11,7 @@ import ReactModal from "react-modal";
 import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
 import MainPage from "./pages/home/HomePage.tsx";
-const AnimalListPage = lazy(
-  () => import("./pages/animals/save_animals/AnimalListPage")
-);
+import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
 import ArticleDetailPage from "./pages/articles/ArticleDetailPage";
@@ -62,7 +60,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/oauth-success",
-    element: <OauthTokenPage />
+    element: <OauthTokenPage />,
   },
   // {
   //   path: "/about",
@@ -209,8 +207,8 @@ const router = createBrowserRouter([
           },
           {
             path: "list",
-            element: <VisitReservationListPage />
-          }
+            element: <VisitReservationListPage />,
+          },
         ],
       },
     ],

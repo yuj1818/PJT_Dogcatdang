@@ -10,10 +10,9 @@ import BroadcastForm from "../../components/Broadcast/BroadcastForm";
 import SessionComponent from "../../components/Broadcast/SessionComponent";
 import { isOrg as org } from "../users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
-import { URL, isProduction } from "../../util/axios";
 
-const OPENVIDU_SERVER_URL = isProduction ? URL : "http://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy:8443";
+const OPENVIDU_SERVER_SECRET = btoa("admin:secret");
 
 const BroadCastPage: React.FC = () => {
   const [session, setSession] = useState<OVSession | undefined>(undefined);
