@@ -290,10 +290,10 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     props.saveUserInfo(userInfoRes.data);
 
     const preInfo = JSON.parse(localStorage.getItem('userInfo') || "");
-    localStorage.setItem('userInfo', {
+    localStorage.setItem('userInfo', JSON.stringify({
       ...preInfo,
       nickname: nickname
-    });
+    }));
 
     props.closeModal((prev) => !prev);
   }
