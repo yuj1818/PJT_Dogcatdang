@@ -16,5 +16,5 @@ public interface StreamingService {
 
 	List<ResponseAnimalDto> getAnimalList(Long streamingId);
 
-	ResponseDto delete(Long loginUserId, Long streamingId);
+	ResponseDto delete(Long loginUserId, String sessionId);
 }
