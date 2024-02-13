@@ -66,6 +66,11 @@ export const signIn = (data: signInData) => {
 
     .then((res) => {
       const token = res.headers["authorization"];
+
+      if (cookie.get("U_ID")) {
+        cookie.remove("U_ID");
+      }
+      
       cookie.set("U_ID", token);
 
       const decodedData = jwtDecode(token);
