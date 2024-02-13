@@ -64,6 +64,7 @@ function SaveAnimalSearch() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
+  const isSearch = true;
   // const [filteredAnimalData, setFilteredAnimalData] = useState(animals);
   // const [currentPage, setCurrentPage] = useState(1);
   const genderInput = ["전체", "암컷", "수컷"];
@@ -117,7 +118,7 @@ function SaveAnimalSearch() {
     try {
       const responseData = await search(data, token);
       // console.log(responseData);
-      navigate(`/save-animals`, { state: responseData });
+      navigate(`/save-animals`, { state: { responseData, isSearch } });
     } catch (error) {
       console.error("Error filtered data:", error);
     }
