@@ -6,7 +6,7 @@ import { FcLike } from "react-icons/fc";
 
 interface Animal {
   animalId: number;
-  isActive: boolean;
+  isActive: boolean | undefined;
   onToggle: () => void;
 }
 
@@ -49,7 +49,7 @@ const LikeButton: React.FC<Animal> = ({ animalId, isActive, onToggle }) => {
   return (
     <button
       onClick={handleButtonClick}
-      style={{ width: "25px", height: "25px" }}
+      style={{ width: "30px", height: "30px" }}
     >
       {isActive ? (
         <FcLike style={{ width: "100%", height: "100%" }} />
