@@ -74,6 +74,10 @@ function SaveAnimalSearch() {
     value: cat,
     label: cat,
   }));
+  // const transformedRegionInput = regionInput.map((rg) => ({
+  //   value: rg,
+  //   label: rg,
+  // }));
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
