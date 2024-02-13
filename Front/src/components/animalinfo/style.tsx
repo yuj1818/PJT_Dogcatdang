@@ -5,12 +5,14 @@ export const Input = tw.input`
 focus:outline-none
 focus:shadow-md
 focus:placeholder:opacity-0
+focus:border-2 focus:border-blue-500
 `;
 
 export const Select = tw.select`
 focus:outline-none
 focus:shadow-md
 focus:placeholder:opacity-0
+focus:border-2 focus:border-blue-500
 `;
 
 export const RegistForm = styled.form`

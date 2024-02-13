@@ -19,7 +19,7 @@ const ReservationFormBox = styled.div`
   gap: 1rem;
   .md-font {
     font-size: 1.3rem;
-    font-family: 'Pretendard-500';
+    font-family: 'SUITE-Medium';
   }
 `
 
@@ -122,7 +122,7 @@ function VisitReservationPage() {
 
     if (params.animalId) {
       const data = {
-        reservationTime: new Date(date + 'T' + time),
+        reservationTime: date + 'T' + time,
         name,
         phone,
         visitor: parseInt(visitor)

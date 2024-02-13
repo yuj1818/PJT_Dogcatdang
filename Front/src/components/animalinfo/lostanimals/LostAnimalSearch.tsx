@@ -31,15 +31,16 @@ function LostAnimalSearch() {
     value: cat,
     label: cat,
   }));
+  const transformedRegionInput = regionInput.map((rg) => ({
+    value: rg,
+    label: rg,
+  }));
   const genderInput = ["전체", "암컷", "수컷"];
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
   };
 
-  const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRegion(event.target.value);
-  };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
@@ -147,22 +148,29 @@ function LostAnimalSearch() {
                 />
               </div>
               <div className="form-group">
-                <Select1
+              <Select
                   name="region"
                   id="region"
-                  value={region}
-                  onChange={handleRegionChange}
-                  className="custom-input"
-                >
-                  <option value="" disabled hidden>
-                    시/도 선택
-                  </option>
-                  {regionInput.map((pr) => (
-                    <option key={pr} value={pr}>
-                      {pr}
-                    </option>
-                  ))}
-                </Select1>
+                  value={
+                    transformedRegionInput.find((option) => option.value === region)
+                  }
+                  options={regionInput.map((pr) => ({
+                    value: pr,
+                    label: pr,
+                  }))}
+                  onChange={(selectedOption) => setRegion(selectedOption?.value || "")}
+                  placeholder="시/도 선택"
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      border: "1px solid #d5967b",
+                      padding: "8px",
+                      borderRadius: "10px",
+                      width: "160px",
+                      height: "60px",
+                    }),
+                  }}
+                />
               </div>
               <div className="form-group">
                 <Select1

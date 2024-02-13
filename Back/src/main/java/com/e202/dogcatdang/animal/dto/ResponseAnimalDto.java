@@ -31,10 +31,11 @@ public class ResponseAnimalDto {
 	private Long userId;
 	private String userNickname;
 	private int adoptionApplicantCount;
+	private boolean isLike;
 
 
 	// Entity -> DTO
-	public ResponseAnimalDto(Animal animal, int adoptionApplicantCount) {
+	public ResponseAnimalDto(Animal animal, int adoptionApplicantCount, boolean isLike) {
 		this.animalType = animal.getAnimalType();
 		this.breed = animal.getBreed();
 		this.age = animal.getAge()!=null?animal.getAge():0;
@@ -50,5 +51,6 @@ public class ResponseAnimalDto {
 		this.userId = animal.getUser().getId();
 		this.userNickname = animal.getUser().getNickname();
 		this.adoptionApplicantCount = adoptionApplicantCount;
+		this.isLike = isLike;
 	}
 }

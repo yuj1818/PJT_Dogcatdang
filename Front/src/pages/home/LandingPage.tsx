@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../util/UserAPI";
 import paw from "../../assets/paw-prints.png";
 import logo from "../../assets/main-logo-big.png";
 
@@ -148,13 +150,21 @@ function LandingPage() {
 
   const navigate = useNavigate();
 
+  const removeToken = async () => {
+    await logout();
+  };
+
+  useEffect(() => {
+    removeToken();
+  }, []);
+
   const goSignUp = () => {
     navigate('/signup');
-  }
+  };
 
   const goSignIn = () => {
     navigate('/signin');
-  }
+  };
 
   return (
     <Landing>

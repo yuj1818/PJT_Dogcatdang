@@ -114,6 +114,7 @@ export interface reservationData {
   phone: string;
   visitor: number;
   code: string;
+  animalId: number;
 }
 
 function VisitManagementPage() {

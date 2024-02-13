@@ -8,7 +8,7 @@ export interface SaveAnimal {
   code: string;
   animalType: string;
   breed: string;
-  age: string;
+  age: number;
   weight: string;
   rescueDate: string;
   selectedCity: string;
@@ -43,7 +43,7 @@ export const Card = styled.div`
   }
 `;
 
-const Adoption = styled.div`
+export const Adoption = styled.div`
   font-size: 8px;
   background-color: #ff8331;
   color: white;
@@ -101,7 +101,9 @@ function SaveAnimalCard(props: AnimalCardProps) {
 
         <div>
           <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
-          <strong>{props.animals.age}살 </strong>
+          <strong>
+            {props.animals.age === -1 ? "나이 미상" : `${props.animals.age} 살`}
+          </strong>
         </div>
         <p style={{ fontSize: "13px" }}>
           {props.animals.gender} | 중성화 {neuterStatus}
