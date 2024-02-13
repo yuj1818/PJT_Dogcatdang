@@ -21,7 +21,7 @@ public class RequestReservationDto {
 	private String name;
 	private String phone;
 	private int visitor;
-	private Reservation.State state;
+	private Reservation.State state = Reservation.State.대기중;
 
 	// DTO -> Entity (DB 저장용)
 	public Reservation toEntity(User user, Animal animal) {
