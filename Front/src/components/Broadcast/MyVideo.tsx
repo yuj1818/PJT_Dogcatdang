@@ -5,6 +5,9 @@ import styled from "styled-components";
 import { RiFullscreenFill } from "react-icons/ri";
 import { AiFillSound } from "react-icons/ai";
 import { MdOutlinePictureInPictureAlt } from "react-icons/md";
+import { isOrg } from "../../pages/users/SignInPage";
+import { Button } from "../common/Button";
+import { useNavigate } from "react-router-dom";
 
 const VideoContainer = styled.div`
   position: relative;
@@ -39,9 +42,11 @@ const GroupComtainer = styled.div`
 
 interface VideoProps {
   streamManager: StreamManager;
+  leaveSession: () => void;
 }
 
-const Video: React.FC<VideoProps> = ({ streamManager }) => {
+const Video: React.FC<VideoProps> = ({ streamManager, leaveSession }) => {
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showControls, setShowControls] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -67,7 +72,7 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
   const handleMouseLeave = () => {
     hideControlsTimeout = setTimeout(() => {
       setShowControls(false);
-    }, 3000); // Hide controls after 3 seconds
+    }, 3000);
   };
 
   const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +87,7 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     } else {
+      console.log(videoRef.current);
       videoRef.current
         ?.requestPictureInPicture()
         .then(() => {})
@@ -98,41 +104,54 @@ const Video: React.FC<VideoProps> = ({ streamManager }) => {
   }, [streamManager]);
 
   return (
-    <VideoContainer
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <video
-        autoPlay={true}
-        ref={videoRef}
-        style={{ height: "100%", width: "100%" }}
+    <>
+      <VideoContainer
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <track kind="captions" />
-      </video>
-      {showControls && (
-        <FullscreenButtonContainer>
-          <GroupComtainer>
-            <AiFillSound />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.1"
-              value={volume}
-              onChange={handleVolumeChange}
-            />
-          </GroupComtainer>
-          <GroupComtainer>
-            <button onClick={togglePictureInPicture}>
-              <MdOutlinePictureInPictureAlt />
-            </button>
-            <button onClick={handleFullscreen}>
-              <RiFullscreenFill />
-            </button>
-          </GroupComtainer>
-        </FullscreenButtonContainer>
-      )}
-    </VideoContainer>
+        <video
+          autoPlay={true}
+          ref={videoRef}
+          style={{ height: "100%", width: "100%" }}
+        >
+          <track kind="captions" />
+        </video>
+        {showControls && (
+          <FullscreenButtonContainer>
+            <GroupComtainer>
+              <AiFillSound />
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={volume}
+                onChange={handleVolumeChange}
+              />
+            </GroupComtainer>
+            <GroupComtainer>
+              {!isOrg() && (
+                <button onClick={togglePictureInPicture}>
+                  <MdOutlinePictureInPictureAlt />
+                </button>
+              )}
+              <button onClick={handleFullscreen}>
+                <RiFullscreenFill />
+              </button>
+            </GroupComtainer>
+          </FullscreenButtonContainer>
+        )}
+      </VideoContainer>
+      <Button
+        onClick={() => {
+          leaveSession();
+          return navigate("/broadcast/list");
+        }}
+        $background="red"
+      >
+        종료하기
+      </Button>
+    </>
   );
 };
 

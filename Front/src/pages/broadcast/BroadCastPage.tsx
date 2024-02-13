@@ -40,10 +40,10 @@ const BroadCastPage: React.FC = () => {
       setSubscriber(undefined);
       setPublisher(undefined);
     }
-
+    console.log(decrypt(sessionId.slice(0, -10)));
     if (
       sessionId &&
-      decrypt(sessionId.slice(0, -9)) === getUserInfo().username
+      decrypt(sessionId.slice(0, -10)) === getUserInfo().username
     ) {
       broadcastEnd({ sessionId });
     }
@@ -53,7 +53,13 @@ const BroadCastPage: React.FC = () => {
     window.addEventListener("beforeunload", leaveSession);
 
     return () => {
-      leaveSession();
+      if (
+        (sessionId &&
+          decrypt(sessionId.slice(0, -10)) === getUserInfo().username) ||
+        !document.pictureInPictureElement
+      ) {
+        leaveSession();
+      }
       window.removeEventListener("beforeunload", leaveSession);
     };
   }, [leaveSession]);
@@ -169,6 +175,7 @@ const BroadCastPage: React.FC = () => {
       <>
         {session ? (
           <SessionComponent
+            leaveSession={leaveSession}
             publisher={publisher as Publisher}
             subscriber={subscriber!}
             session={session}
