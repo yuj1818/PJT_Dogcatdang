@@ -17,7 +17,7 @@ public class ResponseAnimalListDto {
 	private Long animalId;
 	private String animalType;
 	private String breed;
-	private int age;
+	private Integer age;
 	private String gender;
 	private String isNeuter;
 	private Animal.State state;
