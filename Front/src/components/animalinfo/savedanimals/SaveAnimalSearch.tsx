@@ -104,7 +104,7 @@ function SaveAnimalSearch() {
     // const rescueLocation: string = region + " " + country
     const data: FilterData = {
       animalType: animalType !== undefined ? animalType : "",
-      breed: breed !== undefined ? breed.replace(/\s/g, "_") : "",
+      breed: breed !== undefined ? breed : "",
       selectedCity: region !== undefined ? region : "",
       selectedDistrict: country !== undefined ? country : "",
       gender: gender !== undefined ? gender : "",
@@ -113,7 +113,7 @@ function SaveAnimalSearch() {
 
     try {
       const responseData = await search(data, token);
-      // console.log(responseData);
+      console.log(responseData);
       if (responseData !== undefined) {
         setIsSearch(true);
       }
@@ -160,11 +160,11 @@ function SaveAnimalSearch() {
                   value={
                     animalType === "강아지"
                       ? transformedDogInput.find(
-                        (option) => option.value === breed
-                      )
+                          (option) => option.value === breed
+                        )
                       : transformedCatInput.find(
-                        (option) => option.value === breed
-                      )
+                          (option) => option.value === breed
+                        )
                   }
                   options={
                     animalType === "강아지"
@@ -191,14 +191,13 @@ function SaveAnimalSearch() {
                 <Select
                   name="region"
                   id="region"
-                  value={
-                    transformedRegionInput.find((option) => option.value === region)
+                  value={transformedRegionInput.find(
+                    (option) => option.value === region
+                  )}
+                  options={transformedRegionInput}
+                  onChange={(selectedOption) =>
+                    setRegion(selectedOption?.value || "")
                   }
-                  options={regionInput.map((pr) => ({
-                    value: pr,
-                    label: pr,
-                  }))}
-                  onChange={(selectedOption) => setRegion(selectedOption?.value || "")}
                   placeholder="시/도 선택"
                   styles={{
                     control: (provided) => ({
@@ -234,7 +233,7 @@ function SaveAnimalSearch() {
                 </Select1>
               </div>
               <div className="form-group">
-              <Select1
+                <Select1
                   name="gender"
                   id="gender"
                   value={gender}

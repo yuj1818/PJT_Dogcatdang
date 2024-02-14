@@ -74,9 +74,11 @@ export const signIn = (data: signInData) => {
       cookie.set("U_ID", token);
 
       const decodedData = jwtDecode(token);
+      const date = new Date(0);
+
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     })
     .catch((err) => {
@@ -125,6 +127,7 @@ export const logout = () => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     localStorage.removeItem("recentSeen");
+    localStorage.removeItem("expiration");
     return res;
   });
 };
@@ -160,8 +163,21 @@ export const oauthSignUp = (data: oauthSignUpData) => {
 export const getToken = () => {
   return API.get('/api/oauth2/token')
     .then((res) => {
-      cookie.set("U_ID", res.data.token);
-      return
+      const token = res.data.token;
+
+      if (cookie.get("U_ID")) {
+        cookie.remove("U_ID");
+      }
+      
+      cookie.set("U_ID", token);
+
+      const decodedData = jwtDecode(token);
+      const date = new Date(0);
+
+      localStorage.setItem("userInfo", JSON.stringify(decodedData));
+      localStorage.setItem("recentSeen", JSON.stringify([]));
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
+      return res;
     });
 };
 

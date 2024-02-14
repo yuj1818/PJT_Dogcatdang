@@ -10,7 +10,7 @@ import LikeButton from "../../../components/animalinfo/LikeButton";
 interface AnimalDetail {
   animalType: string;
   breed: string;
-  age: string;
+  age: number;
   feature: string;
   gender: string;
   isNeuter: string;
@@ -53,14 +53,16 @@ function AnimalDetailPage() {
       .then((res) => {
         console.log(res.data);
         setAnimalDetail(res.data);
-        const recentSeen = JSON.parse(localStorage.getItem("recentSeen") || "[]");
+        const recentSeen = JSON.parse(
+          localStorage.getItem("recentSeen") || "[]"
+        );
         if (recentSeen.find((el: RecentSeenData) => el.animalId === animalID)) {
-          return
+          return;
         }
         if (recentSeen.length === 3) {
           recentSeen.shift();
         }
-        recentSeen.push({animalId: animalID, imgUrl: res.data.imgUrl});
+        recentSeen.push({ animalId: animalID, imgUrl: res.data.imgUrl });
         localStorage.setItem("recentSeen", JSON.stringify(recentSeen));
       })
       .catch((error) => console.error("Error:", error));
@@ -119,8 +121,10 @@ function AnimalDetailPage() {
             <div className="flex">
               {" "}
               <p style={{ fontSize: "25px" }}>
-                {animalDetail?.breed.replace(/_/g, " ")} | {animalDetail?.age}{" "}
-                살
+                {animalDetail?.breed} |
+                {animalDetail?.age === -1
+                  ? "나이 미상"
+                  : `${animalDetail?.age} 살`}{" "}
               </p>{" "}
             </div>
             <div className="flex">

@@ -71,6 +71,7 @@ public class StreamingServiceImpl implements StreamingService{
 				.animal(animal)
 				.build();
 			streamingAnimalRepository.save(streamingAnimal);
+			streaming.getAnimalList().add(streamingAnimal);
 		}
 		return new ResponseDto(200L, "성공");
 	}

@@ -41,7 +41,6 @@ function LostAnimalSearch() {
     setAnimalType(type);
   };
 
-
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(event.target.value);
   };
@@ -55,7 +54,7 @@ function LostAnimalSearch() {
     const token = cookie.get("U_ID");
     const data: LostFilterData = {
       animalType: animalType !== undefined ? animalType : "",
-      breed: breed !== undefined ? breed.replace(/\s/g, "_") : "",
+      breed: breed !== undefined ? breed : "",
       selectedCity: region !== undefined ? region : "",
       selectedDistrict: country !== undefined ? country : "",
       gender: gender !== undefined ? gender : "",
@@ -148,17 +147,19 @@ function LostAnimalSearch() {
                 />
               </div>
               <div className="form-group">
-              <Select
+                <Select
                   name="region"
                   id="region"
-                  value={
-                    transformedRegionInput.find((option) => option.value === region)
-                  }
+                  value={transformedRegionInput.find(
+                    (option) => option.value === region
+                  )}
                   options={regionInput.map((pr) => ({
                     value: pr,
                     label: pr,
                   }))}
-                  onChange={(selectedOption) => setRegion(selectedOption?.value || "")}
+                  onChange={(selectedOption) =>
+                    setRegion(selectedOption?.value || "")
+                  }
                   placeholder="시/도 선택"
                   styles={{
                     control: (provided) => ({

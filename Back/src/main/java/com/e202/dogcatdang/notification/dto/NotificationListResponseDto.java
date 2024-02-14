@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 public class NotificationListResponseDto {
     private  Long id;
-    private  String senderEmail;
+    private Long senderId;
+    private Long receiverId;
+    private  String senderNickname;
     // 수신자 이메일 추가
-    private String receiverEmail;
+    private String receiverNickname;
     private  String title;
     private  String content;
     private  LocalDateTime sentDate;
@@ -35,8 +37,10 @@ public class NotificationListResponseDto {
     public static NotificationListResponseDto fromEntity(Notification notification) {
         return NotificationListResponseDto.builder()
                 .id(notification.getId())
-                .senderEmail(notification.getSender().getEmail())
-                .receiverEmail(notification.getReceiver().getEmail())
+                .senderId(notification.getSender().getId())
+                .receiverId(notification.getReceiver().getId())
+                .senderNickname(notification.getSender().getNickname())
+                .receiverNickname(notification.getReceiver().getNickname())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .sentDate(notification.getSentDate())
