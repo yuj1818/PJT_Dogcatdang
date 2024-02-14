@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
+
 
 @Component
 public class JWTUtil {
@@ -46,15 +48,20 @@ public class JWTUtil {
     //토큰 생성
     public String createJwt(Long id, String username, String role, String nickname, Long expiredMs) {
         System.out.println("createJwt 내부");
+        // 현재 시간과 만료 시간을 Instant로 계산
+        Instant now = Instant.now();
+        Instant expiryDate = now.plusMillis(expiredMs);
         return Jwts.builder()
                 .claim("id" , id)
                 .claim("username", username)
                 .claim("role", role)
                 .claim("nickname", nickname)
-                //발행시간
-                .issuedAt(new Date(System.currentTimeMillis()))
-                //소멸시간
-                .expiration(new Date(System.currentTimeMillis() + expiredMs))
+//                //발행시간
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                //소멸시간
+//                .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(expiryDate))
                 .signWith(secretKey)
                 .compact();
     }
