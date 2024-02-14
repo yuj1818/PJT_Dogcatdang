@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import { Publisher, Session, Subscriber } from "openvidu-browser";
 import MyVideo from "./MyVideo";
-import Chat from "./Chat";
-import styled from "styled-components";
-import AnimalList from "./AnimalList";
-
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-gap: 20px;
-  padding: 20px;
-  width: 100%;
-`;
 
 interface SessionComponentProps {
   subscriber: Subscriber;
@@ -52,29 +41,22 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
 
   return (
     <>
-      <Container>
-        {publisher && (
-          <MyVideo
-            streamManager={publisher}
-            leaveSession={leaveSession}
-          ></MyVideo>
-        )}
-        {subscribers.map((subscriberItem, idx) => (
-          <MyVideo
-            key={idx}
-            streamManager={subscriberItem}
-            leaveSession={leaveSession}
-          />
-        ))}
-        {!publisher && subscribers.length === 0 && (
-          <p>방송이 종료되었습니다.</p>
-        )}
-        <Chat
-          // onForeceLeave={handleForcedLeave}
+      {publisher && (
+        <MyVideo
+          streamManager={publisher}
+          leaveSession={leaveSession}
+          session={session}
+        ></MyVideo>
+      )}
+      {subscribers.map((subscriberItem, idx) => (
+        <MyVideo
+          key={idx}
+          streamManager={subscriberItem}
+          leaveSession={leaveSession}
           session={session}
         />
-      </Container>
-      <AnimalList />
+      ))}
+      {!publisher && subscribers.length === 0 && <p>방송이 종료되었습니다.</p>}
     </>
   );
 };

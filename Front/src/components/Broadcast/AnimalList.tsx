@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { retryFn } from "../../util/tanstackQuery";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -28,7 +28,11 @@ const Container = styled.div`
   }
 `;
 
-const AnimalList: React.FC = () => {
+interface Props {
+  togglePictureInPicture: () => void;
+}
+
+const AnimalList: React.FC<Props> = ({ togglePictureInPicture }) => {
   const { state } = useLocation();
   const { streamingId } = state;
 
@@ -53,7 +57,11 @@ const AnimalList: React.FC = () => {
         <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       )}
       {data?.map((animalInfo) => (
-        <Card {...animalInfo} key={animalInfo.animalId}></Card>
+        <Card
+          {...animalInfo}
+          key={animalInfo.animalId}
+          togglePictureInPicture={togglePictureInPicture}
+        ></Card>
       ))}
     </Container>
   );
@@ -78,18 +86,35 @@ const Img = styled.img`
   }
 `;
 
-const Card: React.FC<BroadcastAnimalInfo> = ({
+interface CardProps extends BroadcastAnimalInfo {
+  togglePictureInPicture: () => void;
+}
+
+const Card: React.FC<CardProps> = ({
   animalId,
   breed,
   age,
   imgUrl,
+  togglePictureInPicture,
 }) => {
-  animalId;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (!document.parentElement) {
+      togglePictureInPicture();
+    }
+    setTimeout(() => {
+      navigate(`/save-animals/${animalId}`);
+    }, 500);
+  };
+
   return (
     <div>
-      <Img src={imgUrl} alt="출연동물" />
-      <ParaItems>{breed}</ParaItems>
-      <ParaItems>{age}</ParaItems>
+      <button onClick={handleClick}>
+        <Img src={imgUrl} alt="출연동물" />
+        <ParaItems>{breed}</ParaItems>
+        <ParaItems>{age !== -1 ? `${age}살` : "나이 미상"}</ParaItems>
+      </button>
     </div>
   );
 };
