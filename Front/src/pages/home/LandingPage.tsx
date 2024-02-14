@@ -150,11 +150,11 @@ function LandingPage() {
 
   const goSignUp = () => {
     navigate('/signup');
-  }
+  };
 
   const goSignIn = () => {
     navigate('/signin');
-  }
+  };
 
   return (
     <Landing>

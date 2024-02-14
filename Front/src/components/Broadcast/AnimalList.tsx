@@ -1,13 +1,120 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { retryFn } from "../../util/tanstackQuery";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
+import styled from "styled-components";
+import {
+  BroadcastAnimalInfo,
+  broadcastAnimalInfo,
+} from "../../util/broadcastAPI";
+import { LoadingOrError } from "../common/LoadingOrError";
 
-const AnimalList: React.FC = () => {
-  const params = useParams();
-  const sessionId = params["*"];
-  sessionId;
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-  // 방송 연 동물 상세정보 요청
+  & > div {
+    flex: 0 0 9%;
+    box-sizing: border-box;
+    margin: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-  return <></>;
+  & > div:last-child {
+    margin-right: auto;
+  }
+`;
+
+interface Props {
+  togglePictureInPicture: () => void;
+}
+
+const AnimalList: React.FC<Props> = ({ togglePictureInPicture }) => {
+  const { state } = useLocation();
+  const { streamingId } = state;
+
+  const { data, isLoading, isError, error } = useQuery<
+    BroadcastAnimalInfo[],
+    Error,
+    BroadcastAnimalInfo[]
+  >({
+    queryKey: ["broadcastdetail", state],
+    queryFn: async ({ signal }) => {
+      const result = await broadcastAnimalInfo({ signal, streamingId });
+      return result as BroadcastAnimalInfo[];
+    },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 300,
+  });
+
+  return (
+    <Container>
+      {(isLoading || isError) && (
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
+      )}
+      {data?.map((animalInfo) => (
+        <Card
+          {...animalInfo}
+          key={animalInfo.animalId}
+          togglePictureInPicture={togglePictureInPicture}
+        ></Card>
+      ))}
+    </Container>
+  );
 };
 
 export default AnimalList;
+
+const ParaItems = styled.p`
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+`;
+
+const Img = styled.img`
+  object-fit: cover;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+
+  @media (max-width: 768px) {
+    height: 50px;
+  }
+`;
+
+interface CardProps extends BroadcastAnimalInfo {
+  togglePictureInPicture: () => void;
+}
+
+const Card: React.FC<CardProps> = ({
+  animalId,
+  breed,
+  age,
+  imgUrl,
+  togglePictureInPicture,
+}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (!document.parentElement) {
+      togglePictureInPicture();
+    }
+    setTimeout(() => {
+      navigate(`/save-animals/${animalId}`);
+    }, 500);
+  };
+
+  return (
+    <div>
+      <button onClick={handleClick}>
+        <Img src={imgUrl} alt="출연동물" />
+        <ParaItems>{breed}</ParaItems>
+        <ParaItems>{age !== -1 ? `${age}살` : "나이 미상"}</ParaItems>
+      </button>
+    </div>
+  );
+};

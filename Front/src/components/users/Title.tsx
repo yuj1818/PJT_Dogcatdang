@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledTitle = styled.p`
   text-align: center;
   font-size: 32px;
-  font-family: 'Pretendard-600'
+  font-family: 'SUITE-SemiBold'
 `
 
 const Title: React.FC<{ title: string }> = ({title}) => {

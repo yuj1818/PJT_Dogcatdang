@@ -6,6 +6,7 @@ import com.e202.dogcatdang.user.dto.UserProfileDTO;
 import io.jsonwebtoken.security.Password;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class UserProfileService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    @Transactional
     public UserProfileDTO getUserProfile(Long userId) {
         System.out.println("잘 호출하니 getUserProfile service");
         User user = userRepository.findById(userId)
@@ -40,6 +42,7 @@ public class UserProfileService {
         return userProfileDTO;
     }
 
+    @Transactional
     public User updateUserProfile(Long userId, UserProfileDTO userProfileDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -91,12 +94,14 @@ public class UserProfileService {
         return user;
     }
 
+    @Transactional
     public User findById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원 아이디입니다."));
     }
 
     // 회원 탈퇴 메소드
+    @Transactional
     public void deleteUser(Long userId) {
         // 사용자가 존재하는지 확인
         Optional<User> optionalUser = userRepository.findById(userId);

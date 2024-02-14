@@ -38,11 +38,6 @@ public class LostAnimalController {
 	@PostMapping("")
 	public ResponseEntity<ResponseSavedIdDto> registerLostAnimal(@RequestHeader("Authorization") String token, @RequestBody RequestLostAnimalDto requestLostAnimalDto) throws IOException {
 
-		// animalType에 맞는 breed를 입력했는지 확인하는 기능
-		if (!requestLostAnimalDto.isValid()) {
-			throw new IllegalArgumentException("품종이 동물 타입과 맞지 않습니다.");
-		}
-
 		ResponseSavedIdDto responseSavedIdDto = lostAnimalService.save(requestLostAnimalDto, token);
 		return ResponseEntity.ok(responseSavedIdDto);
 	}

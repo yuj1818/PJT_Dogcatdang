@@ -4,12 +4,14 @@ package com.e202.dogcatdang.mypage.controller;
 import com.e202.dogcatdang.board.dto.ResponseBoardSummaryDto;
 import com.e202.dogcatdang.board.service.BoardServiceImpl;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.mypage.dto.MypageAnimalDto;
 import com.e202.dogcatdang.mypage.service.MyPageService;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,24 +34,26 @@ public class UserLikeAnimalController {
     }
 
     //유저의 관심동물 불러오기
+    @Transactional
     @GetMapping("/liked-animals/{userId}")
-    public ResponseEntity<List<Animal>> getLikedAnimalsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<MypageAnimalDto>> getLikedAnimalsByUserId(@PathVariable Long userId) {
         System.out.println("liked-animals");
 
         // userId를 사용하여 관심 동물 조회 로직 수행
-        List<Animal> likedAnimals = myPageService.getLikedAnimalsByUser(userId);
+        List<MypageAnimalDto> likedAnimals = myPageService.getLikedAnimalsByUser(userId);
 
         // 조회된 동물들을 ResponseEntity로 반환
         return ResponseEntity.ok(likedAnimals);
     }
 
     //기관의 보호중인 동물 불러오기
+    @Transactional
     @GetMapping("/protected-animals/{userId}")
-    public ResponseEntity<List<Animal>> getProtectedAnimalsForUser(@PathVariable Long userId) {
+    public ResponseEntity<List<MypageAnimalDto>> getProtectedAnimalsForUser(@PathVariable Long userId) {
         System.out.println("protected-animals");
 
         // userId를 사용하여 보호동물 조회 로직 수행
-        List<Animal> protectedAnimals = myPageService.getProtectedAnimalsForShelter(userId);
+        List<MypageAnimalDto> protectedAnimals = myPageService.getProtectedAnimalsForShelter(userId);
 
         // 조회된 보호동물들을 ResponseEntity로 반환
         return ResponseEntity.ok(protectedAnimals);
@@ -57,6 +61,7 @@ public class UserLikeAnimalController {
 
 
     //상세정보 가져오기
+    @Transactional
     @GetMapping("/{animalId}")
     public ResponseEntity<Animal> getAnimalDetail(@PathVariable("animalId") Long animalId) {
         System.out.println("상세조회 동물");
@@ -69,6 +74,7 @@ public class UserLikeAnimalController {
     }
 
     //근황글 불러오기
+    @Transactional
     @GetMapping("/posts/{userId}")
     public ResponseEntity<List<ResponseBoardSummaryDto>> getPostsForUser(@PathVariable Long userId) {
         System.out.println("/posts");

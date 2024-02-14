@@ -64,6 +64,7 @@ const ReservationInfo: React.FC<{ reservationId: number | null, changeData: Reac
         newData[idx].state = "승인"
         return newData;
       });
+      alert('승인되었습니다');
     }
   };
 
@@ -76,6 +77,7 @@ const ReservationInfo: React.FC<{ reservationId: number | null, changeData: Reac
         newData[idx].state = "거절"
         return newData;
       });
+      alert('거절되었습니다');
     }
   };
 

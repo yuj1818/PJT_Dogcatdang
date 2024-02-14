@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 public class NotificationRequestDto {
 
     private  Long senderId;
-    private  String receiverEmail;
+    private  Long receiverId;
     private  String title;
     private  String content;
 
-    public NotificationRequestDto(Long senderId, String receiverEmail, String title, String content) {
+    public NotificationRequestDto(Long senderId, Long receiverId, String title, String content) {
         this.senderId = senderId;
-        this.receiverEmail = receiverEmail;
+        this.receiverId = receiverId;
         this.title = title;
         this.content = content;
     }

@@ -51,6 +51,8 @@ public class AnimalServiceImpl implements AnimalService {
 	private final AnimalLikeRepository animalLikeRepository;
 	private final ReservationRepository reservationRepository;
 
+	private final AnimalLikeService animalLikeService;
+
 
 	/*	동물 데이터 등록(작성)
 		1. Client에게 받은 RequestDto를 Entity로 변환하여 DB에 저장한다.
@@ -76,12 +78,14 @@ public class AnimalServiceImpl implements AnimalService {
 	*/
 	@Transactional
 	@Override
-	public ResponseAnimalDto findById(Long animalId) {
+	public ResponseAnimalDto findById(Long animalId, Long userId) {
 		Animal animal = animalRepository.findByIdWithUser(animalId)
 			.orElseThrow(() -> new NoSuchElementException("해당 Id의 동물이 없습니다."));
 
+		User user = userRepository.findById(userId).orElseThrow(null);
 		int adoptionApplicantCount = getAdoptions(animal);
-		return new ResponseAnimalDto(animal, adoptionApplicantCount);
+		boolean isLike = animalLikeService.isAnimalLikedByUser(animal, user);
+		return new ResponseAnimalDto(animal, adoptionApplicantCount, isLike);
 	}
 
 	/*	전체 동물 데이터(리스트) 조회
@@ -148,8 +152,7 @@ public class AnimalServiceImpl implements AnimalService {
 	@Override
 	public Animal update(Long animalId, RequestAnimalDto request) throws IOException {
 		// 특정 동물 데이터 조회
-		Animal animal = animalRepository.findById(animalId)
-			.orElseThrow(() -> new IllegalArgumentException("해당 Id의 동물을 찾을 수 없습니다."));
+		Animal animal = getAnimalById(animalId);
 
 		// rescueLocation 조합
 		String rescueLocation = request.getSelectedCity() + " " + request.getSelectedDistrict() + " " +
@@ -173,6 +176,7 @@ public class AnimalServiceImpl implements AnimalService {
 	// 방송 개설 단계에서 방송에 출연할 동물들을 고르기 위한 동물 리스트를 반환하는 기능
 	// streamingcontroller에서 사용됨
 	@Override
+	@Transactional
 	public List<ResponseStreamingAnimalDto> findAnimals(Long userId) {
 		List<Animal> animals = animalRepository.findByUserIdAndState(userId, Animal.State.보호중);
 		List<ResponseStreamingAnimalDto> animalDtoList = new ArrayList<>();

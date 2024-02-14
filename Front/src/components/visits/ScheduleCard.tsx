@@ -1,4 +1,5 @@
 import { reservationData } from "../../pages/visits/VisitManagementPage";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import moment from "moment";
 import { Button } from "../common/Button";
@@ -29,7 +30,7 @@ const Card = styled.div`
   }
 
   .bold {
-    font-family: "Pretendard-600";
+    font-family: "SUITE-SemiBold";
   }
 
   .sm-font {
@@ -43,14 +44,17 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
 }) => {
 
   const isOrg = org();
+  const navigate = useNavigate();
 
-  const onClickCancel = async() => {
+  const onClickCancel = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
     await cancelReservation(reservation.reservationId);
     handleReservations((prev: reservationData[]) => prev.filter((el: reservationData) => el.reservationId !== reservation.reservationId));
   };
 
   return (
-    <Card>
+    <Card onClick={() => navigate(`/save-animals/${reservation.animalId}`)}>
       <div className="circle">
         <img
           className="animal-img"
@@ -71,7 +75,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
         <p className="grey sm-font flex items-center gap-1">
           <IoMdTime />
           {moment(reservation.reservationTime).format(
-            "YYYY년 MM월 DD일, HH:MM"
+            "YYYY년 MM월 DD일, hh:mm"
           )}
         </p>
         { isOrg && 
@@ -84,9 +88,9 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
       {
         !isOrg && 
         <div className="flex flex-col gap-1 items-center justify-center">
-          <p className="sm-font">{reservation.state || "대기"}</p>
+          <p className="sm-font me-2">{reservation.state}</p>
           {
-            !reservation.state &&
+            reservation.state === '대기중' || !reservation.state &&
             <Button onClick={onClickCancel} background="red" $paddingX={1} $fontSize={0.8} $marginTop={0}>
               취소
             </Button>

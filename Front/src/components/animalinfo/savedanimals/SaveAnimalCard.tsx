@@ -8,13 +8,13 @@ export interface SaveAnimal {
   code: string;
   animalType: string;
   breed: string;
-  age: string;
+  age: number;
   weight: string;
   rescueDate: string;
   selectedCity: string;
   selectedDistrict: string;
   detailInfo: string;
-  isNeuter: boolean;
+  isNeuter: string;
   gender: string;
   feature: string;
   state: string;
@@ -36,14 +36,14 @@ export const Card = styled.div`
   position: relative;
   box-shadow: 2px 2px 2px rgb(45, 45, 45, 0.4);
   border-radius: 10px;
-  transition: box-shadow 0.3s ease; 
+  transition: box-shadow 0.3s ease;
 
   &:hover {
     box-shadow: 7px 7px 7px rgba(0, 0, 0, 0.3);
   }
 `;
 
-const Adoption = styled.div`
+export const Adoption = styled.div`
   font-size: 8px;
   background-color: #ff8331;
   color: white;
@@ -75,6 +75,12 @@ function SaveAnimalCard(props: AnimalCardProps) {
     const shortenedLocation = parts.slice(0, 2).join(" ");
     return shortenedLocation;
   }
+  const neuterStatus =
+    props.animals.isNeuter === "예"
+      ? "완료"
+      : props.animals.isNeuter === "아니오"
+      ? "미완료"
+      : "알 수 없음";
 
   return (
     <Card>
@@ -94,12 +100,13 @@ function SaveAnimalCard(props: AnimalCardProps) {
         ></img>
 
         <div>
-          <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
-          <strong>{props.animals.age}살 </strong>
+          <strong>{props.animals.breed}</strong> |{" "}
+          <strong>
+            {props.animals.age === -1 ? "나이 미상" : `${props.animals.age} 살`}
+          </strong>
         </div>
         <p style={{ fontSize: "13px" }}>
-          {props.animals.gender} |{" "}
-          {props.animals.isNeuter ? "중성화 완료" : "중성화 알 수 없음"}
+          {props.animals.gender} | 중성화 {neuterStatus}
         </p>
 
         <p style={{ fontSize: "10px", opacity: "0.7" }}>

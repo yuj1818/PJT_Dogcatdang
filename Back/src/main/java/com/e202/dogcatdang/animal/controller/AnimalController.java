@@ -45,11 +45,6 @@ public class AnimalController {
 	@PostMapping("")
 	public ResponseEntity<ResponseSavedIdDto> registerAnimal(@RequestHeader("Authorization") String token, @RequestBody RequestAnimalDto requestAnimalDto) throws IOException {
 
-		// animalType에 맞는 breed를 입력했는지 확인하는 기능
-		if (!requestAnimalDto.isValid()) {
-			throw new IllegalArgumentException("품종이 동물 타입과 맞지 않습니다.");
-		}
-
 		ResponseSavedIdDto responseSavedIdDto = animalService.save(requestAnimalDto, token);
 		return ResponseEntity.ok(responseSavedIdDto);
 	}
@@ -70,8 +65,11 @@ public class AnimalController {
 	/* 동물 정보 상세 조회
 		동물 데이터 하나를 불러옴 */
 	@GetMapping("/{animalId}")
-	public ResponseEntity<ResponseAnimalDto> findAnimal(@PathVariable long animalId) {
-		ResponseAnimalDto animalDto = animalService.findById(animalId);
+	public ResponseEntity<ResponseAnimalDto> findAnimal(@PathVariable long animalId, @RequestHeader("Authorization") String token) {
+		// 토큰에서 사용자 아이디(pk) 추출
+		Long loginUserId = jwtUtil.getUserId(token.substring(7));
+
+		ResponseAnimalDto animalDto = animalService.findById(animalId, loginUserId);
 		return ResponseEntity.ok(animalDto);
 	}
 
@@ -84,7 +82,7 @@ public class AnimalController {
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
 		// 수정할 동물 정보 가져오기
-		ResponseAnimalDto existingAnimal = animalService.findById(animalId);
+		ResponseAnimalDto existingAnimal = animalService.findById(animalId, loginUserId);
 		// 수정할 동물의 작성자 아이디(pk) 가져오기
 		Long authorId = existingAnimal.getUserId();
 

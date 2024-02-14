@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.e202.dogcatdang.animal.service.AnimalService;
 import com.e202.dogcatdang.db.entity.Animal;
+import com.e202.dogcatdang.db.entity.Notification;
 import com.e202.dogcatdang.db.entity.Reservation;
 import com.e202.dogcatdang.db.entity.User;
+import com.e202.dogcatdang.db.repository.NotificationRepository;
 import com.e202.dogcatdang.db.repository.ReservationRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.reservation.dto.RequestReservationDto;
@@ -30,6 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	private final ReservationRepository reservationRepository;
 	private final UserRepository userRepository;
+	private final NotificationRepository notificationRepository;
 	private final AnimalService animalService;
 
 	// 일반 회원의 예약 등록
@@ -116,15 +119,52 @@ public class ReservationServiceImpl implements ReservationService {
 		// 특정 예약 조회 - shelterId와 reservationId 이용
 		Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
 
-		// 해당 번호의 예약이 존재하고, 예약된 동물을 등록한 회원 id가 현재 기관의 id와 같다면 수정
-		if (reservation != null && reservation.getAnimal().getUser().getId().equals(shelterId)) {
+		// 해당 번호의 예약이 존재하고, 예약된 동물을 등록한 회원 id가 현재 기관의 id와 같으며, 예약 상태가 '대기중'일 때만 수정 가능
+		if (reservation != null && reservation.getAnimal().getUser().getId().equals(shelterId) && reservation.getState().equals(
+			Reservation.State.대기중)) {
 			// state update method - Entity 내에 생성
 			reservation.updateState(reservationDto.getState());
 
 			// 업데이트된 예약을 저장
 			reservationRepository.save(reservation);
 
+			// 보내는 사람과 받는 사람 지정
+			User sender = reservation.getAnimal().getUser();
+			User receiver = reservation.getUser();
+
+			// 예약이 승인되면 알림 보내기
+			if (reservationDto.getState().equals(Reservation.State.승인)) {
+
+				// 알림(메세지)
+				Notification notification = Notification.builder()
+					.sender(sender)
+					.receiver(receiver)
+					.title("방문 예약이 승인되었습니다.")
+					.content(receiver.getNickname() + "님의 " + sender.getNickname() + "에 대한 방문 예약이 승인되었습니다.")
+					.sentDate(LocalDateTime.now()) // 현재 시간으로 발송 날짜 설정
+					.isRead(false) // 초기 상태는 읽지 않음(false)
+					.build();
+
+				notificationRepository.save(notification); // DB에 저장
+			}
+
+			else if (reservationDto.getState().equals(Reservation.State.거절)) {
+				// 알림(메세지)
+				Notification notification = Notification.builder()
+					.sender(sender)
+					.receiver(receiver)
+					.title("방문 예약이 거절되었습니다.")
+					.content(receiver.getNickname() + "님의 " + sender.getNickname() + "에 대한 방문 예약이 거절되었습니다.")
+					.sentDate(LocalDateTime.now()) // 현재 시간으로 발송 날짜 설정
+					.isRead(false) // 초기 상태는 읽지 않음(false)
+					.build();
+
+				notificationRepository.save(notification); // DB에 저장
+			}
+
 			return new ResponseUpdatedStateDto(reservation.getState());
+
+
 
 		} else { // 예약을 찾지 못하거나 권한이 없음
 			return null;

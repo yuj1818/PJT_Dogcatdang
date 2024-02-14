@@ -85,7 +85,7 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
 
         String role = auth.getAuthority();
 
-        String token= jwtUtil.createJwt(id,username,role,nickname,86400000L);
+        String token= jwtUtil.createJwt(id,username,role,nickname,5400000L);
 
         //key , 암호화 방식(끝에 꼭 한칸 띄우기) ,
         response.addHeader("Authorization","Bearer " + token);

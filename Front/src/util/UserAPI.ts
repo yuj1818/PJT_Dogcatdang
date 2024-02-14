@@ -20,7 +20,6 @@ export interface signUpData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
 }
 
@@ -42,7 +41,6 @@ export interface infoData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
   bio: string;
 }
@@ -52,7 +50,6 @@ export interface editedInfoData {
   nickname: string;
   address: string;
   phone: string;
-  imgName: string;
   imgUrl: string;
   bio: string;
 }
@@ -69,11 +66,19 @@ export const signIn = (data: signInData) => {
 
     .then((res) => {
       const token = res.headers["authorization"];
+
+      if (cookie.get("U_ID")) {
+        cookie.remove("U_ID");
+      }
+      
       cookie.set("U_ID", token);
 
       const decodedData = jwtDecode(token);
+      const date = new Date(0);
+
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
-      
+      localStorage.setItem("recentSeen", JSON.stringify([]));
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     })
     .catch((err) => {
@@ -121,6 +126,8 @@ export const logout = () => {
   return API.post(URL + "/logout").then((res) => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("recentSeen");
+    localStorage.removeItem("expiration");
     return res;
   });
 };
@@ -156,7 +163,56 @@ export const oauthSignUp = (data: oauthSignUpData) => {
 export const getToken = () => {
   return API.get('/api/oauth2/token')
     .then((res) => {
-      cookie.set("U_ID", res.data.token);
-      return
+      const token = res.data.token;
+
+      if (cookie.get("U_ID")) {
+        cookie.remove("U_ID");
+      }
+      
+      cookie.set("U_ID", `Bearer ${token}`);
+
+      const decodedData = jwtDecode(token);
+      const date = new Date(0);
+
+      localStorage.setItem("userInfo", JSON.stringify(decodedData));
+      localStorage.setItem("recentSeen", JSON.stringify([]));
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
+      return res;
     });
 };
+
+export const getLikedAnimals = (userId: string) => {
+  return API.get(URL + "/profiles/details/liked-animals/" + userId, {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const getPosts = (userId: string) => {
+  return API.get(URL + "/profiles/details/posts/" + userId, {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
+};
+
+export const getProtectedAnimals = (userId: string) => {
+  return API.get(URL + "/profiles/details/protected-animals/" + userId, {
+    method: "GET",
+    headers: {
+      Authorization: cookie.get("U_ID"),
+    }
+  })
+    .then((res) => {
+      return res.data;
+    });
+}

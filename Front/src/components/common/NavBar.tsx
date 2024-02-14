@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { Cookies } from "react-cookie";
 import { isOrg as org } from "../../pages/users/SignInPage";
 import { Bell } from "./Icons";
 import tw from "tailwind-styled-components";
@@ -10,6 +9,12 @@ import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
 import Footer from "./Footer";
+import { useQuery } from "@tanstack/react-query";
+import {
+  RequestNotiInterfaceInterface,
+  requestnoti,
+} from "../../util/notifications";
+import { retryFn } from "../../util/tanstackQuery";
 
 // -----------Styled Component-----------------------------------------------
 const Container = styled.div`
@@ -19,7 +24,7 @@ const Container = styled.div`
 `;
 
 const Color = styled.div`
-  background-color: #fff;
+  // background-color: #fff;
 `;
 
 const IMG = tw.img`
@@ -66,6 +71,13 @@ const StyledDiv = styled.span`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: inherit;
+  padding: 0 1rem;
+  margin: 10px 0;
+  font-size: 1.2rem;
+
+  &.active {
+    font-weight: bold;
+  }
 `;
 
 const OutLet = styled.div`
@@ -102,20 +114,35 @@ const NavTitle = styled.ul`
 
 // -----------NavBar-----------------------------------------------
 const NavBar: React.FC = () => {
-  // const [isNoti, setIsNoti] = useState(false);
-  const isOrg = org();
+  const navigate = useNavigate();
+  const [isNoti, setIsNoti] = useState(false);
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
 
-  const navigate = useNavigate();
+  const { data } = useQuery<RequestNotiInterfaceInterface[]>({
+    queryKey: ["notifications"],
+    queryFn: requestnoti,
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 300,
+  });
 
-  const cookie = new Cookies();
+  useEffect(() => {
+    if (data) {
+      for (const element of data) {
+        if (element.isRead) {
+          setIsNoti(true);
+          break;
+        }
+      }
+    }
+  }, [data]);
+
+  const isOrg = org();
 
   const onClickLogout = async () => {
     const response = await logout();
     if (response.status === 200) {
-      cookie.remove("U_ID");
-      localStorage.removeItem("userInfo");
       navigate("/landing");
     }
   };
@@ -216,7 +243,7 @@ const NavBar: React.FC = () => {
                 {nickname}님
               </StyledNavLink>
               <StyledNavLink to="notification">
-                <Bell isNoti={false} />
+                <Bell isNoti={isNoti} />
               </StyledNavLink>
               <button onClick={onClickLogout}>로그아웃</button>
             </StyledDiv>
