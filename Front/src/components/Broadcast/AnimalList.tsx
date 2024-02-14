@@ -1,4 +1,4 @@
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { retryFn } from "../../util/tanstackQuery";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
