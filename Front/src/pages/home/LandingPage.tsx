@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../util/UserAPI";
 import paw from "../../assets/paw-prints.png";
 import logo from "../../assets/main-logo-big.png";
 
