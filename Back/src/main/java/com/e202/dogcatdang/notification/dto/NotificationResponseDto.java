@@ -13,7 +13,9 @@ public class NotificationResponseDto {
     private  Long id;
     private  Long senderId;
     // 수신자 이메일 추가
-    private String receiverEmail;
+    private  Long receiverId;
+    private String senderNickname;
+    private String receiverNickname;
     private  String title;
     private  String content;
     private  LocalDateTime sentDate;
@@ -36,7 +38,9 @@ public class NotificationResponseDto {
         return NotificationResponseDto.builder()
                 .id(notification.getId())
                 .senderId(notification.getSender().getId())
-                .receiverEmail(notification.getReceiver().getEmail())
+                .receiverId(notification.getReceiver().getId())
+                .senderNickname(notification.getSender().getNickname())
+                .receiverNickname(notification.getReceiver().getNickname())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .sentDate(notification.getSentDate())

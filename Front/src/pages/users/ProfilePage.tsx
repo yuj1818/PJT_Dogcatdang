@@ -68,7 +68,7 @@ function ProfilePage() {
       {
         isOrg ? 
         <div className="flex flex-col gap-3">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mt-4 ms-2">
             <Menu>{userInfo?.nickname}에서 보호 중인 동물</Menu>
             { isMine && <Button onClick={() => navigate('/save-animals/management')} $marginLeft={0} $marginTop={0} $paddingX={.3} $paddingY={.1} $fontSize={.75} $background="black">보호 동물 관리</Button> }
           </div>

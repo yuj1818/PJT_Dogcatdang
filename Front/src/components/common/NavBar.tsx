@@ -9,6 +9,12 @@ import { logout } from "../../util/UserAPI";
 import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
 import Footer from "./Footer";
+import { useQuery } from "@tanstack/react-query";
+import {
+  RequestNotiInterfaceInterface,
+  requestnoti,
+} from "../../util/notifications";
+import { retryFn } from "../../util/tanstackQuery";
 
 // -----------Styled Component-----------------------------------------------
 const Container = styled.div`
@@ -31,7 +37,6 @@ const NavBarContainer = styled.div`
   align-items: center;
   white-space: nowrap;
   margin-right: 10rem;
-  
 
   @media screen and (max-width: 1024px) {
     .container {
@@ -109,12 +114,31 @@ const NavTitle = styled.ul`
 
 // -----------NavBar-----------------------------------------------
 const NavBar: React.FC = () => {
-  // const [isNoti, setIsNoti] = useState(false);
-  const isOrg = org();
+  const navigate = useNavigate();
+  const [isNoti, setIsNoti] = useState(false);
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
 
-  const navigate = useNavigate();
+  const { data } = useQuery<RequestNotiInterfaceInterface[]>({
+    queryKey: ["notifications"],
+    queryFn: requestnoti,
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 300,
+  });
+
+  useEffect(() => {
+    if (data) {
+      for (const element of data) {
+        if (element.isRead) {
+          setIsNoti(true);
+          break;
+        }
+      }
+    }
+  }, [data]);
+
+  const isOrg = org();
 
   const onClickLogout = async () => {
     const response = await logout();
@@ -155,7 +179,7 @@ const NavBar: React.FC = () => {
       </li>
       <li>
         <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
-        입양 후 이야기
+          입양 후 이야기
         </StyledNavLink>
       </li>
     </NavTitle>
@@ -183,7 +207,7 @@ const NavBar: React.FC = () => {
       </li>
       <li>
         <StyledNavLink to="/articles/1" aria-label="입양 후 이야기">
-        입양 후 이야기
+          입양 후 이야기
         </StyledNavLink>
       </li>
       <li>
@@ -219,7 +243,7 @@ const NavBar: React.FC = () => {
                 {nickname}님
               </StyledNavLink>
               <StyledNavLink to="notification">
-                <Bell isNoti={false} />
+                <Bell isNoti={isNoti} />
               </StyledNavLink>
               <button onClick={onClickLogout}>로그아웃</button>
             </StyledDiv>

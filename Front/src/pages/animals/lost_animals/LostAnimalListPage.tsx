@@ -30,9 +30,10 @@ const StyledButton = styled.button<StyledButtonProps>`
   display: ${({ $isOrg }) => ($isOrg ? "none" : "block")};
   background-color: black;
   color: white;
+  padding: 8px;
+  margin: 3px;
   border-radius: 10px;
-  width: 10%;
-  height: 35px;
+  width: 100px;
 `;
 
 const AnimalButton = styled.button<{ selected: boolean }>`

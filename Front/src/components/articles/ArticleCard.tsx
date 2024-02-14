@@ -27,6 +27,7 @@ const NicknameAndLikeCnt = styled.p`
 
 const Img = styled.img`
   object-fit: contain;
+  height: 160px;
 `;
 
 const ArticleCard: React.FC<{
