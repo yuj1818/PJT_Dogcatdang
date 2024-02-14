@@ -169,7 +169,7 @@ export const getToken = () => {
         cookie.remove("U_ID");
       }
       
-      cookie.set("U_ID", token);
+      cookie.set("U_ID", `Bearer ${token}`);
 
       const decodedData = jwtDecode(token);
       const date = new Date(0);
