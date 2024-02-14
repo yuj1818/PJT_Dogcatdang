@@ -28,4 +28,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
 
 
+    @Query("SELECT u.nickname FROM User u WHERE u.id = :id")
+    String findNicknameById(@Param("id") Long id);
 }

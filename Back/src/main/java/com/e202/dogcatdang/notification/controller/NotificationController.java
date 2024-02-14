@@ -24,19 +24,19 @@ public class NotificationController {
     }
 
     //메시지 보내기.
-    @PostMapping("/send")
+    @PostMapping("")
     public ResponseEntity<NotificationResponseDto> sendNotification(@RequestHeader("Authorization") String token,
-                                                                    @RequestBody NotificationRequestDto requestDTO) {
+                                                                    @RequestBody NotificationRequestDto notificationRequestDto) {
         // "Bearer " 접두사를 제거한 후 토큰에서 senderId 추출
         String authToken = token.substring(7);
         Long senderId = jwtUtil.getUserId(authToken);
 
         // senderId를 서비스 메소드에 전달
-        NotificationResponseDto responseDTO = notificationService.sendNotification(senderId, requestDTO);
+        NotificationResponseDto responseDTO = notificationService.sendNotification(notificationRequestDto);
         return ResponseEntity.ok(responseDTO);
     }
     // 받은 메시지 목록 조회
-    @GetMapping("/received")
+    @GetMapping("")
     public ResponseEntity<List<NotificationListResponseDto>> getReceivedNotifications(@RequestHeader("Authorization") String token) {
         List<NotificationListResponseDto> notifications = notificationService.getReceivedNotifications(token);
         return ResponseEntity.ok(notifications);
@@ -55,7 +55,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationDetails);
     }
 
-    @DeleteMapping("/delete/{notificationId}")
+    @DeleteMapping("/{notificationId}")
     public ResponseEntity<?> deleteNotification(@RequestHeader("Authorization") String token,
                                                    @PathVariable("notificationId") Long notificationId) {
         // "Bearer " 접두사를 제거한 후 토큰에서 userId 추출
@@ -69,7 +69,7 @@ public class NotificationController {
     }
 
     //쪽지 리스트 삭제
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     public ResponseEntity<Void> deleteNotifications(@RequestHeader("Authorization") String token,
                                                     @RequestBody List<Long> notificationIds) {
         String authToken = token.substring(7);
