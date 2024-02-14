@@ -1,5 +1,7 @@
 package com.e202.dogcatdang.user.jwt;
 
+import com.e202.dogcatdang.db.entity.RefreshToken;
+import com.e202.dogcatdang.refresh.service.RefreshTokenService;
 import com.e202.dogcatdang.user.dto.CustomUserDetails;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +24,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    private final RefreshTokenService refreshTokenService;
+
+
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, RefreshTokenService refreshTokenService) {
+        this.refreshTokenService = refreshTokenService;
+
         super.setAuthenticationManager(authenticationManager);
         super.setFilterProcessesUrl("/api/users/login"); // 로그인 처리 경로 설정
         // 기타 초기화 코드...
@@ -87,8 +94,14 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
 
         String token= jwtUtil.createJwt(id,username,role,nickname,5400000L);
 
+
         //key , 암호화 방식(끝에 꼭 한칸 띄우기) ,
         response.addHeader("Authorization","Bearer " + token);
+        // 리프레시 토큰 생성 및 헤더에 추가
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(id);
+        System.out.println("refreshToken 헤더에 추가~");
+        response.addHeader("RefreshToken", refreshToken.getToken()); // 리프레시 토큰 헤더에 추가
+        System.out.println("완료~~~");
 
     }
 

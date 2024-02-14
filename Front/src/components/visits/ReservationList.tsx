@@ -44,7 +44,7 @@ const ReservationList: React.FC<{ selectRow: React.Dispatch<React.SetStateAction
             return {
               reservationId: data.reservationId,
               code: data.code,
-              breed: data.breed.replace(/_/g, ' '),
+              breed: data.breed,
               visitor: data.visitor,
               date: data.reservationTime.split('T')[0],
               time: data.reservationTime.split('T')[1],

@@ -54,8 +54,8 @@ public class ReservationController {
 		// 사용자 역할(role) 확인
 		User user = userService.findById(loginUserId);
 
-		// 예약 권한 검증 조건문 -> 지금은 test를 위해 관리자 계정도 가능하게 함, 추후 일반 회원만이 가능하도록 바꿔야 함
-		if (user.getRole().equals("ROLE_USER") || user.getRole().equals("ROLE_ADMIN")) {
+		// 예약 권한 검증 조건문 -> 일반 회원만이 가능
+		if (user.getRole().equals("ROLE_USER")) {
 			// 역할(role)이 "ROLE_USER"인 경우에만 예약 생성
 			reservationService.register(animalId, loginUserId, reservationDto);
 			return ResponseEntity.ok("예약이 등록되었습니다");

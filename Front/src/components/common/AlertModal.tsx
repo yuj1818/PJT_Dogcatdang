@@ -32,6 +32,7 @@ interface alertModalInterface {
   title?: string;
   content?: string;
   children?: ReactNode;
+  icon?: ReactNode;
 }
 
 const Title = styled.h2`
@@ -47,14 +48,14 @@ const Content = styled.p`
 `;
 
 const AlertModal: React.FC<alertModalInterface> = memo(
-  ({ isOpen, closeModal, title, content, children }) => {
+  ({ isOpen, closeModal, title, content, children, icon }) => {
     return (
       <ReactModal
         isOpen={isOpen}
         onRequestClose={closeModal}
         style={modalStyle}
       >
-        <AlertIcon />
+        {!icon ? <AlertIcon /> : icon}
         {children ? (
           <>{children}</>
         ) : (
