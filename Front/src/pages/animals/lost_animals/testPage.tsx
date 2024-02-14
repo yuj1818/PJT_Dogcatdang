@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Select from "react-select";
-import "../search.css";
 import {
   dogInput,
   catInput,
@@ -10,9 +9,29 @@ import {
 } from "../../../components/animalinfo/Input";
 import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 import { Cookies } from "react-cookie";
-import { search, FilterData } from "../../../util/SaveAPI";
+import { FilterData } from "../../../util/SaveAPI";
 import { useNavigate } from "react-router-dom";
-import { Title } from "../../common/Title";
+import condition from "../../../assets/condition.png";
+import API from "../../../util/axios";
+import SaveAnimalCard, {
+  SaveAnimal,
+} from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
+import { ListStyle } from "../save_animals/AnimalListPage";
+import Pagination from "../../../components/common/Pagination";
+import { isOrg as org } from "../../../pages/users/SignInPage";
+
+interface StyledButtonProps {
+  $isOrg: boolean;
+}
+
+const StyledButton = styled.button<StyledButtonProps>`
+  display: ${({ $isOrg }) => ($isOrg ? "block" : "none")};
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  width: 10%;
+  height: 35px;
+`;
 
 export interface AnimalType {
   animalId: number;
@@ -63,8 +82,9 @@ function SaveAnimalSearch() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  const [isSearch, setIsSearch] = useState(false);
+  // const [isSearch, setIsSearch] = useState(false);
   const genderInput = ["전체", "암컷", "수컷"];
+  const isOrg = org();
 
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
@@ -78,6 +98,10 @@ function SaveAnimalSearch() {
   //   value: rg,
   //   label: rg,
   // }));
+
+  const [animalData, setAnimalData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
@@ -102,36 +126,57 @@ function SaveAnimalSearch() {
   };
   const cookie = new Cookies();
   const navigate = useNavigate();
-
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const token = cookie.get("U_ID");
-    // const rescueLocation: string = region + " " + country
-    const data: FilterData = {
-      animalType: animalType !== undefined ? animalType : "",
-      breed: breed !== undefined ? breed.replace(/\s/g, "_") : "",
-      selectedCity: region !== undefined ? region : "",
-      selectedDistrict: country !== undefined ? country : "",
-      gender: gender !== undefined ? gender : "",
-      userNickname: shelterName !== undefined ? shelterName : "",
-    };
+    await fetchData();
+  };
 
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+
+  const fetchData = async () => {
     try {
-      const responseData = await search(data, token);
-      // console.log(responseData);
-      if (responseData !== undefined) {
-        setIsSearch(true);
-      }
-      navigate(`/save-animals`, { state: { responseData, isSearch } });
+      const token = cookie.get("U_ID");
+      const data: FilterData = {
+        animalType: animalType !== undefined ? animalType : "",
+        breed: breed !== undefined ? breed : "",
+        selectedCity: region !== undefined ? region : "",
+        selectedDistrict: country !== undefined ? country : "",
+        gender: gender !== undefined ? gender : "",
+        userNickname: shelterName !== undefined ? shelterName : "",
+      };
+
+      const responseData = await API.post(
+        `api/animals/filter?page=${currentPage}`,
+        data,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setAnimalData(responseData.data.animalDtoList);
+      setCurrentPage(responseData.data.currentPage);
+      setTotalPages(responseData.data.totalPages);
     } catch (error) {
-      console.error("Error filtered data:", error);
+      console.error("데이터 불러오기 실패:", error);
+      // 실패했을 때의 처리
     }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleRegistration = () => {
+    navigate("/registration");
   };
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-3">
-        <Title className="title">보호 동물 조회</Title>
+        <h1 className="title">보호 동물 조회</h1>
         <hr className="border-black" />
       </div>
       <div className="container">
@@ -272,6 +317,28 @@ function SaveAnimalSearch() {
           </div>
         </form>
       </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <StyledButton $isOrg={isOrg} onClick={handleRegistration}>
+          동물 등록
+        </StyledButton>
+      </div>
+      <ListStyle $itemsPerRow={10}>
+        {animalData && animalData.length > 0 ? (
+          animalData.map((animal: SaveAnimal) => (
+            <SaveAnimalCard key={animal.animalId} animals={animal} />
+          ))
+        ) : (
+          <div>
+            <img src={condition} alt="condition" />
+            <div>검색 결과가 없습니다.</div>
+          </div>
+        )}
+      </ListStyle>
+      <Pagination
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+      />
     </div>
   );
 }

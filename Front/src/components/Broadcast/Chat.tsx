@@ -117,7 +117,7 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
           </p>
         ))}
       </AllMessage>
-      <Contour></Contour>
+      <Contour />
       <FormContainer onSubmit={handleSubmitEvent}>
         <label htmlFor="message" />
         <Input id="message" value={message} onChange={handleMessageChange} />

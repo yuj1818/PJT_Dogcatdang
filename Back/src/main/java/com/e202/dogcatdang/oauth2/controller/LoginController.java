@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -49,10 +50,13 @@ public class LoginController {
     }
 
     @GetMapping("/token")
-    public ResponseEntity<?> getToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+    public ResponseEntity<?> getToken(HttpServletRequest request) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 세션에서 인증 정보 가져오기
+        SecurityContext securityContext = (SecurityContext) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+        Authentication authentication = securityContext.getAuthentication();
         System.out.println("getToken하러 api");
+
         if (authentication == null || !(authentication.getPrincipal() instanceof CustomOAuth2User)) {
             // 인증 정보가 없거나 예상한 타입이 아닌 경우
             System.out.println("Authentication 정보가 없습니다.");

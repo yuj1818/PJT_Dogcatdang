@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   Outlet,
   RouterProvider,
@@ -39,28 +39,43 @@ import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
+import { logout } from "./util/UserAPI.ts";
+import { Cookies } from "react-cookie";
+import TestPage from "./pages/animals/lost_animals/testPage.tsx";
+
+const cookie = new Cookies();
+
+const isUser = () => {
+  if (cookie.get("U_ID")) {
+    return redirect("/");
+  }
+  return null;
+};
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
-
   {
     path: "/landing",
     element: <LandingPage />,
+    loader: isUser,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
+    loader: isUser,
   },
   {
     path: "/signin",
     element: <SignInPage />,
+    loader: isUser,
   },
   {
     path: "/oauth-success",
     element: <OauthTokenPage />,
+    loader: isUser,
   },
   // {
   //   path: "/about",
@@ -101,12 +116,17 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "animal-test",
+        element: <TestPage />,
+      },
+
+      {
         path: "save-animals/:animalID",
         element: <AnimalDetailPage />,
       },
       {
         path: "save-animals/management",
-        element: <SavedAnimalManagementPage />
+        element: <SavedAnimalManagementPage />,
       },
       {
         path: "registration",
@@ -218,6 +238,14 @@ const router = createBrowserRouter([
 ReactModal.setAppElement("#root");
 
 function App() {
+  useEffect(() => {
+    const expiration = localStorage.getItem("expiration");
+
+    if (expiration && new Date(expiration) < new Date()) {
+      logout();
+    }
+  }, []);
+
   return (
     <div>
       <QueryClientProvider client={queryClient}>

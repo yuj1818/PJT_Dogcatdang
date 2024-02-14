@@ -23,4 +23,6 @@ public interface AnimalLikeRepository extends JpaRepository<AnimalLike, Long> {
 	AnimalLike findByUserAndAnimal(User user, Animal animal);
 
 	List<AnimalLike> findByUserId(Long userId);
+
+	List<AnimalLike> findByAnimalAnimalId(Long animalId);
 }

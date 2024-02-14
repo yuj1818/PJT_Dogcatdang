@@ -1,6 +1,5 @@
 import API from "./axios";
 import { Cookies } from "react-cookie";
-// const URL = "/animals";
 
 const cookie = new Cookies();
 
@@ -81,14 +80,14 @@ export const saveUpdate = (
 
 export const search = (data: FilterData, token: string) => {
   console.log(data);
-  return API.post("api/animals/filter", data, {
+  return API.post(`api/animals/filter`, data, {
     headers: {
       Authorization: token,
     },
   })
     .then((res) => {
       console.log("Response:", res.data);
-      return res.data.animalDtoList;
+      return res.data;
     })
     .catch((err) => {
       if (err.response && err.response.status === 204) {

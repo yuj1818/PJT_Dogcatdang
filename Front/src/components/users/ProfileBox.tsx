@@ -6,14 +6,15 @@ import defaultProfile from "../../assets/defaultProfile.png";
 import { Button } from "../common/Button";
 import { useEffect, useState } from "react";
 import { RecentSeenData } from "../../pages/animals/save_animals/AnimalDetailPage";
+import { IoMdHeart } from "react-icons/io";
 
 const StyledBox = styled.div`
   border-radius: 15px;
   box-shadow: 0px 4px 4px lightgrey;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 1rem;
+  justify-content: space-between;
+  padding: 0 4rem;
   gap: 1rem;
   width: 100%;
   height: 30vh;
@@ -37,12 +38,27 @@ const StyledBox = styled.div`
     font-weight: 600;
   }
 
+  .img-box {
+    display: flex;
+    border: 1px dashed #9f836e;
+    border-radius: 10px;
+    padding: 1rem;
+    height: 60%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;    
+  }
+
   .animal-image-circle {
     border-radius: 50%;
     overflow: hidden;
     width: 6rem;
     height: 6rem;
-    margin-right: -.5rem;
+    margin-right: -0.5rem;
+  }
+
+  .animal-image-circle:last-child {
+    margin-right: 0;
   }
 `;
 
@@ -50,12 +66,17 @@ const RecentSeenAnimals = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: .8;
   flex-direction: column;
-  gap: 1rem;
+  gap: .5rem;
+  height: 100%;
+  width: 40%;
 
   .content-title {
     font-family: 'SUITE-Bold';
+    color: #9f836e;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
   }
 `
 
@@ -136,8 +157,8 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
           <KakaoMap address={props.userInfo?.address || ""} /> 
           : 
           <RecentSeenAnimals>
-            <p className="content-title">최근 본 보호 동물</p>
-            <div className="flex">
+            <p className="content-title"><IoMdHeart />최근 본 보호 동물<IoMdHeart /></p>
+            <div className="img-box">
               {
                 recentSeen && recentSeen.map((info: RecentSeenData) => (
                   <div 
