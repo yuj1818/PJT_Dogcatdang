@@ -119,6 +119,7 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
+	@Transactional
 	public ResponseDto delete(Long loginUserId, String sessionId) {
 
 
