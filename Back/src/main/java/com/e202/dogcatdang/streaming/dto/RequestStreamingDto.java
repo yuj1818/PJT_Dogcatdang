@@ -30,13 +30,12 @@ public class RequestStreamingDto {
 
 
 
-	public Streaming toEntity(User user, List<StreamingAnimal> animalEntityList){
+	public Streaming toEntity(User user){
 		return Streaming.builder()
 			.sessionId(sessionId)
 			.title(title)
 			.description(description)
 			.startTime(LocalDateTime.now())
-			.animalList(animalEntityList)
 			.thumbnailImgUrl(thumbnailImgUrl)
 			.user(user)
 			.build();

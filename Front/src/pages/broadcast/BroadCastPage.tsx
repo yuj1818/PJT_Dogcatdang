@@ -12,6 +12,7 @@ import { isOrg as org } from "../users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
 import { broadcastEnd } from "../../util/broadcastAPI";
 import { decrypt } from "../../components/Broadcast/simpleEncrypt";
+import { queryClient } from "../../util/tanstackQuery";
 
 const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443/openvidu/api";
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
@@ -32,6 +33,13 @@ const BroadCastPage: React.FC = () => {
         to: [],
         type: "signal:enter",
       });
+      if (decrypt(sessionId.slice(0, -10)) === getUserInfo().username) {
+        session.signal({
+          data: "방송 종료",
+          to: [],
+          type: "streamDestroyed",
+        });
+      }
 
       session.disconnect();
       setOV(undefined);
@@ -40,21 +48,32 @@ const BroadCastPage: React.FC = () => {
       setSubscriber(undefined);
       setPublisher(undefined);
     }
-
+    queryClient.invalidateQueries({ queryKey: ["broadcastList"] });
     if (
       sessionId &&
-      decrypt(sessionId.slice(0, -9)) === getUserInfo().username
+      decrypt(sessionId.slice(0, -10)) === getUserInfo().username
     ) {
       broadcastEnd({ sessionId });
     }
   }, [session, sessionId]);
 
   useEffect(() => {
+    const handleBack = () => {
+      if (!document.pictureInPictureElement) {
+        leaveSession();
+      }
+    };
     window.addEventListener("beforeunload", leaveSession);
-
+    window.addEventListener("popstate", handleBack);
     return () => {
-      leaveSession();
+      if (
+        decrypt(sessionId.slice(0, -10)) === getUserInfo().username ||
+        !document.pictureInPictureElement
+      ) {
+        leaveSession();
+      }
       window.removeEventListener("beforeunload", leaveSession);
+      window.removeEventListener("popstate", handleBack);
     };
   }, [leaveSession]);
 
@@ -153,9 +172,9 @@ const BroadCastPage: React.FC = () => {
       });
     } else {
       getToken().then((token) => {
-        session.connect(token, { nickname: username, id }).then(() => {
+        session.connect(token).then(() => {
           session.signal({
-            data: `${username}님이 입장하였습니다.`,
+            data: `${getUserInfo().nickname}님이 입장하였습니다.`,
             to: [],
             type: "signal:enter",
           });
@@ -169,6 +188,7 @@ const BroadCastPage: React.FC = () => {
       <>
         {session ? (
           <SessionComponent
+            leaveSession={leaveSession}
             publisher={publisher as Publisher}
             subscriber={subscriber!}
             session={session}

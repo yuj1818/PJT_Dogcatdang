@@ -3,14 +3,18 @@ import { infoData } from "../../util/UserAPI";
 import KakaoMap from "./KakaoMap";
 import { useNavigate } from "react-router-dom";
 import defaultProfile from "../../assets/defaultProfile.png";
+import { Button } from "../common/Button";
+import { useEffect, useState } from "react";
+import { RecentSeenData } from "../../pages/animals/save_animals/AnimalDetailPage";
+import { IoMdHeart } from "react-icons/io";
 
 const StyledBox = styled.div`
   border-radius: 15px;
   box-shadow: 0px 4px 4px lightgrey;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 1rem;
+  justify-content: space-between;
+  padding: 0 4rem;
   gap: 1rem;
   width: 100%;
   height: 30vh;
@@ -19,8 +23,8 @@ const StyledBox = styled.div`
   .profile-image-circle {
     border-radius: 50%;
     overflow: hidden;
-    width: 100px;
-    height: 100px;
+    width: 7rem;
+    height: 7rem;
   }
 
   .profile-image {
@@ -33,24 +37,54 @@ const StyledBox = styled.div`
     font-size: 20px;
     font-weight: 600;
   }
-`
 
-const StyledButton = styled.button `
-  color: white;
-  background-color: black;
-  border-radius: 5px;
-  padding: .1rem .3rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
-`
+  .img-box {
+    display: flex;
+    border: 1px dashed #9f836e;
+    border-radius: 10px;
+    padding: 1rem;
+    height: 60%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;    
+  }
 
-const Spacer = styled.div`
-  flex-grow: .8;
+  .animal-image-circle {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 6rem;
+    height: 6rem;
+    margin-right: -0.5rem;
+  }
+
+  .animal-image-circle:last-child {
+    margin-right: 0;
+  }
+`;
+
+const RecentSeenAnimals = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: .5rem;
+  height: 100%;
+  width: 40%;
+
+  .content-title {
+    font-family: 'SUITE-Bold';
+    color: #9f836e;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+  }
 `
 
 const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isMine: boolean, isModalOpen:boolean, openModal: React.Dispatch<React.SetStateAction<boolean>> }> = (props) => {
   
   const navigate = useNavigate();
+
+  const [recentSeen, setRecentSeen] = useState([]);
 
   const onClickEditBtn = () => {
     props.openModal((prev) => !prev);
@@ -58,7 +92,11 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
 
   const goVisitManagement = () => {
     navigate(`/visit/${props.userInfo?.id}`);
-  }
+  };
+
+  useEffect(() => {
+    setRecentSeen(JSON.parse(localStorage.getItem("recentSeen") || "[]"));
+  }, [])
 
   return (
     <>
@@ -70,7 +108,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
           <div className="flex flex-col gap-2">
             <div className="flex gap-1">
               <p className="nickname">{props.userInfo?.nickname}</p>
-              <div>{props.isMine ? <StyledButton onClick={onClickEditBtn}>정보 수정</StyledButton> : null}</div>
+              <div>{props.isMine ? <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={onClickEditBtn}>정보 수정</Button> : null}</div>
             </div>
           
             {
@@ -85,15 +123,15 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   {
                     props.isMine ?
                     <>
-                      <StyledButton>입양 절차 설정</StyledButton>
-                      <StyledButton>방송 일정 관리</StyledButton>
-                      <StyledButton onClick={() => navigate('/visit/list')}>방문 신청 관리</StyledButton>
-                      <StyledButton onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</StyledButton>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 설정</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>방송 일정 관리</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate('/visit/list')}>방문 신청 관리</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</Button>
                     </>
                     :
                     <>
-                      <StyledButton>입양 절차 확인</StyledButton>
-                      <StyledButton>1:1 문의</StyledButton>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 확인</Button>
+                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>1:1 문의</Button>
                     </>
                   }
                 </div>
@@ -105,13 +143,35 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   <p>소개글: {props.userInfo?.bio || "없음"}</p>
                 </div>
                 <div>
-                  {props.isMine ? <StyledButton onClick={goVisitManagement}>방문 일정</StyledButton> : null }
+                  {props.isMine ? 
+                    <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={goVisitManagement}>방문 일정</Button>
+                    : 
+                    <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>쪽지 보내기</Button> 
+                  }
                 </div>
               </>
             }
           </div>
         </div>
-        { props.isOrg && !props.isModalOpen ? <KakaoMap address={props.userInfo?.address || ""} /> : <Spacer />}
+        { props.isOrg && !props.isModalOpen ? 
+          <KakaoMap address={props.userInfo?.address || ""} /> 
+          : 
+          <RecentSeenAnimals>
+            <p className="content-title"><IoMdHeart />최근 본 보호 동물<IoMdHeart /></p>
+            <div className="img-box">
+              {
+                recentSeen && recentSeen.map((info: RecentSeenData) => (
+                  <div 
+                    className="animal-image-circle"
+                    onClick={() => navigate(`/save-animals/${info.animalId}`)}
+                  >
+                    <img className="profile-image" src={info.imgUrl} alt="" />
+                  </div>
+                ))
+              }
+            </div>
+          </RecentSeenAnimals>
+        }
       </StyledBox>
     </>
   )

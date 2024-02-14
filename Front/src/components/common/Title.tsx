@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Title = styled.p`
   font-size: 2rem;
-  font-family: 'SUITE-SemiBold';
+  font-family: 'SUITE-Bold';
 `;
 
 export const SubTitle = styled.p`
@@ -12,5 +12,5 @@ export const SubTitle = styled.p`
 
 export const Bold = styled.p`
   font-size: 1rem;
-  font-family: 'SUITE-SemiBold'
+  font-family: 'SUITE-Bold'
 `

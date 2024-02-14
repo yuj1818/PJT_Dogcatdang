@@ -8,6 +8,7 @@ import { broadcastInfo, broadcastList } from "../../util/broadcastAPI";
 import { LoadingOrError } from "../../components/common/LoadingOrError";
 import styled from "styled-components";
 import { CardStyle } from "../../components/articles/ArticleCard";
+import { retryFn } from "../../util/tanstackQuery";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,8 @@ const Container = styled.div`
     flex: 0 0 23%;
     box-sizing: border-box;
     margin: 1%;
+    background-color: #fff;
+    border-radius: 10px;
   }
 
   & > div:last-child {
@@ -42,6 +45,9 @@ const BoradcastListPage: React.FC = () => {
       const response = await broadcastList({ signal });
       return response;
     },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 300,
   });
   return (
     <>
@@ -79,10 +85,11 @@ const Card: React.FC<broadcastInfo> = ({
   orgNickname,
   sessionId,
   thumbnailImgUrl,
+  streamingId,
 }) => {
   return (
     <div>
-      <NavLink to={`/broadcast/${sessionId}`}>
+      <NavLink to={`/broadcast/${sessionId}`} state={{ streamingId }}>
         <CardStyle>
           <Img src={thumbnailImgUrl} alt="방송 썸네일" />
           <p>{title}</p>

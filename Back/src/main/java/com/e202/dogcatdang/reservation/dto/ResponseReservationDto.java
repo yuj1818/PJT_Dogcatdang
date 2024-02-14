@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class ResponseReservationDto {
 	private Long reservationId; // 방문 예약 번호
 	private String shelterName; // 방문 센터 이름
+	private Long animalId;
 	private LocalDateTime reservationTime;
 	private Reservation.State state;
 
@@ -28,6 +29,7 @@ public class ResponseReservationDto {
 	public ResponseReservationDto(Reservation reservation) {
 		this.reservationId = reservation.getReservationId();
 		this.shelterName = reservation.getAnimal().getUser().getNickname();
+		this.animalId = reservation.getAnimal().getAnimalId();
 		this.reservationTime = reservation.getReservationTime();
 		this.state = reservation.getState();
 		this.imgUrl = reservation.getAnimal().getImgUrl();

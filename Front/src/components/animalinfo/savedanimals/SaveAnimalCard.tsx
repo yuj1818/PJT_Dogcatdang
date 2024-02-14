@@ -43,7 +43,7 @@ export const Card = styled.div`
   }
 `;
 
-const Adoption = styled.div`
+export const Adoption = styled.div`
   font-size: 8px;
   background-color: #ff8331;
   color: white;
@@ -100,7 +100,7 @@ function SaveAnimalCard(props: AnimalCardProps) {
         ></img>
 
         <div>
-          <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
+          <strong>{props.animals.breed}</strong> |{" "}
           <strong>
             {props.animals.age === -1 ? "나이 미상" : `${props.animals.age} 살`}
           </strong>

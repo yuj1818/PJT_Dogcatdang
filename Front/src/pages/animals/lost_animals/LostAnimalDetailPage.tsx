@@ -28,9 +28,9 @@ function LostAnimalDetailPage() {
   const isOrg = org();
   const [lostanimalDetail, setLostAnimalDetail] =
     useState<LostAnimalDetail | null>(null);
-  const userInfoString = localStorage.getItem('userInfo') ?? '';
+  const userInfoString = localStorage.getItem("userInfo") ?? "";
   const userInfo = JSON.parse(userInfoString);
-  const userId = userInfo.id
+  const userId = userInfo.id;
 
   console.log("lostanimalID", animalID);
 
@@ -89,8 +89,7 @@ function LostAnimalDetailPage() {
             <div className="flex">
               {" "}
               <p style={{ fontSize: "25px" }}>
-                {lostanimalDetail?.breed.replace(/_/g, " ")} |{" "}
-                {lostanimalDetail?.age} 살
+                {lostanimalDetail?.breed} | {lostanimalDetail?.age} 살
               </p>{" "}
             </div>
             <div className="flex">
@@ -113,7 +112,7 @@ function LostAnimalDetailPage() {
               <p>실종위치 : </p>
               {lostanimalDetail?.lostLocation}
             </div>
-            <p style={{marginTop: "10px"}}>특징</p>
+            <p style={{ marginTop: "10px" }}>특징</p>
             <div
               className="flex"
               style={{
@@ -143,19 +142,11 @@ function LostAnimalDetailPage() {
           전체 글 목록
         </button>
 
-
-        {
-          (!isOrg && userId === lostanimalDetail?.userId) ?
-            <Button
-              $paddingX={1}
-              $paddingY={0.5}
-              onClick={handleUpdate}
-            >
-              수정
-            </Button>
-            :
-            null
-        }
+        {!isOrg && userId === lostanimalDetail?.userId ? (
+          <Button $paddingX={1} $paddingY={0.5} onClick={handleUpdate}>
+            수정
+          </Button>
+        ) : null}
       </div>
     </>
   );
