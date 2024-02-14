@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy } from "react";
 import {
   Outlet,
   RouterProvider,
@@ -39,7 +39,6 @@ import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
-import { logout } from "./util/UserAPI.ts";
 import { Cookies } from "react-cookie";
 
 const cookie = new Cookies();
