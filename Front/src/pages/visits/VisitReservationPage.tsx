@@ -167,7 +167,7 @@ function VisitReservationPage() {
               </div>
               <div className="item">
                 <label htmlFor="phone">연락처</label>
-                <input  type="text" name="phone" id="phone" onChange={handlePhone} required />
+                <input  type="text" name="phone" id="phone" placeholder="예시) 010-0000-0000" onChange={handlePhone} required />
               </div>
               <div className="item">
                 <label htmlFor="visitor">방문 인원</label>
