@@ -25,11 +25,11 @@ public class StreamingAnimal {
 	@Column(name = "streaming_animal_id")
 	private Long streamingAnimalId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "streaming_id")
 	private Streaming streaming;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "animal_id")
 	private Animal animal;
 }

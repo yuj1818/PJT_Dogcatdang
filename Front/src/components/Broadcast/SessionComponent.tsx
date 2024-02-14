@@ -4,6 +4,7 @@ import MyVideo from "./MyVideo";
 import Chat from "./Chat";
 import styled from "styled-components";
 import AnimalList from "./AnimalList";
+import { isOrg } from "../../pages/users/SignInPage";
 
 const Container = styled.div`
   display: grid;
@@ -17,12 +18,14 @@ interface SessionComponentProps {
   subscriber: Subscriber;
   publisher: Publisher;
   session: Session;
+  leaveSession: () => void;
 }
 
 const SessionComponent: React.FC<SessionComponentProps> = ({
   subscriber,
   publisher,
   session,
+  leaveSession,
 }) => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [end, setEnd] = useState(false);
@@ -53,9 +56,18 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   return (
     <>
       <Container>
-        {publisher && <MyVideo streamManager={publisher}></MyVideo>}
+        {publisher && (
+          <MyVideo
+            streamManager={publisher}
+            leaveSession={leaveSession}
+          ></MyVideo>
+        )}
         {subscribers.map((subscriberItem, idx) => (
-          <MyVideo key={idx} streamManager={subscriberItem} />
+          <MyVideo
+            key={idx}
+            streamManager={subscriberItem}
+            leaveSession={leaveSession}
+          />
         ))}
         {end && <p>방송이 종료되었습니다.</p>}
         <Chat
@@ -63,7 +75,7 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
           session={session}
         />
       </Container>
-      <AnimalList />
+      {!isOrg() && <AnimalList />}
     </>
   );
 };
