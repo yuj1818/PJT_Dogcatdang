@@ -100,7 +100,7 @@ function SaveAnimalCard(props: AnimalCardProps) {
         ></img>
 
         <div>
-          <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
+          <strong>{props.animals.breed}</strong> |{" "}
           <strong>
             {props.animals.age === -1 ? "나이 미상" : `${props.animals.age} 살`}
           </strong>

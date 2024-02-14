@@ -87,7 +87,7 @@ export const search = (data: FilterData, token: string) => {
     },
   })
     .then((res) => {
-      console.log("Response:", res.data.animalDtoList);
+      console.log("Response:", res.data);
       return res.data.animalDtoList;
     })
     .catch((err) => {
