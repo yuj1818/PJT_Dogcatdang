@@ -12,8 +12,8 @@ import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
 import {
   RequestNotiInterfaceInterface,
-  requestnoti,
-} from "../../util/notifications";
+  requestNoti,
+} from "../../util/notificationsAPI";
 import { retryFn } from "../../util/tanstackQuery";
 
 // -----------Styled Component-----------------------------------------------
@@ -115,13 +115,13 @@ const NavTitle = styled.ul`
 // -----------NavBar-----------------------------------------------
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
-  const [isNoti, setIsNoti] = useState(false);
+  const [isNoti, setIsNoti] = useState(0);
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
 
   const { data } = useQuery<RequestNotiInterfaceInterface[]>({
     queryKey: ["notifications"],
-    queryFn: requestnoti,
+    queryFn: requestNoti,
     staleTime: 5 * 1000,
     retry: retryFn,
     retryDelay: 300,
@@ -130,9 +130,8 @@ const NavBar: React.FC = () => {
   useEffect(() => {
     if (data) {
       for (const element of data) {
-        if (element.isRead) {
-          setIsNoti(true);
-          break;
+        if (!element.isRead) {
+          setIsNoti((prev) => prev + 1);
         }
       }
     }

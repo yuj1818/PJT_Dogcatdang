@@ -25,6 +25,7 @@ import com.e202.dogcatdang.db.entity.BoardLike;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.BoardLikeRepository;
 import com.e202.dogcatdang.db.repository.BoardRepository;
+import com.e202.dogcatdang.db.repository.CommentRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.exception.InvalidLikeException;
 import com.e202.dogcatdang.exception.InvalidUserException;
@@ -39,6 +40,7 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardRepository boardRepository;
 	private final UserRepository userRepository;
 	private final BoardLikeRepository boardLikeRepository;
+	private final CommentRepository commentRepository;
 
 	@Override
 	public ResponseDto save(Long loginUserId, RequestBoardDto requestBoardDto) throws IOException {
@@ -117,13 +119,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional
 	public ResponseDto delete(Long loginUserId, Long boardId) {
 
 		User loginUser = userRepository.findById(loginUserId).get();
 		Board board = boardRepository.findById(boardId).get();
 
 		if(board.getUser().getId().equals(loginUserId)){
-
+			commentRepository.deleteByBoardBoardId(board.getBoardId());
+			boardLikeRepository.deleteByBoardBoardId(board.getBoardId());
 			boardRepository.deleteById(boardId);
 
 			return new ResponseDto(boardId);

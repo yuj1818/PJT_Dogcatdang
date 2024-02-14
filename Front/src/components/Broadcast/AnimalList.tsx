@@ -8,6 +8,8 @@ import {
   broadcastAnimalInfo,
 } from "../../util/broadcastAPI";
 import { LoadingOrError } from "../common/LoadingOrError";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Container = styled.div`
   display: flex;
@@ -34,14 +36,20 @@ interface Props {
 
 const AnimalList: React.FC<Props> = ({ togglePictureInPicture }) => {
   const { state } = useLocation();
-  const { streamingId } = state;
+  const selector = useSelector((state: RootState) => state.broadcast);
+  let streamingId: number;
+  if (state) {
+    streamingId = state.streamingId;
+  } else {
+    streamingId = selector.broadcastId;
+  }
 
   const { data, isLoading, isError, error } = useQuery<
     BroadcastAnimalInfo[],
     Error,
     BroadcastAnimalInfo[]
   >({
-    queryKey: ["broadcastdetail", state],
+    queryKey: ["broadcastdetail", streamingId],
     queryFn: async ({ signal }) => {
       const result = await broadcastAnimalInfo({ signal, streamingId });
       return result as BroadcastAnimalInfo[];
