@@ -4,7 +4,6 @@ import MyVideo from "./MyVideo";
 import Chat from "./Chat";
 import styled from "styled-components";
 import AnimalList from "./AnimalList";
-import { isOrg } from "../../pages/users/SignInPage";
 
 const Container = styled.div`
   display: grid;
