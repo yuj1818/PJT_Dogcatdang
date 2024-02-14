@@ -41,7 +41,6 @@ export const requestBroadCast = async ({
         Authorization: token,
       },
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     handleAxiosError(error as AxiosError);
@@ -122,7 +121,7 @@ export const broadcastEnd = async ({ sessionId }: BroadcastEndInterface) => {
 
   try {
     await API.delete(URL + "/" + sessionId, {
-      method: "GET",
+      method: "DELETE",
       headers: {
         Authorization: token,
       },

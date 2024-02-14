@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
+import { Provider } from "react-redux";
+import store from "./store/store.ts";
 
 import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
@@ -40,9 +42,9 @@ import VisitReservationListPage from "./pages/visits/VisitReservationListPage.ts
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { Cookies } from "react-cookie";
+import NotificationPage from "./pages/notification/NotificationPage.tsx";
 
 const cookie = new Cookies();
-
 const isUser = () => {
   if (cookie.get("U_ID")) {
     return redirect("/");
@@ -58,22 +60,22 @@ const router = createBrowserRouter([
   {
     path: "/landing",
     element: <LandingPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/signin",
     element: <SignInPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/oauth-success",
     element: <OauthTokenPage />,
-    loader: isUser
+    loader: isUser,
   },
   // {
   //   path: "/about",
@@ -119,7 +121,7 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/management",
-        element: <SavedAnimalManagementPage />
+        element: <SavedAnimalManagementPage />,
       },
       {
         path: "registration",
@@ -224,6 +226,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "notification",
+        element: <NotificationPage />,
+      },
     ],
   },
 ]);
@@ -231,12 +237,13 @@ const router = createBrowserRouter([
 ReactModal.setAppElement("#root");
 
 function App() {
-
   return (
     <div>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </Provider>
     </div>
   );
 }
