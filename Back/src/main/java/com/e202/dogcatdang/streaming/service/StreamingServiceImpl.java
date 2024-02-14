@@ -129,6 +129,7 @@ public class StreamingServiceImpl implements StreamingService{
 		if(streaming.getUser().getId()!=loginUserId){
 			return new ResponseDto(403L, "유효하지 않은 요청입니다.");
 		}
+		streamingAnimalRepository.deleteByStreamingStreamingId(streaming.getStreamingId());
 
 		streamingRepository.delete(streaming);
 

@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class User {
     @Id
@@ -62,4 +61,6 @@ public class User {
     private List<AnimalLike> animalLikes = new ArrayList<>(); // User와 AnimalLike 사이의 1:N 관계
 
 
+    public User(Long userId) {
+    }
 }

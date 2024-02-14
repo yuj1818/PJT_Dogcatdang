@@ -189,7 +189,7 @@ const SavedAnimalList = () => {
   const onSearch = async() => {
     const data = {
       code: code || null,
-      breed: breed === '전체' || !breed ? null : breed.replace(/ /g, '_'),
+      breed: breed === '전체' || !breed ? null : breed,
       state: state === '전체' || !state ? null : state
     };
 
@@ -332,7 +332,7 @@ const SavedAnimalList = () => {
             return {
               animalId: data.animalId,
               code: data.code,
-              breed: data.breed.replace(/_/g, ' '),
+              breed: data.breed,
               age: data.age,
               gender: data.gender,
               isNeuter: data.isNeuter,
