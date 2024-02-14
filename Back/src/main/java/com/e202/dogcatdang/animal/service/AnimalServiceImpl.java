@@ -176,6 +176,7 @@ public class AnimalServiceImpl implements AnimalService {
 	// 방송 개설 단계에서 방송에 출연할 동물들을 고르기 위한 동물 리스트를 반환하는 기능
 	// streamingcontroller에서 사용됨
 	@Override
+	@Transactional
 	public List<ResponseStreamingAnimalDto> findAnimals(Long userId) {
 		List<Animal> animals = animalRepository.findByUserIdAndState(userId, Animal.State.보호중);
 		List<ResponseStreamingAnimalDto> animalDtoList = new ArrayList<>();
