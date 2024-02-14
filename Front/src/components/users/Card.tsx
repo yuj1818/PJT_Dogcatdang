@@ -1,6 +1,7 @@
 import { contentData } from "./ContentBox";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { IoMale, IoFemale } from "react-icons/io5";
 
 const CardBox = styled.div`
   width: 19%;
@@ -44,7 +45,7 @@ const Card: React.FC<{ data: contentData, contentId: number, menu: string }> = (
       <div className="box">
         {
           menu === '관심 동물' || menu === '보호 동물' ?
-          <p className="info whitespace-nowrap text-ellipsis overflow-hidden">{data.breed} · {data.age}살 · {data.gender}</p>
+          <p className="info whitespace-nowrap text-ellipsis overflow-hidden flex items-center gap-2">{data.breed}{data.gender === '암컷' ? <IoFemale /> : <IoMale />}</p>
           :
           <p className="info whitespace-nowrap text-ellipsis overflow-hidden">{data.title}</p>
         }

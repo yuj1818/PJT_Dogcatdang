@@ -28,7 +28,6 @@ const StyledContentBox = styled.div`
 export interface contentData {
   animalId: number;
   breed: string;
-  age: number;
   gender: string;
   imgUrl: string;
   boardId: number;

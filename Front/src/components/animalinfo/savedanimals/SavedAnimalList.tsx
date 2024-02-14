@@ -12,6 +12,7 @@ import { FiEdit2 } from "react-icons/fi";
 import API from '../../../util/axios';
 import { dogInput, catInput } from '../Input';
 import Select from "react-select";
+import { Cookies } from 'react-cookie';
 
 const SearchInput = styled.input<{ isFiltered: boolean }>`
   padding: .25rem .5rem;
@@ -19,6 +20,9 @@ const SearchInput = styled.input<{ isFiltered: boolean }>`
   border: ${(props) => props.isFiltered ? '1px solid #d5967d' : 'none'};
   flex-grow: ${(props) => props.isFiltered ? '1' : 'none'};
   height: 100%;
+  &::placeholder {
+    font-size: .8rem;
+  }
 `
 
 const Pagination = styled.div`
@@ -70,14 +74,19 @@ interface animalInfo {
 const SavedAnimalList = () => {
   const navigate = useNavigate();
   const gridRef = useRef<AgGridReact | null>(null);
+  const cookie = new Cookies();
 
   const editAnimalInfoRenderer = (props: any) => {
     const cellValue = props.valueFormatted ? props.valueFormatted : props.value;
 
     const apiUrl = `api/animals/${cellValue}`;
+    const token = cookie.get("U_ID");
+    const headers = {
+      Authorization: token,
+    };
     
     const buttonClicked = () => {
-      API.get(apiUrl)
+      API.get(apiUrl, {headers})
         .then((res) => {
           navigate(`/save-update/${cellValue}`, { state: res.data });
         })
@@ -225,7 +234,7 @@ const SavedAnimalList = () => {
         {
           !isFiltered &&
           <div className="flex items-center gap-2">
-            <SearchInput isFiltered={isFiltered} type="text" onKeyDown={handleKeyDown} onChange={handleCode} value={code} />
+            <SearchInput isFiltered={isFiltered} type="text" onKeyDown={handleKeyDown} onChange={handleCode} value={code} placeholder="코드 검색" />
             <IoSearch onClick={onSearch} />
           </div>
         }
@@ -309,7 +318,7 @@ const SavedAnimalList = () => {
               }}
             />
             <div className="flex items-center gap-2 grow">
-              <SearchInput isFiltered={isFiltered} type="text" onKeyDown={handleKeyDown} onChange={handleCode} value={code} />
+              <SearchInput isFiltered={isFiltered} type="text" onKeyDown={handleKeyDown} onChange={handleCode} value={code} placeholder="코드 검색" />
               <IoSearch onClick={onSearch} />
             </div>
           </div>
