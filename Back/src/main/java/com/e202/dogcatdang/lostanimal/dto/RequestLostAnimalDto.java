@@ -5,8 +5,6 @@ import java.util.Arrays;
 
 import com.e202.dogcatdang.db.entity.LostAnimal;
 import com.e202.dogcatdang.db.entity.User;
-import com.e202.dogcatdang.enums.CatBreed;
-import com.e202.dogcatdang.enums.DogBreed;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,19 +37,6 @@ public class RequestLostAnimalDto {
 	private String selectedDistrict;
 	private String detailInfo;
 
-	// 입력한 animalType에 맞는 breed인지 확인하는 기능
-	public boolean isValid() {
-		if (animalType.equals("강아지")) {
-			return Arrays.stream(DogBreed.values())
-				.anyMatch(b -> b.name().equals(breed));
-		} else if (animalType.equals("고양이")) {
-			return Arrays.stream(CatBreed.values())
-				.anyMatch(b -> b.name().equals(breed));
-		}
-		else {
-			return false;
-		}
-	}
 
 	// DTO -> Entity
 	public LostAnimal toEntity(User user) {
