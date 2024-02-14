@@ -76,7 +76,8 @@ export const signIn = (data: signInData) => {
       const decodedData = jwtDecode(token);
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      
+      // 토큰 만료 시간: 30분
+      localStorage.setItem("expiration", new Date(new Date().getTime() + 1000 * 60 * 30).toISOString());
       return res;
     })
     .catch((err) => {
@@ -125,6 +126,7 @@ export const logout = () => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     localStorage.removeItem("recentSeen");
+    localStorage.removeItem("expiration");
     return res;
   });
 };

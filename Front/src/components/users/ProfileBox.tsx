@@ -6,6 +6,7 @@ import defaultProfile from "../../assets/defaultProfile.png";
 import { Button } from "../common/Button";
 import { useEffect, useState } from "react";
 import { RecentSeenData } from "../../pages/animals/save_animals/AnimalDetailPage";
+import { IoMdHeart } from "react-icons/io";
 
 const StyledBox = styled.div`
   border-radius: 15px;
@@ -73,6 +74,9 @@ const RecentSeenAnimals = styled.div`
   .content-title {
     font-family: 'SUITE-Bold';
     color: #9f836e;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
   }
 `
 
@@ -153,7 +157,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
           <KakaoMap address={props.userInfo?.address || ""} /> 
           : 
           <RecentSeenAnimals>
-            <p className="content-title">최근 본 보호 동물</p>
+            <p className="content-title"><IoMdHeart />최근 본 보호 동물<IoMdHeart /></p>
             <div className="img-box">
               {
                 recentSeen && recentSeen.map((info: RecentSeenData) => (
