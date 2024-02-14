@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import {
   Outlet,
   RouterProvider,
@@ -39,6 +39,7 @@ import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
+import { logout } from "./util/UserAPI.ts";
 
 const router = createBrowserRouter([
   // {
@@ -218,6 +219,16 @@ const router = createBrowserRouter([
 ReactModal.setAppElement("#root");
 
 function App() {
+  useEffect(() => {
+    const expiration = localStorage.getItem("expiration");
+    console.log(expiration && new Date(expiration));
+    console.log(new Date())
+
+    if (expiration && new Date(expiration) < new Date()) {
+      logout();
+    }
+  }, [])
+
   return (
     <div>
       <QueryClientProvider client={queryClient}>
