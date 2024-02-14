@@ -74,11 +74,9 @@ export const signIn = (data: signInData) => {
       cookie.set("U_ID", token);
 
       const decodedData = jwtDecode(token);
-      const date = new Date(0);
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     })
     .catch((err) => {
@@ -127,7 +125,6 @@ export const logout = () => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     localStorage.removeItem("recentSeen");
-    localStorage.removeItem("expiration");
     return res;
   });
 };
@@ -173,10 +170,10 @@ export const getToken = () => {
 
       const decodedData = jwtDecode(token);
       const date = new Date(0);
+      date.setUTCSeconds(decodedData.exp || 0);
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     });
 };
