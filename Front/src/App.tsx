@@ -42,9 +42,9 @@ import VisitReservationListPage from "./pages/visits/VisitReservationListPage.ts
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { Cookies } from "react-cookie";
+import NotificationPage from "./pages/notification/NotificationPage.tsx";
 
 const cookie = new Cookies();
-
 const isUser = () => {
   if (cookie.get("U_ID")) {
     return redirect("/");
@@ -228,7 +228,7 @@ const router = createBrowserRouter([
       },
       {
         path: "notification",
-        element: <Notification />,
+        element: <NotificationPage />,
       },
     ],
   },
