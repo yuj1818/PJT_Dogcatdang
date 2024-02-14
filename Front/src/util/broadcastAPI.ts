@@ -41,7 +41,6 @@ export const requestBroadCast = async ({
         Authorization: token,
       },
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     handleAxiosError(error as AxiosError);

@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import ReactModal from "react-modal";
+import { Provider } from "react-redux";
+import store from "./store/store.ts";
 
 import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
@@ -249,9 +251,11 @@ function App() {
 
   return (
     <div>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </Provider>
     </div>
   );
 }
