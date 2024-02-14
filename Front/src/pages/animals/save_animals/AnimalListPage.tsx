@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import {
   dogInput,
   catInput,
@@ -11,7 +12,7 @@ import { Input, Select as Select1 } from "../../../components/animalinfo/style";
 import { Cookies } from "react-cookie";
 import { FilterData } from "../../../util/SaveAPI";
 import { useNavigate } from "react-router-dom";
-import condition from "../../../assets/condition.png";
+import condition from "../../../assets/main-logo-big.png";
 import API from "../../../util/axios";
 import SaveAnimalCard, {
   SaveAnimal,
@@ -229,7 +230,8 @@ function SaveAnimalSearch() {
             </div>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="form-group">
-                <Select
+                <CreatableSelect
+                  isClearable
                   name="breed"
                   id="breed"
                   value={
@@ -256,7 +258,7 @@ function SaveAnimalSearch() {
                       border: "1px solid #d5967b",
                       padding: "8px",
                       borderRadius: "10px",
-                      width: "160px",
+                      width: "180px",
                       height: "60px",
                     }),
                   }}
@@ -300,6 +302,7 @@ function SaveAnimalSearch() {
                   <option value="" disabled hidden>
                     시/구/군 선택
                   </option>
+
                   {countryInput[regionInput.indexOf(region)] &&
                     countryInput[regionInput.indexOf(region)].map(
                       (ct, index) => (
@@ -362,17 +365,22 @@ function SaveAnimalSearch() {
             <SaveAnimalCard key={animal.animalId} animals={animal} />
           ))
         ) : (
-          <div>
+          <div style={{ margin: "0 auto" }}>
             <img src={condition} alt="condition" />
-            <div>검색 결과가 없습니다.</div>
+            <div>조건에 맞는 아이가 등록되지 않았어요.</div>
           </div>
         )}
       </ListStyle>
-      <Pagination
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
-      />
+
+      {animalData && animalData.length > 0 ? (
+        <Pagination
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
