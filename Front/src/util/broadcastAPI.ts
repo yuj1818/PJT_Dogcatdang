@@ -80,7 +80,7 @@ export const callAnimal = async ({ signal }: Siganl) => {
   }
 };
 
-interface BroadcastListInterface {
+interface signal {
   signal: AbortSignal;
 }
 
@@ -92,7 +92,7 @@ export interface broadcastInfo {
   streamingId: number;
 }
 
-export const broadcastList = async ({ signal }: BroadcastListInterface) => {
+export const broadcastList = async ({ signal }: signal) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
@@ -120,8 +120,6 @@ export const broadcastEnd = async ({ sessionId }: BroadcastEndInterface) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
-  console.log("여기");
-
   try {
     await API.delete(URL + "/" + sessionId, {
       method: "GET",
@@ -132,5 +130,40 @@ export const broadcastEnd = async ({ sessionId }: BroadcastEndInterface) => {
     queryClient.invalidateQueries({ queryKey: ["broadcastList"] });
   } catch (error) {
     throw error;
+  }
+};
+
+export interface BroadcastAnimalInfo {
+  animalId: number;
+  code: string;
+  breed: string;
+  age: number;
+  imgUrl: string;
+}
+
+interface BroadcastAnimalRequestInfo extends signal {
+  streamingId: number;
+}
+
+export const broadcastAnimalInfo = async ({
+  signal,
+  streamingId,
+}: BroadcastAnimalRequestInfo) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  try {
+    const response = await API.get(URL + "/" + streamingId + "/animals", {
+      signal,
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    console.log(response.data);
+    return response.data as BroadcastAnimalInfo[];
+  } catch (error) {
+    handleAxiosError(error as AxiosError);
+    return [];
   }
 };

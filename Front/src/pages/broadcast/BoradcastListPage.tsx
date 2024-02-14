@@ -18,6 +18,8 @@ const Container = styled.div`
     flex: 0 0 23%;
     box-sizing: border-box;
     margin: 1%;
+    background-color: #fff;
+    border-radius: 10px;
   }
 
   & > div:last-child {
@@ -79,10 +81,11 @@ const Card: React.FC<broadcastInfo> = ({
   orgNickname,
   sessionId,
   thumbnailImgUrl,
+  streamingId,
 }) => {
   return (
     <div>
-      <NavLink to={`/broadcast/${sessionId}`}>
+      <NavLink to={`/broadcast/${sessionId}`} state={{ streamingId }}>
         <CardStyle>
           <Img src={thumbnailImgUrl} alt="방송 썸네일" />
           <p>{title}</p>
