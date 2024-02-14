@@ -41,28 +41,41 @@ import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { logout } from "./util/UserAPI.ts";
 import Notification from "./pages/notification/NotificationPage";
+import { Cookies } from "react-cookie";
+
+const cookie = new Cookies();
+
+const isUser = () => {
+  if (cookie.get("U_ID")) {
+    return redirect("/");
+  }
+  return null;
+};
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
-
   {
     path: "/landing",
     element: <LandingPage />,
+    loader: isUser,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
+    loader: isUser,
   },
   {
     path: "/signin",
     element: <SignInPage />,
+    loader: isUser,
   },
   {
     path: "/oauth-success",
     element: <OauthTokenPage />,
+    loader: isUser,
   },
   // {
   //   path: "/about",
