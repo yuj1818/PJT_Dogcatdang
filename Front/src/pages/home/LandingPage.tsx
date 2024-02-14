@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../util/UserAPI";
 import paw from "../../assets/paw-prints.png";
@@ -149,14 +148,6 @@ const Landing = styled.div`
 function LandingPage() {
 
   const navigate = useNavigate();
-
-  const removeToken = async () => {
-    await logout();
-  };
-
-  useEffect(() => {
-    removeToken();
-  }, []);
 
   const goSignUp = () => {
     navigate('/signup');
