@@ -28,7 +28,6 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   leaveSession,
 }) => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [end, setEnd] = useState(false);
 
   useEffect(() => {
     if (subscriber) {
@@ -39,7 +38,6 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
   useEffect(() => {
     session.on("streamDestroyed", () => {
       setSubscribers([]);
-      setEnd(true);
     });
   }, []);
 
@@ -69,13 +67,15 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
             leaveSession={leaveSession}
           />
         ))}
-        {end && <p>방송이 종료되었습니다.</p>}
+        {!publisher && subscribers.length === 0 && (
+          <p>방송이 종료되었습니다.</p>
+        )}
         <Chat
           // onForeceLeave={handleForcedLeave}
           session={session}
         />
       </Container>
-      {!isOrg() && <AnimalList />}
+      <AnimalList />
     </>
   );
 };
