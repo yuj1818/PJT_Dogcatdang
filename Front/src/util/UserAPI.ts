@@ -78,7 +78,7 @@ export const signIn = (data: signInData) => {
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp)));
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     })
     .catch((err) => {
@@ -176,7 +176,7 @@ export const getToken = () => {
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
-      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp)));
+      localStorage.setItem("expiration", JSON.stringify(date.setUTCSeconds(decodedData.exp || 0)));
       return res;
     });
 };
