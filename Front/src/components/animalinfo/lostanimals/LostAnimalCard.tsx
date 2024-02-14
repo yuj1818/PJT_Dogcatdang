@@ -45,7 +45,7 @@ function LostAnimalCard(props: LostAnimalCardProps) {
         ></img>
         <strong>{props.animals.name}</strong>
         <div>
-          <strong>{props.animals.breed.replace(/_/g, " ")}</strong> |{" "}
+          <strong>{props.animals.breed}</strong> |{" "}
           <strong>{props.animals.age}살 </strong>|{" "}
           <strong>{props.animals.gender === "남" ? "남아" : "여아"}</strong>
         </div>
