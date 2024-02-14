@@ -113,7 +113,7 @@ function SaveAnimalSearch() {
 
     try {
       const responseData = await search(data, token);
-      console.log(responseData);
+      // console.log(responseData);
       if (responseData !== undefined) {
         setIsSearch(true);
       }

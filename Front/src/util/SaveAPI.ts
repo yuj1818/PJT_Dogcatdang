@@ -1,6 +1,5 @@
 import API from "./axios";
 import { Cookies } from "react-cookie";
-// const URL = "/animals";
 
 const cookie = new Cookies();
 
@@ -88,7 +87,7 @@ export const search = (data: FilterData, token: string) => {
   })
     .then((res) => {
       console.log("Response:", res.data);
-      return res.data.animalDtoList;
+      return res.data;
     })
     .catch((err) => {
       if (err.response && err.response.status === 204) {

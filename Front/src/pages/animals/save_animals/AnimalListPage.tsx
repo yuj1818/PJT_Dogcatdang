@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SaveAnimalSearch from "../../../components/animalinfo/savedanimals/SaveAnimalSearch";
 import Pagination from "../../../components/common/Pagination";
-import API from "../../../util/axios";
+// import API from "../../../util/axios";
 import SaveAnimalCard, {
   SaveAnimal,
 } from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
@@ -9,6 +9,7 @@ import { isOrg as org } from "../../../pages/users/SignInPage";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Cookies } from "react-cookie";
+import condition from "../../../assets/condition.png";
 
 interface StyledButtonProps {
   $isOrg: boolean;
@@ -39,48 +40,61 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 function AnimalListPage() {
-  const cookie = new Cookies();
-  const token = cookie.get("U_ID");
-  const [animalData, setAnimalData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  // const cookie = new Cookies();
+  // const token = cookie.get("U_ID");
+  // const [animalData, setAnimalData] = useState([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(1);
+
   const [searchedData, setSearchedData] = useState([]);
+  const [searchcurrentPage, setSearchCurrentPage] = useState(1);
+  const [searchtotalPages, setSearchTotalPages] = useState(1);
 
   const navigate = useNavigate();
   const isOrg = org();
   const { state } = useLocation();
   // console.log(state.isSearch);
+  // console.log(state.responseData.totalElements);
+  // console.log(state.responseData.totalPages);
+  // console.log(state.responseData.currentPage);
 
   useEffect(() => {
     const searchData = async () => {
       try {
-        const headers = {
-          Authorization: token,
-        };
+        // const headers = {
+        //   Authorization: token,
+        // };
 
-        const res = await API.get(`/api/animals?page=${currentPage}`, {
-          headers,
-        });
+        // const res = await API.get(`/api/animals?page=${currentPage}`, {
+        //   headers,
+        // });
 
-        setAnimalData(res.data.animalDtoList);
-        setCurrentPage(res.data.currentPage);
-        setTotalPages(res.data.totalPages);
+        // setAnimalData(res.data.animalDtoList);
+        // setCurrentPage(res.data.currentPage);
+        // setTotalPages(res.data.totalPages);
 
         // 검색 조건이 있는 경우에만 searchedData에 데이터 설정
         if (state?.responseData) {
-          setSearchedData(state.responseData);
+          setSearchedData(state.responseData.animalDtoList);
+          setSearchCurrentPage(state.responseData.currentPage);
+          setSearchTotalPages(state.responseData.totalPages);
         } else {
           setSearchedData([]);
+          // setSearchCurrentPage(1);
+          setSearchTotalPages(1);
         }
       } catch (err) {
         console.error("Error:", err);
       }
     };
     searchData();
-  }, [currentPage, state]);
+  }, [searchcurrentPage, state]);
 
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+  // const handlePageChange = (newPage: number) => {
+  //   setCurrentPage(newPage);
+  // };
+  const handleSearchPageChange = (newPage: number) => {
+    setSearchCurrentPage(newPage);
   };
   const handleRegistration = () => {
     navigate("/registration");
@@ -94,21 +108,39 @@ function AnimalListPage() {
           동물 등록
         </StyledButton>
       </div>
-
+      {/* animalData.map((animal: SaveAnimal) => (
+              <SaveAnimalCard key={animal.animalId} animals={animal} />
+            ))} */}
       <ListStyle $itemsPerRow={10}>
-        {searchedData.length > 0
-          ? searchedData.map((animal: SaveAnimal) => (
-              <SaveAnimalCard key={animal.animalId} animals={animal} />
-            ))
-          : animalData.map((animal: SaveAnimal) => (
-              <SaveAnimalCard key={animal.animalId} animals={animal} />
-            ))}
+        {searchedData.length > 0 ? (
+          searchedData.map((animal: SaveAnimal) => (
+            <SaveAnimalCard key={animal.animalId} animals={animal} />
+          ))
+        ) : (
+          <div>
+            <img src={condition} alt="condition"></img>
+            <div>조건에 맞는 아이가 등록되지 않았어요.</div>
+          </div>
+        )}
       </ListStyle>
       <Pagination
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
+        totalPages={searchtotalPages}
+        onPageChange={handleSearchPageChange}
+        currentPage={searchcurrentPage}
       />
+      {/* {searchedData.length > 0 ? (
+        <Pagination
+          totalPages={searchtotalPages}
+          onPageChange={handleSearchPageChange}
+          currentPage={searchcurrentPage}
+        />
+      ) : (
+        <Pagination
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      )} */}
     </div>
   );
 }
