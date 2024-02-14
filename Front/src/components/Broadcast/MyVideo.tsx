@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, ChangeEvent } from "react";
-import { StreamManager } from "openvidu-browser";
+import { Session, StreamManager } from "openvidu-browser";
 import styled from "styled-components";
 
 import { RiFullscreenFill } from "react-icons/ri";
@@ -8,6 +8,21 @@ import { MdOutlinePictureInPictureAlt } from "react-icons/md";
 import { isOrg } from "../../pages/users/SignInPage";
 import { Button } from "../common/Button";
 import { useNavigate } from "react-router-dom";
+import AnimalList from "./AnimalList";
+import Chat from "./Chat";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const VideoChat = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 20px;
+  padding: 20px;
+  width: 100%;
+`;
 
 const VideoContainer = styled.div`
   position: relative;
@@ -43,14 +58,25 @@ const GroupComtainer = styled.div`
 interface VideoProps {
   streamManager: StreamManager;
   leaveSession: () => void;
+  session: Session;
 }
 
-const Video: React.FC<VideoProps> = ({ streamManager, leaveSession }) => {
+const Video: React.FC<VideoProps> = ({
+  streamManager,
+  leaveSession,
+  session,
+}) => {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showControls, setShowControls] = useState(false);
   const [volume, setVolume] = useState(1);
   let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  useEffect(() => {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    }
+  }, []);
 
   const handleFullscreen = () => {
     const video = videoRef.current;
@@ -84,10 +110,10 @@ const Video: React.FC<VideoProps> = ({ streamManager, leaveSession }) => {
   };
 
   const togglePictureInPicture = () => {
+    console.log(videoRef.current);
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     } else {
-      console.log(videoRef.current);
       videoRef.current
         ?.requestPictureInPicture()
         .then(() => {})
@@ -104,54 +130,58 @@ const Video: React.FC<VideoProps> = ({ streamManager, leaveSession }) => {
   }, [streamManager]);
 
   return (
-    <>
-      <VideoContainer
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <video
-          autoPlay={true}
-          ref={videoRef}
-          style={{ height: "100%", width: "100%" }}
+    <Container>
+      <VideoChat>
+        <VideoContainer
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          <track kind="captions" />
-        </video>
-        {showControls && (
-          <FullscreenButtonContainer>
-            <GroupComtainer>
-              <AiFillSound />
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
-                value={volume}
-                onChange={handleVolumeChange}
-              />
-            </GroupComtainer>
-            <GroupComtainer>
-              {!isOrg() && (
-                <button onClick={togglePictureInPicture}>
-                  <MdOutlinePictureInPictureAlt />
+          <video
+            autoPlay={true}
+            ref={videoRef}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <track kind="captions" />
+          </video>
+          {showControls && (
+            <FullscreenButtonContainer>
+              <GroupComtainer>
+                <AiFillSound />
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                />
+              </GroupComtainer>
+              <GroupComtainer>
+                {!isOrg() && (
+                  <button onClick={togglePictureInPicture}>
+                    <MdOutlinePictureInPictureAlt />
+                  </button>
+                )}
+                <button onClick={handleFullscreen}>
+                  <RiFullscreenFill />
                 </button>
-              )}
-              <button onClick={handleFullscreen}>
-                <RiFullscreenFill />
-              </button>
-            </GroupComtainer>
-          </FullscreenButtonContainer>
-        )}
-        <Button
-          onClick={() => {
-            leaveSession();
-            return navigate("/broadcast/list");
-          }}
-          $background="red"
-        >
-          종료하기
-        </Button>
-      </VideoContainer>
-    </>
+              </GroupComtainer>
+            </FullscreenButtonContainer>
+          )}
+          <Button
+            onClick={() => {
+              leaveSession();
+              return navigate("/broadcast/list");
+            }}
+            $background="red"
+          >
+            종료하기
+          </Button>
+        </VideoContainer>
+        <Chat session={session} />
+      </VideoChat>
+      <AnimalList togglePictureInPicture={togglePictureInPicture} />
+    </Container>
   );
 };
 

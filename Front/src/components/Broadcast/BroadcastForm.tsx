@@ -206,7 +206,6 @@ const Form: React.FC<FormProps> = ({
         <>
           <form onSubmit={onSubmitHandler}>
             <p>출연 동물 목록</p>
-            <AnimalList />
             <button type="submit">입장하기</button>
           </form>
         </>
