@@ -40,28 +40,41 @@ import VisitReservationListPage from "./pages/visits/VisitReservationListPage.ts
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { logout } from "./util/UserAPI.ts";
+import { Cookies } from "react-cookie";
+
+const cookie = new Cookies();
+
+const isUser = () => {
+  if (cookie.get("U_ID")) {
+    return redirect("/");
+  }
+  return null;
+};
 
 const router = createBrowserRouter([
   // {
   //   path: "/",
   //   element: <Page />,
   // },
-
   {
     path: "/landing",
     element: <LandingPage />,
+    loader: isUser
   },
   {
     path: "/signup",
     element: <SignUpPage />,
+    loader: isUser
   },
   {
     path: "/signin",
     element: <SignInPage />,
+    loader: isUser
   },
   {
     path: "/oauth-success",
     element: <OauthTokenPage />,
+    loader: isUser
   },
   // {
   //   path: "/about",
@@ -221,8 +234,6 @@ ReactModal.setAppElement("#root");
 function App() {
   useEffect(() => {
     const expiration = localStorage.getItem("expiration");
-    console.log(expiration && new Date(expiration));
-    console.log(new Date())
 
     if (expiration && new Date(expiration) < new Date()) {
       logout();
