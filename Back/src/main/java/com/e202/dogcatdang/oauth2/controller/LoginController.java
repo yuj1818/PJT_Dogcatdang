@@ -74,7 +74,7 @@ public class LoginController {
         }
 
         User user = userOptional.get();
-        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 86400000L); // 1일 만료
+        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 900000L); // 1일 만료
 
         return ResponseEntity.ok().body(Map.of("token", token));
     }
