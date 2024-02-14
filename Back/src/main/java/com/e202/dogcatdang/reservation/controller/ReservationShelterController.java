@@ -89,8 +89,8 @@ public class ReservationShelterController {
 		// 사용자 역할(role) 확인
 		User user = userService.findById(loginUserId);
 
-		// 예약 권한 검증 조건문 -> 지금은 test를 위해 관리자 계정도 가능하게 함, 추후 기관 회원만이 가능하도록 바꿔야 함
-		if (user.getRole().equals("ROLE_SHELTER") || user.getRole().equals("ROLE_ADMIN")) {
+		// 예약 권한 검증 조건문 - 기관 회원만이 가능
+		if (user.getRole().equals("ROLE_SHELTER")) {
 			ResponseUpdatedStateDto updatedState = reservationService.updateState(shelterId, reservationId, reservationDto);
 			return ResponseEntity.ok(updatedState);
 
