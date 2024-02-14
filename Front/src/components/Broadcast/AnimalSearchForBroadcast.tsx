@@ -35,6 +35,11 @@ const List = styled.div<CardInterface>`
   }
 `;
 
+const AllAnimalContainer = styled.div`
+  height: 150px;
+  overflow: auto;
+`;
+
 interface AnimalSearchForBroadcastInterface {
   handleSelectedAnimal: (info: CallAnimal) => void;
   selectedData: CallAnimal[];
@@ -99,6 +104,14 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
 
   return (
     <>
+      <Label htmlFor="data">전체 보호 동물 목록</Label>
+      {data && (
+        <AllAnimalContainer>
+          {data.map((element) => (
+            <div key={element.animalId}>{element.code}</div>
+          ))}
+        </AllAnimalContainer>
+      )}
       <Label htmlFor="search">출연 동물</Label>
       {data && (
         <Input

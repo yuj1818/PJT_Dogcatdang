@@ -40,6 +40,7 @@ import VisitReservationListPage from "./pages/visits/VisitReservationListPage.ts
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { logout } from "./util/UserAPI.ts";
+import Notification from "./pages/notification/NotificationPage";
 
 const router = createBrowserRouter([
   // {
@@ -107,7 +108,7 @@ const router = createBrowserRouter([
       },
       {
         path: "save-animals/management",
-        element: <SavedAnimalManagementPage />
+        element: <SavedAnimalManagementPage />,
       },
       {
         path: "registration",
@@ -212,6 +213,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "notification",
+        element: <Notification />,
+      },
     ],
   },
 ]);
@@ -222,12 +227,12 @@ function App() {
   useEffect(() => {
     const expiration = localStorage.getItem("expiration");
     console.log(expiration && new Date(expiration));
-    console.log(new Date())
+    console.log(new Date());
 
     if (expiration && new Date(expiration) < new Date()) {
       logout();
     }
-  }, [])
+  }, []);
 
   return (
     <div>

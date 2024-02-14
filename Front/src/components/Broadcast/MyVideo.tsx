@@ -180,7 +180,9 @@ const Video: React.FC<VideoProps> = ({
         </VideoContainer>
         <Chat session={session} />
       </VideoChat>
-      <AnimalList togglePictureInPicture={togglePictureInPicture} />
+      {!isOrg() && (
+        <AnimalList togglePictureInPicture={togglePictureInPicture} />
+      )}
     </Container>
   );
 };
