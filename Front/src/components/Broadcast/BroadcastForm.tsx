@@ -9,7 +9,6 @@ import { Button, Input, Contour, TextArea } from "../common/Design";
 import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
 import { requestS3, resizeFile } from "../../util/S3";
-import AnimalList from "./AnimalList";
 import { encrypt } from "./simpleEncrypt";
 
 const TextLength = tw.p`
