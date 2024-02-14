@@ -232,13 +232,6 @@ const router = createBrowserRouter([
 ReactModal.setAppElement("#root");
 
 function App() {
-  useEffect(() => {
-    const expiration = localStorage.getItem("expiration");
-
-    if (expiration && new Date(expiration) < new Date()) {
-      logout();
-    }
-  }, [])
 
   return (
     <div>

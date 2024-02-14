@@ -75,7 +75,7 @@ const ScheduleCard: React.FC<{ reservation: reservationData, handleReservations:
         <p className="grey sm-font flex items-center gap-1">
           <IoMdTime />
           {moment(reservation.reservationTime).format(
-            "YYYY년 MM월 DD일, hh:mm"
+            "YYYY년 MM월 DD일, HH:mm"
           )}
         </p>
         { isOrg && 
