@@ -41,7 +41,6 @@ import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { logout } from "./util/UserAPI.ts";
 import { Cookies } from "react-cookie";
-import TestPage from "./pages/animals/lost_animals/testPage.tsx";
 
 const cookie = new Cookies();
 
@@ -115,11 +114,6 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
-        path: "animal-test",
-        element: <TestPage />,
-      },
-
       {
         path: "save-animals/:animalID",
         element: <AnimalDetailPage />,

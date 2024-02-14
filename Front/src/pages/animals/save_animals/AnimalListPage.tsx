@@ -16,9 +16,9 @@ import API from "../../../util/axios";
 import SaveAnimalCard, {
   SaveAnimal,
 } from "../../../components/animalinfo/savedanimals/SaveAnimalCard";
-
 import Pagination from "../../../components/common/Pagination";
 import { isOrg as org } from "../../../pages/users/SignInPage";
+import { Title } from "../../../components/common/Title";
 
 export const ListStyle = styled.div<{ $itemsPerRow: number }>`
   width: 100%;
@@ -38,7 +38,6 @@ export const ListStyle = styled.div<{ $itemsPerRow: number }>`
 interface StyledButtonProps {
   $isOrg: boolean;
 }
-
 const StyledButton = styled.button<StyledButtonProps>`
   display: ${({ $isOrg }) => ($isOrg ? "block" : "none")};
   background-color: black;
@@ -97,10 +96,14 @@ function SaveAnimalSearch() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [shelterName, setShelterName] = useState("");
-  // const [isSearch, setIsSearch] = useState(false);
-  const genderInput = ["전체", "암컷", "수컷"];
+
+  const [animalData, setAnimalData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const isOrg = org();
 
+  const genderInput = ["전체", "암컷", "수컷"];
   const transformedDogInput = dogInput.map((dog) => ({
     value: dog,
     label: dog,
@@ -109,21 +112,13 @@ function SaveAnimalSearch() {
     value: cat,
     label: cat,
   }));
-  // const transformedRegionInput = regionInput.map((rg) => ({
-  //   value: rg,
-  //   label: rg,
-  // }));
-
-  const [animalData, setAnimalData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const transformedRegionInput = regionInput.map((rg) => ({
+    value: rg,
+    label: rg,
+  }));
 
   const handleAnimalType = (type: string) => {
     setAnimalType(type);
-  };
-
-  const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRegion(event.target.value);
   };
 
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -141,14 +136,19 @@ function SaveAnimalSearch() {
   };
   const cookie = new Cookies();
   const navigate = useNavigate();
+
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // 검색을 시작하기 전에 상태 초기화
+    setAnimalData([]);
+    setCurrentPage(1);
+    setTotalPages(1);
     await fetchData();
   };
 
   useEffect(() => {
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, animalType]);
 
   const fetchData = async () => {
     try {
@@ -171,12 +171,20 @@ function SaveAnimalSearch() {
           },
         }
       );
-      setAnimalData(responseData.data.animalDtoList);
-      setCurrentPage(responseData.data.currentPage);
-      setTotalPages(responseData.data.totalPages);
+
+      if (responseData.data.animalDtoList.length > 0) {
+        // 결과가 있을 때만 상태 업데이트
+        setAnimalData(responseData.data.animalDtoList);
+        setCurrentPage(responseData.data.currentPage);
+        setTotalPages(responseData.data.totalPages);
+      } else {
+        // 결과가 없을 때 상태 초기화
+        setAnimalData([]);
+        setCurrentPage(1);
+        setTotalPages(1);
+      }
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);
-      // 실패했을 때의 처리
     }
   };
 
@@ -191,7 +199,8 @@ function SaveAnimalSearch() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-3">
-        <h1 className="title">보호 동물 조회</h1>
+        <Title className="title">보호 동물 조회</Title>
+
         <hr className="border-black" />
       </div>
       <div className="container">
@@ -253,22 +262,31 @@ function SaveAnimalSearch() {
                 />
               </div>
               <div className="form-group">
-                <Select1
+                <Select
                   name="region"
                   id="region"
-                  value={region}
-                  onChange={handleRegionChange}
-                  className="custom-input"
-                >
-                  <option value="" disabled hidden>
-                    시/도 선택
-                  </option>
-                  {regionInput.map((pr) => (
-                    <option key={pr} value={pr}>
-                      {pr}
-                    </option>
-                  ))}
-                </Select1>
+                  value={transformedRegionInput.find(
+                    (option) => option.value === region
+                  )}
+                  options={regionInput.map((pr) => ({
+                    value: pr,
+                    label: pr,
+                  }))}
+                  onChange={(selectedOption) =>
+                    setRegion(selectedOption?.value || "")
+                  }
+                  placeholder="시/도 선택"
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      border: "1px solid #d5967b",
+                      padding: "8px",
+                      borderRadius: "10px",
+                      width: "160px",
+                      height: "60px",
+                    }),
+                  }}
+                />
               </div>
               <div className="form-group">
                 <Select1
