@@ -80,7 +80,7 @@ export const saveUpdate = (
 
 export const search = (data: FilterData, token: string) => {
   console.log(data);
-  return API.post("api/animals/filter", data, {
+  return API.post(`api/animals/filter`, data, {
     headers: {
       Authorization: token,
     },

@@ -41,6 +41,7 @@ import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
 import { logout } from "./util/UserAPI.ts";
 import { Cookies } from "react-cookie";
+import TestPage from "./pages/animals/lost_animals/testPage.tsx";
 
 const cookie = new Cookies();
 
@@ -59,22 +60,22 @@ const router = createBrowserRouter([
   {
     path: "/landing",
     element: <LandingPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/signup",
     element: <SignUpPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/signin",
     element: <SignInPage />,
-    loader: isUser
+    loader: isUser,
   },
   {
     path: "/oauth-success",
     element: <OauthTokenPage />,
-    loader: isUser
+    loader: isUser,
   },
   // {
   //   path: "/about",
@@ -115,12 +116,17 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "animal-test",
+        element: <TestPage />,
+      },
+
+      {
         path: "save-animals/:animalID",
         element: <AnimalDetailPage />,
       },
       {
         path: "save-animals/management",
-        element: <SavedAnimalManagementPage />
+        element: <SavedAnimalManagementPage />,
       },
       {
         path: "registration",
@@ -238,7 +244,7 @@ function App() {
     if (expiration && new Date(expiration) < new Date()) {
       logout();
     }
-  }, [])
+  }, []);
 
   return (
     <div>
