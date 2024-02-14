@@ -13,7 +13,7 @@ interface CardInterface {
   selected: boolean;
 }
 
-const Container = styled.div`
+export const Container = styled.div`
   position: absolute;
   background-color: white;
   width: 100%;

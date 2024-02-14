@@ -8,6 +8,7 @@ import { broadcastInfo, broadcastList } from "../../util/broadcastAPI";
 import { LoadingOrError } from "../../components/common/LoadingOrError";
 import styled from "styled-components";
 import { CardStyle } from "../../components/articles/ArticleCard";
+import { retryFn } from "../../util/tanstackQuery";
 
 const Container = styled.div`
   display: flex;
@@ -44,6 +45,9 @@ const BoradcastListPage: React.FC = () => {
       const response = await broadcastList({ signal });
       return response;
     },
+    staleTime: 5 * 1000,
+    retry: retryFn,
+    retryDelay: 300,
   });
   return (
     <>

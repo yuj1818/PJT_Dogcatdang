@@ -7,11 +7,11 @@ function OauthTokenPage() {
 
   const getAuthToken = async () => {
     await getToken();
+    navigate('/');
   };
 
   useEffect(() => {
     getAuthToken();
-    navigate('/');
   }, []);
 
   return (

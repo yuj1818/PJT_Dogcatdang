@@ -29,19 +29,20 @@ public class NotificationService {
         this.jwtUtil = jwtUtil;
     }
 
-    public NotificationResponseDto sendNotification(Long senderId, NotificationRequestDto requestDto) {
+    public NotificationResponseDto sendNotification(NotificationRequestDto requestDto) {
         System.out.println("send 서비스 시작");
         // 발신자 ID로부터 User 엔티티를 조회합니다.
-        User sender = userRepository.findById(senderId)
+
+        User sender = userRepository.findById(requestDto.getSenderId())
                 .orElseThrow(() -> new RuntimeException("Sender not found"));
 
         // 이메일로 수신자 조회
-        User receiver = userRepository.findByEmail(requestDto.getReceiverEmail())
+        User receiver = userRepository.findById(requestDto.getReceiverId())
                 .orElseThrow(() -> new RuntimeException("Receiver not found"));
 
         // Notification 엔티티를 생성하고 저장합니다.
         // Notification 객체 생성 및 저장
-        System.out.println("sendId : " + senderId);
+        System.out.println("sendId : " + sender.getId());
         System.out.println("receiver : " + receiver);
         System.out.println("title : " + requestDto.getTitle());
         System.out.println("content : " + requestDto.getContent());
@@ -60,7 +61,7 @@ public class NotificationService {
         return NotificationResponseDto.builder()
                 .id(notification.getId())
                 .senderId(sender.getId())
-                .receiverEmail(receiver.getEmail())
+                .receiverId(receiver.getId())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .sentDate(notification.getSentDate())
@@ -79,11 +80,14 @@ public class NotificationService {
         List<Notification> notifications = notificationRepository.findByReceiverId(receiver.getId());
         return notifications.stream()
                 .map(notification -> {
-                    String senderEmail = userRepository.findEmailById(notification.getSender().getId()); // 발신자의 이메일 조회
+                    String senderNickname = userRepository.findNicknameById(notification.getSender().getId());
+
                     return NotificationListResponseDto.builder()
                             .id(notification.getId())
-                            .senderEmail(senderEmail) // 조회된 발신자 이메일 설정
-                            .receiverEmail(notification.getReceiver().getEmail())
+                            .senderId(notification.getSender().getId())
+                            .receiverId(receiver.getId())
+                            .senderNickname(senderNickname) // 조회된 발신자 이메일 설정
+                            .receiverNickname(receiver.getNickname())
                             .title(notification.getTitle())
                             .content(notification.getContent())
                             .sentDate(notification.getSentDate())
@@ -112,11 +116,11 @@ public class NotificationService {
             notificationRepository.save(notification); //
         }
 
-        String senderEmail = userRepository.findEmailById(notification.getSender().getId());
+        String senderNickname = userRepository.findNicknameById(notification.getSender().getId());
         return NotificationListResponseDto.builder()
                 .id(notification.getId())
-                .senderEmail(senderEmail)
-                .receiverEmail(notification.getReceiver().getEmail())
+                .senderNickname(senderNickname)
+                .receiverNickname(notification.getReceiver().getNickname())
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .sentDate(notification.getSentDate())

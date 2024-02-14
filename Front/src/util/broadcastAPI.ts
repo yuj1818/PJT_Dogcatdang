@@ -160,7 +160,7 @@ export const broadcastAnimalInfo = async ({
         Authorization: token,
       },
     });
-    console.log(response.data);
+
     return response.data as BroadcastAnimalInfo[];
   } catch (error) {
     handleAxiosError(error as AxiosError);
