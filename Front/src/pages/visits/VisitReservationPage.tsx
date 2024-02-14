@@ -51,6 +51,7 @@ const ReservationForm = styled.form`
 const ReservationBox = styled.div`
   display: flex;
   gap: 1rem;
+  margin-bottom: 2rem;
 
   .img-box {
     width: 25%;
@@ -147,7 +148,7 @@ function VisitReservationPage() {
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
             <Button background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
           </div>
-          <p>{shelterInfo?.address}</p>
+          <p>기관 주소 : {shelterInfo?.address}</p>
         </div>
         <ReservationBox>
           <ReservationFormBox>
@@ -182,7 +183,7 @@ function VisitReservationPage() {
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
-            <div className="img-circle">
+            <div className="img">
               <img className="img" src={location.state.imgUrl} alt="" />
             </div>
           </div>
