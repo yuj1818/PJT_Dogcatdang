@@ -141,16 +141,16 @@ const Video: React.FC<VideoProps> = ({ streamManager, leaveSession }) => {
             </GroupComtainer>
           </FullscreenButtonContainer>
         )}
+        <Button
+          onClick={() => {
+            leaveSession();
+            return navigate("/broadcast/list");
+          }}
+          $background="red"
+        >
+          종료하기
+        </Button>
       </VideoContainer>
-      <Button
-        onClick={() => {
-          leaveSession();
-          return navigate("/broadcast/list");
-        }}
-        $background="red"
-      >
-        종료하기
-      </Button>
     </>
   );
 };
