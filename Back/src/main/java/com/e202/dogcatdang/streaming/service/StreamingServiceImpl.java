@@ -73,6 +73,7 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
+	@Transactional
 	public List<ResponseAnimalDto> getAnimalList(Long streamingId) {
 
 		Streaming streaming = streamingRepository.findById(streamingId).get();
