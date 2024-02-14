@@ -8,7 +8,7 @@ import com.e202.dogcatdang.streaming.dto.ResponseDto;
 import com.e202.dogcatdang.streaming.dto.ResponseStreamingDto;
 
 public interface StreamingService {
-	ResponseDto startStreaming(Long loginUserId, RequestStreamingDto requestStreamingDto);
+	Long startStreaming(Long loginUserId, RequestStreamingDto requestStreamingDto);
 
 	List<ResponseStreamingDto> find();
 
