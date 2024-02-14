@@ -22,12 +22,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userData = userRepository.findByUsername(username);
-        if(userData != null){
-            return new CustomUserDetails(userData);
-
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
         }
-
-        return null;
+        return new CustomUserDetails(user);
     }
 }
