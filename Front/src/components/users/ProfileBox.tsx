@@ -95,8 +95,12 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
   };
 
   useEffect(() => {
-    setRecentSeen(JSON.parse(localStorage.getItem("recentSeen") || "[]"));
-  }, [])
+    if (props.isMine) {
+      setRecentSeen(JSON.parse(localStorage.getItem("recentSeen") || "[]"));
+    } else {
+      setRecentSeen([]);
+    }
+  }, [props.isMine])
 
   return (
     <>
@@ -121,17 +125,10 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                 </div>
                 <div className="flex gap-1">
                   {
-                    props.isMine ?
+                    props.isMine &&
                     <>
-                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 설정</Button>
-                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>방송 일정 관리</Button>
                       <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate('/visit/list')}>방문 신청 관리</Button>
                       <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={() => navigate(`/visit/${props.userInfo?.id}`)}>방문 예약 관리</Button>
-                    </>
-                    :
-                    <>
-                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>입양 절차 확인</Button>
-                      <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>1:1 문의</Button>
                     </>
                   }
                 </div>
@@ -143,10 +140,8 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
                   <p>소개글: {props.userInfo?.bio || "소개글이 없어요. 좋아하는 동물에 대해 얘기해보는 건 어떨까요?"}</p>
                 </div>
                 <div>
-                  {props.isMine ? 
+                  { props.isMine &&
                     <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1} onClick={goVisitManagement}>방문 일정</Button>
-                    : 
-                    <Button $background="black" $fontSize={.8} $marginLeft={0} $marginTop={0} $paddingY={.1}>쪽지 보내기</Button> 
                   }
                 </div>
               </>
@@ -156,12 +151,14 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
         { props.isOrg && !props.isModalOpen ? 
           <KakaoMap address={props.userInfo?.address || ""} /> 
           : 
+          props.isMine ?
           <RecentSeenAnimals>
             <p className="content-title"><IoMdHeart />최근 본 보호 동물<IoMdHeart /></p>
             <div className="img-box">
               {
                 recentSeen && recentSeen.map((info: RecentSeenData) => (
                   <div 
+                    key={info.animalId}
                     className="animal-image-circle"
                     onClick={() => navigate(`/save-animals/${info.animalId}`)}
                   >
@@ -171,6 +168,8 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
               }
             </div>
           </RecentSeenAnimals>
+          :
+          <></>
         }
       </StyledBox>
     </>
