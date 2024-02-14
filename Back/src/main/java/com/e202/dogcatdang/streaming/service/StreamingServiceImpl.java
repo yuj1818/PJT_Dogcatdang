@@ -15,6 +15,7 @@ import com.e202.dogcatdang.db.entity.Streaming;
 import com.e202.dogcatdang.db.entity.StreamingAnimal;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.AnimalLikeRepository;
+import com.e202.dogcatdang.db.repository.AnimalRepository;
 import com.e202.dogcatdang.db.repository.NotificationRepository;
 import com.e202.dogcatdang.db.repository.StreamingAnimalRepository;
 import com.e202.dogcatdang.db.repository.StreamingRepository;
@@ -35,13 +36,17 @@ public class StreamingServiceImpl implements StreamingService{
 	private final StreamingAnimalRepository streamingAnimalRepository;
 	private final AnimalLikeRepository animalLikeRepository;
 	private final NotificationRepository notificationRepository;
+	private final AnimalRepository animalRepository;
 
 	@Override
 	@Transactional
 	public ResponseDto startStreaming(Long loginUserId, RequestStreamingDto requestStreamingDto) {
 		User loginUser = userRepository.findById(loginUserId).get();
 
-		List<StreamingAnimal> animalList = new ArrayList<>();
+
+
+		Streaming streaming = requestStreamingDto.toEntity(loginUser);
+		streamingRepository.save(streaming);
 		
 		//동물 id 리스트에서 해당 동물을 즐겨찾기한 유저에 대해 알림 전송
 		for(Long id : requestStreamingDto.getAnimalInfo()){
@@ -60,12 +65,13 @@ public class StreamingServiceImpl implements StreamingService{
 				notificationRepository.save(notification);
 			}
 
-			animalList.add(streamingAnimalRepository.findByAnimalAnimalId(id));
+			Animal animal = animalRepository.findById(id).get();
+			StreamingAnimal streamingAnimal = StreamingAnimal.builder()
+				.streaming(streaming)
+				.animal(animal)
+				.build();
+			streamingAnimalRepository.save(streamingAnimal);
 		}
-
-
-		Streaming streaming = requestStreamingDto.toEntity(loginUser, animalList);
-		streamingRepository.save(streaming);
 		return new ResponseDto(200L, "성공");
 	}
 
