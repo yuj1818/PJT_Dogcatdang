@@ -5,10 +5,11 @@ import { FaDeleteLeft } from "react-icons/fa6";
 
 import {
   RequestNotiInterfaceInterface,
+  requestDetailNoti,
   requestNoti,
   requstDeleteNoti,
-} from "../../util/notifications";
-import { retryFn } from "../../util/tanstackQuery";
+} from "../../util/notificationsAPI";
+import { queryClient, retryFn } from "../../util/tanstackQuery";
 import { LoadingOrError } from "../../components/common/LoadingOrError";
 import AlertModal from "../../components/common/AlertModal";
 import { InfoIcon } from "../../components/common/Icons";
@@ -19,14 +20,15 @@ interface ModalContentInterface {
 }
 
 const NotificationPage: React.FC = () => {
-  const [content, setContent] = useState(<></>);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<ModalContentInterface>({
     title: "",
     content: "",
   });
+  const [content, setContent] = useState(<></>);
+  const [cnt, SetContent] = useState(0);
 
-  const { data, isLoading, isError, error } = useQuery<
+  const { data, isLoading, isError, error, refetch } = useQuery<
     RequestNotiInterfaceInterface[],
     Error,
     RequestNotiInterfaceInterface[]
@@ -46,23 +48,25 @@ const NotificationPage: React.FC = () => {
     }
 
     if (data) {
+      SetContent(data.length);
       const handleOpenModal = (newMOdalContent: ModalContentInterface) => {
         setModalOpen(true);
         setModalContent(newMOdalContent);
       };
       setContent(
         <>
-          {data.map((element) => (
+          {data.reverse().map((element) => (
             <Card
               {...element}
               key={element.id}
               handleOpenModal={handleOpenModal}
+              refetch={refetch}
             />
           ))}
         </>
       );
     }
-  }, [data, isLoading, isError, error]);
+  }, [data, isLoading, isError]);
 
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -76,6 +80,7 @@ const NotificationPage: React.FC = () => {
         icon={<InfoIcon />}
         {...modalContent}
       />
+      <p>총 {cnt} 개</p>
       {content}
     </>
   );
@@ -104,6 +109,7 @@ const ContentsContainer = styled.div`
 
 interface CardInterface extends RequestNotiInterfaceInterface {
   handleOpenModal: (newMOdalContent: ModalContentInterface) => void;
+  refetch: () => void;
 }
 
 const Card: React.FC<CardInterface> = ({
@@ -114,6 +120,7 @@ const Card: React.FC<CardInterface> = ({
   sentDate,
   isRead,
   handleOpenModal,
+  refetch,
 }) => {
   const dateTime = new Date(sentDate);
 
@@ -131,10 +138,14 @@ const Card: React.FC<CardInterface> = ({
 
   const handleClick = () => {
     handleOpenModal({ title, content });
+    requestDetailNoti({ id });
+    refetch();
   };
 
-  const handleDelete = () => {
+  const handleDeleteNoti = async () => {
     requstDeleteNoti({ id });
+    await queryClient.invalidateQueries({ queryKey: ["notifications"] });
+    refetch();
   };
 
   return (
@@ -144,7 +155,7 @@ const Card: React.FC<CardInterface> = ({
         <p>{formattedDateTime}</p>
         <p>{senderNickname}</p>
       </ContentsContainer>
-      <div onClick={handleDelete}>
+      <div onClick={handleDeleteNoti}>
         <FaDeleteLeft />
       </div>
     </CardContainer>

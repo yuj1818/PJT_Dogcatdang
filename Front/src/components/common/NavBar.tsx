@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   RequestNotiInterfaceInterface,
   requestNoti,
-} from "../../util/notifications";
+} from "../../util/notificationsAPI";
 import { retryFn } from "../../util/tanstackQuery";
 
 // -----------Styled Component-----------------------------------------------

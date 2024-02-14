@@ -22,7 +22,7 @@ export const requestNoti = async ({ signal }: RequestNotiInterface) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
   try {
-    const response = await API.get(URL + "/received", {
+    const response = await API.get(URL, {
       signal,
       method: "GET",
       headers: {
@@ -52,6 +52,24 @@ export const requstDeleteNoti = async ({ id }: RequestDeleteNotiItnerface) => {
       },
     });
     return null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const requestDetailNoti = async ({ id }: RequestDeleteNotiItnerface) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  try {
+    const response = await API.get(`${URL}/details/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data as RequestNotiInterfaceInterface[];
   } catch (error) {
     throw error;
   }
