@@ -45,12 +45,12 @@ public class StreamingController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ResponseDto> startStreaming(@RequestHeader("Authorization") String token, @RequestBody
+	public ResponseEntity<Long> startStreaming(@RequestHeader("Authorization") String token, @RequestBody
 		RequestStreamingDto requestStreamingDto){
 		Long loginUserId = jwtUtil.getUserId(token.substring(7));
 
-		ResponseDto responseDto = streamingService.startStreaming(loginUserId, requestStreamingDto);
-		return ResponseEntity.ok(responseDto);
+		Long streamingId = streamingService.startStreaming(loginUserId, requestStreamingDto);
+		return ResponseEntity.ok(streamingId);
 	}
 
 	@GetMapping("")
