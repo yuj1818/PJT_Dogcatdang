@@ -63,12 +63,12 @@ const router = createBrowserRouter([
     loader: isUser,
   },
   {
-    path: "/signup",
+    path: "/signup/:type",
     element: <SignUpPage />,
     loader: isUser,
   },
   {
-    path: "/signin",
+    path: "/signin/:type",
     element: <SignInPage />,
     loader: isUser,
   },

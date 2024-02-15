@@ -60,7 +60,7 @@ const Landing = styled.div`
       font-weight: 600;
       color: white;
       border: none;
-      width: 140px;
+      width: 120px;
       height: 55px;
     }
   }
@@ -148,12 +148,12 @@ function LandingPage() {
 
   const navigate = useNavigate();
 
-  const goSignUp = () => {
-    navigate('/signup');
+  const goSignInOrg = () => {
+    navigate('/signin/org');
   };
 
-  const goSignIn = () => {
-    navigate('/signin');
+  const goSignInInv = () => {
+    navigate('/signin/inv');
   };
 
   return (
@@ -169,8 +169,8 @@ function LandingPage() {
       <p className="service-intro">새로운 가족을 만나보세요</p>
 
       <div className="buttons">
-        <button onClick={goSignIn}>로그인</button>
-        <button onClick={goSignUp}>회원가입</button>
+        <button onClick={goSignInOrg}>기관</button>
+        <button onClick={goSignInInv}>개인</button>
       </div>
 
       <div className="circle-box1">
