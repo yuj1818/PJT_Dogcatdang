@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import Dots from "./Dot";
 import styled from "styled-components";
-import img from "../../assets/auth-image.png";
+import mbti from "../../assets/MBTI.png";
 import { useNavigate } from "react-router-dom";
 import main from "../../assets/main.png";
+import streaming from "../../assets/streaming.png";
+import calender from "../../assets/calender.png";
+import { PopularArticles } from "../articles/ArticleListPage";
 
 const Leftside = styled.div`
   display: flex;
@@ -13,19 +16,19 @@ const Leftside = styled.div`
   justify-content: center;
   margin-left: auto 0;
   margin-bottom: 10px;
-  margin-top: 5px;
+  width: 50%;
 `;
 const Rightside = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  width: 50%;
   margin: 0 auto;
 `;
 
 const Outer = styled.div`
-  height: 100vh;
+  height: calc(100vh - 100px);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -53,7 +56,6 @@ const Page3 = styled.div`
   margin-top: 50px;
   align-items: center;
   font-size: 50px;
-  white-space: pre-line;
 `;
 
 const Button = styled.button`
@@ -104,6 +106,7 @@ function AboutDogCatDang() {
           // Scroll down
           if (scrollTop >= 0 && scrollTop < pageHeight) {
             console.log("현재 1페이지, down");
+            console.log(pageHeight);
             outerDivRefCurrent.scrollTo({
               top: pageHeight + DIVIDER_HEIGHT,
               left: 0,
@@ -170,25 +173,58 @@ function AboutDogCatDang() {
     <Outer ref={outerDivRef}>
       <Dots currentPage={currentPage} />
       <Page1>
-        <img
-          src={main}
-          alt="main"
-          style={{ width: "100%", height: "74.5%", objectFit: "cover" }}
-        />
-        {/* <Leftside>
-          <div>유기견, 유기묘 입양</div>
-          <div>독캣당</div>
-          <div>새로운 가족을 만나보세요</div>
-        </Leftside>
-        <Rightside>
-          <img src={img} alt="gl"></img>
-        </Rightside> */}
+        <div style={{ position: "relative", width: "100%", height: "74.5%" }}>
+          <img
+            src={main}
+            alt="main"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                padding: "10px",
+                borderRadius: "5px",
+                marginTop: "10px",
+              }}
+            >
+              <div style={{ fontSize: "50px", color: "#F7F4EB" }}>
+                가족이 되면
+              </div>
+              <div
+                style={{
+                  fontSize: "100px",
+                  color: "#F7F4EB",
+                  fontWeight: "bold",
+                }}
+              >
+                독캣당
+              </div>
+
+              <div>유기 동물들도 건강하고 아름다운 아이들입니다.</div>
+              <div>아이들의 가족이 되어주세요.</div>
+            </div>
+          </div>
+        </div>
       </Page1>
       <Page2>
         <Leftside>
           <LeftinLeftside>
             <div style={{ textAlign: "center" }}>
-              <div>스트리밍 서비스</div>
+              <img
+                src={streaming}
+                alt="텔레비전 방송 아이콘"
+                style={{ width: "20%", height: "100px", margin: "0 auto" }}
+              />
               <div style={{ fontSize: "20px" }}>
                 스트리밍 서비스를 통해 우리의 가족이 될 아이를 미리 만나 보세요.
               </div>
@@ -197,7 +233,11 @@ function AboutDogCatDang() {
               </Button>
             </div>
             <div style={{ textAlign: "center", justifyContent: "start" }}>
-              <div>멍 BTI</div>
+              <img
+                src={mbti}
+                alt="mbti"
+                style={{ width: "80%", height: "100px", margin: "0 auto" }}
+              ></img>
               <div style={{ fontSize: "20px" }}>
                 나와 비슷한 동물의 성격을 알아보세요 !
               </div>
@@ -209,7 +249,11 @@ function AboutDogCatDang() {
         </Leftside>
         <Rightside>
           <div style={{ textAlign: "center" }}>
-            <div>방문 예약</div>
+            <img
+              src={calender}
+              alt="calender"
+              style={{ width: "30%", height: "100px", margin: "0 auto" }}
+            ></img>
             <div style={{ fontSize: "20px" }}>
               예약 서비스를 통해 간편하게 보호 센터와 소통할 수 있습니다.
             </div>
