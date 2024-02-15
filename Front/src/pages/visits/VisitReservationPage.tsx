@@ -109,7 +109,6 @@ function VisitReservationPage() {
 
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(() => e.target.value);
-    console.log(e.target.value);
   };
 
   const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {

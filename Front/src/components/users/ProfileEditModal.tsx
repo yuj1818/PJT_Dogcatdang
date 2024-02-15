@@ -287,7 +287,6 @@ const ProfileEditModal: React.FC<EditInfo> = (props) => {
     
     const response = await editUserInfo(params.userId || '', data);
     console.log(response);
-    //props.saveUserInfo(response.data);
 
     const userInfoRes = await getUserInfo(params.userId || '');
     props.saveUserInfo(userInfoRes.data);
