@@ -11,7 +11,6 @@ import {
 import { RegistForm } from "../../../components/animalinfo/style";
 import { Input, Select } from "../../../components/animalinfo/style";
 import { requestS3 } from "../../../util/S3";
-import { types } from "util";
 
 function AnimalFormPage() {
   const cookie = new Cookies();
@@ -84,7 +83,7 @@ function AnimalFormPage() {
     };
 
     const response = await regist(data, token);
-    // console.log(response);
+    console.log(response);
     navigate("/save-animals");
   };
 
