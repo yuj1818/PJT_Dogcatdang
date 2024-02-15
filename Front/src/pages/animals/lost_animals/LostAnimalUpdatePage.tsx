@@ -81,7 +81,7 @@ function LostAnimalUpdatePage() {
       imgUrl: imgUrl,
     };
     const response = await lostUpdate(data, token, animalID);
-    // console.log(response);
+    console.log(response);
     navigate(`/lost-animals/${animalID}`);
   };
 

@@ -33,12 +33,17 @@
 
 ## 3.1 방송 시청
 
+- 방송을 보며 실시간 채팅에 참여할수있다.
+- 방송 시청 중에도 관심있는 동물이 생겼을 경우 PIP 모드로 동물들의 상세 정보를 구경할 수 있다.
 
 ## 3.2 보호동물 동물 찾기
-<img title="" src="README_assets/searchanimal.gif" alt="" width="800">
+<img title="" src="README_assets/search.gif" alt="" width="800">
+
+- 보호기관에 등록되어있는 동물들을 찾아 볼 수 있다.
+- 원하는 조건을 찾아 검색하여 볼 수 있다.
 
 ## 3.3 기관의 데이터 관리
-
+- 
 
 
 # 4. 개발 환경
@@ -64,13 +69,9 @@
 ## 💾 Backend
 
 - Springboot `2.7.13`
-- Lombok
 - Spring Data JPA
 - Spring Data Redis(lettuce)
 - Spring Web
-- Springdoc-openapi-ui `1.6.11`
-- Oauth2
-- Swagger 3.0.0
 - Oauth2
 - Redis
 - MySql 8.0.34
@@ -282,16 +283,39 @@
 
 **Frontend**
 
-- 손유정 :
+- 손유정 
 
-- 최도훈 :
+    - 컴포넌트 : 회원 관리, 방문 예약
+    - UI / UX
+    - 노션 관리
 
-- 박영진 :
+
+- 최도훈
+
+    - 컴포넌트 : 근황 글, 댓글, 방송
+    - UI / UX
+    - S3 이미지 저장, Openvidu
+
+- 박영진
+
+    - 컴포넌트 : 동물 관리, 메인 페이지
+    - UI / UX
 
 **Backend**
 
-- 위동민 :
+- 위동민
 
-- 박정호 :
+    - API 제작 : 회원 관리, 알람
+    - UCC 편집
 
-- 탁윤희 :
+- 박정호 
+
+    - API 제작 : 근황 글, 댓글, 방송
+    - 인프라
+    - 발표
+
+- 탁윤희 
+
+    - API 제작 : 동물, 방문 예약
+    - S3 서버 관리
+    - PPT 제작
