@@ -156,9 +156,10 @@ const Card: React.FC<CardInterface> = ({
     .toString()
     .padStart(2, "0")}:${dateTime.getMinutes().toString().padStart(2, "0")}`;
 
-  const handleClick = () => {
+  const handleClick = async () => {
     handleOpenModal({ title, content });
     requestDetailNoti({ id });
+    await queryClient.invalidateQueries({ queryKey: ["notifications"] });
     refetch();
   };
 
