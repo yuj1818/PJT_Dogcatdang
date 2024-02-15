@@ -118,6 +118,7 @@ const NavTitle = styled.ul`
 
 // -----------NavBar-----------------------------------------------
 const NavBar: React.FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const isPathWithoutDomain = currentPath.startsWith("/");
