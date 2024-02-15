@@ -209,6 +209,9 @@ public class SecurityConfig {
         http.oauth2Login(oauth2 -> oauth2
                 //.loginPage("/oauth2/authorization/")
                 .loginPage("/oauth2/oLogin")
+            .authorizationEndpoint(authorizationEndpointConfig -> {
+                authorizationEndpointConfig.baseUri("/api/oauth2/authorization/google");
+            })
                 //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                 .userInfoEndpoint(userInfoEndpointConfig ->
                         userInfoEndpointConfig.userService(customOAuth2UserService)
