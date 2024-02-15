@@ -10,10 +10,7 @@ import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
 import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
-import {
-  RequestNotiInterfaceInterface,
-  requestNoti,
-} from "../../util/notificationsAPI";
+import { requestNoti } from "../../util/notificationsAPI";
 import { retryFn } from "../../util/tanstackQuery";
 import { Contour } from "./Design";
 
@@ -125,7 +122,7 @@ const NavBar: React.FC = () => {
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
 
-  const { data } = useQuery<RequestNotiInterfaceInterface[]>({
+  const { data } = useQuery({
     queryKey: ["notifications"],
     queryFn: requestNoti,
     staleTime: 10 * 1000,

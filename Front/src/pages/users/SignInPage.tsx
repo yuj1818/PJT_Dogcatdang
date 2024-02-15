@@ -133,9 +133,9 @@ function SignInPage() {
           {
             params.type === 'inv' &&
             <div className="flex gap-2">
-              <a href="http://localhost:8443/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
+              <a href="https://i10e202.p.ssafy.io/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
 
-              <a href="http://localhost:8443/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
+              <a href="https://i10e202.p.ssafy.io/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
               
             </div>
           }

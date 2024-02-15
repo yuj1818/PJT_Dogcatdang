@@ -2,10 +2,7 @@ import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import {
-  BroadcastDetailInterface,
-  broadCastDetail,
-} from "../../util/broadcastAPI";
+import { broadCastDetail } from "../../util/broadcastAPI";
 import { LoadingOrError } from "../common/LoadingOrError";
 
 const BroadcastDetail: React.FC = () => {
@@ -22,7 +19,7 @@ const BroadcastDetail: React.FC = () => {
     queryKey: ["broadcastDetail"],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const response = await broadCastDetail({ streamingId, signal });
-      return response as BroadcastDetailInterface;
+      return response;
     },
   });
   return (

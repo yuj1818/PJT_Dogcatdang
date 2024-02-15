@@ -62,17 +62,13 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   const cardContainerRef = useRef<HTMLDivElement | null>(null);
   const { id } = getUserInfo();
 
-  const { data, isLoading, isError, error } = useQuery<
-    CallAnimal[],
-    Error,
-    CallAnimal[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["ORG", id, "animal"],
     queryFn: async ({
       signal,
     }: QueryFunctionContext): Promise<CallAnimal[]> => {
       const result = await callAnimal({ signal });
-      return result as CallAnimal[];
+      return result;
     },
     staleTime: 5 * 1000,
     retry: retryFn,

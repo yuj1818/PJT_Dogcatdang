@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import mbti from "../../assets/MBTI.png";
-import main from "../../assets/main.png";
+import main from "../../assets/main.webp";
 import streaming from "../../assets/streaming.png";
 import calender from "../../assets/calender.png";
 import { PopularArticles } from "../articles/ArticleListPage";

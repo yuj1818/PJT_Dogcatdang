@@ -46,16 +46,9 @@ const BoradcastListPage: React.FC = () => {
     );
   };
 
-  const { data, isLoading, isError, error } = useQuery<
-    broadcastInfo[],
-    Error,
-    broadcastInfo[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["broadcastList"],
-    queryFn: async ({ signal }) => {
-      const response = await broadcastList({ signal });
-      return response;
-    },
+    queryFn: broadcastList,
     staleTime: 5 * 1000,
     retry: retryFn,
     retryDelay: 300,
