@@ -30,7 +30,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             String encodedMetadata = URLEncoder.encode(metadata, StandardCharsets.UTF_8.toString());
 
             // 리다이렉션 URL에 메타데이터 쿼리 파라미터 추가
-            String redirectUrl = "http://localhost:5173/signup?oauth=true&metadata=" + encodedMetadata;
+            String redirectUrl = "http://localhost:5173/signup/inv?oauth=true&metadata=" + encodedMetadata;
             getRedirectStrategy().sendRedirect(request, response, redirectUrl);
         } else {
             super.onAuthenticationFailure(request, response, exception);
