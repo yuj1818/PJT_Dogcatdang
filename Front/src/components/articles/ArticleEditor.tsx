@@ -178,13 +178,13 @@ const ArticleEditor: React.FC<ArticleEditorInterface> = ({
         <LoadingOrError isLoading={isPending} size={32} />
       ) : (
         <div>
-          <Button
+          {/* <Button
             onClick={() => {
               handleSubmitArticle(false);
             }}
           >
             임시 저장
-          </Button>
+          </Button> */}
           <Button onClick={togglePreviwModal}>미리보기</Button>
           <Button
             onClick={() => {
