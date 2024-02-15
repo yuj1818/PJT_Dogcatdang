@@ -124,12 +124,8 @@
 
 ### FE
 
-<details>
-<summary>컴포넌트 구조</summary>
-<div markdown="1">
-
 📦src
-┣ 📂assets
+┣ 📂assets  
 ┃ ┣ 🖼adoption-info-stage1.png
 ┃ ┣ 🖼adoption-info-stage2.png
 ┃ ┣ 🖼adoption-info-stage3.png
@@ -269,6 +265,3 @@
 ┃ ┣ 📜VisitAPI.ts
 ┣ 📜App.tsx
 ┗ 📜main.tsx
-
-</div>
-</details>
