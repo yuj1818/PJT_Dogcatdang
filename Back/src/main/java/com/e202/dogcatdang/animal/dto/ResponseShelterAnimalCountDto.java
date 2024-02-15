@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class ResponseShelterAnimalCountDto {
 	// 기관이 등록한 전체 동물 수
 	private Integer totalAnimals;
-	// 입양 예정인 동물의 수 (방문 예약이 확정된 동물의 수)
-	private Integer adoptionSchedules;
+	// 입양 완료된 동물 수
+	private Integer adoptedAnimals;
 	// 현재 보호 중인 동물의 수
 	private Integer protectedAnimals;
 }

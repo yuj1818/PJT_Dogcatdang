@@ -39,7 +39,6 @@ const Dots = ({ currentPage }: DotsProps) => {
         <Dot num={1} currentPage={currentPage}></Dot>
         <Dot num={2} currentPage={currentPage}></Dot>
         <Dot num={3} currentPage={currentPage}></Dot>
-        <Dot num={4} currentPage={currentPage}></Dot>
       </div>
     </div>
   );
