@@ -256,7 +256,15 @@ function AboutDogCatDang() {
         </ArticleContainer>
       </Page2>
       <Page3>
-        <p>가족을 기다리는 동물들</p>
+        <p
+          style={{
+            fontFamily: "SUITE-Bold",
+            textAlign: "center",
+            fontSize: "35px",
+          }}
+        >
+          가족을 기다리는 동물들
+        </p>
         <ListStyle $itemsPerRow={10}>
           {animalData.map((animal: SaveAnimal) => (
             <SaveAnimalCard key={animal.animalId} animals={animal} />

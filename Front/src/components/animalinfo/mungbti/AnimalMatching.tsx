@@ -470,7 +470,6 @@ function AnimalMatching() {
     return () => {
       // 퀴즈가 끝났을 때 결과를 계산하고 표시합니다.
       if (currentQuestion === questions.length - 1) {
-        console.log(totalScore);
         calculateResult(sum);
       }
     };
