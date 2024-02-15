@@ -149,11 +149,6 @@ const NavBar: React.FC = () => {
   const navTitles = isOrg ? (
     <NavTitle>
       <li>
-        <StyledNavLink to="/about" aria-label="독캣당 소개">
-          독캣당 소개
-        </StyledNavLink>
-      </li>
-      <li>
         <StyledNavLink to="/save-animals" aria-label="보호 동물">
           보호 동물
         </StyledNavLink>
@@ -184,11 +179,6 @@ const NavBar: React.FC = () => {
     </NavTitle>
   ) : (
     <NavTitle>
-      <li>
-        <StyledNavLink to="/about" aria-label="독캣당 소개">
-          독캣당 소개
-        </StyledNavLink>
-      </li>
       <li>
         <StyledNavLink to="/save-animals" aria-label="보호 동물">
           보호 동물

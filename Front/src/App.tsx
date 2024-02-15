@@ -93,7 +93,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MainPage />,
+        element: <AboutDogCatDang />,
       },
       {
         path: "test",
@@ -101,7 +101,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <AboutDogCatDang />,
+        element: <MainPage />,
       },
       {
         path: "mung",
