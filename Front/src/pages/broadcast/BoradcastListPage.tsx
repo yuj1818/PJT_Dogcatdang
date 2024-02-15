@@ -63,7 +63,6 @@ const BoradcastListPage: React.FC = () => {
 
   useEffect(() => {
     if (!data) return;
-    console.log(data);
     setContent(
       <>
         <Container>
