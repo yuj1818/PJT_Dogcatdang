@@ -3,32 +3,13 @@ import { useRef } from "react";
 import Dots from "./Dot";
 import styled from "styled-components";
 import mbti from "../../assets/MBTI.png";
-import { useNavigate } from "react-router-dom";
 import main from "../../assets/main.png";
 import streaming from "../../assets/streaming.png";
 import calender from "../../assets/calender.png";
 import { PopularArticles } from "../articles/ArticleListPage";
 
-const Leftside = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: auto 0;
-  margin-bottom: 10px;
-  width: 50%;
-`;
-const Rightside = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 50%;
-  margin: 0 auto;
-`;
-
 const Outer = styled.div`
-  height: calc(100vh - 100px);
+  height: calc(100vh - 130px);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -41,14 +22,14 @@ const Page1 = styled.div`
   display: flex;
   font-size: 20px;
 `;
+
 const Page2 = styled.div`
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 50px;
   white-space: pre-line;
+  overflow: hidden;
 `;
+
 const Page3 = styled.div`
   height: 100vh;
   display: flex;
@@ -56,20 +37,31 @@ const Page3 = styled.div`
   margin-top: 50px;
   align-items: center;
   font-size: 50px;
+  overflow: hidden;
 `;
 
-const Button = styled.button`
-  background-color: #ff8331;
-  color: white;
-  border-radius: 10px;
-  font-size: 25px;
+const TitleContainer = styled.div`
+  font-family: "SUITE-Bold";
+  text-align: center;
+  flex: 1;
 `;
 
-const LeftinLeftside = styled.div`
+const Group = styled.div`
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  height: 500px;
+  justify-content: space-around;
+`;
+
+const Img = styled.img`
+  object-fit: cover;
+  height: 100px;
+  margin: 0 auto;
+`;
+
+const ArticleContainer = styled.div`
+  flex: 3;
+  margin: 5rem 15rem;
+  text-align: center;
 `;
 
 function AboutDogCatDang() {
@@ -77,21 +69,6 @@ function AboutDogCatDang() {
   const outerDivRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const navigate = useNavigate();
-
-  const gotoBroad = () => {
-    navigate("/broadcast");
-  };
-
-  const gotoMung = () => {
-    navigate("/mung");
-  };
-  // const gotoVisited = () => {
-  //   navigate("/mung");
-  // };
-  const gotoArticle = () => {
-    navigate("/articles/1");
-  };
   useEffect(() => {
     const wheelHandler = (e: WheelEvent) => {
       e.preventDefault();
@@ -173,7 +150,9 @@ function AboutDogCatDang() {
     <Outer ref={outerDivRef}>
       <Dots currentPage={currentPage} />
       <Page1>
-        <div style={{ position: "relative", width: "100%", height: "74.5%" }}>
+        <div
+          style={{ position: "relative", width: "100%", objectFit: "cover" }}
+        >
           <img
             src={main}
             alt="main"
@@ -217,55 +196,35 @@ function AboutDogCatDang() {
         </div>
       </Page1>
       <Page2>
-        <Leftside>
-          <LeftinLeftside>
-            <div style={{ textAlign: "center" }}>
-              <img
-                src={streaming}
-                alt="텔레비전 방송 아이콘"
-                style={{ width: "20%", height: "100px", margin: "0 auto" }}
-              />
-              <div style={{ fontSize: "20px" }}>
-                스트리밍 서비스를 통해 우리의 가족이 될 아이를 미리 만나 보세요.
-              </div>
-              <Button style={{ width: "30%" }} onClick={gotoBroad}>
-                바로가기
-              </Button>
-            </div>
-            <div style={{ textAlign: "center", justifyContent: "start" }}>
-              <img
-                src={mbti}
-                alt="mbti"
-                style={{ width: "80%", height: "100px", margin: "0 auto" }}
-              ></img>
-              <div style={{ fontSize: "20px" }}>
-                나와 비슷한 동물의 성격을 알아보세요 !
-              </div>
-              <Button style={{ width: "30%" }} onClick={gotoMung}>
-                바로가기
-              </Button>
-            </div>
-          </LeftinLeftside>
-        </Leftside>
-        <Rightside>
+        <TitleContainer>
+          <p>독캣당에서 할 수 있는 일</p>
+        </TitleContainer>
+        <Group>
           <div style={{ textAlign: "center" }}>
-            <img
-              src={calender}
-              alt="calender"
-              style={{ width: "30%", height: "100px", margin: "0 auto" }}
-            ></img>
+            <Img src={streaming} alt="" loading="lazy" />
             <div style={{ fontSize: "20px" }}>
-              예약 서비스를 통해 간편하게 보호 센터와 소통할 수 있습니다.
+              우리의 가족이 될 아이를 미리 만나 보세요.
             </div>
-            <Button style={{ width: "30%" }}>바로가기</Button>
           </div>
-        </Rightside>
+          <div style={{ textAlign: "center", justifyContent: "start" }}>
+            <Img src={mbti} alt="" loading="lazy" />
+            <div style={{ fontSize: "20px" }}>
+              나와 비슷한 동물의 성격을 알아보세요!
+            </div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <Img src={calender} alt="" loading="lazy" />
+            <div style={{ fontSize: "20px" }}>
+              예약 서비스로 간편하게 보호 센터와 연락하세요
+            </div>
+          </div>
+        </Group>
+        <ArticleContainer>
+          <PopularArticles />
+        </ArticleContainer>
       </Page2>
       <Page3>
-        <div>입양 후 이야기</div>
-        <Button style={{ width: "10%" }} onClick={gotoArticle}>
-          바로가기
-        </Button>
+        <div>가족을 기다리는 동물들</div>
       </Page3>
     </Outer>
   );

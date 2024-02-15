@@ -15,16 +15,13 @@ import {
   requestNoti,
 } from "../../util/notificationsAPI";
 import { retryFn } from "../../util/tanstackQuery";
+import { Contour } from "./Design";
 
 // -----------Styled Component-----------------------------------------------
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-`;
-
-const Color = styled.div`
-  // background-color: #fff;
 `;
 
 const IMG = tw.img`
@@ -37,6 +34,8 @@ const NavBarContainer = styled.div`
   align-items: center;
   white-space: nowrap;
   margin-right: 10rem;
+  margin-bottom: 0px;
+  height: 130px;
 
   @media screen and (max-width: 1024px) {
     .container {
@@ -223,31 +222,28 @@ const NavBar: React.FC = () => {
 
   return (
     <Container>
-      <Color style={{ marginBottom: "2rem" }}>
-        <NavBarContainer>
-          <StyledNavLink to="/">
-            <IMG
-              src={logo}
-              alt="메인화면으로"
-              className="w-40 min-w-40"
-              loading="lazy"
-            />
-          </StyledNavLink>
-          <FlexColumnContainer>
-            <StyledDiv>
-              {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
-              <StyledNavLink to={`profile/${userId}`}>
-                {nickname}님
-              </StyledNavLink>
-              <StyledNavLink to="notification">
-                <Bell isNoti={isNoti} />
-              </StyledNavLink>
-              <button onClick={onClickLogout}>로그아웃</button>
-            </StyledDiv>
-            {navTitles}
-          </FlexColumnContainer>
-        </NavBarContainer>
-      </Color>
+      <NavBarContainer>
+        <StyledNavLink to="/">
+          <IMG
+            src={logo}
+            alt="메인화면으로"
+            className="w-40 min-w-40"
+            loading="lazy"
+          />
+        </StyledNavLink>
+        <FlexColumnContainer>
+          <StyledDiv>
+            {isOrg && <p style={{ margin: 0 }}>기관 회원</p>}
+            <StyledNavLink to={`profile/${userId}`}>{nickname}님</StyledNavLink>
+            <StyledNavLink to="notification">
+              <Bell isNoti={isNoti} />
+            </StyledNavLink>
+            <button onClick={onClickLogout}>로그아웃</button>
+          </StyledDiv>
+          {navTitles}
+        </FlexColumnContainer>
+      </NavBarContainer>
+      {isPathWithoutDomain && <Contour />}
       <OutLet $isPathWithoutDomain={isPathWithoutDomain}>
         <Outlet />
       </OutLet>
