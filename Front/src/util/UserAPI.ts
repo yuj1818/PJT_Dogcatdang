@@ -175,6 +175,9 @@ export const getToken = () => {
 
       const decodedData = jwtDecode(token);
 
+      const tokenExp = new Date(0);
+      tokenExp.setUTCSeconds(decodedData.exp || 0);
+
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
       localStorage.setItem("tokenExp", JSON.stringify(tokenExp));
