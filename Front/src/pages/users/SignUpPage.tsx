@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { signUp, checkUsername, checkNickname, checkEmail, oauthSignUp } from "../../util/UserAPI";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useParams } from "react-router-dom";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
@@ -24,20 +24,6 @@ const FormBox = styled.div`
 const ErrMsg = styled.p<{ $isValid: boolean }>`
   font-size: .8rem;
   color: ${props => props.$isValid ? 'green' : 'red'};
-`
-
-const StyledRadioBtn = styled.input.attrs({type: 'radio'})`
-  appearance: none;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: white;
-  box-shadow: 0 0 0 1px slategrey;
-
-  &:checked {
-    border: 3px solid white;
-    background-color: #FF8331;
-  }
 `
 
 const SignUpForm = styled.form`
@@ -83,16 +69,16 @@ interface MetaData {
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const params = useParams();
   const [searchParams] = useSearchParams();
   const isOauth = searchParams.get('oauth');
   const [metadata, setMetadata] = useState<MetaData>();
+  const isOrg = params.type === 'org';
 
   useEffect(() => {
     setMetadata(searchParams.get('metadata') && JSON.parse(searchParams.get('metadata') || ""));
   }, [isOauth])
 
-  const [isOrg, setIsOrg] = useState(false);
-  const [role, setRole] = useState('ROLE_USER')
   const [username, setUsername] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
@@ -110,11 +96,6 @@ function SignUpPage() {
   const [nicknameErrMsg, setNicknameErrMsg] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
   const [signUpErrMsg, setSignUpErrMsg] = useState('');
-
-  const selectType = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsOrg(() => e.target.value === 'ROLE_SHELTER');
-    setRole(() => e.target.value);
-  }
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(() => e.target.value);
@@ -203,7 +184,7 @@ function SignUpPage() {
     
     if (response.status === 200) {
       setIsValidNickname(true);
-      setNicknameErrMsg(`사용 가능한 ${isOrg ? '기관명' : '닉네임'}입니다`);
+      setNicknameErrMsg(`사용 가능한 ${ isOrg ? '기관명' : '닉네임'}입니다`);
     } else if (response.status === 409) {
       setIsValidNickname(false);
       setNicknameErrMsg(`이미 사용 중인 ${isOrg ? '기관명' : '닉네임'}입니다`);
@@ -250,7 +231,7 @@ function SignUpPage() {
   
       const data = {
         username,
-        role: role,
+        role: isOrg ? 'ROLE_SHELTER' : 'ROLE_USER',
         code: '101',
         email,
         password: password1,
@@ -277,17 +258,6 @@ function SignUpPage() {
         </div>
         <Line />
         <SignUpForm onSubmit={preventSubmit}>
-          { !isOauth && <div className="box">
-            <label className="item" htmlFor="isOrg">회원 구분</label>
-            <div className="flex items-center gap-1">
-              <StyledRadioBtn type="radio" name="isOrg" value="ROLE_USER" id="개인" onChange={selectType} defaultChecked />
-              <label htmlFor="개인">개인 회원</label>
-            </div>
-            <div className="flex items-center gap-1">
-              <StyledRadioBtn type="radio" name="isOrg" value="ROLE_SHELTER" id="기관" onChange={selectType} />
-              <label htmlFor="기관">기관 회원</label>
-            </div>
-          </div> }
           { !isOauth && <div className="flex flex-col gap-1">
             <div className="box">
               <label className="item" htmlFor="username">ID</label>
