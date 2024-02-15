@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy } from "react";
 import { getNumberOfAnimals } from "../../util/SaveAPI";
 import styled from "styled-components";
-import SavedAnimalList from "../../components/animalinfo/savedanimals/SavedAnimalList";
+const SavedAnimalList = lazy(
+  () => import("../../components/animalinfo/savedanimals/SavedAnimalList")
+);
 
 const Board = styled.div`
   display: flex;
   justify-content: space-around;
 
   .bold {
-    font-family: 'SUITE-Bold';
+    font-family: "SUITE-Bold";
   }
 
   .bg-font {
@@ -26,10 +28,10 @@ const Line = styled.div`
 `;
 
 const ListBox = styled.div`
-  .ag-theme-alpine{
+  .ag-theme-alpine {
     text-align: center;
   }
-  .ag-header-cell-label{
+  .ag-header-cell-label {
     justify-content: center;
   }
   .ag-cell {
@@ -37,19 +39,19 @@ const ListBox = styled.div`
     justify-content: center;
     align-items: center;
   }
-`
+`;
 
 function SavedAnimalManagementPage() {
   const [adoptionScheduledNum, setAdoptionScheduledNum] = useState();
   const [savedNum, setSavedNum] = useState();
   const [totalNum, setTotalNum] = useState();
 
-  const getAnimalNums = async() => {
+  const getAnimalNums = async () => {
     const response = await getNumberOfAnimals();
     setAdoptionScheduledNum(() => response.adoptionSchedules);
     setSavedNum(() => response.protectedAnimals);
     setTotalNum(() => response.totalAnimals);
-  }
+  };
 
   useEffect(() => {
     getAnimalNums();
@@ -77,7 +79,7 @@ function SavedAnimalManagementPage() {
         <SavedAnimalList />
       </ListBox>
     </div>
-  )
+  );
 }
 
 export default SavedAnimalManagementPage;

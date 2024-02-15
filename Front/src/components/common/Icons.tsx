@@ -51,23 +51,46 @@ const bellAnimation = keyframes`
   }
 `;
 
-const MyBell = styled.div<{ $isNoti: boolean }>`
+const MyBell = styled.div<{ $isNoti: number }>`
   font-size: 30px;
+  position: relative;
   transform-origin: top;
 
   ${(props) =>
-    props.$isNoti &&
+    props.$isNoti > 0 &&
     css`
-      animation: ${bellAnimation} 2s infinite linear;
+      div {
+        animation: ${bellAnimation} 2s infinite linear;
+      }
     `}
+
+  p {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: red;
+    border: #f7f4eb 2px solid;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 16px;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+  }
 `;
 
-export const Bell = ({ isNoti }: { isNoti: boolean }) => {
+export const Bell = ({ isNoti }: { isNoti: number }) => {
   return (
     <MyBell $isNoti={isNoti}>
-      <span role="img" aria-label="bell">
+      <div role="img" aria-label="bell">
         🔔
-      </span>
+      </div>
+      {isNoti > 0 && <p>{isNoti < 10 ? isNoti : "9+"}</p>}
     </MyBell>
   );
 };
@@ -149,4 +172,20 @@ const ErrorBlockIcon = styled.div`
 
 export const AlertIcon: React.FC = () => {
   return <ErrorBlockIcon>🚨</ErrorBlockIcon>;
+};
+
+const InfoIconStyle = styled.div`
+  font-size: 3rem;
+  padding: 0px;
+  background-color: #7079ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+`;
+
+export const InfoIcon: React.FC = () => {
+  return <InfoIconStyle>!</InfoIconStyle>;
 };

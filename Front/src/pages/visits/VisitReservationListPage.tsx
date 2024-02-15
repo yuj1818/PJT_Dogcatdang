@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy } from "react";
 import { Title } from "../../components/common/Title";
 import ReservationInfo from "../../components/visits/ReservationInfo";
-import ReservationList from "../../components/visits/ReservationList";
+const ReservationList = lazy(
+  () => import("../../components/visits/ReservationList")
+);
 import styled from "styled-components";
 import { getApplications } from "../../util/VisitAPI";
 
 const StyledList = styled.div`
   width: 70%;
 
-  .ag-theme-alpine{
+  .ag-theme-alpine {
     text-align: center;
   }
-  .ag-header-cell-label{
+  .ag-header-cell-label {
     justify-content: center;
   }
 `;
@@ -19,7 +21,7 @@ const StyledList = styled.div`
 const ListBox = styled.div`
   .notice {
     color: grey;
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -33,7 +35,7 @@ export interface applicationData {
   imgUrl: string;
   breed: string;
   state: string;
-};
+}
 
 function VisitReservationListPage() {
   const MONTHS = 1;
@@ -43,7 +45,7 @@ function VisitReservationListPage() {
 
   const getApplicationData = async () => {
     const response = await getApplications(MONTHS);
-    console.log(response)
+    console.log(response);
     setDataList(response);
   };
 
@@ -54,20 +56,23 @@ function VisitReservationListPage() {
   return (
     <div className="flex flex-col gap-4">
       <Title>방문 신청 내역</Title>
-      <hr className="border-black"/>
+      <hr className="border-black" />
       <ListBox>
         <p className="notice">※ 최근 1개월 내 예약 조회만 가능합니다</p>
         <div className="flex gap-4">
           <StyledList>
             <ReservationList selectRow={setSelectedId} dataList={dataList} />
           </StyledList>
-          {
-            selectedId && <ReservationInfo reservationId={selectedId} changeData={setDataList} />
-          }
+          {selectedId && (
+            <ReservationInfo
+              reservationId={selectedId}
+              changeData={setDataList}
+            />
+          )}
         </div>
       </ListBox>
     </div>
-  )
+  );
 }
 
 export default VisitReservationListPage;

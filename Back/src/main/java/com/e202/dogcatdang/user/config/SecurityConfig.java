@@ -113,6 +113,7 @@ package com.e202.dogcatdang.user.config;
 //import com.e202.dogcatdang.oauth2.handler.CustomOAuth2FailureHandler;
 import com.e202.dogcatdang.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
+import com.e202.dogcatdang.refresh.service.RefreshTokenService;
 import com.e202.dogcatdang.user.jwt.JWTFilter;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
 import com.e202.dogcatdang.user.jwt.LoginFilter;
@@ -149,12 +150,16 @@ public class SecurityConfig {
 
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, AuthenticationFailureHandler customAuthenticationFailureHandler, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
+    private final RefreshTokenService refreshTokenService;
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil, AuthenticationFailureHandler customAuthenticationFailureHandler, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, RefreshTokenService refreshTokenService) {
+
         this.customOAuth2UserService = customOAuth2UserService;
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
         this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Bean
@@ -211,7 +216,7 @@ public class SecurityConfig {
 
         // JWT 필터 설정
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil,refreshTokenService), UsernamePasswordAuthenticationFilter.class);
 
         // 세션 정책 설정
         http.sessionManagement(sessionManagement ->

@@ -8,4 +8,6 @@ import com.e202.dogcatdang.db.entity.StreamingAnimal;
 
 public interface StreamingAnimalRepository extends JpaRepository<StreamingAnimal, Long> {
 	StreamingAnimal findByAnimalAnimalId(Long id);
+
+	void deleteByStreamingStreamingId(Long streamingId);
 }

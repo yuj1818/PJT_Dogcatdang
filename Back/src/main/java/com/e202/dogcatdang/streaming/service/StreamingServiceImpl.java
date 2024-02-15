@@ -40,13 +40,13 @@ public class StreamingServiceImpl implements StreamingService{
 
 	@Override
 	@Transactional
-	public ResponseDto startStreaming(Long loginUserId, RequestStreamingDto requestStreamingDto) {
+	public Long startStreaming(Long loginUserId, RequestStreamingDto requestStreamingDto) {
 		User loginUser = userRepository.findById(loginUserId).get();
 
 
 
 		Streaming streaming = requestStreamingDto.toEntity(loginUser);
-		streamingRepository.save(streaming);
+		Long streamingId = streamingRepository.save(streaming).getStreamingId();
 		
 		//동물 id 리스트에서 해당 동물을 즐겨찾기한 유저에 대해 알림 전송
 		for(Long id : requestStreamingDto.getAnimalInfo()){
@@ -73,7 +73,7 @@ public class StreamingServiceImpl implements StreamingService{
 			streamingAnimalRepository.save(streamingAnimal);
 			streaming.getAnimalList().add(streamingAnimal);
 		}
-		return new ResponseDto(200L, "성공");
+		return streamingId;
 	}
 
 	@Override
@@ -92,6 +92,7 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
+	@Transactional
 	public ResponseStreamingDto findByStreamingId(Long streamingId) {
 
 		Streaming streaming = streamingRepository.findById(streamingId).get();
@@ -119,6 +120,7 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
+	@Transactional
 	public ResponseDto delete(Long loginUserId, String sessionId) {
 
 
@@ -128,6 +130,7 @@ public class StreamingServiceImpl implements StreamingService{
 		if(streaming.getUser().getId()!=loginUserId){
 			return new ResponseDto(403L, "유효하지 않은 요청입니다.");
 		}
+		streamingAnimalRepository.deleteByStreamingStreamingId(streaming.getStreamingId());
 
 		streamingRepository.delete(streaming);
 
