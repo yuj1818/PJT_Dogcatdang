@@ -39,3 +39,5 @@ spring:
     hibernate:
       ddl-auto: update
 
+log:
+  levels:
