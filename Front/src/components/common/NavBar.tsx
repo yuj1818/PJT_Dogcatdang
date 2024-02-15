@@ -128,6 +128,7 @@ const NavBar: React.FC = () => {
   });
 
   useEffect(() => {
+    setIsNoti(0);
     if (data) {
       for (const element of data) {
         if (!element.isRead) {
