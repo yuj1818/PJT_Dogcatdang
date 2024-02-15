@@ -12,7 +12,7 @@ import store from "./store/store.ts";
 
 import { queryClient } from "./util/tanstackQuery";
 import "./App.css";
-import MainPage from "./pages/home/HomePage.tsx";
+import MainPage from "./pages/home/MainPage.tsx";
 import AnimalListPage from "./pages/animals/save_animals/AnimalListPage";
 import LostAnimalListPage from "./pages/animals/lost_animals/LostAnimalListPage";
 import ArticleListPage from "./pages/articles/ArticleListPage";
@@ -36,7 +36,6 @@ import VisitManagementPage from "./pages/visits/VisitManagementPage.tsx";
 import AnimalMatching from "./components/animalinfo/mungbti/AnimalMatching.tsx";
 import MungBTIPage from "./pages/animals/mungbti_test/MungBTIPage.tsx";
 import VisitReservationPage from "./pages/visits/VisitReservationPage.tsx";
-import AboutDogCatDang from "./pages/about/AboutDogCatDang.tsx";
 import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
@@ -93,15 +92,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AboutDogCatDang />,
+        element: <MainPage />,
       },
       {
         path: "test",
         element: <AnimalMatching />,
-      },
-      {
-        path: "/about",
-        element: <MainPage />,
       },
       {
         path: "mung",

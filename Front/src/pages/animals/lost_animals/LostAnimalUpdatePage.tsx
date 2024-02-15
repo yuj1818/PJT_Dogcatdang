@@ -35,7 +35,9 @@ function LostAnimalUpdatePage() {
   const [lostDate, setLostDate] = useState(state.lostDate || "");
   const [name, setName] = useState(state.name || "");
   const [feature, setFeature] = useState(state.feature || "");
-  const [selectedImage, setSelectedImage] = useState<null | string>(state.imgUrl || null);
+  const [selectedImage, setSelectedImage] = useState<null | string>(
+    state.imgUrl || null
+  );
 
   const handleCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(event.target.value);
@@ -79,11 +81,13 @@ function LostAnimalUpdatePage() {
       imgUrl: imgUrl,
     };
     const response = await lostUpdate(data, token, animalID);
-    console.log(response);
+    // console.log(response);
     navigate(`/lost-animals/${animalID}`);
   };
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -93,11 +97,11 @@ function LostAnimalUpdatePage() {
       reader.readAsDataURL(file);
       try {
         const uploadedImageUrl = await requestS3({
-          name: file.name.replace(/\.[^/.]+$/, ''), 
+          name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
-        })
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
-        console.log("URL:", uploadedImageUrl);
+        });
+        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ''))
+        // console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {

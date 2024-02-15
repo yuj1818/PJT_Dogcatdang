@@ -51,7 +51,7 @@ function AnimalDetailPage() {
 
     API.get(apiUrl, { headers })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setAnimalDetail(res.data);
         const recentSeen = JSON.parse(
           localStorage.getItem("recentSeen") || "[]"
