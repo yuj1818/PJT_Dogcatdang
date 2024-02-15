@@ -20,7 +20,7 @@ spring:
             client-name: google
             client-id: 482443242773-o3qodrbamn53ff593o4rgpot79qhulqg.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: https://i10e202.p.ssafy.io/login/oauth2/code/google
+            redirect-uri: https://i10e202.p.ssafy.io/api/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
         provider:
@@ -39,3 +39,5 @@ spring:
     hibernate:
       ddl-auto: update
 
+log:
+  levels:
