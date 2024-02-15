@@ -75,9 +75,12 @@ const BroadCastPage: React.FC = () => {
       window.removeEventListener("beforeunload", leaveSession);
       window.removeEventListener("popstate", handleBack);
     };
-  }, [leaveSession]);
+  }, []);
 
   const joinSession = useCallback(() => {
+    if (session || OV) {
+      return;
+    }
     const newOV = new OpenVidu();
     newOV.enableProdMode();
     setOV(newOV);

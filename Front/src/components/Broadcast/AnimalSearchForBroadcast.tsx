@@ -19,6 +19,8 @@ export const Container = styled.div`
   width: 100%;
   border: #121212 solid 1px;
   z-index: 9999;
+  height: 10rem;
+  overflow: auto;
 `;
 
 const List = styled.div<CardInterface>`
@@ -38,6 +40,12 @@ const List = styled.div<CardInterface>`
 const AllAnimalContainer = styled.div`
   height: 150px;
   overflow: auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+`;
+
+const AllList = styled.div<CardInterface>`
+  background-color: ${({ selected }) => (selected ? "#f9d29b" : "auto")};
 `;
 
 interface AnimalSearchForBroadcastInterface {
@@ -74,11 +82,9 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   const handleSearch = (query: string) => {
     let filteredData: CallAnimal[];
     if (query.trim()) {
-      filteredData = data!
-        .filter(
-          (item) => item.code.includes(query) || item.breed.includes(query)
-        )
-        .slice(0, 5);
+      filteredData = data!.filter(
+        (item) => item.code.includes(query) || item.breed.includes(query)
+      );
     } else {
       filteredData = [];
     }
@@ -104,14 +110,6 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
 
   return (
     <>
-      <Label htmlFor="data">전체 보호 동물 목록</Label>
-      {data && (
-        <AllAnimalContainer>
-          {data.map((element) => (
-            <div key={element.animalId}>{element.code}</div>
-          ))}
-        </AllAnimalContainer>
-      )}
       <Label htmlFor="search">출연 동물</Label>
       {data && (
         <Input
@@ -128,9 +126,6 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
           autoComplete="off"
         />
       )}
-      {(isLoading || isError) && (
-        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
-      )}
 
       {filteredResults.length > 0 && (
         <Container ref={cardContainerRef} className="rounded-md">
@@ -139,14 +134,29 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
               className="rounded-md"
               selected={selectedData.includes(result)}
               key={result.animalId}
-              onClick={() => {
-                handleSelectedAnimal(result);
-              }}
+              onClick={handleSelectedAnimal.bind(null, result)}
             >
               <p>{result.code}</p>
             </List>
           ))}
         </Container>
+      )}
+      <Label htmlFor="data">전체 보호 동물 목록</Label>
+      {data && (
+        <AllAnimalContainer>
+          {data.map((element) => (
+            <AllList
+              selected={selectedData.includes(element)}
+              key={element.animalId}
+              onClick={handleSelectedAnimal.bind(null, element)}
+            >
+              CODE: {element.code} {element.breed}
+            </AllList>
+          ))}
+        </AllAnimalContainer>
+      )}
+      {(isLoading || isError) && (
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       )}
     </>
   );
