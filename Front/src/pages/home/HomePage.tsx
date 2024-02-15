@@ -1,8 +1,7 @@
-import { useRef } from "react";
 import styled from "styled-components";
-import mbti from "../../assets/MBTI.png";
 import { useNavigate } from "react-router-dom";
-import main from "../../assets/main.png";
+import mbti from "../../assets/MBTI.png";
+import main from "../../assets/main.webp";
 import streaming from "../../assets/streaming.png";
 import calender from "../../assets/calender.png";
 

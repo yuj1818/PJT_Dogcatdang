@@ -2,10 +2,7 @@ import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import {
-  BroadcastDetailInterface,
-  broadCastDetail,
-} from "../../util/broadcastAPI";
+import { broadCastDetail } from "../../util/broadcastAPI";
 import { LoadingOrError } from "../common/LoadingOrError";
 
 const BroadcastDetail: React.FC = () => {
