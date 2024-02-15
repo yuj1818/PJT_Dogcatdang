@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextSearch from "../../components/common/TextSearch";
 import { Button } from "../../components/common/Button";
 import { isOrg } from "../users/SignInPage";
@@ -29,10 +29,21 @@ const Container = styled.div`
 `;
 
 const BoradcastListPage: React.FC = () => {
-  const [searchWord, serSearchWorld] = useState("");
-  const hadnleSubmit = (inputSearchWord: string) => {
-    console.log(searchWord);
-    serSearchWorld(inputSearchWord);
+  const [content, setContent] = useState(<></>);
+
+  const hadndleSubmit = (inputSearchWord: string) => {
+    const filteredData = data!.filter((element) =>
+      element.title.includes(inputSearchWord)
+    );
+    setContent(
+      <>
+        <Container>
+          {filteredData.map((element) => (
+            <Card {...element} key={element.streamingId} />
+          ))}
+        </Container>
+      </>
+    );
   };
 
   const { data, isLoading, isError, error } = useQuery<
@@ -49,9 +60,23 @@ const BoradcastListPage: React.FC = () => {
     retry: retryFn,
     retryDelay: 300,
   });
+
+  useEffect(() => {
+    if (!data) return;
+    setContent(
+      <>
+        <Container>
+          {data.map((element) => (
+            <Card {...element} key={element.streamingId} />
+          ))}
+        </Container>
+      </>
+    );
+  }, [data, isLoading, isError]);
+
   return (
     <>
-      <TextSearch onSubmit={hadnleSubmit} text="현재 방송 목록">
+      <TextSearch onSubmit={hadndleSubmit} text="현재 방송 목록">
         {isOrg() && (
           <Button>
             <NavLink to="/broadcast/trans">방송하기</NavLink>
@@ -61,11 +86,7 @@ const BoradcastListPage: React.FC = () => {
       {isLoading || isError ? (
         <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       ) : data ? (
-        <Container>
-          {data.map((element) => (
-            <Card {...element} key={element.streamingId} />
-          ))}
-        </Container>
+        content
       ) : (
         <></>
       )}

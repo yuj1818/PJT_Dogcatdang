@@ -1,6 +1,7 @@
-import { useState, useEffect, lazy } from "react";
+import { useState, useEffect, lazy, Suspense, startTransition } from "react";
 import { getNumberOfAnimals } from "../../util/SaveAPI";
 import styled from "styled-components";
+import { LoadingIndicator } from "../../components/common/Icons";
 const SavedAnimalList = lazy(
   () => import("../../components/animalinfo/savedanimals/SavedAnimalList")
 );
@@ -48,14 +49,17 @@ function SavedAnimalManagementPage() {
 
   const getAnimalNums = async () => {
     const response = await getNumberOfAnimals();
-    setAdoptionScheduledNum(() => response.adoptionSchedules);
-    setSavedNum(() => response.protectedAnimals);
-    setTotalNum(() => response.totalAnimals);
+    startTransition(() => {
+      setAdoptionScheduledNum(response.adoptionSchedules);
+      setSavedNum(response.protectedAnimals);
+      setTotalNum(response.totalAnimals);
+    });
   };
 
   useEffect(() => {
     getAnimalNums();
   }, []);
+  console.log(savedNum);
 
   return (
     <div className="flex flex-col gap-8">
@@ -75,9 +79,11 @@ function SavedAnimalManagementPage() {
           <p className="bold md-font">등록 동물 수</p>
         </div>
       </Board>
-      <ListBox>
-        <SavedAnimalList />
-      </ListBox>
+      <Suspense fallback={<LoadingIndicator />}>
+        <ListBox>
+          <SavedAnimalList />
+        </ListBox>
+      </Suspense>
     </div>
   );
 }

@@ -147,10 +147,8 @@ const NavBar: React.FC = () => {
   const isOrg = org();
 
   const onClickLogout = async () => {
-    const response = await logout();
-    if (response.status === 200) {
-      navigate("/landing");
-    }
+    await logout();
+    navigate("/landing");
   };
 
   const navTitles = isOrg ? (

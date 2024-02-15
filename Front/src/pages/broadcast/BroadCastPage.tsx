@@ -75,7 +75,7 @@ const BroadCastPage: React.FC = () => {
       window.removeEventListener("beforeunload", leaveSession);
       window.removeEventListener("popstate", handleBack);
     };
-  }, []);
+  }, [sessionId]);
 
   const joinSession = useCallback(() => {
     if (session || OV) {

@@ -75,8 +75,12 @@ export const signIn = (data: signInData) => {
 
       const decodedData = jwtDecode(token);
 
+      const tokenExp = new Date(0);
+      tokenExp.setUTCSeconds(decodedData.exp || 0);
+
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
+      localStorage.setItem("tokenExp", JSON.stringify(tokenExp));
       return res;
     })
     .catch((err) => {
@@ -120,11 +124,12 @@ export const checkNickname = (data: { nickname: string }) => {
     });
 };
 
-export const logout = () => {
+export const logout = async () => {
   return API.post(URL + "/logout").then((res) => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
     localStorage.removeItem("recentSeen");
+    localStorage.removeItem("tokenExp");
     return res;
   });
 };
@@ -169,11 +174,10 @@ export const getToken = () => {
       cookie.set("U_ID", `Bearer ${token}`);
 
       const decodedData = jwtDecode(token);
-      const date = new Date(0);
-      date.setUTCSeconds(decodedData.exp || 0);
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
+      localStorage.setItem("tokenExp", JSON.stringify(tokenExp));
       return res;
     });
 };
