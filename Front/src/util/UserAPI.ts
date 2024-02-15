@@ -169,8 +169,6 @@ export const getToken = () => {
       cookie.set("U_ID", `Bearer ${token}`);
 
       const decodedData = jwtDecode(token);
-      const date = new Date(0);
-      date.setUTCSeconds(decodedData.exp || 0);
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));

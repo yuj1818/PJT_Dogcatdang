@@ -76,6 +76,10 @@ function VisitReservationPage() {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const next = new Date();
+  next.setDate(new Date(next.getDate() + 1).getTime());
+  const nextDay = new Date(next).toISOString().split("T")[0];
 
   const [shelterInfo, setShelterInfo] = useState<shelterData>();
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -99,6 +103,9 @@ function VisitReservationPage() {
   };
 
   const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
     setPhone(() => e.target.value);
   };
 
@@ -160,7 +167,7 @@ function VisitReservationPage() {
               </div>
               <div className="item">
                 <label htmlFor="date">예약 날짜</label>
-                <input type="date" name="date" id="date" onChange={handleDate} data-placeholder="날짜 선택" required />
+                <input type="date" name="date" id="date" min={nextDay} onChange={handleDate} data-placeholder="날짜 선택" required />
               </div>
               <div className="item">
                 <label htmlFor="time">예약 시간</label>
