@@ -10,6 +10,7 @@ import { Button } from "../common/Button";
 import { useNavigate } from "react-router-dom";
 import AnimalList from "./AnimalList";
 import Chat from "./Chat";
+import BroadcastDetail from "./BroadcastDetail";
 
 const Container = styled.div`
   display: flex;
@@ -180,6 +181,7 @@ const Video: React.FC<VideoProps> = ({
         </VideoContainer>
         <Chat session={session} />
       </VideoChat>
+      <BroadcastDetail />
       <AnimalList togglePictureInPicture={togglePictureInPicture} />
     </Container>
   );

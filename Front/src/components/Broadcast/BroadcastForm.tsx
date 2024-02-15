@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
 import { isOrg } from "../../pages/users/SignInPage";
 import { getUserInfo } from "../../util/uitl";
@@ -10,6 +11,7 @@ import AnimalSearchForBroadcast from "./AnimalSearchForBroadcast";
 import { CallAnimal, requestBroadCast } from "../../util/broadcastAPI";
 import { requestS3, resizeFile } from "../../util/S3";
 import { encrypt } from "./simpleEncrypt";
+import { set } from "../../store/broadcastSlice";
 
 const TextLength = tw.p`
   text-right text-sm text-gray-500
@@ -44,6 +46,7 @@ const Form: React.FC<FormProps> = ({
 }) => {
   const navigate = useNavigate();
   const params = useParams();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedAnimal, setSelectedAnimal] = useState<CallAnimal[]>([]);
@@ -112,7 +115,8 @@ const Form: React.FC<FormProps> = ({
         sessionId,
         thumbnailImgUrl,
       };
-      await requestBroadCast({ data });
+      const response = await requestBroadCast({ data });
+      dispatch(set(response));
     }
 
     joinSession();
