@@ -63,7 +63,7 @@ function AnimalFormPage() {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-    console.log(token);
+    // console.log(token);
 
     const data = {
       animalType: animalType,
@@ -83,7 +83,7 @@ function AnimalFormPage() {
     };
 
     const response = await regist(data, token);
-    console.log(response);
+    // console.log(response);
     navigate("/save-animals");
   };
 

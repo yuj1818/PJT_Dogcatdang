@@ -38,7 +38,7 @@ function LostAnimalDetailPage() {
     const apiUrl = `api/lost-animals/${animalID}`;
     API.get(apiUrl)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setLostAnimalDetail(res.data);
       })
       .catch((error) => {

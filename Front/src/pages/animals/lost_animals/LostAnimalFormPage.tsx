@@ -34,7 +34,6 @@ function LostAnimalFormPage() {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-    console.log(token);
 
     const data = {
       animalType: animalType,
@@ -93,8 +92,8 @@ function LostAnimalFormPage() {
           name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
         });
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
-        console.log("URL:", uploadedImageUrl);
+        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
+        // console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {
