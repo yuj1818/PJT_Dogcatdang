@@ -15,7 +15,6 @@ export default ({ mode }) => {
       [million.vite({ auto: true }), react()],
       ,
       compression({
-        algorithm: "brotliCompress",
         exclude: [/\.(br)$/, /\.(gz)$/],
         deleteOriginalAssets: true,
       }),
