@@ -78,6 +78,9 @@ const BroadCastPage: React.FC = () => {
   }, []);
 
   const joinSession = useCallback(() => {
+    if (session || OV) {
+      return;
+    }
     const newOV = new OpenVidu();
     newOV.enableProdMode();
     setOV(newOV);
