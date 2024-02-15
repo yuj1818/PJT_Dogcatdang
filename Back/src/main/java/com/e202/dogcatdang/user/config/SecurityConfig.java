@@ -228,8 +228,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/user", "/api/user/join", "api/animals", "api/animals/*").permitAll()
                 .requestMatchers("/api/users/login").permitAll()
                 .requestMatchers("/api/user/admin").hasRole("ADMIN")
-
-
                 .anyRequest().permitAll()
         );
 
