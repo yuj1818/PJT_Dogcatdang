@@ -1,5 +1,5 @@
-import { AxiosError } from "axios";
-import { handleAxiosError } from "./articleAPI";
+// import { AxiosError } from "axios";
+import { err } from "./articleAPI";
 import API from "./axios";
 import { Cookies } from "react-cookie";
 import { queryClient } from "./tanstackQuery";
@@ -42,9 +42,8 @@ export const requestBroadCast = async ({
       },
     });
     return response.data;
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
-    throw error;
+  } catch {
+    throw err;
   }
 };
 
@@ -73,8 +72,7 @@ export const callAnimal = async ({ signal }: Siganl) => {
     });
 
     return response.data as CallAnimal[];
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
+  } catch {
     return [];
   }
 };
@@ -105,8 +103,7 @@ export const broadcastList = async ({ signal }: signal) => {
     });
 
     return response.data as broadcastInfo[];
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
+  } catch {
     return [];
   }
 };
@@ -127,8 +124,8 @@ export const broadcastEnd = async ({ sessionId }: BroadcastEndInterface) => {
       },
     });
     queryClient.invalidateQueries({ queryKey: ["broadcastList"] });
-  } catch (error) {
-    throw error;
+  } catch {
+    return;
   }
 };
 
@@ -161,8 +158,7 @@ export const broadcastAnimalInfo = async ({
     });
 
     return response.data as BroadcastAnimalInfo[];
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
+  } catch {
     return [];
   }
 };
@@ -185,8 +181,7 @@ export const broadCastDetail = async ({ streamingId }: BroadcastIdProps) => {
     });
 
     return response.data as BroadcastDetailInterface;
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
-    return [];
+  } catch {
+    return {} as BroadcastDetailInterface;
   }
 };

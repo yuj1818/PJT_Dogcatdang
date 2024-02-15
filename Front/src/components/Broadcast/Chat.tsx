@@ -89,14 +89,11 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
     }
     let publisher;
 
-    console.log(broadcastId);
-
     if (decrypt(broadcastId!.slice(0, -10)) === getUserInfo().username) {
       publisher = true;
     } else {
       publisher = false;
     }
-    console.log(decrypt(broadcastId!.slice(0, -10)));
 
     const data = JSON.stringify({ nickname, message, publisher });
 

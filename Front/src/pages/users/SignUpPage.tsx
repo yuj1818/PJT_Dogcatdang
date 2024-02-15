@@ -226,6 +226,7 @@ function SignUpPage() {
 
       const response = await oauthSignUp(data);
       console.log(response);
+      navigate('/signin/inv');
     } else {
       if (!isComplete) {
         setSignUpErrMsg('중복검사 여부와 비밀번호 일치 여부를 확인해주세요');
@@ -247,9 +248,9 @@ function SignUpPage() {
   
       const response = await signUp(data);
       console.log(response);
+      navigate('/signin/org');
     }
 
-    navigate('/signin');
   }
 
   return (

@@ -32,11 +32,7 @@ const NotificationPage: React.FC = () => {
   const [totalPage, setTotalPage] = useState(1);
   const itemsPerPage = 10;
 
-  const { data, isLoading, isError, error, refetch } = useQuery<
-    RequestNotiInterfaceInterface[],
-    Error,
-    RequestNotiInterfaceInterface[]
-  >({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["notifications"],
     queryFn: requestNoti,
     staleTime: 10 * 1000,

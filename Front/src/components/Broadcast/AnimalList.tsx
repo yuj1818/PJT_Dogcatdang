@@ -44,15 +44,11 @@ const AnimalList: React.FC<Props> = ({ togglePictureInPicture }) => {
     streamingId = selector.broadcastId;
   }
 
-  const { data, isLoading, isError, error } = useQuery<
-    BroadcastAnimalInfo[],
-    Error,
-    BroadcastAnimalInfo[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["broadcastdetail", streamingId],
     queryFn: async ({ signal }) => {
       const result = await broadcastAnimalInfo({ signal, streamingId });
-      return result as BroadcastAnimalInfo[];
+      return result;
     },
     staleTime: 5 * 1000,
     retry: retryFn,
