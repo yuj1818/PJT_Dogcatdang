@@ -11,6 +11,7 @@ interface info {
   reservationTime: string;
   phone: string;
   visitor: number;
+  state: string;
 };
 
 const InfoBox = styled.div`
@@ -64,6 +65,7 @@ const ReservationInfo: React.FC<{ reservationId: number | null, changeData: Reac
         newData[idx].state = "승인"
         return newData;
       });
+      getInfo();
       alert('승인되었습니다');
     }
   };
@@ -77,6 +79,7 @@ const ReservationInfo: React.FC<{ reservationId: number | null, changeData: Reac
         newData[idx].state = "거절"
         return newData;
       });
+      getInfo();
       alert('거절되었습니다');
     }
   };
@@ -106,8 +109,8 @@ const ReservationInfo: React.FC<{ reservationId: number | null, changeData: Reac
           <p className="content">{reservationInfo?.visitor}</p>
         </div>
         <div className="flex justify-center gap-4 mt-4">
-          <Button onClick={onApprove} $marginLeft={0}>승인</Button>
-          <Button onClick={onReject} $background="red" $marginLeft={0}>거절</Button>
+          <Button onClick={onApprove} $marginLeft={0} disabled={reservationInfo?.state !== "대기중"}>승인</Button>
+          <Button onClick={onReject} $background="red" $marginLeft={0} disabled={reservationInfo?.state !== "대기중"}>거절</Button>
         </div>
       </InfoBox>
     </div>
