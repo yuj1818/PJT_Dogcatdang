@@ -208,11 +208,11 @@ public class SecurityConfig {
         // OAuth2 로그인 설정
         http.oauth2Login(oauth2 -> oauth2
                 //.loginPage("/oauth2/authorization/")
-                .loginPage("/oauth2/oLogin")
+            .loginPage("/oauth2/oLogin")
             .authorizationEndpoint(authorizationEndpointConfig -> {
-                authorizationEndpointConfig.baseUri("/api/oauth2/authorization/google");
+                authorizationEndpointConfig.baseUri("/api/oauth2/authorization");
             })
-                //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+            //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
                 .userInfoEndpoint(userInfoEndpointConfig ->
                         userInfoEndpointConfig.userService(customOAuth2UserService)
                 )
