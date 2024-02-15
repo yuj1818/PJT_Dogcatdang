@@ -245,7 +245,7 @@ const NavBar: React.FC = () => {
       <OutLet $isPathWithoutDomain={isPathWithoutDomain}>
         <Outlet />
       </OutLet>
-      <Footer />
+      {!isPathWithoutDomain && <Footer />}
     </Container>
   );
 };
