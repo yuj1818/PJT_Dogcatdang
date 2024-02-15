@@ -191,6 +191,7 @@ public class SecurityConfig {
                         configuration.setMaxAge(3600L);
                         //jwt Header Key값
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                        configuration.setExposedHeaders(Collections.singletonList("RefreshToken"));
 
                         return configuration;
                     }
