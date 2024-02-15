@@ -140,14 +140,14 @@ export interface BroadcastAnimalInfo {
   imgUrl: string;
 }
 
-interface BroadcastAnimalRequestInfo extends signal {
+interface BroadcastIdProps extends signal {
   streamingId: number;
 }
 
 export const broadcastAnimalInfo = async ({
   signal,
   streamingId,
-}: BroadcastAnimalRequestInfo) => {
+}: BroadcastIdProps) => {
   const cookie = new Cookies();
   const token = cookie.get("U_ID");
 
@@ -161,6 +161,30 @@ export const broadcastAnimalInfo = async ({
     });
 
     return response.data as BroadcastAnimalInfo[];
+  } catch (error) {
+    handleAxiosError(error as AxiosError);
+    return [];
+  }
+};
+
+export interface BroadcastDetailInterface {
+  title: string;
+  description: string;
+}
+
+export const broadCastDetail = async ({ streamingId }: BroadcastIdProps) => {
+  const cookie = new Cookies();
+  const token = cookie.get("U_ID");
+
+  try {
+    const response = await API.get(URL + "/" + streamingId + "/detail", {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return response.data as BroadcastDetailInterface;
   } catch (error) {
     handleAxiosError(error as AxiosError);
     return [];
