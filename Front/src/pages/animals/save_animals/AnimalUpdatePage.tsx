@@ -16,7 +16,7 @@ function AnimalUpdatePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { animalID } = useParams() as { animalID: string };
-  console.log(state);
+  // console.log(state);
   const [selectedCity, setSelectedCity] = useState(
     state.rescueLocation.split(" ")[0] || ""
   );
@@ -67,7 +67,7 @@ function AnimalUpdatePage() {
     animalID: string
   ) => {
     e.preventDefault();
-    console.log(animalID);
+    // console.log(animalID);
     const token = cookie.get("U_ID");
     const data = {
       animalType: animalType,
@@ -104,8 +104,8 @@ function AnimalUpdatePage() {
           name: file.name.replace(/\.[^/.]+$/, ""),
           file: file,
         });
-        console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
-        console.log("URL:", uploadedImageUrl);
+        // console.log("Name:", file.name.replace(/\.[^/.]+$/, ""));
+        // console.log("URL:", uploadedImageUrl);
         if (uploadedImageUrl) {
           setImgUrl(uploadedImageUrl);
         } else {
@@ -189,12 +189,12 @@ function AnimalUpdatePage() {
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))
                       : catInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))}

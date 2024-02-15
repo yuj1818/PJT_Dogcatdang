@@ -11,6 +11,7 @@ import {
 import { RegistForm } from "../../../components/animalinfo/style";
 import { Input, Select } from "../../../components/animalinfo/style";
 import { requestS3 } from "../../../util/S3";
+import { types } from "util";
 
 function AnimalFormPage() {
   const cookie = new Cookies();
@@ -63,7 +64,7 @@ function AnimalFormPage() {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = cookie.get("U_ID");
-    console.log(token);
+    // console.log(token);
 
     const data = {
       animalType: animalType,
@@ -83,7 +84,7 @@ function AnimalFormPage() {
     };
 
     const response = await regist(data, token);
-    console.log(response);
+    // console.log(response);
     navigate("/save-animals");
   };
 
@@ -183,12 +184,12 @@ function AnimalFormPage() {
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))
                       : catInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))}
