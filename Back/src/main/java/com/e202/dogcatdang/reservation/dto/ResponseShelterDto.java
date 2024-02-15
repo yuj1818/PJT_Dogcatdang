@@ -20,6 +20,7 @@ public class ResponseShelterDto {
 	private LocalDateTime reservationTime;
 	private String phone;
 	private int visitor;
+	private Reservation.State state;
 
 	// Entity -> DTO
 	public ResponseShelterDto(Reservation reservation) {
@@ -28,5 +29,6 @@ public class ResponseShelterDto {
 		this.reservationTime = reservation.getReservationTime();
 		this.phone = reservation.getPhone();
 		this.visitor = reservation.getVisitor();
+		this.state = reservation.getState();
 	}
 }
