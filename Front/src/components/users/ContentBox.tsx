@@ -83,7 +83,7 @@ const ContentBox: React.FC<{ menu: string, userId: string | undefined }> = ({ me
           />
         ))
         :
-        <p className="notice">※ 해당하는 데이터가 없습니다</p>
+        <p className="notice">※ 등록된 동물이 없습니다.</p>
       }
     </StyledContentBox>
   )

@@ -290,8 +290,8 @@ public class AnimalServiceImpl implements AnimalService {
 		// 기관이 등록한 전체 동물 수
 		Integer totalAnimals = animalRepository.countByUser_Id(shelterId);
 
-		// 입양 예정인 동물의 수 (방문 예약이 확정된 동물의 수)
-		Integer adoptionSchedules = reservationRepository.countDistinctAnimalByStateAndAnimal_User_Id(Reservation.State.승인, shelterId);
+		// 입양 완료된 동물의 수
+		Integer adoptedAnimals = animalRepository.countByStateAndUser_Id(Animal.State.입양완료, shelterId);
 
 		// 현재 보호 중인 동물의 수
 		Integer protectedAnimals = animalRepository.countByStateAndUser_Id(Animal.State.보호중, shelterId);
@@ -299,7 +299,7 @@ public class AnimalServiceImpl implements AnimalService {
 		// ResponseShelterAnimalCountDto 객체 생성
 		return ResponseShelterAnimalCountDto.builder()
 			.totalAnimals(totalAnimals)
-			.adoptionSchedules(adoptionSchedules)
+			.adoptedAnimals(adoptedAnimals)
 			.protectedAnimals(protectedAnimals)
 			.build();
 	}

@@ -1,12 +1,14 @@
 package com.e202.dogcatdang.oauth2.controller;
 
 import com.amazonaws.services.ec2.model.UserData;
+import com.e202.dogcatdang.db.entity.RefreshToken;
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import com.e202.dogcatdang.oauth2.dto.CustomOAuth2User;
 
 import com.e202.dogcatdang.oauth2.service.CustomOAuth2UserService;
 
+import com.e202.dogcatdang.refresh.service.RefreshTokenService;
 import com.e202.dogcatdang.user.Service.JoinService;
 import com.e202.dogcatdang.user.dto.JoinDTO;
 import com.e202.dogcatdang.user.jwt.JWTUtil;
@@ -41,12 +43,14 @@ public class LoginController {
     private final JoinService joinService;
     private final JWTUtil jwtUtil;
 
+    private final RefreshTokenService refreshTokenService;
 
-    public LoginController(UserRepository userRepository, CustomOAuth2UserService customOAuth2UserService, JoinService joinService, JWTUtil jwtUtil) {
+    public LoginController(UserRepository userRepository, CustomOAuth2UserService customOAuth2UserService, JoinService joinService, JWTUtil jwtUtil, RefreshTokenService refreshTokenService) {
         this.userRepository = userRepository;
         this.customOAuth2UserService = customOAuth2UserService;
         this.joinService = joinService;
         this.jwtUtil = jwtUtil;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @GetMapping("/token")
@@ -74,9 +78,24 @@ public class LoginController {
         }
 
         User user = userOptional.get();
+
         String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 900000L); // 1일 만료
 
-        return ResponseEntity.ok().body(Map.of("token", token));
+        // 리프레시 토큰 생성 및 헤더에 추가
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
+        System.out.println("In OAUTH2.0 // refreshToken 헤더에 추가~");
+
+    // 액세스 토큰과 리프레시 토큰을 응답 바디에 포함시켜 반환
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("accessToken", token);
+        System.out.println(refreshToken.getToken());
+        tokens.put("refreshToken", refreshToken.getToken());
+
+        System.out.println("In OAUTH2.0 // Tokens sent in response body");
+
+        return ResponseEntity.ok(tokens); // Map을 바로 ResponseEntity의 바디로 사용
+
+        //return ResponseEntity.ok().body(Map.of("token", token));
     }
 
 //    @GetMapping("/token")

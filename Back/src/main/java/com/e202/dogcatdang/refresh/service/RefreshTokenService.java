@@ -5,6 +5,8 @@ import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.db.repository.RefreshTokenRepository;
 import com.e202.dogcatdang.db.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,7 @@ public class RefreshTokenService {
         }
         refreshToken.setToken(UUID.randomUUID().toString()); // 랜덤 UUID를 토큰 값으로 사용
         Instant expiryDate = Instant.now().plusSeconds(12 * 60 * 60); // 12시간을 초로 환산하여 만료 시간 설정
+        // Instant expiryDate = Instant.now().plusSeconds(30); // 12시간을 초로 환산하여 만료 시간 설정
         refreshToken.setExpiryDate(expiryDate);
 
         System.out.println("user.getId : " + user.getId());
@@ -54,12 +57,34 @@ public class RefreshTokenService {
 
     }
 
-    public Optional<RefreshToken> validateRefreshToken(String token) {
-        return refreshTokenRepository.findByToken(token)
-                .filter(refreshToken -> refreshToken.getExpiryDate().isAfter(Instant.now()));
+//    @Transactional
+//    public Optional<RefreshToken> validateRefreshToken(String token) {
+//        return refreshTokenRepository.findByToken(token)
+//                .filter(refreshToken -> refreshToken.getExpiryDate().isAfter(Instant.now()));
+//
+//    }
+@Transactional
+public Optional<RefreshToken> validateRefreshToken(String token) {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+    logger.info("Validating refresh token: {}", token);
 
+    Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByToken(token);
+    if (!refreshTokenOptional.isPresent()) {
+        logger.warn("Refresh token not found in database: {}", token);
+        return Optional.empty();
     }
 
+    RefreshToken refreshToken = refreshTokenOptional.get();
+    if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
+        logger.warn("Refresh token is expired: {}", token);
+        return Optional.empty();
+    }
+
+    logger.info("Refresh token is valid: {}", token);
+    return Optional.of(refreshToken);
+}
+
+    @Transactional
     public void deleteRefreshToken(String token) {
         refreshTokenRepository.deleteByToken(token);
     }

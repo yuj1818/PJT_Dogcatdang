@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { getUserInfo } from "../../util/uitl";
 import { Contour, FormContainer, Input } from "../common/Design";
 import { Button } from "../common/Button";
+import { decrypt } from "./simpleEncrypt";
+import { useParams } from "react-router-dom";
 
 const ChattingContainer = styled.div`
   background-color: #fff;
@@ -41,6 +43,7 @@ interface ChatProps {
 interface Message {
   nickname: string;
   content: string;
+  publisher: boolean;
 }
 
 const isMessage = (obj: any): obj is Message => {
@@ -52,11 +55,20 @@ const isMessage = (obj: any): obj is Message => {
   );
 };
 
+interface ChatParaInterface {
+  $publisher?: boolean;
+}
+
+const ChatPara = styled.p<ChatParaInterface>`
+  font-weight: ${({ $publisher }) => ($publisher ? "bold" : "normal")};
+`;
+
 const Chat: React.FC<ChatProps> = memo(({ session }) => {
   const [message, setMessage] = useState("");
   const [allMessage, setAllMessage] = useState<(Message | string)[]>([]);
   const messageDiv = useRef<HTMLDivElement>(null);
   const { nickname } = getUserInfo();
+  const { broadcastId } = useParams();
 
   useEffect(() => {
     if (messageDiv) {
@@ -75,8 +87,18 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
     if (!message) {
       return;
     }
+    let publisher;
 
-    const data = JSON.stringify({ nickname, message });
+    console.log(broadcastId);
+
+    if (decrypt(broadcastId!.slice(0, -10)) === getUserInfo().username) {
+      publisher = true;
+    } else {
+      publisher = false;
+    }
+    console.log(decrypt(broadcastId!.slice(0, -10)));
+
+    const data = JSON.stringify({ nickname, message, publisher });
 
     await session.signal({
       data: data,
@@ -90,12 +112,13 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
   // 채팅 받기
   useEffect(() => {
     session.on("signal:chat", (event) => {
-      const { nickname, message } = JSON.parse(event.data || "{}");
+      const { nickname, message, publisher } = JSON.parse(event.data || "{}");
       setAllMessage((prev) => [
         ...prev,
         {
           nickname: nickname || "알 수 없는 사용자",
           content: message || "",
+          publisher: publisher || false,
         },
       ]);
     });
@@ -110,17 +133,25 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
     <ChattingContainer>
       <AllMessage ref={messageDiv}>
         {allMessage.map((element, idx) => (
-          <p key={idx}>
+          <ChatPara
+            key={idx}
+            $publisher={isMessage(element) ? element.publisher : false}
+          >
             {isMessage(element)
               ? `${element.nickname}: ${element.content}`
-              : /* <button onClick={() => {onForeceLeave(element)}}>강퇴</button> */ element}
-          </p>
+              : element}
+          </ChatPara>
         ))}
       </AllMessage>
       <Contour />
       <FormContainer onSubmit={handleSubmitEvent}>
         <label htmlFor="message" />
-        <Input id="message" value={message} onChange={handleMessageChange} />
+        <Input
+          id="message"
+          value={message}
+          onChange={handleMessageChange}
+          autoComplete="off"
+        />
         <Button height={2.6} $marginTop={0.4} type="submit" disabled={!message}>
           보내기
         </Button>

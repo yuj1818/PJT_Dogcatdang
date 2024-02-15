@@ -54,4 +54,9 @@ export const Button = styled.button<buttonInterface>`
   &:hover {
     box-shadow: 3.5px 3.5px 3.5px lightgrey;
   }
+
+  &:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+  }
 `;

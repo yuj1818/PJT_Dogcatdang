@@ -34,7 +34,20 @@ public class JWTUtil {
 
     public String getRole(String token) {
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("role", String.class);
+    }
+    public String getNickname(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("nickname", String.class);
     }
 
     //만료 확인
@@ -65,5 +78,6 @@ public class JWTUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
 
 }
