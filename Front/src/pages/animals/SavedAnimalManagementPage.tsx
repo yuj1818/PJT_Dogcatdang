@@ -43,14 +43,14 @@ const ListBox = styled.div`
 `;
 
 function SavedAnimalManagementPage() {
-  const [adoptionScheduledNum, setAdoptionScheduledNum] = useState();
+  const [adoptedAnimals, setAdoptedAnimals] = useState();
   const [savedNum, setSavedNum] = useState();
   const [totalNum, setTotalNum] = useState();
 
   const getAnimalNums = async () => {
     const response = await getNumberOfAnimals();
     startTransition(() => {
-      setAdoptionScheduledNum(response.adoptionSchedules);
+      setAdoptedAnimals(response.adoptedAnimals);
       setSavedNum(response.protectedAnimals);
       setTotalNum(response.totalAnimals);
     });
@@ -70,8 +70,8 @@ function SavedAnimalManagementPage() {
         </div>
         <Line />
         <div className="flex flex-col items-center">
-          <p className="bg-font bold">{adoptionScheduledNum}</p>
-          <p className="bold md-font">입양 예정</p>
+          <p className="bg-font bold">{adoptedAnimals}</p>
+          <p className="bold md-font">입양 완료</p>
         </div>
         <Line />
         <div className="flex flex-col items-center">
