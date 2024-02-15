@@ -42,10 +42,14 @@ const Page1 = styled.div`
   font-size: 20px;
 
   .gradient-box {
-    background: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.0) 70%);
+    background: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 45%, rgba(0, 0, 0, 0.0) 70%);
     padding: 8rem 6rem;
-    border-radius: 5px;
-    margin-top: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
   }
 `;
 
@@ -252,16 +256,8 @@ function AboutDogCatDang() {
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
           <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              textAlign: "center",
-              color: "white",
-            }}
+            className="gradient-box"
           >
-            <div className="gradient-box">
               <div style={{ fontSize: "50px", color: "#F7F4EB" }}>
                 가족이 되면
               </div>
@@ -274,10 +270,8 @@ function AboutDogCatDang() {
               >
                 독캣당
               </div>
-
               <div>유기 동물들도 건강하고 아름다운 아이들입니다.</div>
               <div>아이들의 가족이 되어주세요.</div>
-            </div>
           </div>
         </div>
       </Page1>
