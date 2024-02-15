@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy } from "react";
+import { useState, useEffect, lazy, Suspense, startTransition } from "react";
 import { Title } from "../../components/common/Title";
 import ReservationInfo from "../../components/visits/ReservationInfo";
 const ReservationList = lazy(
@@ -6,6 +6,7 @@ const ReservationList = lazy(
 );
 import styled from "styled-components";
 import { getApplications } from "../../util/VisitAPI";
+import { LoadingIndicator } from "../../components/common/Icons";
 
 const StyledList = styled.div`
   width: 70%;
@@ -46,7 +47,9 @@ function VisitReservationListPage() {
   const getApplicationData = async () => {
     const response = await getApplications(MONTHS);
     console.log(response);
-    setDataList(response);
+    startTransition(() => {
+      setDataList(response);
+    });
   };
 
   useEffect(() => {
@@ -61,7 +64,9 @@ function VisitReservationListPage() {
         <p className="notice">※ 최근 1개월 내 예약 조회만 가능합니다</p>
         <div className="flex gap-4">
           <StyledList>
-            <ReservationList selectRow={setSelectedId} dataList={dataList} />
+            <Suspense fallback={<LoadingIndicator />}>
+              <ReservationList selectRow={setSelectedId} dataList={dataList} />
+            </Suspense>
           </StyledList>
           {selectedId && (
             <ReservationInfo

@@ -51,6 +51,7 @@ const ReservationForm = styled.form`
 const ReservationBox = styled.div`
   display: flex;
   gap: 1rem;
+  margin-bottom: 2rem;
 
   .img-box {
     width: 25%;
@@ -76,6 +77,10 @@ function VisitReservationPage() {
   const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  
+  const next = new Date();
+  next.setDate(new Date(next.getDate() + 1).getTime());
+  const nextDay = new Date(next).toISOString().split("T")[0];
 
   const [shelterInfo, setShelterInfo] = useState<shelterData>();
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -99,6 +104,9 @@ function VisitReservationPage() {
   };
 
   const handlePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = e.target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/(^02.{0}|^01.{1}|[0-9]{3,4})([0-9]{3,4})([0-9]{4})/g, "$1-$2-$3");
     setPhone(() => e.target.value);
   };
 
@@ -148,7 +156,7 @@ function VisitReservationPage() {
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
             <Button background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
           </div>
-          <p>{shelterInfo?.address}</p>
+          <p>기관 주소 : {shelterInfo?.address}</p>
         </div>
         <ReservationBox>
           <ReservationFormBox>
@@ -160,7 +168,7 @@ function VisitReservationPage() {
               </div>
               <div className="item">
                 <label htmlFor="date">예약 날짜</label>
-                <input type="date" name="date" id="date" onChange={handleDate} data-placeholder="날짜 선택" required />
+                <input type="date" name="date" id="date" min={nextDay} onChange={handleDate} data-placeholder="날짜 선택" required />
               </div>
               <div className="item">
                 <label htmlFor="time">예약 시간</label>
@@ -168,7 +176,7 @@ function VisitReservationPage() {
               </div>
               <div className="item">
                 <label htmlFor="phone">연락처</label>
-                <input  type="text" name="phone" id="phone" onChange={handlePhone} required />
+                <input  type="text" name="phone" id="phone" placeholder="예시) 010-0000-0000" onChange={handlePhone} required />
               </div>
               <div className="item">
                 <label htmlFor="visitor">방문 인원</label>
@@ -183,7 +191,7 @@ function VisitReservationPage() {
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
-            <div className="img-circle">
+            <div className="img">
               <img className="img" src={location.state.imgUrl} alt="" />
             </div>
           </div>

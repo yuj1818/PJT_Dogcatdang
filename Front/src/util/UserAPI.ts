@@ -124,7 +124,7 @@ export const checkNickname = (data: { nickname: string }) => {
     });
 };
 
-export const logout = () => {
+export const logout = async () => {
   return API.post(URL + "/logout").then((res) => {
     cookie.remove("U_ID");
     localStorage.removeItem("userInfo");
@@ -174,8 +174,6 @@ export const getToken = () => {
       cookie.set("U_ID", `Bearer ${token}`);
 
       const decodedData = jwtDecode(token);
-      const tokenExp = new Date(0);
-      tokenExp.setUTCSeconds(decodedData.exp || 0);
 
       localStorage.setItem("userInfo", JSON.stringify(decodedData));
       localStorage.setItem("recentSeen", JSON.stringify([]));
