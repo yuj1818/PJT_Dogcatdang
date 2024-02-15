@@ -125,7 +125,7 @@ const NavBar: React.FC = () => {
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
 
-  const { data } = useQuery<RequestNotiInterfaceInterface[]>({
+  const { data } = useQuery({
     queryKey: ["notifications"],
     queryFn: requestNoti,
     staleTime: 10 * 1000,

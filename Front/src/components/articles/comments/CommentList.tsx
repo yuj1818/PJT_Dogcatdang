@@ -17,11 +17,7 @@ interface Props {
 
 const CommentList: React.FC<Props> = ({ boardId }) => {
   const { id } = getUserInfo();
-  const { data, isLoading, isError, error } = useQuery<
-    CommentInterface[],
-    Error,
-    CommentInterface[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["commentList", boardId],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const result = await requestComment({

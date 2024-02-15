@@ -22,7 +22,7 @@ const BroadcastDetail: React.FC = () => {
     queryKey: ["broadcastDetail"],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const response = await broadCastDetail({ streamingId, signal });
-      return response as BroadcastDetailInterface;
+      return response;
     },
   });
   return (

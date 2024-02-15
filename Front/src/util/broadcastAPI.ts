@@ -182,6 +182,6 @@ export const broadCastDetail = async ({ streamingId }: BroadcastIdProps) => {
 
     return response.data as BroadcastDetailInterface;
   } catch {
-    return [];
+    return {} as BroadcastDetailInterface;
   }
 };
