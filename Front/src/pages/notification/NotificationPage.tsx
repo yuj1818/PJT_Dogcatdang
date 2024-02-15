@@ -39,7 +39,7 @@ const NotificationPage: React.FC = () => {
   >({
     queryKey: ["notifications"],
     queryFn: requestNoti,
-    staleTime: 5 * 1000,
+    staleTime: 10 * 1000,
     retry: retryFn,
     retryDelay: 300,
   });
