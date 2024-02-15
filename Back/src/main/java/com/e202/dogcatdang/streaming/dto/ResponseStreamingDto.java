@@ -15,7 +15,6 @@ import lombok.ToString;
 public class ResponseStreamingDto {
 	private Long streamingId;
 	private String title;
-	private String description;
 	private Long orgId;
 	private String orgNickname;
 	private String sessionId;
@@ -25,7 +24,6 @@ public class ResponseStreamingDto {
 	public ResponseStreamingDto(Streaming streaming) {
 		this.streamingId = streaming.getStreamingId();
 		this.title = streaming.getTitle();
-		this.description = streaming.getDescription();
 		this.orgId = streaming.getUser().getId();
 		this.orgNickname = streaming.getUser().getNickname();
 		this.sessionId = streaming.getSessionId();;
