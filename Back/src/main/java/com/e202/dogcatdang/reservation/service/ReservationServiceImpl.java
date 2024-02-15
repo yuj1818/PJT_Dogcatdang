@@ -2,6 +2,7 @@ package com.e202.dogcatdang.reservation.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -46,6 +47,29 @@ public class ReservationServiceImpl implements ReservationService {
 
 		Reservation reservation = reservationDto.toEntity(user, animal);
 		reservationRepository.save(reservation);
+
+		// 보내는 사람과 받는 사람 지정
+		User sender = reservation.getUser();
+		User receiver = reservation.getAnimal().getUser();
+
+		// 날짜 형식 바꾸기
+		LocalDateTime dateTime = reservation.getReservationTime();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시mm분");
+		String formattedDateTime = dateTime.format(formatter);
+
+		// 알림(메세지)
+		Notification notification = Notification.builder()
+			.sender(sender)
+			.receiver(receiver)
+			.title("방문 신청이 들어왔습니다.")
+			.content(sender.getNickname() + "님이 대표자명 " + reservationDto.getName() + "으로 " + formattedDateTime + " 일자로 방문 예약 신청을 하셨습니다.")
+			.sentDate(LocalDateTime.now()) // 현재 시간으로 발송 날짜 설정
+			.isRead(false) // 초기 상태는 읽지 않음(false)
+			.build();
+
+		notificationRepository.save(notification); // DB에 저장
+
+
 	}
 
 	// 일반 회원의 예약 취소(삭제)

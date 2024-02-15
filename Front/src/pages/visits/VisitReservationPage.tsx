@@ -51,6 +51,7 @@ const ReservationForm = styled.form`
 const ReservationBox = styled.div`
   display: flex;
   gap: 1rem;
+  margin-bottom: 2rem;
 
   .img-box {
     width: 25%;
@@ -148,7 +149,7 @@ function VisitReservationPage() {
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
             <Button background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
           </div>
-          <p>{shelterInfo?.address}</p>
+          <p>기관 주소 : {shelterInfo?.address}</p>
         </div>
         <ReservationBox>
           <ReservationFormBox>
@@ -168,7 +169,7 @@ function VisitReservationPage() {
               </div>
               <div className="item">
                 <label htmlFor="phone">연락처</label>
-                <input  type="text" name="phone" id="phone" onChange={handlePhone} required />
+                <input  type="text" name="phone" id="phone" placeholder="예시) 010-0000-0000" onChange={handlePhone} required />
               </div>
               <div className="item">
                 <label htmlFor="visitor">방문 인원</label>
@@ -183,7 +184,7 @@ function VisitReservationPage() {
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
-            <div className="img-circle">
+            <div className="img">
               <img className="img" src={location.state.imgUrl} alt="" />
             </div>
           </div>
