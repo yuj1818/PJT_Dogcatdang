@@ -19,6 +19,8 @@ export const Container = styled.div`
   width: 100%;
   border: #121212 solid 1px;
   z-index: 9999;
+  height: 10rem;
+  overflow: auto;
 `;
 
 const List = styled.div<CardInterface>`
@@ -38,6 +40,8 @@ const List = styled.div<CardInterface>`
 const AllAnimalContainer = styled.div`
   height: 150px;
   overflow: auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
 `;
 
 interface AnimalSearchForBroadcastInterface {
@@ -74,11 +78,9 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
   const handleSearch = (query: string) => {
     let filteredData: CallAnimal[];
     if (query.trim()) {
-      filteredData = data!
-        .filter(
-          (item) => item.code.includes(query) || item.breed.includes(query)
-        )
-        .slice(0, 5);
+      filteredData = data!.filter(
+        (item) => item.code.includes(query) || item.breed.includes(query)
+      );
     } else {
       filteredData = [];
     }
@@ -108,7 +110,9 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
       {data && (
         <AllAnimalContainer>
           {data.map((element) => (
-            <div key={element.animalId}>{element.code}</div>
+            <div key={element.animalId}>
+              CODE: {element.code} {element.breed}
+            </div>
           ))}
         </AllAnimalContainer>
       )}

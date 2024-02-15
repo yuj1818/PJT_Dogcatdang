@@ -13,6 +13,7 @@ import { queryClient, retryFn } from "../../util/tanstackQuery";
 import { LoadingOrError } from "../../components/common/LoadingOrError";
 import AlertModal from "../../components/common/AlertModal";
 import { InfoIcon } from "../../components/common/Icons";
+import Pagination from "../../components/common/Pagination";
 
 interface ModalContentInterface {
   title: string;
@@ -27,6 +28,9 @@ const NotificationPage: React.FC = () => {
   });
   const [content, setContent] = useState(<></>);
   const [cnt, SetContent] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const itemsPerPage = 10;
 
   const { data, isLoading, isError, error, refetch } = useQuery<
     RequestNotiInterfaceInterface[],
@@ -49,24 +53,35 @@ const NotificationPage: React.FC = () => {
 
     if (data) {
       SetContent(data.length);
+      setTotalPage(Math.ceil(data.length / 10));
       const handleOpenModal = (newMOdalContent: ModalContentInterface) => {
         setModalOpen(true);
         setModalContent(newMOdalContent);
       };
       setContent(
         <>
-          {data.reverse().map((element) => (
-            <Card
-              {...element}
-              key={element.id}
-              handleOpenModal={handleOpenModal}
-              refetch={refetch}
-            />
-          ))}
+          {data
+            .reverse()
+            .slice(
+              (currentPage - 1) * itemsPerPage,
+              Math.min(currentPage * itemsPerPage, data.length)
+            )
+            .map((element) => (
+              <Card
+                {...element}
+                key={element.id}
+                handleOpenModal={handleOpenModal}
+                refetch={refetch}
+              />
+            ))}
         </>
       );
     }
   }, [data, isLoading, isError]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   const handleCloseModal = () => {
     setModalOpen(false);
@@ -82,6 +97,11 @@ const NotificationPage: React.FC = () => {
       />
       <p>총 {cnt} 개</p>
       {content}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPage}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 };
@@ -89,15 +109,15 @@ const NotificationPage: React.FC = () => {
 export default NotificationPage;
 
 interface CardContainerInterface {
-  isRead: boolean;
+  $isRead: boolean;
 }
 
 const CardContainer = styled.div<CardContainerInterface>`
   display: flex;
   padding: 10px;
-  border: 1px solid ${(props) => (props.isRead ? "green" : "red")};
+  border: 1px solid ${(props) => (props.$isRead ? "green" : "red")};
   border-radius: 5px;
-  background-color: ${(props) => (props.isRead ? "#f0f0f0" : "white")};
+  background-color: ${(props) => (props.$isRead ? "#f0f0f0" : "white")};
   justify-content: space-between;
 `;
 
@@ -149,7 +169,7 @@ const Card: React.FC<CardInterface> = ({
   };
 
   return (
-    <CardContainer isRead={isRead}>
+    <CardContainer $isRead={isRead}>
       <ContentsContainer onClick={handleClick}>
         <p>{title}</p>
         <p>{formattedDateTime}</p>

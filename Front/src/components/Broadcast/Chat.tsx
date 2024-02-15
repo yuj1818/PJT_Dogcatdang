@@ -1,5 +1,5 @@
 import { Session } from "openvidu-browser";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getUserInfo } from "../../util/uitl";
 import { Contour, FormContainer, Input } from "../common/Design";
@@ -52,7 +52,7 @@ const isMessage = (obj: any): obj is Message => {
   );
 };
 
-const Chat: React.FC<ChatProps> = ({ session }) => {
+const Chat: React.FC<ChatProps> = memo(({ session }) => {
   const [message, setMessage] = useState("");
   const [allMessage, setAllMessage] = useState<(Message | string)[]>([]);
   const messageDiv = useRef<HTMLDivElement>(null);
@@ -127,6 +127,6 @@ const Chat: React.FC<ChatProps> = ({ session }) => {
       </FormContainer>
     </ChattingContainer>
   );
-};
+});
 
 export default Chat;
