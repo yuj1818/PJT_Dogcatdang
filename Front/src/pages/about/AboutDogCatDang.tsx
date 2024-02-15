@@ -7,6 +7,26 @@ import main from "../../assets/main.png";
 import streaming from "../../assets/streaming.png";
 import calender from "../../assets/calender.png";
 import { PopularArticles } from "../articles/ArticleListPage";
+import API from "../../util/axios";
+import { Cookies } from "react-cookie";
+import SaveAnimalCard, {
+  SaveAnimal,
+} from "../../components/animalinfo/savedanimals/SaveAnimalCard";
+
+const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  & > div {
+    flex: 0 0 23%;
+    box-sizing: border-box;
+    margin: 1%;
+  }
+  & > div:last-child {
+    margin-right: auto;
+  }
+`;
 
 const Outer = styled.div`
   height: calc(100vh - 130px);
@@ -34,9 +54,9 @@ const Page3 = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 20px;
   align-items: center;
-  font-size: 50px;
+  font-size: 25px;
   overflow: hidden;
 `;
 
@@ -68,10 +88,29 @@ function AboutDogCatDang() {
   const DIVIDER_HEIGHT = 5;
   const outerDivRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [animalData, setAnimalData] = useState([]);
+  const cookie = new Cookies();
 
   useEffect(() => {
+    const token = cookie.get("U_ID");
     const wheelHandler = (e: WheelEvent) => {
       e.preventDefault();
+      const searchData = async () => {
+        try {
+          const headers = {
+            Authorization: token,
+          };
+
+          const res = await API.get(`/api/animals?page=1`, {
+            headers,
+          });
+          console.log(res.data.animalDtoList);
+          setAnimalData(res.data.animalDtoList);
+        } catch (err) {
+          console.error("Error:", err);
+        }
+      };
+      searchData();
 
       const outerDivRefCurrent = outerDivRef.current;
 
@@ -148,7 +187,6 @@ function AboutDogCatDang() {
 
   return (
     <Outer ref={outerDivRef}>
-      <Dots currentPage={currentPage} />
       <Page1>
         <div
           style={{ position: "relative", width: "100%", objectFit: "cover" }}
@@ -224,7 +262,12 @@ function AboutDogCatDang() {
         </ArticleContainer>
       </Page2>
       <Page3>
-        <div>가족을 기다리는 동물들</div>
+        <p>가족을 기다리는 동물들</p>
+        <ListStyle $itemsPerRow={10}>
+          {animalData.map((animal: SaveAnimal) => (
+            <SaveAnimalCard key={animal.animalId} animals={animal} />
+          ))}
+        </ListStyle>
       </Page3>
     </Outer>
   );
