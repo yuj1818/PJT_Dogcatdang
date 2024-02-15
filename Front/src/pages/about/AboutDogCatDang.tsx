@@ -40,6 +40,13 @@ const Page1 = styled.div`
   height: 100vh;
   display: flex;
   font-size: 20px;
+
+  .gradient-box {
+    background: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.0) 70%);
+    padding: 6rem 6rem;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
 `;
 
 const Page2 = styled.div`
@@ -200,14 +207,7 @@ function AboutDogCatDang() {
               color: "white",
             }}
           >
-            <div
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.4)",
-                padding: "10px",
-                borderRadius: "5px",
-                marginTop: "10px",
-              }}
-            >
+            <div className="gradient-box">
               <div style={{ fontSize: "50px", color: "#F7F4EB" }}>
                 가족이 되면
               </div>

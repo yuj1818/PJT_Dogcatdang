@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import paw from "../../assets/paw-prints.png";
 import logo from "../../assets/main-logo-big.png";
+import { useEffect } from "react";
+import { Cookies } from "react-cookie";
 
 const Landing = styled.div`
   padding: 0 8rem;
@@ -20,30 +22,33 @@ const Landing = styled.div`
     position: absolute;
     top: 50px;
     left: 60px;
+    width: 100%;
 
     .paw1 {
       position: absolute;
-      width: 100px;
-      height: 100px;
-      left: 130px;
+      width: 90px;
+      height: 90px;
+      left: 120px;
       top: 60px;
+      transform: rotate(135deg);
     }
   
     .paw2 {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       left: 30px;
       top: 0;
+      transform: rotate(150deg);
     }
   
     .paw3 {
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       left: 10px;
       top: 110px;
-      transform: rotate(30deg);
+      transform: rotate(190deg);
     }
   }
 
@@ -60,7 +65,7 @@ const Landing = styled.div`
       font-weight: 600;
       color: white;
       border: none;
-      width: 120px;
+      width: 140px;
       height: 55px;
     }
   }
@@ -145,8 +150,13 @@ const Landing = styled.div`
 `
 
 function LandingPage() {
-
+  const cookie = new Cookies();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    cookie.remove("U_ID");
+    localStorage.clear();
+  }, []);
 
   const goSignInOrg = () => {
     navigate('/signin/org');

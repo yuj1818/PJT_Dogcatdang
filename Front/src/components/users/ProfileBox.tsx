@@ -150,7 +150,7 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
           </div>
         </div>
         { props.isOrg && !props.isModalOpen ? 
-          <KakaoMap address={props.userInfo?.address || ""} /> 
+          <KakaoMap address={props.userInfo?.address || ""} style={{width: "35%", height: "20vh"}} /> 
           : 
           props.isMine &&
           <RecentSeenAnimals>

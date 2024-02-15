@@ -1,13 +1,22 @@
-import { useState, useEffect } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk'
-import styled from 'styled-components';
+import { useState, useEffect, useRef } from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-const StyledMap = styled.div`
-  width: 35%;
-`
+interface sizeData {
+  width: string;
+  height: string;
+}
 
-const KakaoMap: React.FC<{address: string}> = (props) => {
+const KakaoMap: React.FC<{address: string, style: sizeData}> = (props) => {
+  const mapRef = useRef<kakao.maps.Map | null>(null);
   const [coords, setCoords] = useState({ lat: 35.0961029679051, lng: 128.857751633716 });
+  const [mapSize, setMapSize] = useState({
+    width: "100%",
+    height: "20vh",
+  });
+
+  const resizeMap = () => {
+    setMapSize(props.style);
+  }
 
   useEffect(() => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -18,18 +27,23 @@ const KakaoMap: React.FC<{address: string}> = (props) => {
         setCoords({ lat: pos.getLat(), lng: pos.getLng() });
       }
     })
-  }, [props.address])
+
+    resizeMap();
+
+    mapRef.current?.relayout();
+  }, [props.address, props.style])
 
   return (
-    <StyledMap>
+    <div style={props.style}>
       <Map 
             center={coords} 
-            style={{ width: '100%', height: '20vh' }}
-            level={3} 
+            style={mapSize}
+            level={3}
+            ref={mapRef}
           >
         <MapMarker position={coords} />
       </Map>
-    </StyledMap>
+    </div>
 	);
 }
 
