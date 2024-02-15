@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Publisher, Session, Subscriber } from "openvidu-browser";
 import MyVideo from "./MyVideo";
+import { isOrg } from "../../pages/users/SignInPage";
 
 interface SessionComponentProps {
   subscriber: Subscriber;
@@ -48,14 +49,15 @@ const SessionComponent: React.FC<SessionComponentProps> = ({
           session={session}
         ></MyVideo>
       )}
-      {subscribers.map((subscriberItem, idx) => (
-        <MyVideo
-          key={idx}
-          streamManager={subscriberItem}
-          leaveSession={leaveSession}
-          session={session}
-        />
-      ))}
+      {!isOrg() &&
+        subscribers.map((subscriberItem, idx) => (
+          <MyVideo
+            key={idx}
+            streamManager={subscriberItem}
+            leaveSession={leaveSession}
+            session={session}
+          />
+        ))}
       {!publisher && subscribers.length === 0 && <p>방송이 종료되었습니다.</p>}
     </>
   );
