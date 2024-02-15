@@ -86,14 +86,14 @@ interface OutLetInterface {
 
 const OutLet = styled.div<OutLetInterface>`
   position: relative;
-  min-width: ${(props) => (props.$isPathWithoutDomain ? "700px" : "initial")};
+  min-width: "700px";
   flex: 1;
 
-  margin-left: 1rem;
-  margin-right: 1rem;
+  margin-left: ${(props) => (props.$isPathWithoutDomain ? "0" : "1rem")};
+  margin-right: ${(props) => (props.$isPathWithoutDomain ? "0" : "1rem")};
   @media (min-width: 640px) {
-    margin-left: 15rem;
-    margin-right: 15rem;
+    margin-left: ${(props) => (props.$isPathWithoutDomain ? "0" : "15rem")};
+    margin-right: ${(props) => (props.$isPathWithoutDomain ? "0" : "15rem")};
   }
 `;
 
@@ -121,7 +121,7 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-  const isPathWithoutDomain = currentPath.startsWith("/");
+  const isPathWithoutDomain = currentPath === "/";
   const [isNoti, setIsNoti] = useState(0);
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
@@ -254,7 +254,6 @@ const NavBar: React.FC = () => {
               </StyledNavLink>
               <button onClick={onClickLogout}>로그아웃</button>
             </StyledDiv>
-
             {navTitles}
           </FlexColumnContainer>
         </NavBarContainer>
