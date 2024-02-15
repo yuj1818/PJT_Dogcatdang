@@ -6,6 +6,7 @@ import { getUserInfo } from "../../util/UserAPI";
 import { makeReservation } from "../../util/VisitAPI";
 import styled from "styled-components";
 import { Button } from "../../components/common/Button";
+import KakaoMap from "../../components/users/KakaoMap";
 
 interface shelterData {
   nickname: string,
@@ -53,19 +54,31 @@ const ReservationBox = styled.div`
   gap: 1rem;
   margin-bottom: 2rem;
   justify-content: space-between;
+  height: 40vh;
 
   .img-box {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 35%;
-
+    height: 100%;
     .img {
-      height: 70%;
-      width: 100%;
+      width: 80%;
+      height: 60%;
       border-radius: 10px;
     }
   }
+`
+
+const MapModal = styled.div<{ $isHover: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 116%;
+  width: 20rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid grey;
+  display: ${(props) => props.$isHover ? "block" : "none"};
 `
 
 function VisitReservationPage() {
@@ -84,6 +97,7 @@ function VisitReservationPage() {
   const [time, setTime] = useState('');
   const [phone, setPhone] = useState('');
   const [visitor, setVisitor] = useState('');
+  const [isHover, setIsHover] = useState(false);
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(() => e.target.value);
@@ -149,7 +163,12 @@ function VisitReservationPage() {
         <div>
           <div className="flex items-center gap-2">  
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
-            <Button $background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
+            <div className="inline-block relative">
+              <Button onClick={() => setIsHover((prev) => !prev)} $background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
+              { shelterInfo && <MapModal $isHover={isHover}>
+                <KakaoMap address={shelterInfo.address || ''} style={{width: "20rem", height: "20vh"}} />
+              </MapModal>}
+            </div>
           </div>
           <p>기관 주소 : {shelterInfo?.address}</p>
         </div>
