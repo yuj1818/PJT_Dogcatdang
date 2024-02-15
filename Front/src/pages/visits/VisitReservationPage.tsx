@@ -52,23 +52,18 @@ const ReservationBox = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
+  justify-content: space-between;
 
   .img-box {
-    width: 25%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 35%;
 
-    .img-circle {
-      width: 10rem;
-      height: 10rem;
-      border-radius: 50%;
-      overflow: hidden;
-
-      .img {
-        height: 100%;
-        width: 100%;
-      }
+    .img {
+      height: 70%;
+      width: 100%;
+      border-radius: 10px;
     }
   }
 `
@@ -154,7 +149,7 @@ function VisitReservationPage() {
         <div>
           <div className="flex items-center gap-2">  
             <SubTitle>{shelterInfo?.nickname}</SubTitle>
-            <Button background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
+            <Button $background="black" $fontSize={.8} $marginTop={0} $marginLeft={0}>지도보기</Button>
           </div>
           <p>기관 주소 : {shelterInfo?.address}</p>
         </div>
@@ -191,9 +186,7 @@ function VisitReservationPage() {
             </ReservationForm>
           </ReservationFormBox>
           <div className="img-box">
-            <div className="img-circle">
-              <img className="img" src={location.state.imgUrl} alt="" />
-            </div>
+            <img className="img" src={location.state.imgUrl} alt="" />
           </div>
         </ReservationBox>
       </div>
