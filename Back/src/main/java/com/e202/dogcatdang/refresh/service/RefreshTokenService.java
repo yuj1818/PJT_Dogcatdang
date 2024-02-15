@@ -43,7 +43,8 @@ public class RefreshTokenService {
             refreshToken.setUser(user); // User 엔티티 설정
         }
         refreshToken.setToken(UUID.randomUUID().toString()); // 랜덤 UUID를 토큰 값으로 사용
-        Instant expiryDate = Instant.now().plusSeconds(12 * 60 * 60); // 12시간을 초로 환산하여 만료 시간 설정
+        // Instant expiryDate = Instant.now().plusSeconds(12 * 60 * 60); // 12시간을 초로 환산하여 만료 시간 설정
+        Instant expiryDate = Instant.now().plusSeconds(30); // 12시간을 초로 환산하여 만료 시간 설정
         refreshToken.setExpiryDate(expiryDate);
 
         System.out.println("user.getId : " + user.getId());
