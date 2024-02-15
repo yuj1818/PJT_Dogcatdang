@@ -72,8 +72,10 @@ const Form: React.FC<FormProps> = ({
         const year = String(today.getFullYear()).slice(-2);
         const month = String(today.getMonth() + 1).padStart(2, "0");
         const day = String(today.getDate()).padStart(2, "0");
-        const ranmdeNum = Math.ceil(Math.random() * 10000);
-        const numericFormat = `${year}${month}${day}${ranmdeNum}`;
+        const randomNum = Math.ceil(Math.random() * 10000)
+          .toString()
+          .padStart(4, "0");
+        const numericFormat = `${year}${month}${day}${randomNum}`;
 
         newSessionId = `${encryptedUsername}${numericFormat}`;
         sessionIdChangeHandler(newSessionId);
