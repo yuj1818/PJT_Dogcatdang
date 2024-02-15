@@ -80,7 +80,7 @@ public class RefreshTokenController {
 //                    String nickname= user.getNickname();
 //                    System.out.println("nickname : " + nickname);
 
-                            String newAccessToken = jwtUtil.createJwt(userId, username, role, nickname, 60_000L); // 새 액세스 토큰 생성
+                            String newAccessToken = jwtUtil.createJwt(userId, username, role, nickname, 900_000L); // 새 액세스 토큰 생성
 
                             // 새 액세스 토큰을 Authorization 헤더에 추가
                             HttpHeaders headers = new HttpHeaders();
