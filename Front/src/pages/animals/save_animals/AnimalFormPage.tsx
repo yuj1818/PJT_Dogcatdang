@@ -11,6 +11,7 @@ import {
 import { RegistForm } from "../../../components/animalinfo/style";
 import { Input, Select } from "../../../components/animalinfo/style";
 import { requestS3 } from "../../../util/S3";
+import { types } from "util";
 
 function AnimalFormPage() {
   const cookie = new Cookies();
@@ -183,12 +184,12 @@ function AnimalFormPage() {
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))
                       : catInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))}

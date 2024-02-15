@@ -189,12 +189,12 @@ function AnimalUpdatePage() {
                     </option>
                     {animalType === "강아지"
                       ? dogInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))
                       : catInput.map((type, index) => (
-                          <option key={index} value={type.replace(/\s/g, "_")}>
+                          <option key={index} value={type}>
                             {type}
                           </option>
                         ))}
