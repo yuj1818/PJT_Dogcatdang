@@ -212,7 +212,8 @@ public class SecurityConfig {
             .authorizationEndpoint(authorizationEndpointConfig -> {
                 authorizationEndpointConfig.baseUri("/api/oauth2/authorization");
             })
-            //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+
+            .redirectionEndpoint(endpoint -> endpoint.baseUri("/api/login/oauth2/*"))
                 .userInfoEndpoint(userInfoEndpointConfig ->
                         userInfoEndpointConfig.userService(customOAuth2UserService)
                 )
