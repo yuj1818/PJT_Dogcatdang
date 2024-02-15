@@ -2,6 +2,7 @@ package com.e202.dogcatdang.user.jwt;
 
 import com.e202.dogcatdang.db.entity.User;
 import com.e202.dogcatdang.user.dto.CustomUserDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,51 +41,38 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        System.out.println("authorization now");
-        //Bearer 부분 제거 후 순수 토큰만 획득
-        String token = authorization.split(" ")[1];
 
-        //토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7); // "Bearer " 이후의 문자열을 토큰으로 사용
+            try {
+                // 토큰에서 사용자 이름을 추출합니다.
+                String username = jwtUtil.getUsername(token);
+                // 추가적으로 필요한 검증을 여기서 수행할 수 있습니다.
 
-            System.out.println("token expired");
-//            filterChain.doFilter(request, response);
+                // 사용자의 인증 정보를 설정합니다.
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, null); // 마지막 인자는 권한 목록입니다.
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
-            // HTTP 상태 코드를 401로 설정
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            // 선택적: JSON 형태의 에러 메시지를 응답 본문에 추가
-            String errorMessage = "{\"error\": \"Token expired\"}";
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(errorMessage);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            return;
+                // 필터 체인을 계속 진행합니다.
+                filterChain.doFilter(request, response);
+            } catch (ExpiredJwtException e) {
+                // 토큰 만료 예외 처리
+                handleException(response, "Token expired", HttpServletResponse.SC_UNAUTHORIZED);
+            } catch (Exception e) {
+                // 다른 예외 처리
+                handleException(response, "Authentication error", HttpServletResponse.SC_UNAUTHORIZED);
+            }
+        } else {
+            filterChain.doFilter(request, response); // 토큰이 없거나 Bearer 타입이 아니면 다음 필터로 넘깁니다.
         }
+    }
 
-//        //토큰에서 username과 role 획득
-//        String username = jwtUtil.getUsername(token);
-//        String role = jwtUtil.getRole(token);
-//        //String email = jwtUtil.getEmail(token);
-//
-//
-//        //user를 생성하여 값 set
-//        User user = new User();
-//        user.setUsername(username);
-//        user.setPassword("temppassword");
-//        user.setRole(role);
-//
-//        //UserDetails에 회원 정보 객체 담기
-//        CustomUserDetails customUserDetails = new CustomUserDetails(user);
-//
-//        //스프링 시큐리티 인증 토큰 생성
-//        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-//        //세션에 사용자 등록
-//        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-
-        filterChain.doFilter(request, response);
+    private void handleException(HttpServletResponse response, String message, int status) throws IOException {
+        System.out.println(message);
+        response.setStatus(status);
+        String errorMessage = "{\"error\": \"" + message + "\"}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(errorMessage);
     }
 }

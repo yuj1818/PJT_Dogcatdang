@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { isOrg as org } from "../../pages/users/SignInPage";
@@ -80,9 +80,13 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const OutLet = styled.div`
+interface OutLetInterface {
+  $isPathWithoutDomain: boolean;
+}
+
+const OutLet = styled.div<OutLetInterface>`
   position: relative;
-  min-width: "700px";
+  min-width: ${(props) => (props.$isPathWithoutDomain ? "700px" : "initial")};
   flex: 1;
 
   margin-left: 1rem;
@@ -115,6 +119,9 @@ const NavTitle = styled.ul`
 // -----------NavBar-----------------------------------------------
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isPathWithoutDomain = currentPath.startsWith("/");
   const [isNoti, setIsNoti] = useState(0);
   const [nickname, setNickname] = useState("");
   const [userId, setUserId] = useState("");
@@ -122,12 +129,13 @@ const NavBar: React.FC = () => {
   const { data } = useQuery<RequestNotiInterfaceInterface[]>({
     queryKey: ["notifications"],
     queryFn: requestNoti,
-    staleTime: 5 * 1000,
+    staleTime: 10 * 1000,
     retry: retryFn,
     retryDelay: 300,
   });
 
   useEffect(() => {
+    setIsNoti(0);
     if (data) {
       for (const element of data) {
         if (!element.isRead) {
@@ -251,7 +259,7 @@ const NavBar: React.FC = () => {
           </FlexColumnContainer>
         </NavBarContainer>
       </Color>
-      <OutLet>
+      <OutLet $isPathWithoutDomain={isPathWithoutDomain}>
         <Outlet />
       </OutLet>
       <Footer />
