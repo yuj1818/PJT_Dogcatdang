@@ -92,7 +92,6 @@ public class StreamingServiceImpl implements StreamingService{
 	}
 
 	@Override
-	@Transactional
 	public ResponseStreamingDto findByStreamingId(Long streamingId) {
 
 		Streaming streaming = streamingRepository.findById(streamingId).get();

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import Dots from "./Dot";
 import styled from "styled-components";
 import mbti from "../../assets/MBTI.png";
 import main from "../../assets/main.png";
@@ -29,7 +28,7 @@ const ListStyle = styled.div<{ $itemsPerRow: number }>`
 `;
 
 const Outer = styled.div`
-  height: calc(100vh - 130px);
+  height: calc(100vh - 132px);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -87,7 +86,6 @@ const ArticleContainer = styled.div`
 function AboutDogCatDang() {
   const DIVIDER_HEIGHT = 5;
   const outerDivRef = useRef<HTMLDivElement>(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [animalData, setAnimalData] = useState([]);
   const cookie = new Cookies();
 
@@ -128,7 +126,6 @@ function AboutDogCatDang() {
               left: 0,
               behavior: "smooth",
             });
-            setCurrentPage(2);
           } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
             console.log("현재 2페이지, down");
             outerDivRefCurrent.scrollTo({
@@ -136,7 +133,6 @@ function AboutDogCatDang() {
               left: 0,
               behavior: "smooth",
             });
-            setCurrentPage(3);
           } else {
             console.log("현재 3페이지, down");
             outerDivRefCurrent.scrollTo({
@@ -162,7 +158,6 @@ function AboutDogCatDang() {
               left: 0,
               behavior: "smooth",
             });
-            setCurrentPage(1);
           } else {
             console.log("현재 3페이지, up");
             outerDivRef.current.scrollTo({
@@ -170,7 +165,6 @@ function AboutDogCatDang() {
               left: 0,
               behavior: "smooth",
             });
-            setCurrentPage(2);
           }
         }
       }

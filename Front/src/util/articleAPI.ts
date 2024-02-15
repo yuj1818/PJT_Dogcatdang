@@ -1,27 +1,27 @@
 import { Cookies } from "react-cookie";
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
 import API from "./axios";
 
 import { CommentInterface } from "../components/articles/ArticleInterface";
 import { imageHandler } from "./S3";
 
-const err = new Error();
+export const err = new Error();
 err.name = "네트워크 에러";
 err.message = "인터넷 연결을 확인하여 주세요";
 
-export const handleAxiosError = (error: AxiosError) => {
-  if (error.response) {
-    // 2XX번이 아닌 상태 코드를 받았다.
-    console.log("axios error status:", error.response.status);
-  } else if (error.request) {
-    // 요청은 보내졌으나 응답이 없다.
-    console.log("axios error request:", error.request);
-  } else {
-    // 그 외의 상황
-    console.log("axios error message:", error.message);
-  }
-  console.log("axios error:", error);
-};
+// export const handleAxiosError = (error: AxiosError) => {
+//   if (error.response) {
+//     // 2XX번이 아닌 상태 코드를 받았다.
+//     console.log("axios error status:", error.response.status);
+//   } else if (error.request) {
+//     // 요청은 보내졌으나 응답이 없다.
+//     console.log("axios error request:", error.request);
+//   } else {
+//     // 그 외의 상황
+//     console.log("axios error message:", error.message);
+//   }
+//   console.log("axios error:", error);
+// };
 export interface ArticlePostData {
   title: string;
   content: string;
@@ -145,9 +145,8 @@ export const requestArticle = async ({
     }
 
     return response.data;
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
-    throw error;
+  } catch {
+    throw err;
   }
 };
 
@@ -214,8 +213,8 @@ export const requestComment = async ({
       throw Error("잘못된 접근입니다.");
     }
     return response.data as CommentInterface[];
-  } catch (error) {
-    handleAxiosError(error as AxiosError);
+  } catch {
+    throw err;
   }
 };
 
@@ -250,8 +249,7 @@ export const requestLike = async ({ boardId, like }: RequestLikeInterface) => {
       );
     }
     return response.data;
-  } catch (error) {
-    console.log(error);
+  } catch {
     throw err;
   }
 };
@@ -279,7 +277,7 @@ export const requestSearchArticle = async ({
       }
     );
     return respone.data;
-  } catch (error) {
+  } catch {
     throw err;
   }
 };
@@ -303,8 +301,7 @@ export const requestPopular = async ({ signal }: RequestPopularInterface) => {
     });
 
     return respone.data;
-  } catch (error) {
-    console.log(error);
+  } catch {
     throw err;
   }
 };

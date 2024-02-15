@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { signIn } from "../../util/UserAPI";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
@@ -58,6 +58,7 @@ const SignInForm = styled.form`
 
 function SignInPage() {
   const navigate = useNavigate();
+  const params = useParams();
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -119,7 +120,7 @@ function SignInPage() {
             </div>
             { errMsg &&  <p className="err-msg">{errMsg}</p> }
             <div className="menus flex gap-2 items-center justify-center">
-              <NavLink to="/signup" className="menu">회원가입</NavLink>
+              <NavLink to={`/signup/${params.type}`} className="menu">회원가입</NavLink>
               |
               <span className="menu">ID 찾기</span>
               |
@@ -129,12 +130,15 @@ function SignInPage() {
               <Button $marginLeft={0}>로그인</Button>
             </div>
           </SignInForm>
-          <div className="flex gap-2">
-            <a href="http://localhost:8443/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
+          {
+            params.type === 'inv' &&
+            <div className="flex gap-2">
+              <a href="http://localhost:8443/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
 
-            <a href="http://localhost:8443/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
-            
-          </div>
+              <a href="http://localhost:8443/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
+              
+            </div>
+          }
         </div>
       </FormBox>  
     </div>
