@@ -2,29 +2,34 @@ import { useEffect, useState } from "react";
 import { useRef } from "react";
 import Dots from "./Dot";
 import styled from "styled-components";
-import img from "../../assets/auth-image.png";
-import { useNavigate } from "react-router-dom";
+import mbti from "../../assets/MBTI.png";
+import main from "../../assets/main.png";
+import streaming from "../../assets/streaming.png";
+import calender from "../../assets/calender.png";
+import { PopularArticles } from "../articles/ArticleListPage";
+import API from "../../util/axios";
+import { Cookies } from "react-cookie";
+import SaveAnimalCard, {
+  SaveAnimal,
+} from "../../components/animalinfo/savedanimals/SaveAnimalCard";
 
-const Leftside = styled.div`
+const ListStyle = styled.div<{ $itemsPerRow: number }>`
+  width: 100%;
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: auto 0;
-  margin-bottom: 10px;
-  margin-top: 5px;
-`;
-const Rightside = styled.div`
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-
-  margin: 0 auto;
+  & > div {
+    flex: 0 0 23%;
+    box-sizing: border-box;
+    margin: 1%;
+  }
+  & > div:last-child {
+    margin-right: auto;
+  }
 `;
 
 const Outer = styled.div`
-  height: 100vh;
+  height: calc(100vh - 130px);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -37,75 +42,75 @@ const Page1 = styled.div`
   display: flex;
   font-size: 20px;
 `;
+
 const Page2 = styled.div`
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
   font-size: 50px;
   white-space: pre-line;
-
+  overflow: hidden;
 `;
+
 const Page3 = styled.div`
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 50px;
-  white-space: pre-line;
-`;
-const Page4 = styled.div`
-  height: 100vh;
-  display: flex;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 20px;
   align-items: center;
-  font-size: 50px;
-  white-space: pre-line;
-`;
-
-const Button = styled.button`
-  background-color: #ff8331;
-  color: white;
-  border-radius: 10px;
   font-size: 25px;
+  overflow: hidden;
 `;
 
-const LeftinLeftside = styled.div`
+const TitleContainer = styled.div`
+  font-family: "SUITE-Bold";
+  text-align: center;
+  flex: 1;
+`;
+
+const Group = styled.div`
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  height:500px;
-`
+  justify-content: space-around;
+`;
+
+const Img = styled.img`
+  object-fit: cover;
+  height: 100px;
+  margin: 0 auto;
+`;
+
+const ArticleContainer = styled.div`
+  flex: 3;
+  margin: 5rem 15rem;
+  text-align: center;
+`;
 
 function AboutDogCatDang() {
   const DIVIDER_HEIGHT = 5;
   const outerDivRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [animalData, setAnimalData] = useState([]);
+  const cookie = new Cookies();
 
-  const navigate = useNavigate();
-
-  const gotoMain = () => {
-    navigate(`/`);
-  };
-
-  const gotoBroad = () => {
-    navigate("/broadcast");
-  };
-
-  const gotoMung = () => {
-    navigate("/mung");
-  };
-  // const gotoVisited = () => {
-  //   navigate("/mung");
-  // };
-  const gotoArticle = () => {
-    navigate("/articles/1");
-  };
   useEffect(() => {
+    const token = cookie.get("U_ID");
     const wheelHandler = (e: WheelEvent) => {
       e.preventDefault();
+      const searchData = async () => {
+        try {
+          const headers = {
+            Authorization: token,
+          };
+
+          const res = await API.get(`/api/animals?page=1`, {
+            headers,
+          });
+          console.log(res.data.animalDtoList);
+          setAnimalData(res.data.animalDtoList);
+        } catch (err) {
+          console.error("Error:", err);
+        }
+      };
+      searchData();
 
       const outerDivRefCurrent = outerDivRef.current;
 
@@ -113,11 +118,11 @@ function AboutDogCatDang() {
         const { deltaY } = e;
         const { scrollTop } = outerDivRefCurrent;
         const pageHeight = window.innerHeight;
-        console.log(scrollTop);
         if (deltaY > 0) {
           // Scroll down
           if (scrollTop >= 0 && scrollTop < pageHeight) {
             console.log("현재 1페이지, down");
+            console.log(pageHeight);
             outerDivRefCurrent.scrollTo({
               top: pageHeight + DIVIDER_HEIGHT,
               left: 0,
@@ -132,18 +137,10 @@ function AboutDogCatDang() {
               behavior: "smooth",
             });
             setCurrentPage(3);
-          } else if (scrollTop >= pageHeight * 2 + DIVIDER_HEIGHT * 2) {
+          } else {
             console.log("현재 3페이지, down");
             outerDivRefCurrent.scrollTo({
-              top: pageHeight * 3 + DIVIDER_HEIGHT * 3,
-              left: 0,
-              behavior: "smooth",
-            });
-            setCurrentPage(4);
-          } else {
-            console.log("현재 4페이지, down");
-            outerDivRefCurrent.scrollTo({
-              top: pageHeight * 4 + DIVIDER_HEIGHT * 4,
+              top: pageHeight * 2 + DIVIDER_HEIGHT * 2,
               left: 0,
               behavior: "smooth",
             });
@@ -166,10 +163,7 @@ function AboutDogCatDang() {
               behavior: "smooth",
             });
             setCurrentPage(1);
-          } else if (
-            scrollTop >= pageHeight * 2 &&
-            scrollTop < pageHeight * 3
-          ) {
+          } else {
             console.log("현재 3페이지, up");
             outerDivRef.current.scrollTo({
               top: pageHeight + DIVIDER_HEIGHT,
@@ -177,14 +171,6 @@ function AboutDogCatDang() {
               behavior: "smooth",
             });
             setCurrentPage(2);
-          } else {
-            console.log("현재 4페이지, up");
-            outerDivRef.current.scrollTo({
-              top: pageHeight * 2 + DIVIDER_HEIGHT * 2,
-              left: 0,
-              behavior: "smooth",
-            });
-            setCurrentPage(3);
           }
         }
       }
@@ -201,72 +187,88 @@ function AboutDogCatDang() {
 
   return (
     <Outer ref={outerDivRef}>
-      <Dots currentPage={currentPage} />
       <Page1>
-        <Leftside>
-          <div>유기견, 유기묘 입양</div>
-          <div>독캣당</div>
-          <div>새로운 가족을 만나보세요</div>
-          <Button style={{ width: "80%" }} onClick={gotoMain}>
-            메인페이지
-          </Button>
-        </Leftside>
-        <Rightside>
-          <img src={img} alt="gl"></img>
-        </Rightside>
-      </Page1>
-      <Page2>
-        <div>진심 어린 마음으로</div>
-        <div>우리의 영원한 가족이 되어주세요</div>
-        <div style={{ textAlign: "center", fontSize: "30px" }}>
-          <div>국내에서만 연간 12만 마리의 동물이 구조되고 있습니다.</div>
-          <div>
-            하지만 가족을 찾지 못하여 매일 65마리의 동물이 안락사됩니다.
-          </div>
-          <div>
-            안락사 위기에 처한 동물들이 새로운 가족을 찾을 수 있도록 도와주세요.
+        <div
+          style={{ position: "relative", width: "100%", objectFit: "cover" }}
+        >
+          <img
+            src={main}
+            alt="main"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+                padding: "10px",
+                borderRadius: "5px",
+                marginTop: "10px",
+              }}
+            >
+              <div style={{ fontSize: "50px", color: "#F7F4EB" }}>
+                가족이 되면
+              </div>
+              <div
+                style={{
+                  fontSize: "100px",
+                  color: "#F7F4EB",
+                  fontWeight: "bold",
+                }}
+              >
+                독캣당
+              </div>
+
+              <div>유기 동물들도 건강하고 아름다운 아이들입니다.</div>
+              <div>아이들의 가족이 되어주세요.</div>
+            </div>
           </div>
         </div>
+      </Page1>
+      <Page2>
+        <TitleContainer>
+          <p>독캣당에서 할 수 있는 일</p>
+        </TitleContainer>
+        <Group>
+          <div style={{ textAlign: "center" }}>
+            <Img src={streaming} alt="" loading="lazy" />
+            <div style={{ fontSize: "20px" }}>
+              우리의 가족이 될 아이를 미리 만나 보세요.
+            </div>
+          </div>
+          <div style={{ textAlign: "center", justifyContent: "start" }}>
+            <Img src={mbti} alt="" loading="lazy" />
+            <div style={{ fontSize: "20px" }}>
+              나와 비슷한 동물의 성격을 알아보세요!
+            </div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <Img src={calender} alt="" loading="lazy" />
+            <div style={{ fontSize: "20px" }}>
+              예약 서비스로 간편하게 보호 센터와 연락하세요
+            </div>
+          </div>
+        </Group>
+        <ArticleContainer>
+          <PopularArticles />
+        </ArticleContainer>
       </Page2>
       <Page3>
-        <Leftside>
-          <LeftinLeftside>
-            <div style={{textAlign:'center'}}>
-          <div>스트리밍 서비스</div>
-          <div style={{ fontSize: "20px" }}>
-            스트리밍 서비스를 통해 우리의 가족이 될 아이를 미리 만나 보세요.
-          </div>
-          <Button style={{ width: "30%" }} onClick={gotoBroad}>
-            바로가기
-          </Button>
-          </div>
-          <div style={{textAlign:'center' , justifyContent: "start"}}>
-          <div>멍 BTI</div>
-          <div style={{ fontSize: "20px" }}>
-            나와 비슷한 동물의 성격을 알아보세요 !
-          </div>
-          <Button style={{ width: "30%" }} onClick={gotoMung}>
-            바로가기
-          </Button>
-          </div>
-          </LeftinLeftside>
-        </Leftside>
-        <Rightside>
-          <div  style={{textAlign:'center'}}>
-          <div>방문 예약</div>
-          <div style={{ fontSize: "20px" }}>
-            예약 서비스를 통해 간편하게 보호 센터와 소통할 수 있습니다.
-          </div>
-          <Button style={{ width: "30%" }}>바로가기</Button>
-          </div>
-        </Rightside>
+        <p>가족을 기다리는 동물들</p>
+        <ListStyle $itemsPerRow={10}>
+          {animalData.map((animal: SaveAnimal) => (
+            <SaveAnimalCard key={animal.animalId} animals={animal} />
+          ))}
+        </ListStyle>
       </Page3>
-      <Page4>
-        <div>입양 게시판</div>
-        <Button style={{ width: "10%" }} onClick={gotoArticle}>
-          바로가기
-        </Button>
-      </Page4>
     </Outer>
   );
 }

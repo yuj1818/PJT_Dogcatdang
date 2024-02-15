@@ -11,6 +11,7 @@ const ArticleListStyle = styled.div<Style>`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  font-size: 1rem;
 
   & > div {
     flex: 0 0 calc(100% / ${(props) => props.$perLine} - 2%);

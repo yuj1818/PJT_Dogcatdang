@@ -15,11 +15,12 @@ import { isOrg as org } from "../../../pages/users/SignInPage";
 import Pagination from "../../../components/common/Pagination";
 import styled, { css } from "styled-components";
 import { Cookies } from "react-cookie";
-import condition from "../../../assets/condition.png";
+import condition from "../../../assets/main-logo-big.png";
 import { ListStyle } from "../save_animals/AnimalListPage";
 import { LostFilterData } from "../../../util/LostAPI";
 import { Title } from "../../../components/common/Title";
 import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import "../../../components/animalinfo/search.css";
 
 interface StyledButtonProps {
@@ -185,7 +186,8 @@ function LostAnimalListPage() {
             </div>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div className="form-group">
-                <Select
+                <CreatableSelect
+                  isClearable
                   name="breed"
                   id="breed"
                   value={
@@ -307,17 +309,21 @@ function LostAnimalListPage() {
             <LostAnimalCard key={animal.lostAnimalId} animals={animal} />
           ))
         ) : (
-          <div>
+          <div style={{ margin: "0 auto" }}>
             <img src={condition} alt="condition" />
-            <div>검색 결과가 없습니다.</div>
+            <div>조건에 맞는 아이가 등록되지 않았어요.</div>
           </div>
         )}
       </ListStyle>
-      <Pagination
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
-      />
+      {lostAnimalData && lostAnimalData.length > 0 ? (
+        <Pagination
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
