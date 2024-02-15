@@ -119,7 +119,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <div>
       <button onClick={handleClick}>
-        <Img src={imgUrl} alt="출연동물" />
+        <Img src={imgUrl} alt="출연동물" loading="lazy" />
         <ParaItems>{breed}</ParaItems>
         <ParaItems>{age !== -1 ? `${age}살` : "나이 미상"}</ParaItems>
       </button>
