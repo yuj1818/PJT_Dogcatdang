@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  useQuery,
-  QueryFunctionContext,
-  useMutation,
-} from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 import TextSearch from "../../components/common/TextSearch";
 import ArticleList from "../../components/articles/ArticleList";

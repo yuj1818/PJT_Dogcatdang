@@ -10,10 +10,7 @@ import logo from "../../assets/main-logo.webp";
 import { getUserInfo } from "../../util/uitl";
 import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
-import {
-  RequestNotiInterfaceInterface,
-  requestNoti,
-} from "../../util/notificationsAPI";
+import { requestNoti } from "../../util/notificationsAPI";
 import { retryFn } from "../../util/tanstackQuery";
 import { Contour } from "./Design";
 
