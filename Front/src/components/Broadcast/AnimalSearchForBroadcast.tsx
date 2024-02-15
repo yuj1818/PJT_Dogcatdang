@@ -44,6 +44,10 @@ const AllAnimalContainer = styled.div`
   margin-bottom: 10px;
 `;
 
+const AllList = styled.div<CardInterface>`
+  background-color: ${({ selected }) => (selected ? "#f9d29b" : "auto")};
+`;
+
 interface AnimalSearchForBroadcastInterface {
   handleSelectedAnimal: (info: CallAnimal) => void;
   selectedData: CallAnimal[];
@@ -106,16 +110,6 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
 
   return (
     <>
-      <Label htmlFor="data">전체 보호 동물 목록</Label>
-      {data && (
-        <AllAnimalContainer>
-          {data.map((element) => (
-            <div key={element.animalId}>
-              CODE: {element.code} {element.breed}
-            </div>
-          ))}
-        </AllAnimalContainer>
-      )}
       <Label htmlFor="search">출연 동물</Label>
       {data && (
         <Input
@@ -132,9 +126,6 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
           autoComplete="off"
         />
       )}
-      {(isLoading || isError) && (
-        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
-      )}
 
       {filteredResults.length > 0 && (
         <Container ref={cardContainerRef} className="rounded-md">
@@ -143,14 +134,29 @@ const AnimalSearchForBroadcast: React.FC<AnimalSearchForBroadcastInterface> = ({
               className="rounded-md"
               selected={selectedData.includes(result)}
               key={result.animalId}
-              onClick={() => {
-                handleSelectedAnimal(result);
-              }}
+              onClick={handleSelectedAnimal.bind(null, result)}
             >
               <p>{result.code}</p>
             </List>
           ))}
         </Container>
+      )}
+      <Label htmlFor="data">전체 보호 동물 목록</Label>
+      {data && (
+        <AllAnimalContainer>
+          {data.map((element) => (
+            <AllList
+              selected={selectedData.includes(element)}
+              key={element.animalId}
+              onClick={handleSelectedAnimal.bind(null, element)}
+            >
+              CODE: {element.code} {element.breed}
+            </AllList>
+          ))}
+        </AllAnimalContainer>
+      )}
+      {(isLoading || isError) && (
+        <LoadingOrError isLoading={isLoading} isError={isError} error={error} />
       )}
     </>
   );
