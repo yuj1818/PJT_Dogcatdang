@@ -41,7 +41,7 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        //별명이나 닉네임?
+
         return oAuth2Response.getName();
     }
 
@@ -49,7 +49,6 @@ public class CustomOAuth2User implements OAuth2User {
 
     public String getUserName() {
         //username 이라는 속성은 따로 없음. (naver,google)
-        //return oAuth2Response.getName();
         return oAuth2Response.getProvider()+"_"+oAuth2Response.getProviderId();
     }
 

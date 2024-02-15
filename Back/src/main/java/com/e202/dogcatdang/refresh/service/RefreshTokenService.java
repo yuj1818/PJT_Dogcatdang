@@ -57,12 +57,6 @@ public class RefreshTokenService {
 
     }
 
-//    @Transactional
-//    public Optional<RefreshToken> validateRefreshToken(String token) {
-//        return refreshTokenRepository.findByToken(token)
-//                .filter(refreshToken -> refreshToken.getExpiryDate().isAfter(Instant.now()));
-//
-//    }
 @Transactional
 public Optional<RefreshToken> validateRefreshToken(String token) {
     Logger logger = LoggerFactory.getLogger(this.getClass());

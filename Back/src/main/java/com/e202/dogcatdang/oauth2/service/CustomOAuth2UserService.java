@@ -28,7 +28,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-//    private final JoinService joinService;
     private final UserRepository userRepository;
 
 
@@ -91,8 +90,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String role = null;
 
-//        String jwt = userRequest.getAccessToken().getTokenValue();
-//        String sub = (String) oAuth2User.getAttribute("sub");
         if(existData.isEmpty()){
             //회원가입 하러가
             System.out.println("회원가입 하러가");
@@ -104,14 +101,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         else{
             //이미 있는 이메일이면 메인으로 가야지?
             System.out.println("이미 존재하는 ID");
-//            role = existData.getRole();
-//            existData.setEmail(oAuth2Response.getEmail());
-//            userRepository.save(existData);
-
-
         }
-
-
 
         //나머지 구현
         return new CustomOAuth2User(oAuth2Response, role);

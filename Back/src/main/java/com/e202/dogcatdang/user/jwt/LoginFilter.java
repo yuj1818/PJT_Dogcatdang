@@ -32,34 +32,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         super.setAuthenticationManager(authenticationManager);
         super.setFilterProcessesUrl("/api/users/login"); // 로그인 처리 경로 설정
-        // 기타 초기화 코드...
+
 
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
-//    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
-//
-//        this.authenticationManager = authenticationManager;
-//        this.jwtUtil = jwtUtil;
-//    }
-
-//
-//    @Override
-//    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-//
-//        //클라이언트 요청에서 uid, password 추출
-//        String uid = obtainUsername(request);
-//        String password = obtainPassword(request);
-//
-//        System.out.println(uid);
-//        //System.out.println(password);
-//        //스프링 시큐리티에서 uid과 password를 검증하기 위해서는 token에 담아야 함
-//        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(uid, password, null);
-//
-//        //token에 담은 검증을 위한 AuthenticationManager로 전달
-//        return authenticationManager.authenticate(authToken);
-//    }
 @Override
 public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
     try {
@@ -99,10 +77,10 @@ public Authentication attemptAuthentication(HttpServletRequest request, HttpServ
         //key , 암호화 방식(끝에 꼭 한칸 띄우기) ,
         response.addHeader("Authorization","Bearer " + token);
         // 리프레시 토큰 생성 및 헤더에 추가
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(id);
-        System.out.println("refreshToken 헤더에 추가~");
-        response.addHeader("RefreshToken", refreshToken.getToken()); // 리프레시 토큰 헤더에 추가
-        System.out.println("완료~~~");
+//        RefreshToken refreshToken = refreshTokenService.createRefreshToken(id);
+//        System.out.println("refreshToken 헤더에 추가~");
+//        response.addHeader("RefreshToken", refreshToken.getToken()); // 리프레시 토큰 헤더에 추가
+//        System.out.println("완료~~~");
 
     }
 
