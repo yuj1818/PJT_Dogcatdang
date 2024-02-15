@@ -364,7 +364,7 @@ function SaveAnimalSearch() {
         ) : (
           <div>
             <img src={condition} alt="condition" />
-            <div>검색 결과가 없습니다.</div>
+            <div>검색 결과에 맞는 동물이 없습니다.</div>
           </div>
         )}
       </ListStyle>

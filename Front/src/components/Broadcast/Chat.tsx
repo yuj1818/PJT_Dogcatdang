@@ -146,7 +146,12 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
       <Contour />
       <FormContainer onSubmit={handleSubmitEvent}>
         <label htmlFor="message" />
-        <Input id="message" value={message} onChange={handleMessageChange} />
+        <Input
+          id="message"
+          value={message}
+          onChange={handleMessageChange}
+          autoComplete="off"
+        />
         <Button height={2.6} $marginTop={0.4} type="submit" disabled={!message}>
           보내기
         </Button>
