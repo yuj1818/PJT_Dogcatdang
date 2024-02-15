@@ -24,15 +24,11 @@ const ArticleDetail: React.FC = () => {
   const params = useParams();
   const { boardId } = params;
   const navigate = useNavigate();
-  const { data, isLoading, isError, error } = useQuery<
-    ArticleDetailInterface,
-    Error,
-    ArticleDetailInterface
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["articleList", boardId],
     queryFn: async ({ signal }: QueryFunctionContext) => {
       const result = await requestArticle({ signal, boardId });
-      return result as ArticleDetailInterface;
+      return result;
     },
     staleTime: 15 * 1000,
     retry: retryFn,

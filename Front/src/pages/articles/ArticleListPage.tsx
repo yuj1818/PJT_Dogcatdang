@@ -31,18 +31,9 @@ const ArticleListPage: React.FC = () => {
   const itemsPerPage = 12;
   const [content, setContent] = useState(<></>);
   const itemsPerLine = 4;
-  const { data, isLoading, isError, error } = useQuery<
-    ArticleListInterface[],
-    Error,
-    ArticleListInterface[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["articleList"],
-    queryFn: async ({
-      signal,
-    }: QueryFunctionContext): Promise<ArticleListInterface[]> => {
-      const result = await requestArticle({ signal });
-      return result as ArticleListInterface[];
-    },
+    queryFn: requestArticle,
     staleTime: 5 * 1000,
     retry: retryFn,
     retryDelay: 300,
@@ -159,18 +150,9 @@ const PTag = styled.p`
 `;
 
 export const PopularArticles: React.FC = ({}) => {
-  const { data, isLoading, isError, error } = useQuery<
-    ArticleListInterface[],
-    Error,
-    ArticleListInterface[]
-  >({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["articleList", "popular"],
-    queryFn: async ({
-      signal,
-    }: QueryFunctionContext): Promise<ArticleListInterface[]> => {
-      const result = await requestPopular({ signal });
-      return result as ArticleListInterface[];
-    },
+    queryFn: requestPopular,
     staleTime: 5 * 1000,
     retry: retryFn,
     retryDelay: 300,
