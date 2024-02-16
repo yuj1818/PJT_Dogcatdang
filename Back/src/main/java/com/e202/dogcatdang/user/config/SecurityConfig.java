@@ -54,7 +54,7 @@
 //                        CorsConfiguration configuration = new CorsConfiguration();
 //
 //                        //프론트엔드 서버 허용
-//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:"));
 //
 //
 //                        configuration.setAllowedMethods(Collections.singletonList("*"));

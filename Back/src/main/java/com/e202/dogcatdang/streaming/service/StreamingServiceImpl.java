@@ -55,7 +55,7 @@ public class StreamingServiceImpl implements StreamingService{
 				User receiver = animalLike.getUser();
 				User sender = animalLike.getAnimal().getUser();
 				String title = animalLike.getAnimal().getCode()+"에 대한 방송이 시작되었습니다.";
-				String content = "<a href=\"http://localhost:5173/\">방송 바로가기(임시로 메인으로 가게 헀습니다.)</a>";
+				String content = "방송 바로가기";
 				Notification notification = Notification.builder()
 					.receiver(receiver)
 					.sender(sender)
