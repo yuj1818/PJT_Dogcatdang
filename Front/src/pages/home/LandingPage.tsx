@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import paw from "../../assets/paw-prints.png";
 import logo from "../../assets/main-logo-big.png";
 import { useEffect } from "react";
 import { Cookies } from "react-cookie";
