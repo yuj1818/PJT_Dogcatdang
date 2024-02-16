@@ -31,8 +31,4 @@ public class RefreshToken {
     @Column(nullable = false)
     private Instant expiryDate;
 
-//    public CustomUserDetails getUser() {
-//
-//        return null;
-//    }
 }
