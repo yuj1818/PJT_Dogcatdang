@@ -4,7 +4,7 @@
 
 # 목차
 
-1. [개요](#개요) 
+1. [개요](#개요)
 2. [서비스 화면](#서비스-화면)
 3. [주요 기능](#주요-기능)
 4. [개발 환경](#개발-환경)
@@ -15,6 +15,7 @@
 <br><br>
 
 # 1. 개요
+
 - 개발 기간: 2024.01.08 ~ 2024.02.16
 - 삼성 청년 소프트웨어 아카데미(SSAFY) WebRTC 프로젝트
 
@@ -23,28 +24,41 @@
 # 2. 📺서비스 화면
 
 ## 2.1 랜딩 페이지
+
 <img title="" src="README_assets/LandingPage.png" alt="" width="800">
 
 ## 2.2 메인 페이지
-<img title="" src="README_assets/MainPage.gif" alt="" width="800">
 
+<img title="" src="README_assets/MainPage.gif" alt="" width="800">
 
 # 3. 주요 기능
 
 ## 3.1 방송 시청
 
+<img title="" src="README_assets/broad.gif" alt="" width="800px">
+
 - 방송을 보며 실시간 채팅에 참여할수있다.
 - 방송 시청 중에도 관심있는 동물이 생겼을 경우 PIP 모드로 동물들의 상세 정보를 구경할 수 있다.
 
 ## 3.2 보호동물 동물 찾기
+
 <img title="" src="README_assets/search.gif" alt="" width="800">
 
 - 보호기관에 등록되어있는 동물들을 찾아 볼 수 있다.
 - 원하는 조건을 찾아 검색하여 볼 수 있다.
 
 ## 3.3 기관의 데이터 관리
-- 
 
+<img title="" src="README_assets/management.gif" alt="" width="800px">
+
+- 등록된 동물들을 한곳에서 관리할 수 있다.
+
+## 3.4 기관의 방문 예약 관리
+
+<img title="" src="README_assets/visited.gif" alt="" width="800px">
+
+- 개인 회원의 방문신청 승인 거절을 할 수 있다.
+- 확정된 예약일정 관리 할 수 있다.
 
 # 4. 개발 환경
 
@@ -57,8 +71,8 @@
 
 ## 💻 IDE
 
-- Visual Studio Code `1.18.1`
-- IntelliJ `11.0.19`
+- Visual Studio Code `1.18.5`
+- IntelliJ IDEA community `2023.3.2`
 
 ## 📱 Frontend
 
@@ -68,12 +82,8 @@
 
 ## 💾 Backend
 
-- Springboot `2.7.13`
+- Springboot `3.22`
 - Spring Data JPA
-- Spring Data Redis(lettuce)
-- Spring Web
-- Oauth2
-- Redis
 - MySql 8.0.34
 
 ## Infra
@@ -81,10 +91,10 @@
 - AWS S3
 - AWS EC2
 - Nginx 1.18.0
-- Docker 20.10.12
+- Docker: 25.0.3
+  - openvidu: 2.29.0
+  - mysql: 8.3.0
 - Ubuntu 20.04.6 LTS
-- CertBot(CA Certificates)
-- SSL
 
 # 5. 기술 소개
 
@@ -105,15 +115,18 @@
 - [요구사항 명세서](https://docs.google.com/spreadsheets/d/1ZLI7sLIl_ei3g1UbczJ_970uipbRo7nZNDduVcPJtCk/edit#gid=434359381)
 
 ## 📝 API 명세서
+
 <img title="" src="README_assets/API.gif" alt="" width="800">
 
 - [API 명세서](https://www.notion.so/iamyouj/API-4f85636b6f18405a8b1870d5c22c27f3)
 
 ## 📏 ERD
 
+<img title="" src="README_assets/erd.png" alt="" width="800px">
+
 ## 📐 시스템 아키텍처
 
-<img title="" src="README_assets/arch.png" alt="" width="800">
+<img title="" src="README_assets/arch.png" alt="" width="800px">
 
 ## 🧾컴포넌트
 
@@ -125,24 +138,6 @@
 
 ```
 ┗📦src
- ┣ 📂assets
- ┃ ┣ 🖼adoption-info-stage1.png
- ┃ ┣ 🖼adoption-info-stage2.png
- ┃ ┣ 🖼adoption-info-stage3.png
- ┃ ┣ 🖼auth-image.png
- ┃ ┣ 🖼condition.png
- ┃ ┣ 🖼Dandie.jpg
- ┃ ┣ 🖼defaultProfile.png
- ┃ ┣ 🖼dog.jpg
- ┃ ┣ 🖼googleLoginBtn.png
- ┃ ┣ 🖼main-logo-big.png
- ┃ ┣ 🖼main-logo.png
- ┃ ┣ 🖼main-logo.webp
- ┃ ┣ 🖼MungBTI.png
- ┃ ┣ 🖼naverLoginBtn.png
- ┃ ┣ 🖼paw-prints.png
- ┃ ┣ 🖼refresh.png
- ┃ ┣ 🖼Search.png
  ┣ 📂components
  ┃ ┣ 📂common
  ┃ ┃ ┣ 📜 AlertModal.tsx
@@ -266,9 +261,9 @@
  ┣ 📜App.tsx
  ┗ 📜main.tsx
 ```
+
 </div>
 </details>
-
 
 <details>
 <summary>Back-End</summary>
@@ -283,39 +278,38 @@
 
 **Frontend**
 
-- 손유정 
+- 손유정
 
-    - 컴포넌트 : 회원 관리, 방문 예약
-    - UI / UX
-    - 노션 관리
-
+  - 컴포넌트 : 회원 관리, 방문 예약
+  - UI / UX
+  - 노션 관리
 
 - 최도훈
 
-    - 컴포넌트 : 근황 글, 댓글, 방송
-    - UI / UX
-    - S3 이미지 저장, Openvidu
+  - 컴포넌트 : 근황 글, 댓글, 방송
+  - UI / UX
+  - S3 이미지 저장, Openvidu
 
 - 박영진
 
-    - 컴포넌트 : 동물 관리, 메인 페이지
-    - UI / UX
+  - 컴포넌트 : 동물 관리, 메인 페이지
+  - UI / UX
 
 **Backend**
 
 - 위동민
 
-    - API 제작 : 회원 관리, 알람
-    - UCC 편집
+  - API 제작 : 회원 관리, 알람
+  - UCC 편집
 
-- 박정호 
+- 박정호
 
-    - API 제작 : 근황 글, 댓글, 방송
-    - 인프라
-    - 발표
+  - API 제작 : 근황 글, 댓글, 방송
+  - 인프라
+  - 발표
 
-- 탁윤희 
+- 탁윤희
 
-    - API 제작 : 동물, 방문 예약
-    - S3 서버 관리
-    - PPT 제작
+  - API 제작 : 동물, 방문 예약
+  - S3 서버 관리
+  - PPT 제작
