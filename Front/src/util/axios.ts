@@ -20,10 +20,10 @@ const cookie = new Cookies();
 
 API.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  (error) => {
     const statusCode = error.response?.status;
     if (statusCode === 401) {
-      await cookie.remove("U_ID");
+      cookie.remove("U_ID");
       localStorage.clear();
       window.location.href = "/landing";
     }

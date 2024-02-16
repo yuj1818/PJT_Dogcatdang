@@ -138,7 +138,12 @@ const ProfileBox: React.FC<{ userInfo: infoData | undefined, isOrg: boolean, isM
               <>
                 <div className="flex flex-col gap-1">
                   <p>지역: {props.userInfo?.address}</p>
-                  <p>소개글: {props.userInfo?.bio || "소개글이 없어요. 좋아하는 동물에 대해 얘기해보는 건 어떨까요?"}</p>
+                  <div className="flex gap-1">
+                    <span className="whitespace-nowrap">소개글: </span>
+                    <div>
+                      {props.userInfo?.bio || "소개글이 없어요. 좋아하는 동물에 대해 얘기해보는 건 어떨까요?"}
+                    </div>
+                    </div>
                 </div>
                 <div>
                   {props.isMine && 
