@@ -130,13 +130,13 @@ function SignInPage() {
               <Button $marginLeft={0}>로그인</Button>
             </div>
           </SignInForm>
-          {
+          {/* {
             params.type === 'inv' &&
             <div className="flex gap-2">
               <a href="https://i10e202.p.ssafy.io/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
               <a href="https://i10e202.p.ssafy.io/api/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
             </div>
-          }
+          } */}
         </div>
       </FormBox>  
     </div>
