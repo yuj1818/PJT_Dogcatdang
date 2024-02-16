@@ -25,10 +25,13 @@ const ListStyle = styled.div<{ $itemsPerRow: number }>`
   & > div:last-child {
     margin-right: auto;
   }
+  .md-font {
+    font-size: 1.3rem;
+  }
 `;
 
 const Outer = styled.div`
-  height: calc(100vh - 130px);
+  height: calc(100vh - 132px);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -203,30 +206,33 @@ function AboutDogCatDang() {
           // 스크롤 올릴 때
           if (scrollTop >= 0 && scrollTop < pageHeight) {
             //현재 1페이지
-            console.log("현재 1페이지, up");
+            // console.log("현재 1페이지, up");
             outerDivRef.current.scrollTo({
               top: 0,
               left: 0,
               behavior: "smooth",
             });
           } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
-            console.log("현재 2페이지, up");
+            // console.log("현재 2페이지, up");
             outerDivRef.current.scrollTo({
               top: 0,
               left: 0,
               behavior: "smooth",
             });
-          } else if (scrollTop >= pageHeight * 2 && scrollTop < pageHeight * 3) {
-            console.log("현재 3페이지, up");
+          } else if (
+            scrollTop >= pageHeight * 2 &&
+            scrollTop < pageHeight * 3
+          ) {
+            // console.log("현재 3페이지, up");
             outerDivRef.current.scrollTo({
-              top: pageHeight,
+              top: pageHeight + DIVIDER_HEIGHT,
               left: 0,
               behavior: "smooth",
             });
           } else {
-            console.log("현재 4페이지, up");
+            // console.log("현재 4페이지, up");
             outerDivRef.current.scrollTo({
-              top: pageHeight * 2,
+              top: pageHeight * 2 + DIVIDER_HEIGHT * 2,
               left: 0,
               behavior: "smooth",
             });
