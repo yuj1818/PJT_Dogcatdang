@@ -27,6 +27,7 @@ export interface SaveAnimal {
 
 interface AnimalCardProps {
   animals: SaveAnimal;
+  isHome?: boolean;
 }
 
 export const Card = styled.div`
@@ -95,7 +96,7 @@ function SaveAnimalCard(props: AnimalCardProps) {
           style={{
             border: "1px solid #ccc",
             width: "100%",
-            height: "120px",
+            height: props.isHome ? "auto" : "120px",
           }}
         ></img>
 
