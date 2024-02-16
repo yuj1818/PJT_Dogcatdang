@@ -68,7 +68,13 @@ const Chat: React.FC<ChatProps> = memo(({ session }) => {
   const [allMessage, setAllMessage] = useState<(Message | string)[]>([]);
   const messageDiv = useRef<HTMLDivElement>(null);
   const { nickname } = getUserInfo();
-  const { broadcastId } = useParams();
+  const params = useParams();
+  let broadcastId;
+  if (params.broadcastId) {
+    broadcastId = params.broadcastId;
+  } else {
+    broadcastId = params["*"];
+  }
 
   useEffect(() => {
     if (messageDiv) {
