@@ -54,7 +54,7 @@
 //                        CorsConfiguration configuration = new CorsConfiguration();
 //
 //                        //프론트엔드 서버 허용
-//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:"));
 //
 //
 //                        configuration.setAllowedMethods(Collections.singletonList("*"));
@@ -212,7 +212,9 @@ public class SecurityConfig {
             .authorizationEndpoint(authorizationEndpointConfig -> {
                 authorizationEndpointConfig.baseUri("/api/oauth2/authorization");
             })
-            //.redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+
+            .redirectionEndpoint(endpoint ->
+                endpoint.baseUri("/api/login/oauth2/*"))
                 .userInfoEndpoint(userInfoEndpointConfig ->
                         userInfoEndpointConfig.userService(customOAuth2UserService)
                 )
