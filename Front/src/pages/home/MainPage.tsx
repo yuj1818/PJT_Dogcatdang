@@ -319,13 +319,12 @@ function AboutDogCatDang() {
         </ArticleContainer>
       </Page3>
       <Page4>
-        <p style={{ fontFamily: "SUITE-Bold" }}>가족을 기다리는 동물들</p>
+        <p style={{ fontFamily: "SUITE-Bold", fontSize: "40px" }}>가족을 기다리는 동물들</p>
         <ListStyle>
           {animalData.map((animal: SaveAnimal) => (
             <SaveAnimalCard
               key={animal.animalId}
               animals={animal}
-              isHome={true}
             />
           ))}
         </ListStyle>
