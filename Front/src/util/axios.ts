@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Cookies } from "react-cookie";
+import { logout } from "./UserAPI";
 
 const env = import.meta.env.VITE_IS_PRODUCTION || "development";
 export const isProduction = env === "production";
@@ -16,15 +16,12 @@ const API = axios.create({
   withCredentials: true,
 });
 
-const cookie = new Cookies();
-
 API.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const statusCode = error.response?.status;
-    if (statusCode === 401) {
-      cookie.remove("U_ID");
-      localStorage.clear();
+    if (statusCode === 401 && error.message.includes('expire')) {
+      await logout();
       window.location.href = "/landing";
     }
   }
