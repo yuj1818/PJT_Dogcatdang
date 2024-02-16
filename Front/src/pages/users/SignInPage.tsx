@@ -7,8 +7,6 @@ import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
 import logo from '../../assets/auth-image.png';
-import naverLoginBtn from '../../assets/naverLoginBtn.png';
-import googleLoginBtn from '../../assets/googleLoginBtn.png';
 
 const FormBox = styled.div`
   display: flex;
