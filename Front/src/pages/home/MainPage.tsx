@@ -26,6 +26,9 @@ const ListStyle = styled.div`
   & > div:last-child {
     margin-right: auto;
   }
+  .md-font {
+    font-size: 1.3rem;
+  }
 `;
 
 const Outer = styled.div`

@@ -79,7 +79,7 @@ public class LoginController {
 
         User user = userOptional.get();
 
-        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 900000L); // 1일 만료
+        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 7_200_000L); // 1일 만료
 
         // 리프레시 토큰 생성 및 헤더에 추가
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
