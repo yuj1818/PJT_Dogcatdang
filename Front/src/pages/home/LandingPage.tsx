@@ -169,12 +169,6 @@ function LandingPage() {
 
   return (
     <Landing>
-      <div className="paw-prints">
-        <img className="paw1" src={ paw } alt="" />
-        <img className="paw2" src={ paw } alt="" />
-        <img className="paw3" src={ paw } alt="" />
-      </div>
-      
       <p className="slogan"><span className="point">가족</span>이 되면</p>
       <p className="service-name">독캣당</p>
       <p className="service-intro">새로운 가족을 만나보세요</p>
