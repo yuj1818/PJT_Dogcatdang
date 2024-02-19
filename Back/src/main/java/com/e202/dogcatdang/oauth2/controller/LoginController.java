@@ -55,7 +55,7 @@ public class LoginController {
 
     @GetMapping("/token")
     public ResponseEntity<?> getToken(HttpServletRequest request) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         // 세션에서 인증 정보 가져오기
         SecurityContext securityContext = (SecurityContext) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
         Authentication authentication = securityContext.getAuthentication();
@@ -95,28 +95,8 @@ public class LoginController {
 
         return ResponseEntity.ok(tokens); // Map을 바로 ResponseEntity의 바디로 사용
 
-        //return ResponseEntity.ok().body(Map.of("token", token));
-    }
 
-//    @GetMapping("/token")
-//    public ResponseEntity<?> getToken(Authentication authentication) {
-//
-//        System.out.println("/api/oauth2/token 들오나?");
-//        String email = "";
-//        Object principal = authentication.getPrincipal();
-//        if (principal instanceof CustomOAuth2User) {
-//            email = ((CustomOAuth2User) principal).getEmail();
-//        }
-//
-//        System.out.println("getprincipal 성공");
-////         사용자 정보 조회 및 JWT 토큰 생성 로직
-////         이메일을 기반으로 사용자 정보 조회 및 JWT 토큰 생성
-//        Optional<User> userOptional = userRepository.findByEmail(email);
-//        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " ));
-//        String token = jwtUtil.createJwt(user.getId(), user.getUsername(), user.getRole(), user.getNickname(), 86400000L); // 1일 만료
-//
-//        return ResponseEntity.ok().body(Map.of("token", token));
-//    }
+    }
 
     @PostMapping("/join")
     public ResponseEntity<String> joinUser(@RequestBody JoinDTO joinDTO) {

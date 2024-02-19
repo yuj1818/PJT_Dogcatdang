@@ -49,33 +49,6 @@ public class UserController {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
-//
-//    @PostMapping("login")
-//    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestdto) {
-//        System.out.println("api/users/login 안으로?");
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        loginRequestdto.getUsername(),
-//                        loginRequestdto.getPassword()
-//                )
-//        );
-//        System.out.println("api/users/login 안으로?");
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//
-//        String jwt = jwtUtil.createJwt(
-//                userDetails.getId(),
-//                userDetails.getUsername(),
-//                userDetails.getAuthorities().iterator().next().getAuthority(),
-//                userDetails.getNickname(),
-//                10_000_000L // 토큰 만료 시간 설정
-//        );
-//
-//        //
-//        return ResponseEntity.ok().header("Authorization", "Bearer " + jwt)
-//                .body("Token: " + jwt);
-//    }
-
 
 
     @PostMapping("/join") //회원가입
@@ -120,12 +93,6 @@ public class UserController {
 
         return "Main page" + username +" "+ role;
 
-    }
-
-    @GetMapping("/admin")
-    public String adminP() {
-
-        return "Admin  in user Controller";
     }
 
 
@@ -186,17 +153,7 @@ public class UserController {
         try {
             // 업데이트된 유저 정보를 받아서 반환
             User updatedUser = userProfileService.updateUserProfile(userId, userProfileDTO);
-//
-//            UserProfileDTO putUserDTO = new UserProfileDTO();
-//            putUserDTO.setUsername((updatedUser.getUsername()));
-//            putUserDTO.setRole((updatedUser.getRole()));
-//            putUserDTO.setEmail((updatedUser.getEmail()));
-//            putUserDTO.setNickname((updatedUser.getNickname()));
-//            putUserDTO.setAddress((updatedUser.getAddress()));
-//            putUserDTO.setPhone((updatedUser.getPhone()));
-//            putUserDTO.setBio((updatedUser.getBio()));
-//            putUserDTO.setImgName((updatedUser.getImg_name()));
-//            putUserDTO.setImgUrl(updatedUser.getImg_url());
+
 
             return ResponseEntity.ok("nice  "); // 업데이트된 유저 정보 반환
         } catch (NoSuchElementException e) {
@@ -206,49 +163,12 @@ public class UserController {
         }
     }
 
-    //이건 다른사람의 프로필을 보기가 힘듬.
-//    @GetMapping("/profiles")
-//    public ResponseEntity<UserProfileDTO> getUserProfile(@RequestHeader("Authorization") String token) {
-//        System.out.println("/api/users/profies/userId getMapping");
-//        if (!token.startsWith("Bearer ")) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//        String jwt = token.substring(7);
-//        Long userId = jwtUtil.getUserId(jwt); // 예외 처리 생략
-//
-//        try {
-//            UserProfileDTO userProfileDTO;
-//            userProfileDTO = userProfileService.getUserProfile(userId);
-//            return ResponseEntity.ok(userProfileDTO);
-//        } catch (NoSuchElementException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
+    @GetMapping("/admin")
+    public String adminP() {
 
-
-    //유저 조회
-//    @GetMapping("/profiles/{userId}")
-//    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable("userId") Long userId) {
-//        try {
-//            // 현재 로그인한 사용자의 정보를 가져오는 예시 코드
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            String currentUsername = authentication.getName();
-//
-//            UserProfileDTO userProfileDTO;
-//            if (userId.equals(currentUserId)) { // 자신의 프로필을 조회하는 경우
-//                userProfileDTO = userProfileService.getUserProfile(userId);
-//            } else { // 다른 사람의 프로필을 조회하는 경우
-//                // 여기에 필요한 로직을 구현하세요
-//                // 예를 들어, 다른 사람의 프로필은 일부 정보만 보여주거나 접근을 제한할 수 있습니다.
-//                userProfileDTO = userProfileService.getLimitedUserProfile(userId);
-//            }
-//
-//            return ResponseEntity.ok(userProfileDTO);
-//        } catch (NoSuchElementException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+        return "Admin  in user Controller";
+    }
 
 
 }

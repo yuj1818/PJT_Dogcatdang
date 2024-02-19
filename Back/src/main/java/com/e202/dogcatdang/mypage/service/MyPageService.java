@@ -27,15 +27,6 @@ public class MyPageService {
         this.animalRepository = animalRepository;
     }
 
-    // 사용자 ID를 받아 해당 사용자가 좋아요 누른 동물 목록을 반환
-//    @Transactional
-//    public List<Animal> getLikedAnimalsByUser(Long userId) {
-//        List<AnimalLike> likes = animalLikeRepository.findByUserId(userId);
-//        return likes.stream()
-//                .map(AnimalLike::getAnimal)
-//                .collect(Collectors.toList());
-//    }
-
     @Transactional
     public List<MypageAnimalDto> getLikedAnimalsByUser(Long userId) {
         List<AnimalLike> likes = animalLikeRepository.findByUserId(userId);

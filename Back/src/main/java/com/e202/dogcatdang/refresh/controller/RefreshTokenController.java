@@ -69,17 +69,6 @@ public class RefreshTokenController {
                         .map(validRefreshToken -> {
 
                             System.out.println("리턴문 안도냐?");
-//                    User user = validRefreshToken.getUser();
-//                    System.out.println("user : " + user);
-//                    Long userId = validRefreshToken.getUser().getId();
-//                    System.out.println("userId : " + userId);
-//                    String email = user.getEmail();
-//                    System.out.println("email : " + email);
-//                    String role = user.getRole();
-//                    System.out.println("role : " + role);
-//                    String nickname= user.getNickname();
-//                    System.out.println("nickname : " + nickname);
-
                             String newAccessToken = jwtUtil.createJwt(userId, username, role, nickname, 900_000L); // 새 액세스 토큰 생성
 
                             // 새 액세스 토큰을 Authorization 헤더에 추가
