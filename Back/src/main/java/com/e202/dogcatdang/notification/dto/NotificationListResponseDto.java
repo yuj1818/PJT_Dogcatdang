@@ -24,8 +24,7 @@ public class NotificationListResponseDto {
     @JsonProperty("isRead")
     private boolean isRead;
 
-    // isRead 필드에 대한 명시적인 Getter 메소드
-    // @JsonProperty("isRead")와 함께 사용하여 JSON 필드명을 "isRead"로 지정
+
     public boolean isIsRead() {
         return isRead;
     }
