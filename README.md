@@ -268,7 +268,193 @@
 <details>
 <summary>Back-End</summary>
 <div markdown="1">
- 
+
+ ```
+ 📦dogcatdang
+ ┣ 📂animal
+ ┃ ┣ 📂controller
+ ┃ ┃ ┣ 📜AnimalController.java
+ ┃ ┃ ┗ 📜AnimalShelterController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestAnimalDto.java
+ ┃ ┃ ┣ 📜RequestAnimalSearchDto.java
+ ┃ ┃ ┣ 📜RequestShelterSearchDto.java
+ ┃ ┃ ┣ 📜ResponseAnimalDto.java
+ ┃ ┃ ┣ 📜ResponseAnimalListDto.java
+ ┃ ┃ ┣ 📜ResponseAnimalPageDto.java
+ ┃ ┃ ┣ 📜ResponseSavedIdDto.java
+ ┃ ┃ ┣ 📜ResponseShelterAnimalCountDto.java
+ ┃ ┃ ┣ 📜ResponseShelterAnimalDto.java
+ ┃ ┃ ┗ 📜ResponseShelterAnimalPageDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜AnimalLikeService.java
+ ┃ ┃ ┣ 📜AnimalLikeServiceImpl.java
+ ┃ ┃ ┣ 📜AnimalService.java
+ ┃ ┃ ┗ 📜AnimalServiceImpl.java
+ ┣ 📂board
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜BoardController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestBoardDto.java
+ ┃ ┃ ┣ 📜RequestBoardSearchDto.java
+ ┃ ┃ ┣ 📜ResponseBoardBestDto.java
+ ┃ ┃ ┣ 📜ResponseBoardDto.java
+ ┃ ┃ ┣ 📜ResponseBoardSummaryDto.java
+ ┃ ┃ ┗ 📜ResponseDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜BoardService.java
+ ┃ ┃ ┗ 📜BoardServiceImpl.java
+ ┣ 📂comment
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜CommentController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestCommentDto.java
+ ┃ ┃ ┣ 📜ResponseCommentDto.java
+ ┃ ┃ ┗ 📜ResponseSavedIdDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜CommentService.java
+ ┃ ┃ ┗ 📜CommentServiceImpl.java
+ ┣ 📂config
+ ┃ ┗ 📜S3Config.java
+ ┣ 📂db
+ ┃ ┣ 📂entity
+ ┃ ┃ ┣ 📜Animal.java
+ ┃ ┃ ┣ 📜AnimalLike.java
+ ┃ ┃ ┣ 📜Board.java
+ ┃ ┃ ┣ 📜BoardLike.java
+ ┃ ┃ ┣ 📜Comment.java
+ ┃ ┃ ┣ 📜LostAnimal.java
+ ┃ ┃ ┣ 📜Notification.java
+ ┃ ┃ ┣ 📜RefreshToken.java
+ ┃ ┃ ┣ 📜Region.java
+ ┃ ┃ ┣ 📜Reservation.java
+ ┃ ┃ ┣ 📜Streaming.java
+ ┃ ┃ ┣ 📜StreamingAnimal.java
+ ┃ ┃ ┗ 📜User.java
+ ┃ ┗ 📂repository
+ ┃ ┃ ┣ 📜AnimalLikeRepository.java
+ ┃ ┃ ┣ 📜AnimalRepository.java
+ ┃ ┃ ┣ 📜BoardLikeRepository.java
+ ┃ ┃ ┣ 📜BoardRepository.java
+ ┃ ┃ ┣ 📜CommentRepository.java
+ ┃ ┃ ┣ 📜LostAnimalRepository.java
+ ┃ ┃ ┣ 📜NotificationRepository.java
+ ┃ ┃ ┣ 📜RefreshTokenRepository.java
+ ┃ ┃ ┣ 📜RegionRepository.java
+ ┃ ┃ ┣ 📜ReservationRepository.java
+ ┃ ┃ ┣ 📜StreamingAnimalRepository.java
+ ┃ ┃ ┣ 📜StreamingRepository.java
+ ┃ ┃ ┗ 📜UserRepository.java
+ ┣ 📂exception
+ ┃ ┣ 📜CustomOAuth2AuthenticationException.java
+ ┃ ┣ 📜DuplicateEmailException.java
+ ┃ ┣ 📜InvalidLikeException.java
+ ┃ ┗ 📜InvalidUserException.java
+ ┣ 📂lostanimal
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜LostAnimalController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestLostAnimalDto.java
+ ┃ ┃ ┣ 📜RequestLostAnimalSearchDto.java
+ ┃ ┃ ┣ 📜ResponseLostAnimalDto.java
+ ┃ ┃ ┣ 📜ResponseLostAnimalListDto.java
+ ┃ ┃ ┣ 📜ResponseLostAnimalPageDto.java
+ ┃ ┃ ┗ 📜ResponseSavedIdDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜LostAnimalService.java
+ ┃ ┃ ┗ 📜LostAnimalServiceImpl.java
+ ┣ 📂mypage
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜UserLikeAnimalController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜MypageAnimalDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┗ 📜MyPageService.java
+ ┣ 📂notification
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜NotificationController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜NotificationListRequestDto.java
+ ┃ ┃ ┣ 📜NotificationListResponseDto.java
+ ┃ ┃ ┣ 📜NotificationRequestDto.java
+ ┃ ┃ ┗ 📜NotificationResponseDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┗ 📜NotificationService.java
+ ┣ 📂oauth2
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜LoginController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜CustomOAuth2User.java
+ ┃ ┃ ┣ 📜GoogleResponse.java
+ ┃ ┃ ┣ 📜NaverResponse.java
+ ┃ ┃ ┣ 📜OAuth2Response.java
+ ┃ ┃ ┗ 📜OauthUserDTO.java
+ ┃ ┣ 📂handler
+ ┃ ┃ ┣ 📜CustomAuthenticationFailureHandler.java
+ ┃ ┃ ┗ 📜OAuth2AuthenticationSuccessHandler.java
+ ┃ ┣ 📂service
+ ┃ ┃ ┗ 📜CustomOAuth2UserService.java
+ ┃ ┣ 📜OAuth2Metadata.java
+ ┃ ┗ 📜test
+ ┣ 📂refresh
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜RefreshTokenController.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┗ 📜RefreshTokenService.java
+ ┣ 📂reservation
+ ┃ ┣ 📂controller
+ ┃ ┃ ┣ 📜ReservationController.java
+ ┃ ┃ ┗ 📜ReservationShelterController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestReservationDto.java
+ ┃ ┃ ┣ 📜ResponseReservationDto.java
+ ┃ ┃ ┣ 📜ResponseShelterApprovedDto.java
+ ┃ ┃ ┣ 📜ResponseShelterDto.java
+ ┃ ┃ ┣ 📜ResponseShelterListDto.java
+ ┃ ┃ ┗ 📜ResponseUpdatedStateDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜ReservationService.java
+ ┃ ┃ ┗ 📜ReservationServiceImpl.java
+ ┣ 📂s3
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜S3Controller.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜ResponseS3Dto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜S3Service.java
+ ┃ ┃ ┗ 📜S3ServiceImpl.java
+ ┣ 📂streaming
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜StreamingController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜RequestStreamingDto.java
+ ┃ ┃ ┣ 📜ResponseAnimalDto.java
+ ┃ ┃ ┣ 📜ResponseDto.java
+ ┃ ┃ ┣ 📜ResponseStreamingAnimalDto.java
+ ┃ ┃ ┗ 📜ResponseStreamingDto.java
+ ┃ ┗ 📂service
+ ┃ ┃ ┣ 📜StreamingService.java
+ ┃ ┃ ┗ 📜StreamingServiceImpl.java
+ ┣ 📂user
+ ┃ ┣ 📂config
+ ┃ ┃ ┗ 📜SecurityConfig.java
+ ┃ ┣ 📂controller
+ ┃ ┃ ┗ 📜UserController.java
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜CustomUserDetails.java
+ ┃ ┃ ┣ 📜JoinDTO.java
+ ┃ ┃ ┣ 📜LoginRequestDTO.java
+ ┃ ┃ ┗ 📜UserProfileDTO.java
+ ┃ ┣ 📂jwt
+ ┃ ┃ ┣ 📜JWTFilter.java
+ ┃ ┃ ┣ 📜JWTUtil.java
+ ┃ ┃ ┗ 📜LoginFilter.java
+ ┃ ┗ 📂Service
+ ┃ ┃ ┣ 📜CustomUserDetailsService.java
+ ┃ ┃ ┣ 📜JoinService.java
+ ┃ ┃ ┗ 📜UserProfileService.java
+ ┗ 📜DogcatdangApplication.java
+ ```
 </div>
 </details>
 
@@ -304,6 +490,7 @@
 
 - 박정호
 
+  - 팀장
   - API 제작 : 근황 글, 댓글, 방송
   - 인프라
   - 발표
