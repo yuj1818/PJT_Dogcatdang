@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { getAnimalData, searchAnimalData } from '../../../util/SaveAPI';
+import { searchAnimalData } from '../../../util/SaveAPI';
 import { IoSearch } from "react-icons/io5";
 import styled from 'styled-components';
 import { Button } from '../../common/Button';
