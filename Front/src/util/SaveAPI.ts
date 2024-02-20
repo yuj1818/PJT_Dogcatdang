@@ -110,26 +110,15 @@ export const getNumberOfAnimals = () => {
   });
 };
 
-export const getAnimalData = (page: number) => {
-  return API.get("/api/shelter/animals", {
-    method: "GET",
-    headers: {
-      Authorization: cookie.get("U_ID"),
-    },
-    params: {
-      page,
-    },
-  }).then((res) => {
-    return res.data;
-  });
-};
-
-export const searchAnimalData = (data: searchingData) => {
+export const searchAnimalData = (data: searchingData, page: number) => {
   return API.post("/api/shelter/animals/filter", data, {
     method: "POST",
     headers: {
       Authorization: cookie.get("U_ID"),
     },
+    params: {
+      page,
+    }
   }).then((res) => {
     return res;
   });
