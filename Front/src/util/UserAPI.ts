@@ -127,9 +127,7 @@ export const checkNickname = (data: { nickname: string }) => {
 export const logout = async () => {
   return API.post(URL + "/logout")
     .then((res) => {
-      while (cookie.get("U_ID")) {
-        cookie.remove("U_ID");
-      }
+      cookie.remove("U_ID");
       localStorage.clear();
       return res;
     })

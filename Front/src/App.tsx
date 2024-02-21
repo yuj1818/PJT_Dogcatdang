@@ -40,12 +40,10 @@ import { articleLoader } from "./pages/articles/articleLoader.ts";
 import VisitReservationListPage from "./pages/visits/VisitReservationListPage.tsx";
 import OauthTokenPage from "./pages/users/OauthTokenPage.tsx";
 import SavedAnimalManagementPage from "./pages/animals/SavedAnimalManagementPage.tsx";
-import { Cookies } from "react-cookie";
 import NotificationPage from "./pages/notification/NotificationPage.tsx";
 
-const cookie = new Cookies();
 const isUser = () => {
-  if (cookie.get("U_ID")) {
+  if (localStorage.getItem("userInfo")) {
     return redirect("/");
   }
   return null;
