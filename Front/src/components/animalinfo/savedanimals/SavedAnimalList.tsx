@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { getAnimalData, searchAnimalData } from '../../../util/SaveAPI';
+import { searchAnimalData } from '../../../util/SaveAPI';
 import { IoSearch } from "react-icons/io5";
 import styled from 'styled-components';
 import { Button } from '../../common/Button';
@@ -168,14 +168,6 @@ const SavedAnimalList = () => {
     setCurrentPage(prev => prev + 1);
   };
 
-  const getAnimalInfo = async () => {
-    const response = await getAnimalData(currentPage);
-    console.log(response);
-    setAnimalData(() => response.animalDtoList);
-    setCurrentPage(() => response.currentPage);
-    setTotalPages(() => response.totalPages);
-  };
-
   const handleCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCode(() => e.target.value);
   };
@@ -193,7 +185,7 @@ const SavedAnimalList = () => {
       state: state === '전체' || !state ? null : state
     };
 
-    const response = await searchAnimalData(data);
+    const response = await searchAnimalData(data, currentPage);
 
     if (response.status === 204) {
       setAnimalData([]);
@@ -208,7 +200,7 @@ const SavedAnimalList = () => {
   };
 
   useEffect(() => {
-    getAnimalInfo();
+    onSearch();
   }, [currentPage]);
 
   return (

@@ -125,13 +125,12 @@ export const checkNickname = (data: { nickname: string }) => {
 };
 
 export const logout = async () => {
-  return API.post(URL + "/logout").then((res) => {
-    cookie.remove("U_ID");
-    localStorage.removeItem("userInfo");
-    localStorage.removeItem("recentSeen");
-    localStorage.removeItem("tokenExp");
-    return res;
-  });
+  return API.post(URL + "/logout")
+    .then((res) => {
+      cookie.remove("U_ID");
+      localStorage.clear();
+      return res;
+    })
 };
 
 export const getUserInfo = (userId: string) => {
