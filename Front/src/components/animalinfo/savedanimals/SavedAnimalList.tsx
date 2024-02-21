@@ -65,7 +65,7 @@ interface animalInfo {
   animalId: number;
   code: string;
   breed: string;
-  age: number;
+  age: string;
   gender: string;
   isNeuter: string;
   state: string;
@@ -325,7 +325,7 @@ const SavedAnimalList = () => {
               animalId: data.animalId,
               code: data.code,
               breed: data.breed,
-              age: data.age,
+              age: data.age.toString() === '-1' ? '나이 미상' : data.age.toString(),
               gender: data.gender,
               isNeuter: data.isNeuter,
               state: data.state
