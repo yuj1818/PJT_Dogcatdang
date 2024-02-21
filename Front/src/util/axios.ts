@@ -24,6 +24,7 @@ API.interceptors.response.use(
       await logout();
       window.location.href = "/landing";
     }
+    return Promise.reject(error);
   }
 )
 
