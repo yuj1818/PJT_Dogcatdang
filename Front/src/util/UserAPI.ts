@@ -128,6 +128,9 @@ export const logout = async () => {
   return API.post(URL + "/logout")
     .then((res) => {
       cookie.remove("U_ID");
+      return res;
+    })
+    .then((res) => {
       localStorage.clear();
       return res;
     })
