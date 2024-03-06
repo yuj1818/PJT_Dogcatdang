@@ -14,7 +14,7 @@ import { broadcastEnd } from "../../util/broadcastAPI";
 import { decrypt } from "../../components/Broadcast/simpleEncrypt";
 import { queryClient } from "../../util/tanstackQuery";
 
-const OPENVIDU_SERVER_URL = "https://i10e202.p.ssafy.io:8443/openvidu/api";
+const OPENVIDU_SERVER_URL = "주소";
 const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
 
 const BroadCastPage: React.FC = () => {

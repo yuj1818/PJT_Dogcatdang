@@ -4,7 +4,7 @@ server:
 # database 연동 설정
 spring:
   cors:
-    allowed-origins: https://i10e202.p.ssafy.io
+    allowed-origins: https://주소
   security:
     oauth2:
       client:
@@ -13,14 +13,14 @@ spring:
             client-name: naver
             client-id: jPt9fIucOQnjV_ZG0Pf2
             client-secret: ph3HbCjgk2
-            redirect-uri: https://i10e202.p.ssafy.io/api/login/oauth2/code/naver
+            redirect-uri: https://주소/api/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name,email
           google:
             client-name: google
             client-id: 482443242773-o3qodrbamn53ff593o4rgpot79qhulqg.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: https://i10e202.p.ssafy.io/api/login/oauth2/code/google
+            redirect-uri: https://주소/api/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile,email
         provider:
@@ -31,7 +31,7 @@ spring:
             user-name-attribute: response
 
   datasource:
-    url: jdbc:mysql://i10e202.p.ssafy.io:3306/dogcatdang?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://주소/dogcatdang?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
