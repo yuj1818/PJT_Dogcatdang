@@ -46,7 +46,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 사용자의 인증 정보를 세션에 저장
         request.getSession().setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         // 리다이렉션할 프론트엔드 URL 설정
-        String targetUrl = "https://주소/oauth-success"; // 프론트엔드에서 처리할 경로
+        String targetUrl = "https://i10e202.p.ssafy.io/oauth-success"; // 프론트엔드에서 처리할 경로
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

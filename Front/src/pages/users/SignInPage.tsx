@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Title from "../../components/users/Title";
 import Line from "../../components/users/Line";
 import { Button } from "../../components/common/Button";
-import logo from "../../assets/auth-image.png";
+import logo from '../../assets/auth-image.png';
 
 const FormBox = styled.div`
   display: flex;
@@ -20,7 +20,7 @@ const FormBox = styled.div`
       width: 80%;
     }
   }
-`;
+`
 
 const SignInForm = styled.form`
   display: flex;
@@ -33,18 +33,15 @@ const SignInForm = styled.form`
     border: none;
     box-shadow: 0 3.5px 3.5px lightgrey;
     border-radius: 5px;
-    padding: 0.2rem 0.4rem;
+    padding: .2rem .4rem;
   }
 
-  input,
-  .menus,
-  .button-box {
+  input, .menus, .button-box {
     width: 18rem;
   }
 
-  .menu,
-  .menus {
-    font-size: 0.8rem;
+  .menu, .menus {
+    font-size: .8rem;
   }
 
   label {
@@ -53,17 +50,17 @@ const SignInForm = styled.form`
 
   .err-msg {
     color: red;
-    font-size: 0.8rem;
+    font-size: .8rem;
   }
-`;
+`
 
 function SignInPage() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(() => e.target.value);
@@ -82,10 +79,10 @@ function SignInPage() {
     };
 
     const response = await signIn(data);
-
+    
     if (response.status === 401) {
-      setErrMsg("아이디와 비밀번호를 다시 확인해주세요");
-      return;
+      setErrMsg('아이디와 비밀번호를 다시 확인해주세요');
+      return ;
     }
 
     navigate("/");
@@ -96,7 +93,7 @@ function SignInPage() {
       <Title title="로그인" />
       <FormBox>
         <div className="img-box flex justify-center">
-          <img src={logo} alt="" />
+          <img src={ logo } alt="" />
         </div>
         <Line />
         <div className="flex flex-col items-center gap-9 w-2/5">
@@ -108,7 +105,7 @@ function SignInPage() {
                 name="username"
                 id="username"
                 onChange={handleUserName}
-              />
+                />
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="password">PW</label>
@@ -117,14 +114,14 @@ function SignInPage() {
                 name="password"
                 id="password"
                 onChange={handlePassword}
-              />
+                />
             </div>
-            {errMsg && <p className="err-msg">{errMsg}</p>}
+            { errMsg &&  <p className="err-msg">{errMsg}</p> }
             <div className="menus flex gap-2 items-center justify-center">
-              <NavLink to={`/signup/${params.type}`} className="menu">
-                회원가입
-              </NavLink>
-              |<span className="menu">ID 찾기</span>|
+              <NavLink to={`/signup/${params.type}`} className="menu">회원가입</NavLink>
+              |
+              <span className="menu">ID 찾기</span>
+              |
               <span className="menu">Password 찾기</span>
             </div>
             <div className="button-box flex justify-center">
@@ -134,19 +131,19 @@ function SignInPage() {
           {/* {
             params.type === 'inv' &&
             <div className="flex gap-2">
-              <a href="https://주소/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
-              <a href="https://주소/api/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
+              <a href="https://i10e202.p.ssafy.io/oauth2/authorization/naver"><img src={ naverLoginBtn } alt="" /></a>
+              <a href="https://i10e202.p.ssafy.io/api/oauth2/authorization/google"><img src={ googleLoginBtn } alt="" /></a>
             </div>
           } */}
         </div>
-      </FormBox>
+      </FormBox>  
     </div>
   );
 }
 
 export default SignInPage;
 
-export const isOrg = () =>
+export const isOrg = () =>  
   JSON.parse(localStorage.getItem("userInfo") || "{}").role === "ROLE_SHELTER";
 export const isUser = () =>
   JSON.parse(localStorage.getItem("userInfo") || "{}")?.id ? true : false;
