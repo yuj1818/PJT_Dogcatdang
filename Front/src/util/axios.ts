@@ -5,7 +5,7 @@ const env = import.meta.env.VITE_IS_PRODUCTION || "development";
 export const isProduction = env === "production";
 
 
-export const HOST = isProduction ? "https://i10e202.p.ssafy.io" : "http://localhost";
+export const HOST = isProduction ? "주소" : "http://localhost";
 
 export const PORT = ":8443";
 
